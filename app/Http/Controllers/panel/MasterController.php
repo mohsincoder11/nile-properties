@@ -29,7 +29,6 @@ class MasterController extends Controller
         return view('panel.city_master', [
             'city' => $city,
             'token' => $token,
-
             'occupation' => $occupation,
             'layout' => $layout,
             'plot' => $plot,
