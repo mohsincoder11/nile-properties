@@ -1,0 +1,755 @@
+@extends('panel.layout.user_model_layout')
+
+@section('main_container')
+<div class="page-content-wrap">
+    <div class="row">
+
+        <div class="col-md-12" style="margin-top:5px;">
+            <div class="panel panel-default">
+                <h5 class="panel-title"
+                    style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
+                    align="center">
+                    <i class="fa fa-rupee"></i> &nbsp;Payment Collection
+                </h5>
+
+                <div class="col-md-12" align="center" style="margin-top: 1vh;">
+                    <div class="col-md-12" align="center">
+                        <div class="icon-box-container" style="margin-left: 12%;">
+
+                            <div class="icon-box box-3" style="padding: 1vh;">
+                                <a href="{{ route('user_model.initiatesale')}}">
+                                    <img src="{{ asset('panel/assets/images/cards/13.png') }}" alt="" class="classic-1">
+                                    <p class="classic">ADD NEW SALE</p>
+                                </a>
+                            </div>
+
+                            <div style="margin-top: 10vh;font-size: large;">
+                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                            </div>
+                            <div class="icon-box box-1" style="padding: 1vh;">
+                                <a href="{{ route('user_model.newsale')}}">
+                                    <img src="{{ asset('panel/assets/images/cards/9.png') }}" alt="" class="classic-1">
+                                    <p class="classic">NEW SALE CONFIRMED</p>
+                                </a>
+                            </div>
+
+                            <div style="margin-top: 10vh;font-size: large;">
+                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                            </div>
+                            <div class="icon-box box-2">
+                                <a href="{{ route('user_model.paymentcollection')}}">
+                                    <img src="{{ asset('panel/assets/images/cards/7.png') }}" alt="" class="classic-1">
+                                    <p class="classic">PAYMENT COLLECTION</p>
+                                </a>
+
+                            </div>
+                            <div style="margin-top: 10vh;font-size: large;">
+                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                            </div>
+                            <div class="icon-box box-3">
+                                <a href="{{ route('user_model.registration')}}">
+                                    <img src="{{ asset('panel/assets/images/cards/11.png') }}" alt="" class="classic-1">
+                                    <p class="classic">REQUEST FOR REGISTRATION</p>
+                                </a>
+
+                            </div>
+                            <div style="margin-top: 10vh;font-size: large;">
+                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                            </div>
+
+                            <div class="icon-box box-1">
+                                <a href="{{ route('user_model.account')}}">
+                                    <img src="{{ asset('panel/assets/images/cards/6.png') }}" alt="" class="classic-1">
+                                    <p class="classic">ACCOUNTS CLEARANCE</p>
+                                </a>
+
+                            </div>
+                            <div style="margin-top: 10vh;font-size: large;">
+                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                            </div>
+                            <div class="icon-box box-2">
+                                <a href="{{ route('user_model.legalclearance')}}">
+                                    <img src="{{ asset('panel/assets/images/cards/4.png') }}" alt="" class="classic-1">
+                                    <p class="classic">LEGAL CLEARANCE</p>
+                                </a>
+
+                            </div>
+                            <div style="margin-top: 10vh;font-size: large;">
+                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                            </div>
+                            <div class="icon-box box-3">
+                                <a href="{{ route('user_model.registrationcompleted')}}">
+                                    <img src="{{ asset('panel/assets/images/cards/8.png') }}" alt="" class="classic-1">
+                                    <p class="classic">REGISTRATION COMPLETED</p>
+                                </a>
+
+                            </div>
+                            <div style="margin-top: 10vh;font-size: large;">
+                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                            </div>
+                            <div class="icon-box box-1">
+                                <a href="{{ route('user_model.saledeedscan')}}">
+                                    <img src="{{ asset('panel/assets/images/cards/12.png') }}" alt="" class="classic-1">
+                                    <p class="classic">SALEDEED SCAN</p>
+                                </a>
+
+                            </div>
+                            <div style="margin-top: 10vh;font-size: large;">
+                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                            </div>
+                            <div class="icon-box box-2">
+                                <a href="{{ route('user_model.handover')}}">
+                                    <img src="{{ asset('panel/assets/images/cards/10.png') }}" alt="" class="classic-1">
+                                    <p class="classic">HANDOVER COMPLETE</p>
+                                </a>
+
+                            </div>
+
+
+
+                            <!-- Add more boxes as needed -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" style="margin-top:10px;">
+                            <div class="col-md-2" style="margin-top:15px;"></div>
+                            <div class="col-md-2" style="margin-top:15px;">
+                                <label>Select Client</label>
+                                <select id="client-select" class="form-control select" data-live-search="true">
+                                    <option value="">Select a client</option>
+                                    @foreach($client as $enquiry)
+                                    <option value="{{ $enquiry->id }}" data-client-name="{{ $enquiry->name }}"
+                                        data-client-phone="{{ $enquiry->contact }}"
+                                        data-client-address="{{ $enquiry->address }}"
+                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
+                                        {{ $enquiry->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2" style="margin-top:15px;">
+                                <label>Select Layout</label>
+                                <select id="project-select" name="project_id" class="form-control select"
+                                    data-live-search="true">
+                                    <option value="">Select Project</option>
+                                    @foreach($projects as $project)
+                                    <option value="{{ $project->project_id }}"
+                                        data-project-id="{{ $project->project_id }}">{{
+                                        $project->project->project_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2" style="margin-top:15px;">
+                                <label>Select Plot</label>
+                                <select id="plot-select" name="plot_no" class="form-control select"
+                                    data-live-search="true">
+                                    <!-- Plot options will be appended dynamically -->
+                                </select>
+                            </div>
+                            <div class="col-md-2" style="margin-top:3.1rem;" align="center">
+
+                                <div class="input-group" style="margin-top:-5px; margin-bottom:15px;">
+
+                                    <button type="button" id="view-button" class="btn btn-primary"><span
+                                            class="fa fa-stack-overflow"></span> View
+                                        Account</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table" width="100%" style="font-size: 16px;">
+                        <tbody id="dynamic-data">
+                            <!-- Dynamic data will be injected here by AJAX -->
+                        </tbody>
+                    </table>
+
+                    <div class="row">
+
+                        <div class="panel panel-default">
+
+                            <div class="col-md-12" style="margin-top:5px;" id="dynamic-data-two">
+
+
+
+
+
+
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <h5 class="panel-title"
+                    style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
+                    align="center">
+                    <i class="fa fa-rupee"></i> &nbsp;Other charges
+                </h5>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-2" style="margin-top:5px;"></div>
+                <div class="col-md-2" style="margin-top:5px;">
+                    <label>Enter other Amount</label>
+                    <input type="text" class="form-control" name="name" placeholder="" />
+                </div>
+                <div class="col-md-2" style="margin-top:5px;">
+                    <label>Select Charges</label>
+                    <select name="client_id" required="" class="form-control select" data-live-search="true">
+                        <option value="">Registration Charges</option>
+                        <option value="">
+                            <P>Other</P>
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2" style="margin-top: 5px;">
+                    <button id="on" type="button" class="btn mjks"
+                        style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Add other charges
+                    </button>
+                </div>
+                <div class="col-md-2" style="margin-top: 5px;">
+                    <button id="on" type="button" class="btn mjks" data-toggle="modal" data-target="#popup1"
+                        style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
+                        <i class="fa fa-file" aria-hidden="true"></i> Add other charges Receipt
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top: 2vh;">
+                <table width="100%" border="1">
+                    <tr style="background-color:#f0f0f0; height:30px;">
+                        <th style="text-align:center">Type of Payment</th>
+                        <th style="text-align:center">Schedule Date</th>
+                        <th style="text-align:center">Amount</th>
+                        <th style="text-align:center">Paid ON</th>
+                        <th style="text-align:center">Payment Mode</th>
+                        <th style="text-align:center">Reference Number</th>
+                        <th style="text-align:center">Paid Amount</th>
+
+                        <th style="text-align:center">Action</th>
+                    </tr>
+
+
+                    <tr>
+                        <td style="padding:5px;" align="center">
+                            <label>Payment made towards</label>
+                        </td>
+                        <td style="padding:5px;" align="center">
+                            <label>22-03-2024</label>
+                        </td>
+                        <td style="padding:5px;" align="center">
+                            <label>650000</label>
+                        </td>
+                        <td style="padding:5px;" align="center">
+                            <label>24-03-2024</label>
+                        </td>
+                        <td style="padding:5px;" align="center">
+                            <label>NEFT</label>
+                        </td>
+                        <td style="padding:5px;" align="center">
+                            <label>66789809</label>
+                        </td>
+                        <td style="padding:5px;" align="center">
+                            <label>60000</label>
+                        </td>
+
+
+                        <td style="text-align:center; color:#FF0000">
+                            <button><i class="fa fa-edit"></i></button>
+                            <!-- <button><i class="fa fa-trash-o"></i></button> -->
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+        </div>
+        <div class="col-md-12" style="margin-top:5vh;">
+            <div class="panel panel-default">
+                <h5 class="panel-title"
+                    style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
+                    align="center">
+                    <i class="fa fa-check"></i> &nbsp;Registration Checklist
+                </h5>
+            </div>
+            <div class="col-md-12" style="margin-top: 2vh;margin-bottom: 10vh;">
+                <table width="100%" border="1">
+                    <tr style="background-color:#f0f0f0; height:30px;">
+                        <th style="text-align:center">Particulars</th>
+                        <th style="text-align:center">Status</th>
+                        <th style="text-align:center">Collected By</th>
+                        <th style="text-align:center">Collected Date</th>
+                        <!-- <th  style="text-align:center">Payment Mode</th>
+                                <th  style="text-align:center">Reference Number</th>
+                                <th  style="text-align:center">Paid Amount</th>
+
+                                <th  style="text-align:center">Action</th> -->
+                    </tr>
+
+
+                    <!-- <tr>
+                                <td style="padding:5px;" align="center">
+                                    <label>Payment made towards</label>
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>22-03-2024</label>
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>650000</label>
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>24-03-2024</label>
+                                </td>
+
+                            </tr> -->
+
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-top:1vh;">
+            <div class="panel panel-default">
+                <h5 class="panel-title"
+                    style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
+                    align="center">
+                    <i class="fa fa-file"></i> &nbsp;Registration Document
+                </h5>
+            </div>
+
+            <div class="col-md-2" style="margin-top:5px;"></div>
+            <div class="col-md-3" style="margin-top:5px;">
+                <label>Registration Receipt <span style="color: red;">(File not available)</span></label>
+
+            </div>
+            <div class="col-md-1" style="margin-top:5px;"></div>
+            <div class="col-md-3" style="margin-top:5px;">
+                <label>Selected Scan Copies <span style="color: red;">(File not available)</span></label>
+
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-top:1vh;">
+            <div class="panel panel-default">
+                <h5 class="panel-title"
+                    style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
+                    align="center">
+                    <i class="fa fa-file-text"></i> &nbsp;Documents
+                </h5>
+            </div>
+            <div class="col-md-12" style="margin-top: 2vh;margin-bottom: 10vh;">
+                <table width="100%" border="1">
+                    <tr style="background-color:#f0f0f0; height:30px;">
+                        <th style="text-align:center">Document Name</th>
+                        <th style="text-align:center">Updated By</th>
+                        <th style="text-align:center">Updated Date</th>
+                        <th style="text-align:center">Download</th>
+                        <!-- <th  style="text-align:center">Payment Mode</th>
+                                    <th  style="text-align:center">Reference Number</th>
+                                    <th  style="text-align:center">Paid Amount</th>
+
+                                    <th  style="text-align:center">Action</th> -->
+                    </tr>
+
+
+                    <!-- <tr>
+                                    <td style="padding:5px;" align="center">
+                                        <label>Payment made towards</label>
+                                    </td>
+                                    <td style="padding:5px;" align="center">
+                                        <label>22-03-2024</label>
+                                    </td>
+                                    <td style="padding:5px;" align="center">
+                                        <label>650000</label>
+                                    </td>
+                                    <td style="padding:5px;" align="center">
+                                        <label>24-03-2024</label>
+                                    </td>
+
+                                </tr> -->
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- payment store model  start -->
+<!-- Store Installment Modal -->
+<div class="modal fade" id="storeInstallmentModal" tabindex="-1" role="dialog"
+    aria-labelledby="storeInstallmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="storeInstallmentModalLabel">Store Installment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="storeInstallmentForm" autocomplete="off" role="form" method="POST">
+                    @csrf
+                    <input type="text" id="initial_enquiry_id" name="initial_enquiry_id" value="">
+                    <input type="text" id="installment" name="installment" value="">
+
+                    <div class="row">
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Date <font color="#FF0000">*</font></label>
+                            <input type="date" id="date2" class="form-control" name="date" required>
+                        </div>
+
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Payment Type <font color="#FF0000">*</font></label>
+                            <select id="payment_type2" class="form-control select" data-live-search="true"
+                                name="payment_type" required>
+                                <option value="">Select</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="NEFT / RTGS">NEFT / RTGS</option>
+                                <option value="UPI / WALLET">UPI / WALLET</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Amount <font color="#FF0000">*</font></label>
+                            <input type="number" class="form-control" id="paid_amount2" name="paid_amount" required>
+                        </div>
+
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Bank Name</label>
+                            <input type="text" id="bank_name2" class="form-control" name="bank_name">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Acc No</label>
+                            <input type="text" id="account_no2" class="form-control" name="account_no">
+                        </div>
+
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Cheque No</label>
+                            <input type="text" id="cheque_no2" class="form-control" name="cheque_no">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>IFSC</label>
+                            <input type="text" id="ifsc2" class="form-control" name="ifsc">
+                        </div>
+
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Remark</label>
+                            <input type="text" id="remark2" class="form-control" name="remark">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top:30px;" align="center">
+                            <button type="button" id="submitForm" class="btn btn-primary">
+                                <i class="fa fa-save"></i> Submit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- payment store model  end -->
+
+<!-- payment edit model  start -->
+<!-- Edit Installment Modal -->
+<div class="modal fade" id="editInstallmentModal" tabindex="-1" role="dialog"
+    aria-labelledby="editInstallmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editInstallmentModalLabel">Edit Installment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editInstallmentForm" autocomplete="off" role="form" action="{{ route('update_installment') }}"
+                    method="POST">
+                    @csrf
+                    <input type="hidden" id="initial_enquiry_id_one" name="initial_enquiry_id">
+                    <input type="hidden" id="installment_one" name="installment">
+                    <div class="row">
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Date <font color="#FF0000">*</font></label>
+                            <input type="date" id="date1" class="form-control" name="date" required>
+                        </div>
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Payment Type <font color="#FF0000">*</font></label>
+                            <select id="payment_type1" class="form-control select" data-live-search="true"
+                                name="payment_type" required>
+                                <option value="">Select</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="NEFT / RTGS">NEFT / RTGS</option>
+                                <option value="UPI / WALLET">UPI / WALLET</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Amount <font color="#FF0000">*</font></label>
+                            <input type="number" class="form-control" id="paid_amount1" name="paid_amount" required>
+                        </div>
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Bank Name</label>
+                            <input type="text" id="bank_name1" class="form-control" name="bank_name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Acc No</label>
+                            <input type="text" id="account_no1" class="form-control" name="account_no">
+                        </div>
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Cheque No</label>
+                            <input type="text" id="cheque_no1" class="form-control" name="cheque_no">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>IFSC</label>
+                            <input type="text" id="ifsc1" class="form-control" name="ifsc">
+                        </div>
+                        <div class="col-md-6" style="margin-top:15px;">
+                            <label>Remark</label>
+                            <input type="text" id="remark1" class="form-control" name="remark">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top:30px;" align="center">
+                            <button type="button" id="submitEditForm" name="submit" class="btn btn-primary">
+                                <i class="fa fa-save"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- payment edit model  end -->
+</div>
+
+@stop
+
+@section('js')
+<script>
+    $(document).ready(function() {
+    // Handle project select change
+    $('#project-select').change(function() {
+    var projectId = $(this).val();
+    $.ajax({
+    type: "GET",
+    url: "{{ route('fetchPlots') }}",
+    data: { projectId: projectId },
+    success: function(response) {
+    var plotSelect = $('#plot-select');
+    plotSelect.empty(); // Clear existing options
+    $.each(response, function(index, plot) {
+    plotSelect.append('<option value="' + plot.plot_no + '">' + plot.plot_no + '</option>');
+    });
+    plotSelect.selectpicker('refresh'); // Reinitialize Bootstrap Select if needed
+    },
+    error: function(xhr, status, error) {
+    console.error(error);
+    }
+    });
+    });
+
+    function setModalData(button) {
+    var instNo = $(button).data('inst');
+    var enquiryId = $(button).data('id');
+    $('#installment').val(instNo);
+    $('#initial_enquiry_id').val(enquiryId);
+    }
+
+    function setModalDataone(button) {
+    var instNo = $(button).data('instone');
+    var enquiryId = $(button).data('idone');
+    var paidAmount = $(button).data('paid_amount');
+    var payDate = $(button).data('pay_date').split(' ')[0];
+    var paymentType = $(button).data('payment_type');
+    var bankName = $(button).data('bank_name');
+    var accountNo = $(button).data('account_no');
+    var chequeNo = $(button).data('cheque_no');
+    var ifsc = $(button).data('ifsc');
+    var remark = $(button).data('remark');
+
+    $('#installment_one').val(instNo);
+    $('#initial_enquiry_id_one').val(enquiryId);
+    $('#paid_amount1').val(paidAmount);
+    $('#date1').val(payDate);
+    $('#payment_type1').val(paymentType);
+    $('#bank_name1').val(bankName);
+    $('#account_no1').val(accountNo);
+    $('#cheque_no1').val(chequeNo);
+    $('#ifsc1').val(ifsc);
+    $('#remark1').val(remark);
+
+    // Ensure the correct option is selected in the payment_type dropdown
+    $('#payment_type1 option').each(function() {
+    if ($(this).val() == paymentType) {
+    $(this).prop('selected', true);
+    }
+    });
+    }
+
+    function get_client_project() {
+    var clientId = $('#client-select').val();
+    var projectId = $('#project-select').val();
+    var plotNo = $('#plot-select').val();
+
+    $.ajax({
+    url: '{{ route("getClientProjectPlotData") }}',
+    type: 'GET',
+    data: { client_id: clientId, project_id: projectId, plot_no: plotNo },
+    success: function(response) {
+    $('#dynamic-data').html(response.html);
+    }
+    });
+    }
+
+    function get_table_data() {
+    var projectId = $('#project-select').val();
+    var plotNo = $('#plot-select').val();
+
+    $.ajax({
+    url: '{{ route("getClientProjectPlotDatatwo") }}',
+    type: 'GET',
+    data: { project_id: projectId, plot_no: plotNo },
+    success: function(response) {
+    $('#dynamic-data-two').html(response.html);
+    $('#dynamic-data-three').DataTable({
+    "paging": true,
+    "lengthChange": true,
+    "searching": true,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "responsive": true,
+    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    });
+    $('#dynamic-data-two').on('click', '.btn-info', function() {
+    setModalData(this);
+    });
+    $('#dynamic-data-two').on('click', '.btn-info-one', function() {
+    setModalDataone(this);
+    });
+    }
+    });
+    }
+
+    $('#view-button').click(function(e) {
+    e.preventDefault();
+    var clientId = $('#client-select').val();
+    var projectId = $('#project-select').val();
+    var plotNo = $('#plot-select').val();
+    get_client_project();
+    get_table_data();
+    });
+
+    $('#submitEditForm').click(function(event) {
+    event.preventDefault();
+    var formData = $('#editInstallmentForm').serialize();
+    $.ajax({
+    url: '{{ route('update_installment') }}',
+    method: 'POST',
+    data: formData,
+    success: function(response) {
+    if (response.success) {
+    alert(response.success);
+    $('#editInstallmentModal').modal('hide');
+    get_client_project();
+    get_table_data();
+    clearModalData();
+    } else {
+    alert(response.error || 'An error occurred');
+    }
+    },
+    error: function(xhr) {
+    var response = xhr.responseJSON;
+    if (response && response.errors) {
+    var errorMessage = 'Validation errors:\n';
+    $.each(response.errors, function(key, errors) {
+    errorMessage += errors.join('\n') + '\n';
+    });
+    alert(errorMessage);
+    } else {
+    alert('An error occurred');
+    }
+    }
+    });
+    });
+    $('#submitForm').click(function(event) {
+    event.preventDefault();
+
+    var formData = $('#storeInstallmentForm').serialize();
+
+    $.ajax({
+    url: '{{ route('store_payment_installment') }}',
+    method: 'POST',
+    data: formData,
+    success: function(response) {
+    if (response.success) {
+    alert(response.success);
+    // Optionally close the modal
+    $('#storeInstallmentModal').modal('hide');
+    get_client_project();
+    get_table_data();
+     clearModalData();
+    // Optionally update the page content dynamically
+    } else {
+    alert(response.error || 'An error occurred');
+    }
+    },
+    error: function(xhr) {
+    var response = xhr.responseJSON;
+    if (response && response.errors) {
+    var errorMessage = 'Validation errors:\n';
+    $.each(response.errors, function(key, errors) {
+    errorMessage += errors.join('\n') + '\n';
+    });
+    alert(errorMessage);
+    } else {
+    alert('An error occurred');
+    }
+    }
+    });
+    });
+
+    function clearModalData() {
+    // Clear the form fields
+    $('#installment_one').val('');
+    $('#initial_enquiry_id_one').val('');
+    $('#paid_amount').val('');
+    $('#date').val('');
+    $('#payment_type').val('').trigger('change');
+    $('#bank_name').val('');
+    $('#account_no').val('');
+    $('#cheque_no').val('');
+    $('#ifsc').val('');
+    $('#remark').val('');
+    }
+    });
+</script>
+
+@endsection
