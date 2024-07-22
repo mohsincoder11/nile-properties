@@ -249,6 +249,11 @@ Route::get('/fetch-project-detailsextra', [ProjectEntryController::class, 'fetch
 
 //plot transfer
 Route::get('/plot-transfer', [PlotTransfercontroller::class, 'plottransfer'])->name('plot.transfer');
+Route::post('/plot-transfers/create', [PlotTransferController::class, 'plot_transfer_store'])->name('plot-transfers.store');
+Route::get('/plot-transfers/delete/{id}', [PlotTransferController::class, 'plot_transfer_delete'])->name('plot-transfers.delete');
+Route::get('/plot-transfers/edit/{id}', [PlotTransferController::class, 'plot_transfer_edit'])->name('plot-transfers.edit');
+Route::post('/plot-transfers/update/{id}', [PlotTransferController::class, 'plot_transfer_update'])->name('plot-transfers.update');
+
 
 Route::get('/plot-shifting', [PlotTransfercontroller::class, 'plotShifting'])->name('plot.shifting');
 
