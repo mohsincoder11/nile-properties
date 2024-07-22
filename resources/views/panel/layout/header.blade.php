@@ -284,6 +284,12 @@
                             <a href="{{ route('commision.plan') }}" id="commisionplan"><span
                                     class="fa fa-navicon"></span>Commision Plan Master</a>
                         </li>
+                        <li>
+
+                            <a href="{{ route('downlineindex') }}" id="downlineindex"><span
+                                    class="fa fa-navicon"></span>Buisness
+                            </a>
+                        </li>
                     </ul>
 
                 </li>
