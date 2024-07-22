@@ -2,7 +2,7 @@
 
 @section('main_container')
 
-
+@include('panel.layout.alerts')
 
 <div class="page-content-wrap">
 
@@ -41,6 +41,118 @@
             </h6>
 
         </div>
+        @if(isset($PlotTransfer_edit) && $PlotTransfer_edit!=null)
+        <form action="{{ route('plot-transfers.update', $PlotTransfer_edit->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="col-md-12" style="margin-top: 5px;">
+                <h3>Edit Basic Details</h3>
+                <table width="100%">
+                    <thead>
+                        <tr style="height:30px;">
+                            <th>Application Number</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Mobile Number</th>
+                            <th>Alternate Number</th>
+                            <th>Upload Photo</th>
+                            @if ($PlotTransfer_edit->upload_photo)
+                            <th>File</th>
+                            @endif
+
+                            <th>DOB</th>
+                            <th>City</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr width="100%">
+                            <td style="padding: 2px;" width="3%">
+                                <input type="text" class="form-control" name="application_number" value="{{ $PlotTransfer_edit->application_number }}" placeholder="" readonly />
+                            </td>
+                            <td style="padding: 2px;" width="3%">
+                                <input type="text" class="form-control" name="full_name" value="{{ $PlotTransfer_edit->full_name }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="4%">
+                                <input type="text" class="form-control" name="email" value="{{ $PlotTransfer_edit->email }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="3%">
+                                <input type="text" class="form-control" name="mobile_number" value="{{ $PlotTransfer_edit->mobile_number }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="3%">
+                                <input type="text" class="form-control" name="alternate_number" value="{{ $PlotTransfer_edit->alternate_number }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="3%">
+                                <input type="file" class="form-control" name="upload_photo" placeholder="" />
+                               
+                            </td>
+                            @if ($PlotTransfer_edit->upload_photo)
+                            <td style="padding: 2px;" width="1%">
+                               <a href="{{asset($PlotTransfer_edit->upload_photo) }}" target="_blank"> <img src="{{asset($PlotTransfer_edit->upload_photo) }}" width="100" height="100" /></a>
+                            </td>
+                            @endif
+
+                            <td style="padding: 2px;" width="3%">
+                                <input type="date" class="form-control" name="dob" value="{{ $PlotTransfer_edit->dob }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="3%">
+                                <input type="text" class="form-control" name="city" value="{{ $PlotTransfer_edit->city }}" placeholder="" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" style="margin-top: 5px;">
+                <table width="100%">
+                    <thead>
+                        <tr style="height:30px;">
+                            <th>Address</th>
+                            <th>Nationality</th>
+                            <th>State</th>
+                            <th>Company Name</th>
+                            <th>Pincode</th>
+                            <th>Ownership change changes</th>
+                            <th>Designation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr width="100%">
+                            <td style="padding: 2px;" width="5%">
+                                <input type="text" class="form-control" name="address" value="{{ $PlotTransfer_edit->address }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="3%">
+                                <input type="text" class="form-control" name="nationality" value="{{ $PlotTransfer_edit->nationality }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="5%">
+                                <input type="text" class="form-control" name="state" value="{{ $PlotTransfer_edit->state }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="5%">
+                                <input type="text" class="form-control" name="company_name" value="{{ $PlotTransfer_edit->company_name }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="3%">
+                                <input type="text" class="form-control" name="pincode" value="{{ $PlotTransfer_edit->pincode }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="5%">
+                                <input type="text" class="form-control" name="ownership_change" value="{{ $PlotTransfer_edit->ownership_change }}" placeholder="" />
+                            </td>
+                            <td style="padding: 2px;" width="5%">
+                                <input type="text" class="form-control" name="designation" value="{{ $PlotTransfer_edit->designation }}" placeholder="" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-md-12" style="margin-top:2vh;margin-bottom: 1vh;" align="right">
+                    <button id="on" class="btn mjks" type="submit"
+                        style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;">
+                        <i class="fa fa-plus" aria-hidden="true"></i>update</button>
+                        <a href="{{ route('plot.transfer') }}" id="on" class="btn mjks" type="submit"
+                        style="color:#FFFFFF; height:30px; width:auto;background-color: #a4a4a4;">
+                        <i class="fa fa-times" aria-hidden="true"></i>Cancel</a>
+                </div>
+            </div>
+        </form>
+        
+        @else
+        <form action="{{ route('plot-transfers.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
         <div class="col-md-12" style="margin-top: 5px;">
             <h3>Basic Details</h3>
             <table width="100%">
@@ -61,25 +173,29 @@
 
                     <tr width="100%">
                         <td style="padding: 2px;" width="3%">
-                            <input type="text" class="form-control" name="name" placeholder="" />
+                            <input type="text" class="form-control" name="application_number" placeholder="" />
                         </td>
                         <td style="padding: 2px;" width="3%">
-                            <input type="text" class="form-control" name="name" placeholder="" />
+                            <input type="text" class="form-control" name="full_name" placeholder="" />
                         </td>
-                        <td style="padding: 2px;" width="4%"><input type="text" class="form-control" name="name"
-                                placeholder="" /></td>
-                        <td style="padding: 2px;" width="3%"><input type="text" class="form-control" name="name"
-                                placeholder="" /></td>
-                        <td style="padding: 2px;" width="3%"><input type="text" class="form-control" name="name"
-                                placeholder="" /></td>
-
-                        <td style="padding: 2px;" width="3%"><input type="file" class="form-control" name="name"
-                                placeholder="" /></td>
-                        <td style="padding: 2px;" width="3%"><input type="date" class="form-control" name="name"
-                                placeholder="" /></td>
-                        <td style="padding: 2px;" width="3%"><input type="text" class="form-control" name="name"
-                                placeholder="" /></td>
-
+                        <td style="padding: 2px;" width="4%">
+                            <input type="text" class="form-control" name="email" placeholder="" />
+                        </td>
+                        <td style="padding: 2px;" width="3%">
+                            <input type="text" class="form-control" name="mobile_number" placeholder="" />
+                        </td>
+                        <td style="padding: 2px;" width="3%">
+                            <input type="text" class="form-control" name="alternate_number" placeholder="" />
+                        </td>
+                        <td style="padding: 2px;" width="3%">
+                            <input type="file" class="form-control" name="upload_photo" placeholder="" />
+                        </td>
+                        <td style="padding: 2px;" width="3%">
+                            <input type="date" class="form-control" name="dob" placeholder="" />
+                        </td>
+                        <td style="padding: 2px;" width="3%">
+                            <input type="text" class="form-control" name="city" placeholder="" />
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -108,26 +224,27 @@
                 <tbody>
 
                     <tr width="100%">
-
-                        <td style="padding: 2px;" width="5%"><input type="text" class="form-control" name="name"
-                                placeholder="" /></td>
-                        <td style="padding: 2px;" width="3%"><input type="text" class="form-control" name="name"
-                                placeholder="" /></td>
-                        <td style="padding: 2px;" width="5%"><input type="text" class="form-control" name="name"
-                                placeholder="" /></td>
-                        <td style="padding: 2px;" width="5%"><input type="text" class="form-control" name="name"
-                                placeholder="" /></td>
+                        <td style="padding: 2px;" width="5%">
+                            <input type="text" class="form-control" name="address" placeholder="" />
+                        </td>
                         <td style="padding: 2px;" width="3%">
-                            <input type="text" class="form-control" name="name" placeholder="" />
+                            <input type="text" class="form-control" name="nationality" placeholder="" />
                         </td>
                         <td style="padding: 2px;" width="5%">
-                            <input type="text" class="form-control" name="name" placeholder="" />
+                            <input type="text" class="form-control" name="state" placeholder="" />
                         </td>
-
                         <td style="padding: 2px;" width="5%">
-                            <input type="text" class="form-control" name="name" placeholder="" />
+                            <input type="text" class="form-control" name="company_name" placeholder="" />
                         </td>
-
+                        <td style="padding: 2px;" width="3%">
+                            <input type="text" class="form-control" name="pincode" placeholder="" />
+                        </td>
+                        <td style="padding: 2px;" width="5%">
+                            <input type="text" class="form-control" name="ownership_change" placeholder="" />
+                        </td>
+                        <td style="padding: 2px;" width="5%">
+                            <input type="text" class="form-control" name="designation" placeholder="" />
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -135,13 +252,15 @@
 
             <div class="col-md-12" style="margin-top:2vh;margin-bottom: 1vh;" align="right">
 
-                <a> <button id="on" type="button" class="btn mjks"
+                 <button id="on"  class="btn mjks" type="submit"
                         style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;">
-                        <i class="fa fa-plus" aria-hidden="true"></i>Submit</button></a>
+                        <i class="fa fa-plus" aria-hidden="true"></i>Submit</button>
 
             </div>
 
         </div>
+    </form>
+    @endif
         <div class="col-md-12" style="margin-top: 5vh;margin-bottom: 5vh;">
             <table class="table datatable">
                 <thead>
@@ -164,31 +283,41 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($PlotTransfer as $index => $pt)
                     <tr>
-                        <td>1</td>
-                        <td>NA13724</td>
-                        <td>Fred Ludy</td>
-                        <td>000 000 0000/000 000 0000</td>
-
-                        <td> <img src="{{asset('panel/img/png.png')}}" width="20" height="20" /></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $pt->application_number }}</td>
+                        <td>{{ $pt->full_name }} / {{ $pt->dob }}</td>
+                        <td>{{ $pt->mobile_number }} / {{ $pt->alternate_number }}</td>
                         <td>
-
-
-                            <button
+                            @if ($pt->upload_photo)
+                              <a href="{{ asset($pt->upload_photo) }}" target="_blank">  <img src="{{ asset($pt->upload_photo) }}" width="20" height="20" /></a>
+                            @else
+                                No File
+                            @endif
+                        </td>
+                        <td>{{ $pt->city }} / {{ $pt->address }} / {{ $pt->pincode }}</td>
+                        <td>{{ $pt->nationality }} / {{ $pt->state }}</td>
+                        <td>{{ $pt->company_name }}</td>
+                        <td>{{ $pt->ownership_change }}</td>
+                        <td>{{ $pt->designation }}</td>
+                        <td>
+                            <a href="{{ route('plot-transfers.edit', $pt->id) }}"
                                 style="background-color:#0d710d; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
                                 type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
-                                title="Edit"><i class="fa fa-edit" style="margin-left:5px;"></i></button>
-                            <button
-                                style="background-color:#ff0000; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
-                                type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
-                                title="Delete"><i class="fa fa-trash-o" style="margin-left:5px;"></i></button>
+                                title="Edit"><i class="fa fa-edit" style="margin-left:5px;"></i></a>
+                                <a onclick="openDeleteModal('{{ route('plot-transfers.delete', $pt->id) }}')">
+                                    <button
+                                        style="background-color:#ff0000; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                        type="button" class="btn btn-info" data-toggle="tooltip"
+                                        data-placement="top" title="Delete">
+                                        <i class="fa fa-trash-o" style="margin-left:5px;"></i>
+                                    </button>
+                                </a>
+
                         </td>
                     </tr>
+                @endforeach
 
 
                 </tbody>
