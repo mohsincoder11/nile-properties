@@ -254,6 +254,11 @@ Route::get('/plot-transfers/delete/{id}', [PlotTransferController::class, 'plot_
 Route::get('/plot-transfers/edit/{id}', [PlotTransferController::class, 'plot_transfer_edit'])->name('plot-transfers.edit');
 Route::post('/plot-transfers/update/{id}', [PlotTransferController::class, 'plot_transfer_update'])->name('plot-transfers.update');
 
+Route::post('/personal-details/create', [PlotTransferController::class, 'personal_details_store'])->name('personal-details.store');
+Route::get('/personal-details/delete/{id}', [PlotTransferController::class, 'personal_details_delete'])->name('personal-details.delete');
+Route::get('/personal-details/edit/{id}', [PlotTransferController::class, 'personal_details_edit'])->name('personal-details.edit');
+Route::post('/personal-details/update/{id}', [PlotTransferController::class, 'personal_details_update'])->name('personal-details.update');
+
 
 Route::get('/plot-shifting', [PlotTransfercontroller::class, 'plotShifting'])->name('plot.shifting');
 
