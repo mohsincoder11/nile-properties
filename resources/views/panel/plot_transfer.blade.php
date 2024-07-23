@@ -326,7 +326,62 @@
         <div class="col-md-12">
             <img src="{{ asset('/panel/img/line.png') }}" width="100%" />
         </div>
-        <div class="col-md-12" style="margin-top:2vh;">
+       
+        @if(isset($PersonalDetail_edit) && $PersonalDetail_edit!=null)
+        <form action="{{ route('personal-details.update', $PersonalDetail_edit->id) }}" method="POST">
+            @csrf
+            <div class="col-md-12" style="margin-top:2vh;">
+
+                <label style="font-weight: bold;font-size: large;color: #009919;">Personal Details</label>
+      <table width="100%">
+                <tr style="height:30px;">
+                    <th width="5%">Spouse Name</th>
+                    <th width="5%">Spouse Mobile</th>
+                    <th width="5%">Anniversary</th>
+                    <th width="5%">Father Name</th>
+                    <th width="5%">Mother Name</th>
+                    <th width="5%">Nominee</th>
+                    <th width="5%">Nominee Mobile</th>
+                </tr>
+                <tr>
+                    <td style="padding: 2px;" width="5%">
+                        <input type="text" class="form-control" name="spouse_name" value="{{ $PersonalDetail_edit->spouse_name }}" placeholder="" />
+                    </td>
+                    <td style="padding: 2px;" width="3%">
+                        <input type="text" class="form-control" name="spouse_mobile" value="{{ $PersonalDetail_edit->spouse_mobile }}" placeholder="" />
+                    </td>
+                    <td style="padding: 2px;" width="3%">
+                        <input type="text" class="form-control" name="anniversary" value="{{ $PersonalDetail_edit->anniversary }}" placeholder="" />
+                    </td>
+                    <td style="padding: 2px;" width="2%">
+                        <input type="text" class="form-control" name="father_name" value="{{ $PersonalDetail_edit->father_name }}" placeholder="" />
+                    </td>
+                    <td style="padding: 2px;" width="2%">
+                        <input type="text" class="form-control" name="mother_name" value="{{ $PersonalDetail_edit->mother_name }}" placeholder="" />
+                    </td>
+                    <td style="padding: 2px;" width="3%">
+                        <input type="text" class="form-control" name="nominee" value="{{ $PersonalDetail_edit->nominee }}" placeholder="" />
+                    </td>
+                    <td style="padding: 2px;" width="3%">
+                        <input type="text" class="form-control" name="nominee_mobile" value="{{ $PersonalDetail_edit->nominee_mobile }}" placeholder="" />
+                    </td>
+                </tr>
+            </table>
+    
+        </div>
+
+        <div class="col-md-12" style="margin-top:2vh;margin-bottom: 1vh;" align="right">
+
+            <a> <button id="on" type="submit" class="btn mjks"
+                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;">
+                    <i class="fa fa-plus" aria-hidden="true"></i>Update</button></a>
+
+        </div>
+        </form>
+        @else
+        <form action="{{ route('personal-details.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="col-md-12" style="margin-top:2vh;">
 
             <label style="font-weight: bold;font-size: large;color: #009919;">Personal Details</label>
 
@@ -336,52 +391,48 @@
                     <th width="5%">Spouse Name</th>
                     <th width="5%">Spouse Mobile</th>
                     <th width="5%">Anniversary</th>
-
                     <th width="5%">Father Name</th>
                     <th width="5%">Mother Name</th>
                     <th width="5%">Nominee</th>
                     <th width="5%">Nominee Mobile</th>
-
                 </tr>
-
-
                 <tr>
                     <td style="padding: 2px;" width="5%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
+                        <input type="text" class="form-control" name="spouse_name" placeholder="" />
                     </td>
                     <td style="padding: 2px;" width="3%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
+                        <input type="text" class="form-control" name="spouse_mobile" placeholder="" />
                     </td>
                     <td style="padding: 2px;" width="3%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
-                    </td>
-
-                    <td style="padding: 2px;" width="2%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
+                        <input type="text" class="form-control" name="anniversary" placeholder="" />
                     </td>
                     <td style="padding: 2px;" width="2%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
+                        <input type="text" class="form-control" name="father_name" placeholder="" />
+                    </td>
+                    <td style="padding: 2px;" width="2%">
+                        <input type="text" class="form-control" name="mother_name" placeholder="" />
                     </td>
                     <td style="padding: 2px;" width="3%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
+                        <input type="text" class="form-control" name="nominee" placeholder="" />
                     </td>
                     <td style="padding: 2px;" width="3%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
+                        <input type="text" class="form-control" name="nominee_mobile" placeholder="" />
                     </td>
-
                 </tr>
-
             </table>
-
+            
         </div>
 
         <div class="col-md-12" style="margin-top:2vh;margin-bottom: 1vh;" align="right">
 
-            <a> <button id="on" type="button" class="btn mjks"
+            <a> <button id="on" type="submit" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;">
                     <i class="fa fa-plus" aria-hidden="true"></i>Submit</button></a>
 
         </div>
+    </form>
+    @endif
+
         <div class="col-md-12" style="margin-top: 5vh;margin-bottom: 5vh;">
             <table class="table datatable">
                 <thead>
@@ -398,28 +449,33 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($PersonalDetail as $index => $p_detail)
                     <tr>
-                        <td>1</td>
-                        <td>10-12-2023</td>
-                        <td>Alicia</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $p_detail->spouse_name }}</td>
+                        <td>{{ $p_detail->spouse_mobile }}</td>
+                        <td>{{ $p_detail->anniversary }}</td>
+                        <td>{{ $p_detail->father_name }}</td>
+                        <td>{{ $p_detail->mother_name }}</td>
+                        <td>{{ $p_detail->nominee }}</td>
+                        <td>{{ $p_detail->nominee_mobile }}</td>
                         <td>
-
-
-                            <button
+                            <a href="{{ route('personal-details.edit', $p_detail->id) }}"
                                 style="background-color:#0d710d; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
                                 type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
-                                title="Edit"><i class="fa fa-edit" style="margin-left:5px;"></i></button>
-                            <button
-                                style="background-color:#ff0000; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
-                                type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
-                                title="Delete"><i class="fa fa-trash-o" style="margin-left:5px;"></i></button>
+                                title="Edit"><i class="fa fa-edit" style="margin-left:5px;"></i></a>
+                                <a onclick="openDeleteModal('{{ route('personal-details.delete', $p_detail->id) }}')">
+                                    <button
+                                        style="background-color:#ff0000; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                        type="button" class="btn btn-info" data-toggle="tooltip"
+                                        data-placement="top" title="Delete">
+                                        <i class="fa fa-trash-o" style="margin-left:5px;"></i>
+                                    </button>
+                                </a>
+
                         </td>
                     </tr>
+                    @endforeach
 
 
                 </tbody>
