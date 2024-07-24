@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\panel;
 
+use App\Models\FirmRegistrationMaster;
 use Illuminate\Http\Request;
 use App\Models\InitialEnquiry;
 use Illuminate\Support\Facades\DB;
@@ -14,11 +15,11 @@ class PaymentCollectionController extends Controller
     public function paymentcollection()
     {
         $client = ClientDetailInitial::all();
-        $projects = InitialEnquiry::with('project')->get('project_id');
-
+        $projects = InitialEnquiry::with('project')->distinct()->get(['project_id']);
+        $firm = FirmRegistrationMaster::all();
         // Fetch EMI payments for the first initial enquiry record
 
-        return view('panel.payment_collection', compact('client', 'projects'));
+        return view('panel.payment_collection', compact('client', 'projects', 'firm'));
     }
 
 

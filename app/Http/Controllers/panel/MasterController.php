@@ -4,6 +4,7 @@ namespace App\Http\Controllers\panel;
 
 use App\Models\City;
 use App\Models\Occupation;
+use App\Models\OtherCharges;
 use App\Models\TokenStatus;
 use Illuminate\Http\Request;
 use App\Models\LayoutFeature;
@@ -20,6 +21,8 @@ class MasterController extends Controller
         $whatsapp = WhatsappModel::first();
 
         $city = City::all();
+        $other = OtherCharges::all();
+
         $token = TokenStatus::all();
 
         $occupation = Occupation::all();
@@ -34,6 +37,9 @@ class MasterController extends Controller
             'plot' => $plot,
             'transaction' => $transaction,
             'whatsapp' => $whatsapp,
+            'other' => $other,
+
+
 
         ]);
     }
@@ -54,6 +60,22 @@ class MasterController extends Controller
         $city = City::create($data);
 
         return redirect(route('city_master'))->with('success', 'City Added Successfully');
+        // return redirect()->route('city_master')->with('success', 'City Added Successfully');
+    }
+
+    public function other_charges_store(Request $request)
+    {
+
+        $request->validate([
+            'other_charges' => 'required',
+        ]);
+        $data = [
+            'other_charges' => $request->input('other_charges'),
+        ];
+
+        $city = OtherCharges::create($data);
+
+        return redirect(route('city_master'))->with('success', 'Other Charges Added Successfully');
         // return redirect()->route('city_master')->with('success', 'City Added Successfully');
     }
 
@@ -84,6 +106,18 @@ class MasterController extends Controller
             return redirect(route('city_master'))->with('success', 'City Deleted Successfully');
         } else {
             return redirect(route('city_master'))->with('error', 'City not found');
+
+        }
+    }
+
+    public function other_charges_destroy($id)
+    {
+        $city = OtherCharges::find($id);
+        if ($city) {
+            $city->delete();
+            return redirect(route('city_master'))->with('success', 'Other Charges Deleted Successfully');
+        } else {
+            return redirect(route('city_master'))->with('error', 'Other Charges found');
 
         }
     }
@@ -119,6 +153,23 @@ class MasterController extends Controller
         ]);
     }
 
+    public function edit_other_charges($id)
+    {
+        $city = OtherCharges::find($id);
+        //  dd($city);
+        if (!$city) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Other Charges not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'city' => $city,
+        ]);
+    }
+
     public function edit_token($id)
     {
         $token = TokenStatus::find($id);
@@ -145,6 +196,16 @@ class MasterController extends Controller
         $city->city = $request->input('city');
         $city->update();
         return redirect()->back()->with('success', 'City Updated Successfully');
+    }
+    public function update_other_charges(Request $request)
+    {
+        //    dd($request->all());
+
+        $city_id = $request->input('other_charges_id');
+        $city = OtherCharges::find($city_id);
+        $city->other_charges = $request->input('other_charges');
+        $city->update();
+        return redirect()->back()->with('success', 'Other Charges Updated Successfully');
     }
 
 

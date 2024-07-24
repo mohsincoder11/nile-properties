@@ -117,17 +117,12 @@
                     <div class="col-md-12">
                         <div class="form-group" style="margin-top:10px;">
                             <div class="col-md-2" style="margin-top:15px;"></div>
+
                             <div class="col-md-2" style="margin-top:15px;">
-                                <label>Select Client</label>
-                                <select id="client-select" class="form-control select" data-live-search="true">
-                                    <option value="">Select a client</option>
-                                    @foreach($client as $enquiry)
-                                    <option value="{{ $enquiry->id }}" data-client-name="{{ $enquiry->name }}"
-                                        data-client-phone="{{ $enquiry->contact }}"
-                                        data-client-address="{{ $enquiry->address }}"
-                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
-                                        {{ $enquiry->name }}
-                                    </option>
+                                <label>Select Firm</label>
+                                <select class="form-control select" name="firm_id" data-live-search="true">
+                                    @foreach($firm as $city)
+                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -150,6 +145,20 @@
                                     <!-- Plot options will be appended dynamically -->
                                 </select>
                             </div>
+                            <div class="col-md-2" style="margin-top:15px;">
+                                <label>Select Client</label>
+                                <select id="client-select" class="form-control select" data-live-search="true">
+                                    <option value="">Select a client</option>
+                                    @foreach($client as $enquiry)
+                                    <option value="{{ $enquiry->id }}" data-client-name="{{ $enquiry->name }}"
+                                        data-client-phone="{{ $enquiry->contact }}"
+                                        data-client-address="{{ $enquiry->address }}"
+                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
+                                        {{ $enquiry->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-md-2" style="margin-top:3.1rem;" align="center">
 
                                 <div class="input-group" style="margin-top:-5px; margin-bottom:15px;">
@@ -160,6 +169,7 @@
 
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
