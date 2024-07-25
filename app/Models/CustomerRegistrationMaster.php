@@ -41,4 +41,6 @@ class CustomerRegistrationMaster extends Model
         return $this->hasOne(BranchMaster::class, 'id', 'branch_id');
     }
 
+
+
 }

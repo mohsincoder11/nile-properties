@@ -1,14 +1,15 @@
 @extends('panel.layout.header')
 
 @section('main_container')
-
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <div class="page-content-wrap">
     <div class="row">
         <div class="col-md-12" style="margin-top:5px;">
             <div class="panel panel-default">
-                <form action="{{ route('initiatesale_store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('panel.initiate-sell.update', $inquiry->id) }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
-
+                    @method('PUT')
 
                     <div class="col-md-12">
 
@@ -22,11 +23,289 @@
 
                     <div class="row">
                         <div class="col-md-12" style="margin-top: 2vh;">
-                            @if(session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                            @endif
+                            <table width="100%">
+                                <tr style="height:30px;">
+                                    <th width="1%">Title</th>
+                                    <th width="3%">Name</th>
+                                    <th width="2%">Occupation</th>
+                                    <th width="3%">Email</th>
+                                    <th width="2%">Mobile No.</th>
+                                    <th width="2%">City/Village</th>
+                                    <th width="1%">Pincode</th>
+                                    <th width="3%">Address</th>
+                                    <th width="1%">Age</th>
+
+
+                                </tr>
+
+
+                                <tr>
+                                    <td style="padding: 2px;" width="1%">
+                                        <select class="form-control select" data-live-search="true" id="title"
+                                            name="title">
+                                            <option>Mr.</option>
+                                            <option>Mrs.</option>
+                                            <option>Ku.</option>
+                                            <option>Shri.</option>
+                                            <option>Miss</option>
+                                            <option>Mast.</option>
+                                            <option>Smt.</option>
+
+                                        </select>
+                                    </td>
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="text" class="form-control" id="name" value="" />
+                                    </td>
+                                    <td style="padding: 2px;" width="1%">
+                                        <select class="form-control select" data-live-search="true" id="occupation_id">
+                                            {{-- <option>Govt</option>
+                                            <option>Business</option>
+                                            <option>Other</option> --}}
+                                            <option value="">--Select--</option>
+                                            @foreach ($occupation as $occupation_name)
+                                            <option value="{{$occupation_name->occupation}}">
+                                                {{$occupation_name->occupation}}</option>
+
+                                            @endforeach
+
+
+                                        </select>
+                                    </td>
+                                    <td style="padding: 2px;" width="3%">
+                                        <input type="text" class="form-control" id="email" value="" />
+                                    </td>
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="text" class="form-control" maxlength="10" id="contact" value="" />
+                                    </td>
+                                    <td style="padding: 2px;" width="3%">
+                                        <input type="text" class="form-control" id="city" value="" />
+                                    </td>
+                                    <td style="padding: 2px;" width="1%">
+                                        <input type="text" class="form-control" id="pin_code" value="" />
+                                    </td>
+                                    <td style="padding: 2px;" width="3%">
+                                        <input type="text" class="form-control" id="address" value="" />
+                                    </td>
+                                    <td style="padding: 2px;" width="1%">
+                                        <input type="text" class="form-control" id="age" value="" />
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <table style="width:100%;border-collapse:collapse;">
+                                <tr style="height:30px;">
+                                    <th style="padding:5px;text-align:left;">DOB</th>
+                                    <th style="padding:5px;text-align:left;">Select Marital Status</th>
+                                    <th style="padding:5px;text-align:left;">Marriage Date</th>
+                                    <th style="padding:5px;text-align:left;">Branch</th>
+                                    <th style="padding:5px;text-align:left;">AADHAR</th>
+                                    <th style="padding:5px;text-align:left;">AADHAR No.</th>
+                                    <th style="padding:5px;text-align:left;">PAN</th>
+                                    <th style="padding:5px;text-align:left;">PAN No.</th>
+                                    <th style="padding:5px;text-align:left;"></th>
+                                </tr>
+                                <tr>
+                                    <td style="padding:2px;">
+                                        <div style="width:100%;" class="input-group">
+                                            <input type="date" class="form-control" id="dob" value="" />
+                                        </div>
+                                    </td>
+                                    <td style="padding:2px;">
+                                        <select id="marital_status" name="marital_status" id="marital_status"
+                                            class="form-control" onchange="toggleMarriageDate()">
+                                            <option value="single">Single</option>
+                                            <option value="married">Married</option>
+                                            <option value="divorced">Divorced</option>
+                                            <option value="widowed">Widowed</option>
+                                        </select>
+                                    </td>
+                                    <td style="padding:2px;">
+                                        <div style="width:100%;" class="input-group">
+                                            <input type="date" id="marriage_date" class="form-control"
+                                                name="marriage_date" value="{{ old('marriage_date') }}" />
+                                        </div>
+                                    </td>
+                                    <td style="padding:2px;">
+                                        <select style="width:100%;" class="form-control select" data-live-search="true"
+                                            name="branch_id" id="branch_id">
+                                            <option value="">--Select--</option>
+                                            @foreach ($branch as $branch_name)
+                                            <option value="{{$branch_name->branch}}">{{$branch_name->branch}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td style="padding:2px;">
+                                        <input type="file" class="form-control" id="aadhar" value="" />
+                                    </td>
+                                    <td style="padding:2px;">
+                                        <input type="text" class="form-control" id="aadhar_no" value="" />
+                                    </td>
+                                    <td style="padding:2px;">
+                                        <input type="file" class="form-control" id="pan" value="" />
+                                    </td>
+                                    <td style="padding:2px;">
+                                        <input type="text" class="form-control" id="pan_no" value="" />
+                                    </td>
+                                    <td style="padding:2px;">
+                                        <button id="submitbuttonappend" type="button" class="btn"
+                                            style="color:#FFFFFF;height:30px;width:auto;background-color:#006699;">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> ADD
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                    <h5 class="panel-title"
+                        style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
+                        align="center">
+                        <i class="fa fa-user"></i> &nbsp;Customer Details
+                    </h5>
+                    <table class="table table-bordered mt-3" width="100%" border="1">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Name</th>
+                                <th>Occupation</th>
+                                <th>Email</th>
+                                <th>Mobile No.</th>
+                                <th>City/Village</th>
+                                <th>Pincode</th>
+                                <th>Address</th>
+                                <th>Age</th>
+                                <th>DOB</th>
+                                <th>Marital Status</th>
+                                <th>Marriage Date</th>
+                                <th>Branch</th>
+                                <th>AADHAR</th>
+                                <th>AADHAR No.</th>
+                                <th>PAN</th>
+                                <th>PAN No.</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        @if($inquiry->clients->isNotEmpty())
+                        <tbody id="customerTableBody">
+                            @foreach($inquiry->clients as $client)
+                            @foreach($client->clientn as $customer)
+                            <tr>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->title ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_title_pre[]" value="{{ $customer->title ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->name ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_name_pre[]" value="{{ $customer->name ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->occupation_name->occupation ?? $customer->occupation_id ??
+                                        'N/A'
+                                        }}</label>
+                                    <input type="hidden" name="client_occupation_pre[]"
+                                        value="{{ $customer->occupation_name->name ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->email ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_email_pre[]" value="{{ $customer->email ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->contact ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_contact_pre[]"
+                                        value="{{ $customer->contact ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->city ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_city_pre[]" value="{{ $customer->city ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->pin_code ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_pincode_pre[]"
+                                        value="{{ $customer->pin_code ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->address ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_address_pre[]"
+                                        value="{{ $customer->address ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->age ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_age_pre[]" value="{{ $customer->age ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->dob ? \Carbon\Carbon::parse($customer->dob)->format('d/m/y') :
+                                        'N/A' }}</label>
+                                    <input type="hidden" name="client_dob_pre[]"
+                                        value="{{ $customer->dob ? \Carbon\Carbon::parse($customer->dob)->format('d/m/y') : 'N/A' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->marital_status ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_marital_status_pre[]"
+                                        value="{{ $customer->marital_status ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->marriage_date ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_marriage_date_pre[]"
+                                        value="{{ $customer->marriage_date ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->branch_name->branch ?? $customer->branch_id ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_branch_pre[]"
+                                        value="{{ $customer->branch_name->branch ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    @if($customer->aadhar)
+                                    <a href="{{ asset('customer_reg/' . $customer->aadhar ?? '' ) }}" target="_blank">
+                                        <i style="background-color:rgb(4, 255, 0);" class="fa fa-file-pdf-o"></i>
+                                    </a>
+                                    @else
+                                    <label>N/A</label>
+                                    @endif
+                                    <input type="hidden" name="client_aadhar_pre[]"
+                                        value="{{ $customer->aadhar ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->aadhar_no ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_aadhar_no_pre[]"
+                                        value="{{ $customer->aadhar_no ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    @if($customer->pan)
+                                    <a href="{{ asset('customer_reg/' . $customer->pan ?? '' ) }}" target="_blank">
+                                        <i style="background-color:red;" class="fa fa-file-pdf-o"></i>
+                                    </a>
+                                    @else
+                                    <label>N/A</label>
+                                    @endif
+                                    <input type="hidden" name="client_pan_pre[]" value="{{ $customer->pan ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->pan_no ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_pan_no_pre[]"
+                                        value="{{ $customer->pan_no ?? '' }}">
+                                </td>
+                                <td style="text-align:center; color:#FF0000">
+                                    <button type="button" class="delete-client-btn_pre"
+                                        style="border:none; background:none;">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @endforeach
+                            @endforeach
+                        </tbody>
+                        @else
+                        <tbody id="customerTableBody">
+                            <tr>
+                                <td colspan="18" style="text-align:center;"></td>
+                            </tr>
+                        </tbody>
+                        @endif
+                    </table>
+                    <div class="row" style="display: none;">
+                        <div class="col-md-12" style="margin-top: 2vh;">
+
                             <div class="col-md-5"></div>
                             <div class="col-md-2">
                                 <label class="control-label">Select Existing Customer<font color="#000099">
@@ -54,7 +333,25 @@
                         </div>
 
                     </div>
-                    <div class="row" style="margin-top: 2vh;">
+                    <div class="row" style="display: none;" style="margin-top: 2vh;">
+                        <div class="col-md-12">
+                            <table id="client-details-table" width="100%" border="1">
+                                <thead>
+                                    <tr style="background-color:#f0f0f0; height:30px;">
+                                        <th style="text-align:center">Client Name</th>
+                                        <th style="text-align:center">Mobile No</th>
+                                        <th style="text-align:center">Address</th>
+                                        <th style="text-align:center">Sponsor ID</th>
+                                        <th style="text-align:center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Client details will be appended here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {{-- <div class="row" style="margin-top: 2vh;">
                         <div class="col-md-12">
                             <table id="client-details-table" width="100%" border="1">
                                 <thead>
@@ -103,7 +400,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row" style="margin-top: 1vh;">
                         <h5 class="panel-title"
                             style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
@@ -195,8 +492,10 @@
                                                 value="{{ $nominee->relation }}">
                                         </td>
                                         <td style="padding:5px;" align="center">
-                                            <label>{{ $nominee->dob }}</label>
-                                            <input type="hidden" name="nominee_dob_pre[]" value="{{ $nominee->dob }}">
+                                            <label>{{ \Carbon\Carbon::parse($nominee->dob)->format('d/m/y') }}
+                                            </label>
+                                            <input type="hidden" name="nominee_dob_pre[]" value="{{ $nominee->dob ? \Carbon\Carbon::parse($nominee->dob)->format('d/m/y') : 'N/A' }}
+">
                                         </td>
                                         <td style="padding:5px;" align="center">
                                             <label>{{ $nominee->aadhar }}</label>
@@ -208,7 +507,7 @@
                                             <input type="hidden" name="nominee_pan_pre[]" value="{{ $nominee->pan }}">
                                         </td>
                                         <td style="text-align:center; color:#FF0000">
-                                            <button type="button" class="delete-nominee-btn_pre"
+                                            <button type="button" class="delete-client-btn_pre"
                                                 style="border:none; background:none;">
                                                 <i class="fa fa-trash-o"></i>
                                             </button>
@@ -281,8 +580,9 @@
                                     </td>
 
                                     <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" value="{{ $inquiry->square_ft ?? '' }}"
-                                            name="square_ft" placeholder="" oninput="calculateAmounts()" required />
+                                        <input type="text" id="square_ft" class="form-control"
+                                            value="{{ $inquiry->square_ft ?? '' }}" name="square_ft" placeholder=""
+                                            oninput="calculateAmounts()" required />
                                     </td>
                                     <td style="padding: 2px;" width="1%">
                                         <input type="text" class="form-control" name="rate"
@@ -376,6 +676,7 @@
 
 
                                     </td>
+
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="aggriment_date"
@@ -485,48 +786,75 @@
                         </div>
                     </div>
                     <div class="row">
-                        <h5 class="panel-title"
+                        {{-- <h5 class="panel-title"
                             style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
                             align="center">
                             <i class="fa fa-area-chart"></i> &nbsp;Plot/Unit Transaction
-                        </h5>
+                        </h5> --}}
 
                         <div class="col-md-12" style="margin-top: 2vh;">
-                            <table width="70%">
+                            <table width="100%">
                                 <tr style="height:30px;">
 
-                                    <th width="1%">Mauja</th>
-                                    <th width="1%">Kh No.</th>
-                                    <th width="1%">P.H.N.</th>
-                                    <th width="1%">Taluka</th>
+                                    <th width="2%">Mauja</th>
+                                    <th width="2%">Kh No.</th>
+                                    <th width="2%">P.H.N.</th>
+                                    <th width="2%">Taluka</th>
 
-                                    <th width="1%">District</th>
+                                    <th width="2%">District</th>
+                                    <th width="2%">East</th>
+                                    <th width="2%">West</th>
+                                    <th width="2%">North</th>
+                                    <th width="2%">South</th>
 
                                 </tr>
 
 
                                 <tr>
 
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" name="mauja" placeholder=""
                                             value="{{ $inquiry->mauja ?? '' }}" />
                                     </td>
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" name="kh_no" placeholder=""
                                             value="{{ $inquiry->kh_no ?? '' }}" />
                                     </td>
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" name="phn" placeholder=""
                                             value="{{ $inquiry->phn ?? '' }}" />
                                     </td>
 
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" name="taluka" placeholder=""
                                             value="{{ $inquiry->taluka ?? '' }}" />
                                     </td>
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" name="district" placeholder=""
                                             value="{{ $inquiry->district ?? '' }}" />
+                                    </td>
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="text" class="form-control" name="east" placeholder="" value="{{
+                                                                                $inquiry->east ?? '' }}" />
+                                    </td>
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="number" class="form-control" name="west" placeholder="" value="{{
+                                                                                $inquiry->west ?? '' }}" />
+                                    </td>
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="number" class="form-control" name="north" placeholder="" value="{{
+                                                                                $inquiry->north ?? '' }}" />
+                                    </td>
+
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="text" class="form-control" name="south" placeholder="" value="{{
+                                                                                $inquiry->south ?? '' }}" />
+                                    </td>
+                                    <td style="padding: 2px;" width="2%">
+                                        <button id="" type="submit" class="btn mjks"
+                                            style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i
+                                                class="fa fa-floppy-o" aria-hidden="true"></i>
+                                            Update</button>
                                     </td>
 
                                 </tr>
@@ -536,49 +864,24 @@
                         </div>
                     </div>
                     <div class="row" style="margin-top: 1vh;">
-                        <h5 class="panel-title"
+                        {{-- <h5 class="panel-title"
                             style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
                             align="center">
                             <i class="fa fa-area-chart"></i> &nbsp;Direction
-                        </h5>
+                        </h5> --}}
 
                         <div class="col-md-12" style="margin-top: 2vh;">
                             <table width="70%">
                                 <tr style="height:30px;">
 
-                                    <th width="1%">East</th>
-                                    <th width="1%">West</th>
-                                    <th width="1%">North</th>
-                                    <th width="1%">South</th>
+
                                     <th width="2%"></th>
                                 </tr>
 
 
                                 <tr>
 
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" name="east" placeholder="" value="{{
-                                            $inquiry->east ?? '' }}" />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="number" class="form-control" name="west" placeholder="" value="{{
-                                            $inquiry->west ?? '' }}" />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="number" class="form-control" name="north" placeholder="" value="{{
-                                            $inquiry->north ?? '' }}" />
-                                    </td>
 
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" name="south" placeholder="" value="{{
-                                            $inquiry->south ?? '' }}" />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <button id="" type="submit" class="btn mjks"
-                                            style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i
-                                                class="fa fa-floppy-o" aria-hidden="true"></i>
-                                            Update</button>
-                                    </td>
                                 </tr>
 
                             </table>
@@ -602,55 +905,236 @@
 
 
 </div>
-
 @stop
 @section('js')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.delete-nominee-btn_pre').forEach(function(button) {
-        button.addEventListener('click', function() {
-            this.closest('tr').remove();
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+{{-- <script>
+    document.getElementById('submitbuttonappend').addEventListener('click', function () {
+            // Get values from the form
+            const title = document.getElementById('title').value;
+            const name = document.getElementById('name').value;
+            const occupation_id = document.getElementById('occupation_id').value;
+            const email = document.getElementById('email').value;
+            const contact = document.getElementById('contact').value;
+            const city = document.getElementById('city').value;
+            const pin_code = document.getElementById('pin_code').value;
+            const address = document.getElementById('address').value;
+            const age = document.getElementById('age').value;
+            const dob = document.getElementById('dob').value;
+            const marital_status = document.getElementById('marital_status').value;
+            const marriage_date = document.getElementById('marriage_date').value;
+            const branch_id = document.getElementById('branch_id').value;
+            const aadhar_no = document.getElementById('aadhar_no').value;
+            const pan_no = document.getElementById('pan_no').value;
+
+            // Create a new row and append the form data to the table
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${title}</td>
+                <td>${name}</td>
+                <td>${occupation_id}</td>
+                <td>${email}</td>
+                <td>${contact}</td>
+                <td>${city}</td>
+                <td>${pin_code}</td>
+                <td>${address}</td>
+                <td>${age}</td>
+                <td>${dob}</td>
+                <td>${marital_status}</td>
+                <td>${marriage_date}</td>
+                <td>${branch_id}</td>
+                <td>${aadhar_no}</td>
+                <td>${pan_no}</td>
+            `;
+
+            // Append the new row to the table body
+            document.getElementById('customerTableBody').appendChild(newRow);
+
+            // Clear the form
+            document.getElementById('customerForm').reset();
         });
+</script> --}}
+<script>
+    function toggleMarriageDate() {
+    const maritalStatus = document.getElementById('marital_status').value;
+    const marriageDateInput = document.getElementById('marriage_date').parentNode.parentNode.parentNode;
+    if (maritalStatus === 'married') {
+    marriageDateInput.style.display = 'table-row';
+    } else {
+    marriageDateInput.style.display = 'none';
+    }
+    }
+
+    document.getElementById('submitbuttonappend').addEventListener('click', function () {
+    const title = document.getElementById('title').value;
+    const name = document.getElementById('name').value;
+    const occupation_id = document.getElementById('occupation_id').value;
+    const email = document.getElementById('email').value;
+    const contact = document.getElementById('contact').value;
+    const city = document.getElementById('city').value;
+    const pin_code = document.getElementById('pin_code').value;
+    const address = document.getElementById('address').value;
+    const age = document.getElementById('age').value;
+    const dob = document.getElementById('dob').value;
+    const marital_status = document.getElementById('marital_status').value;
+    const marriage_date = document.getElementById('marriage_date').value;
+    const branch_id = document.getElementById('branch_id').value;
+    const aadhar_no = document.getElementById('aadhar_no').value;
+    const pan_no = document.getElementById('pan_no').value;
+
+    const formattedMarriageDate = marriage_date ? marriage_date : 'N/A';
+
+    if (!title || !name || !occupation_id || !email || !contact || !city || !pin_code || !address || !age || !dob ||
+    !branch_id || !aadhar_no || !pan_no) {
+    alert('Please fill all the fields before appending.');
+    return;
+    }
+
+    const aadharFile = document.getElementById('aadhar').files[0];
+    const panFile = document.getElementById('pan').files[0];
+    const panFileURL = panFile ? URL.createObjectURL(panFile) : '';
+    const aadharFileURL = aadharFile ? URL.createObjectURL(aadharFile) : '';
+    // Function to read file as base64
+    const readAsBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
     });
-});
+    };
+
+    // Reading files and appending rows
+    Promise.all([
+    aadharFile ? readAsBase64(aadharFile) : Promise.resolve(''),
+    panFile ? readAsBase64(panFile) : Promise.resolve('')
+    ]).then(([aadharBase64, panBase64]) => {
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+    <td><input type="hidden" name="title[]" value="${title}">${title}</td>
+    <td><input type="hidden" name="name[]" value="${name}">${name}</td>
+    <td><input type="hidden" name="occupation_id[]" value="${occupation_id}">${occupation_id}</td>
+    <td><input type="hidden" name="email[]" value="${email}">${email}</td>
+    <td><input type="hidden" name="contact[]" value="${contact}">${contact}</td>
+    <td><input type="hidden" name="city[]" value="${city}">${city}</td>
+    <td><input type="hidden" name="pin_code[]" value="${pin_code}">${pin_code}</td>
+    <td><input type="hidden" name="address[]" value="${address}">${address}</td>
+    <td><input type="hidden" name="age[]" value="${age}">${age}</td>
+    <td><input type="hidden" name="dob[]" value="${dob}">${dob}</td>
+    <td><input type="hidden" name="marital_status[]" value="${marital_status}">${marital_status}</td>
+    <td><input type="hidden" name="marriage_date[]" value="${formattedMarriageDate}">${formattedMarriageDate}</td>
+    <td><input type="hidden" name="branch_id[]" value="${branch_id}">${branch_id}</td>
+    <td>
+        <input type="hidden" name="aadhar[]" value="${aadharBase64}">
+        ${aadharFile ? aadharFile.name : 'N/A'}
+        ${aadharFile ? `<a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o"
+                aria-hidden="true"></i></a>` : ''}
+    </td>
+    <td><input type="hidden" name="aadhar_no[]" value="${aadhar_no}">${aadhar_no}</td>
+    <td>
+        <input type="hidden" name="pan[]" value="${panBase64}">
+        ${panFile ? panFile.name : 'N/A'}
+        ${panFile ? `<a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o"
+                aria-hidden="true"></i></a>` : ''}
+    </td>
+    <td><input type="hidden" name="pan_no[]" value="${pan_no}">${pan_no}</td>
+    <td style="text-align:center; color:#FF0000">
+        <button class="delete-clients-btn"><i class="fa fa-trash-o"></i></button>
+    </td>
+    `;
+
+    document.getElementById('customerTableBody').appendChild(newRow);
+
+    // Clear the input fields
+    document.getElementById('title').value = '';
+    document.getElementById('name').value = '';
+    document.getElementById('occupation_id').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('contact').value = '';
+    document.getElementById('city').value = '';
+    document.getElementById('pin_code').value = '';
+    document.getElementById('address').value = '';
+    document.getElementById('age').value = '';
+    document.getElementById('dob').value = '';
+    document.getElementById('marital_status').value = 'single';
+    document.getElementById('marriage_date').value = '';
+    document.getElementById('branch_id').value = '';
+    document.getElementById('aadhar_no').value = '';
+    document.getElementById('pan_no').value = '';
+    document.getElementById('aadhar').value = '';
+    document.getElementById('pan').value = '';
+    }).catch(error => {
+    console.error('Error reading files: ', error);
+    alert('An error occurred while processing the files. Please try again.');
+    });
+    });
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.delete-client-btn_pre').forEach(function(button) {
-        button.addEventListener('click', function() {
-            this.closest('tr').remove();
-        });
-    });
-});
+    function toggleMarriageDate() {
+        var maritalStatus = document.getElementById('marital_status').value;
+        var marriageDateInput = document.getElementById('marriage_date');
+        if (maritalStatus === 'single') {
+            marriageDateInput.value = '';
+            marriageDateInput.disabled = true;
+        } else {
+            marriageDateInput.disabled = false;
+        }
+    }
+
+    // Initial call to set the correct state based on the default or old value
+    window.onload = function() {
+        toggleMarriageDate();
+    };
+</script>
+<script>
+    // Conversion factor: 1 square meter = 10.7639 square feet
+        const conversionFactor = 10.7639;
+
+        function convertSquareUnits() {
+            const squareMeterInput = document.getElementById('square_meter');
+            const squareFeetInput = document.getElementById('square_ft');
+
+            // Check which input triggered the event
+            if (document.activeElement === squareMeterInput) {
+                let squareMeters = parseFloat(squareMeterInput.value) || 0;
+                let squareFeet = squareMeters * conversionFactor;
+                squareFeetInput.value = squareFeet.toFixed(2);
+            } else if (document.activeElement === squareFeetInput) {
+                let squareFeet = parseFloat(squareFeetInput.value) || 0;
+                let squareMeters = squareFeet / conversionFactor;
+                squareMeterInput.value = squareMeters.toFixed(2);
+            }
+        }
 </script>
 <script>
     function toggleEmployeeSelect() {
-const agentRadio = document.getElementById('agent_name');
-const executiveRadio = document.getElementById('executive_name');
-const directSourceRadio = document.getElementById('direct_sourse');
-const agentSelect = document.getElementById('agent-select');
-const employeeSelect = document.getElementById('employee-select');
+    const agentRadio = document.getElementById('agent_name');
+    const executiveRadio = document.getElementById('executive_name');
+    const directSourceRadio = document.getElementById('direct_sourse');
+    const agentSelect = document.getElementById('agent-select');
+    const employeeSelect = document.getElementById('employee-select');
 
-if (agentRadio.checked) {
-agentSelect.disabled = false;
-employeeSelect.disabled = true;
-employeeSelect.value = ""; // Clear executive dropdown value
-} else if (executiveRadio.checked) {
-agentSelect.disabled = true;
-employeeSelect.disabled = false;
-agentSelect.value = ""; // Clear agent dropdown value
-} else if (directSourceRadio.checked) {
-agentSelect.disabled = true;
-employeeSelect.disabled = true;
-agentSelect.value = ""; // Clear agent dropdown value
-employeeSelect.value = ""; // Clear executive dropdown value
-}
-}
+    if (agentRadio.checked) {
+    agentSelect.disabled = false;
+    employeeSelect.disabled = true;
+    employeeSelect.value = ""; // Clear executive dropdown value
+    } else if (executiveRadio.checked) {
+    agentSelect.disabled = true;
+    employeeSelect.disabled = false;
+    agentSelect.value = ""; // Clear agent dropdown value
+    } else if (directSourceRadio.checked) {
+    agentSelect.disabled = true;
+    employeeSelect.disabled = true;
+    agentSelect.value = ""; // Clear agent dropdown value
+    employeeSelect.value = ""; // Clear executive dropdown value
+    }
+    }
 
-// Call toggleEmployeeSelect on page load to set the initial state
-window.onload = function() {
-toggleEmployeeSelect();
-};
+    // Call toggleEmployeeSelect on page load to set the initial state
+    window.onload = function() {
+    toggleEmployeeSelect();
+    };
 </script>
 <script>
     function calculateAmounts() {
@@ -708,10 +1192,33 @@ document.getElementById('emi_ammount_input').value = emiAmount.toFixed(2);
 }
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function() {$('#firm-select').on('change', function() {
+
+    var firmId = $(this).val();
+    if (firmId) {
+    $.ajax({
+    url: '{{ route("projects.by.firm", ["firm_id" => "FIRM_ID"]) }}'.replace('FIRM_ID', firmId),
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+    $('#project-select').empty(); // Clear the dropdown
+    $('#project-select').append('<option value="">Select Option</option>');
+    $.each(data, function(key, project) {
+    $('#project-select').append('<option value="' + project.id + '">' + project.project_name + '</option>');
+    });
+    }
+    });
+    } else {
+    $('#project-select').empty(); // Clear the dropdown
+    $('#project-select').append('<option value="">Select Option</option>');
+    }
+    });
+
+
 $('#project-select').change(function() {
 var projectId = $(this).val();
 
+if (projectId) {
 $.ajax({
 type: "GET",
 url: "{{ route('fetchPlots') }}", // Using the route name
@@ -722,8 +1229,9 @@ success: function(response) {
 console.log(response); // Log the response data
 var plotSelect = $('#plot-select');
 plotSelect.empty(); // Clear existing options
+plotSelect.append('<option value="">Select Plot</option>');
 $.each(response, function(index, plot) {
-plotSelect.append('<option value="' + plot.plot_no + '">' + plot.plot_no + '</option>');
+plotSelect.append('<option value="' + plot.id + '">' + plot.plot_no + '</option>');
 });
 // Reinitialize Bootstrap Select if needed
 plotSelect.selectpicker('refresh');
@@ -732,8 +1240,119 @@ error: function(xhr, status, error) {
 console.error(error);
 }
 });
+} else {
+var plotSelect = $('#plot-select');
+plotSelect.empty(); // Clear existing options
+plotSelect.append('<option value="">Select Plot</option>');
+// Reinitialize Bootstrap Select if needed
+plotSelect.selectpicker('refresh');
+}
+if (projectId) {
+$.ajax({
+type: "GET",
+url: "{{ route('fetchProjectDetailsextra') }}", // Assuming this route is correctly defined in Laravel
+data: {
+projectId: projectId
+},
+success: function(response) {
+console.log(response);
+
+// Assuming the response contains project details
+if (response) {
+var projectDetails = response;
+
+// Log the response to verify the values
+console.log('Project Details:', projectDetails);
+
+// Set values to input fields
+$('input[name="mauja"]').val(projectDetails.mauja);
+$('input[name="kh_no"]').val(projectDetails.kh_no);
+$('input[name="phn"]').val(projectDetails.phn);
+$('input[name="taluka"]').val(projectDetails.taluka);
+$('input[name="district"]').val(projectDetails.district);
+}
+},
+error: function(xhr, status, error) {
+console.error(error);
+}
 });
+} else {
+// Clear the fields if no project is selected
+$('input[name="mauja"]').val('');
+$('input[name="kh_no"]').val('');
+$('input[name="phn"]').val('');
+$('input[name="taluka"]').val('');
+$('input[name="district"]').val('');
+}
 });
+$('#plot-select').change(function() {
+var plotId = $(this).val();
+
+if (plotId) {
+$.ajax({
+type: "GET",
+url: "{{ route('fetchPlotDetails') }}", // Assuming this route is correctly defined in Laravel
+data: {
+plotId: plotId
+},
+success: function(response) {
+console.log(response);
+
+// Assuming the response contains plot details as an array
+if (response && response.length > 0) {
+var plotDetails = response[0]; // Access the first element of the array
+
+// Log the values of plot_length and plot_width to check for issues
+console.log('Plot Length:', plotDetails.plot_length);
+console.log('Plot Width:', plotDetails.plot_width);
+console.log(plotDetails);
+
+// Ensure the values are correctly parsed as floats
+var plotLength = parseFloat(plotDetails.plot_length);
+var plotWidth = parseFloat(plotDetails.plot_width);
+
+// Check if the parsed values are valid numbers
+if (!isNaN(plotLength) && !isNaN(plotWidth)) {
+var measurement = plotLength * plotWidth;
+$('input[name="Measurement"]').val(measurement);
+} else {
+$('input[name="Measurement"]').val(''); // Clear if invalid
+}
+
+$('#square_meter').val(plotDetails.area_sqrmt);
+$('#square_ft').val(plotDetails.area_sqrft);
+$('input[name="rate"]').val(plotDetails.rate);
+$('#total_cost_input').val(plotDetails.amount);
+$('#total_cost_display').text(plotDetails.amount);
+
+$('input[name="east"]').val(plotDetails.east);
+$('input[name="west"]').val(plotDetails.west);
+$('input[name="north"]').val(plotDetails.north);
+$('input[name="south"]').val(plotDetails.south);
+}
+},
+error: function(xhr, status, error) {
+console.error(error);
+}
+});
+} else {
+// Clear the fields if no plot is selected
+$('input[name="Measurement"]').val('');
+$('#square_meter').val('');
+$('#square_ft').val('');
+$('input[name="rate"]').val('');
+$('#total_cost_input').val('');
+$('#total_cost_display').text('');
+
+$('input[name="east"]').val('');
+$('input[name="west"]').val('');
+$('input[name="north"]').val('');
+$('input[name="south"]').val('');
+}
+});
+
+});
+
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -768,7 +1387,9 @@ newRow.innerHTML = `
     <input type="hidden" name="client_sponsor[]" value="${clientSponsor}">
 </td>
 <td style="text-align:center; color:#FF0000">
-    <button class="delete-client-btn"><i class="fa fa-trash-o"></i></button>
+    <button type="button" class="delete-client-btn_pre" style="border:none; background:none;">
+        <i class="fa fa-trash-o"></i>
+    </button>
 </td>
 `;
 
@@ -831,7 +1452,9 @@ row.parentNode.removeChild(row);
                         <input type="hidden" name="nominee_pan[]" value="${nomineePAN}">
                     </td>
                     <td style="text-align:center; color:#FF0000">
-                        <button class="delete-nominee-btn btn btn-danger"><i class="fa fa-trash-o"></i></button>
+                        <button type="button" class="delete-client-btn_pre" style="border:none; background:none;">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
                     </td>
                 `;
 

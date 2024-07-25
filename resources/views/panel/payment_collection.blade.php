@@ -12,7 +12,7 @@
                     <i class="fa fa-rupee"></i> &nbsp;Payment Collection
                 </h5>
 
-                <div class="col-md-12" align="center" style="margin-top: 1vh;">
+                <div class="col-md-12" align="center" style="margin-top: 2vh;">
 
                     <div class="col-md-12" align="center">
                         <div class="icon-box-container" style="margin-left: 12%;">
@@ -117,17 +117,12 @@
                     <div class="col-md-12">
                         <div class="form-group" style="margin-top:10px;">
                             <div class="col-md-2" style="margin-top:15px;"></div>
+
                             <div class="col-md-2" style="margin-top:15px;">
-                                <label>Select Client</label>
-                                <select id="client-select" class="form-control select" data-live-search="true">
-                                    <option value="">Select a client</option>
-                                    @foreach($client as $enquiry)
-                                    <option value="{{ $enquiry->id }}" data-client-name="{{ $enquiry->name }}"
-                                        data-client-phone="{{ $enquiry->contact }}"
-                                        data-client-address="{{ $enquiry->address }}"
-                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
-                                        {{ $enquiry->name }}
-                                    </option>
+                                <label>Select Firm</label>
+                                <select class="form-control select" name="firm_id" data-live-search="true">
+                                    @foreach($firm as $city)
+                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -150,6 +145,20 @@
                                     <!-- Plot options will be appended dynamically -->
                                 </select>
                             </div>
+                            <div class="col-md-2" style="margin-top:15px;">
+                                <label>Select Client</label>
+                                <select id="client-select" class="form-control select" data-live-search="true">
+                                    <option value="">Select a client</option>
+                                    @foreach($client as $enquiry)
+                                    <option value="{{ $enquiry->id }}" data-client-name="{{ $enquiry->name }}"
+                                        data-client-phone="{{ $enquiry->contact }}"
+                                        data-client-address="{{ $enquiry->address }}"
+                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
+                                        {{ $enquiry->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-md-2" style="margin-top:3.1rem;" align="center">
 
                                 <div class="input-group" style="margin-top:-5px; margin-bottom:15px;">
@@ -160,6 +169,7 @@
 
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -196,6 +206,7 @@
                 </h5>
             </div>
             <div class="col-md-12">
+                <form action="{{ route('othercharge_store') }}" method="post"></form>
                 <div class="col-md-2" style="margin-top:5px;"></div>
                 <div class="col-md-2" style="margin-top:5px;">
                     <label>Enter other Amount</label>
@@ -203,25 +214,25 @@
                 </div>
                 <div class="col-md-2" style="margin-top:5px;">
                     <label>Select Charges</label>
-                    <select name="client_id" required="" class="form-control select" data-live-search="true">
-                        <option value="">Registration Charges</option>
-                        <option value="">
-                            <P>Other</P>
-                        </option>
+                    <select name="charges_id" required="" class="form-control select" data-live-search="true">
+                        <option value="">Select Charge</option>
+                        @foreach($charges as $charge)
+                        <option value="{{ $charge->id }}">{{ $charge->other_charges }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-2" style="margin-top: 5px;">
-                    <button id="on" type="button" class="btn mjks"
+                    <button id="submit_other_charges" type="submit" class="btn mjks"
                         style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add other charges
                     </button>
                 </div>
-                <div class="col-md-2" style="margin-top: 5px;">
+                {{-- <div class="col-md-2" style="margin-top: 5px;">
                     <button id="on" type="button" class="btn mjks" data-toggle="modal" data-target="#popup1"
                         style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
                         <i class="fa fa-file" aria-hidden="true"></i> Add other charges Receipt
                     </button>
-                </div>
+                </div> --}}
             </div>
             <div class="col-md-12" style="margin-top: 2vh;">
                 <table width="100%" border="1">
@@ -398,8 +409,8 @@
             <div class="modal-body">
                 <form id="storeInstallmentForm" autocomplete="off" role="form" method="POST">
                     @csrf
-                    <input type="text" id="initial_enquiry_id" name="initial_enquiry_id" value="">
-                    <input type="text" id="installment" name="installment" value="">
+                    <input type="hidden" id="initial_enquiry_id" name="initial_enquiry_id" value="">
+                    <input type="hidden" id="installment" name="installment" value="">
 
                     <div class="row">
                         <div class="col-md-6" style="margin-top:15px;">

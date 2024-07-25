@@ -85,6 +85,11 @@
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #8dd510; "><i
                         class="fa fa-user"></i>Customer Registration</button>
             </a>
+            <a href="{{route('agrrementmaster')}}"> <button id="on" type="button" class="btn mjks"
+                    style="color:#FFFFFF; height:30px; width:auto;background-color: #d5cb10; "><i
+                        class="fa fa-user"></i>Agreement Master
+                </button>
+            </a>
 
         </div>
     </div>
@@ -124,6 +129,25 @@
                     <button id="on" type="submit" class="btn mjks" style="color:#FFFFFF; height:30px; width:auto;"> <i
                             class="fa fa-plus"></i>ADD</button>
                     <button id="on" type="button" data-toggle="modal" data-target="#popup3" class="btn mjks"
+                        style="color:#FFFFFF; height:30px; width:auto;"> <i class="fa fa-gear"></i>Manage</button>
+
+                </div>
+        </div>
+        </form>
+        <div class="col-md-12" style="margin-top: 2vh;">
+
+            <form action="{{route('other_charges_store')}}" method="post">
+                @csrf
+
+                <div class="col-md-2">
+                    <label class="control-label">Add Other Charges<font color="#FF0000">*</font></label>
+                    <input type="text" class="form-control" name="other_charges" placeholder="" required />
+                </div>
+
+                <div class="col-md-2" style="margin-top:15px;">
+                    <button id="on" type="submit" class="btn mjks" style="color:#FFFFFF; height:30px; width:auto;"> <i
+                            class="fa fa-plus"></i>ADD</button>
+                    <button id="on" type="button" data-toggle="modal" data-target="#popup0003" class="btn mjks"
                         style="color:#FFFFFF; height:30px; width:auto;"> <i class="fa fa-gear"></i>Manage</button>
 
                 </div>
@@ -313,6 +337,71 @@
     </div>
 </div>
 
+
+
+<!-- other harges-->
+<div class="modal" id="popup0003" tabindex="-1" role="dialog" aria-labelledby="smallModalHead" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="H4">Added Other Charges</h4>
+            </div>
+            <div class="modal-body" style="height:30%;padding: 10px;">
+                <div class="panel-body" style="margin-top:5px; margin-bottom:15px;">
+                    <table class="table datatable">
+                        <thead>
+
+
+                            <tr>
+                                <th>Sr. No.</th>
+
+                                <th>Added Other Charges</th>
+
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            @foreach ($other as $city )
+                            <tr>
+                                <td>{{$loop->index+1}}</td>
+
+                                <td>{{$city->other_charges}}</td>
+
+                                <td>
+
+                                    <button data-toggle="modal" data-target="#popup0008" type="button"
+                                        value="{{$city->id}}" other_charges="{{$city->other_charges}}"
+                                        class="btn btn-primary editotherbtn btn-sm"
+                                        style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;">
+                                        <i class="fa fa-edit" style="margin-left:5px;"></i></button>
+
+                                    <a onclick="openDeleteModal('{{ route('other_charges_destroy', $city->id) }}')">
+                                        <button
+                                            style="background-color:#ff0000; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                            type="button" class="btn btn-info" data-toggle="tooltip"
+                                            data-placement="top" title="Delete">
+                                            <i class="fa fa-trash-o" style="margin-left:5px;"></i>
+                                        </button>
+                                    </a>
+
+                                </td>
+                            </tr>
+                            @endforeach
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="border: none !important; background-color: #FFF !important;">
+                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="modal" id="popup12345_1" tabindex="-1" role="dialog" aria-labelledby="smallModalHead" aria-hidden="true">
@@ -707,6 +796,47 @@
 </div>
 
 
+
+<div class="modal" id="popup0008" tabindex="-1" role="dialog" aria-labelledby="smallModalHead" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="H4">Update Other Charges</h4>
+            </div>
+
+
+
+            <div class="modal-body" style="height:30%;padding: 10px;">
+                <div class="panel-body" style="margin-top:5px; margin-bottom:15px;">
+                    <div class="col-md-12">
+                        <form action="{{ route('update_other_charges')}}" method="post">
+                            @csrf
+                            <input type="hidden" value="" id="other_charges_id" name="other_charges_id" />
+                            <div class="col-md-6">
+                                <label class="control-label"> Other Charges<font color="#FF0000">*</font></label>
+                                <input type="text" id="other_charges" value="" class="form-control" name="other_charges"
+                                    required placeholder="" />
+                            </div>
+
+                            <div class="col-md-6" style="margin-top:15px;padding-left: 10px;">
+                                <button id="updateOtherBtn" type="submit" class="btn mjks"
+                                    style="color:#FFFFFF; height:30px; width:auto;"> <i
+                                        class="fa fa-plus"></i>Update</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="border: none !important; background-color: #FFF !important;">
+            </div>
+        </div>
+    </div>
+</div>
 {{-- Token Edit Modal --}}
 
 <div class="modal" id="popup12345_2" tabindex="-1" role="dialog" aria-labelledby="smallModalHead" aria-hidden="true">
@@ -955,7 +1085,24 @@
         });
     });
 </script>
+<script>
+    $(document).ready(function () {
 
+        $(document).on('click', '.editotherbtn', function () {
+            var city_id = $(this).val(); // Corrected variable name
+
+            $('#popup0008').modal('show');
+
+
+            $('#other_charges').val( $(this).attr('other_charges'));
+            $('#other_charges_id').val($(this).attr('value'));
+
+
+
+
+        });
+    });
+</script>
 <script>
     $(document).ready(function () {
 

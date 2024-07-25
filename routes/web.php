@@ -13,11 +13,12 @@ use App\Http\Controllers\panel\ReportsController;
 // use App\Http\Controllers\panel\EnquiryController;
 use App\Http\Controllers\website\IndexController;
 use App\Http\Controllers\panel\FollowUpController;
-use App\Http\Controllers\panel\DashboardController;
+use App\Http\Controllers\AgreementMasterController;
 
 
 
 // WEBSITE
+use App\Http\Controllers\panel\DashboardController;
 use App\Http\Controllers\panel\LandownerController;
 use App\Http\Controllers\panel\UserModelController;
 use App\Http\Controllers\panel\cityMasterController;
@@ -67,14 +68,19 @@ Route::get('/', [DashboardController::class, 'home'])->name('home');
 Route::get('/city_master', [MasterController::class, 'index'])->name('city_master');
 //city
 Route::post('city_store', [MasterController::class, 'city_store'])->name('city_store');
+Route::post('other_charges_store', [MasterController::class, 'other_charges_store'])->name('other_charges_store');
+
 Route::post('token_store', [MasterController::class, 'token_store'])->name('token_store');
 
 Route::get('token_destroy/{id}', [MasterController::class, 'token_destroy'])->name('token_destroy');
 Route::get('city_destroy/{id}', [MasterController::class, 'city_destroy'])->name('city_destroy');
+Route::get('other_charges_destroy/{id}', [MasterController::class, 'other_charges_destroy'])->name('other_charges_destroy');
 
 // Add this route to get city details by ID
 Route::get('/edit_city/{id}', [MasterController::class, 'edit_city']);
+Route::get('/edit_other_charges/{id}', [MasterController::class, 'edit_other_charges']);
 Route::post('/update_city', [MasterController::class, 'update_city'])->name('update_city');
+Route::post('/update_other_charges', [MasterController::class, 'update_other_charges'])->name('update_other_charges');
 
 Route::get('/edit_token/{id}', [MasterController::class, 'edit_token']);
 Route::post('/update_token', [MasterController::class, 'update_token'])->name('update_token');
@@ -305,10 +311,14 @@ Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
 Route::get('/registration-Checklist', [CustomeStagesController::class, 'registrationChecklist'])->name('registrationChecklist');
 //intiate sales
 
+
+Route::get('/agrrement-master', [AgreementMasterController::class, 'index'])->name('agrrementmaster');
+
 Route::get('/initiate-sale', [InitiatesellController::class, 'initiatesale'])->name('initiatesale');
 Route::get('/fetch-plots', [InitiatesellController::class, 'fetchPlots'])->name('fetchPlots');
 Route::post('/initiatesale/store', [InitiatesellController::class, 'store'])->name('initiatesale_store');
 Route::get('/inquiry-details', [InitiatesellController::class, 'showDetails'])->name('inquiry.details');
+Route::put('panel/initiate-sell/{id}', [InitiatesellController::class, 'update'])->name('panel.initiate-sell.update');
 
 Route::get('/ggetClientProjectPlotDatatwo', [PaymentCollectionController::class, 'getClientProjectPlotDatatwo'])->name('getClientProjectPlotDatatwo');
 
@@ -316,6 +326,8 @@ Route::get('/get-client-project-plot-data', [PaymentCollectionController::class,
 Route::get('/search_payment_collection_agains_client', [PaymentCollectionController::class, 'search_payment_collection_agains_client'])->name('search_payment_collection_agains_client');
 Route::post('/store_payment_installment', [PaymentCollectionController::class, 'store_payment_installment'])->name('store_payment_installment');
 Route::post('/update_installment', [PaymentCollectionController::class, 'update_installment'])->name('update_installment');
+Route::post('/othercharge_store', [PaymentCollectionController::class, 'othercharge_store'])->name('othercharge_store');
+
 
 Route::get('/newsale-sale', [InitiatesellController::class, 'newsale'])->name('newsale');
 Route::delete('/newsale-sale-delete/{id}', [InitiatesellController::class, 'delete'])->name('newsale_delete');

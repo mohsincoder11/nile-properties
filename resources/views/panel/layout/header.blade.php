@@ -17,8 +17,7 @@
 
     {{-- Quill --}}
 
-    {{--
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> --}}
+
     <link rel="stylesheet" href="{{ asset('https://cdn.quilljs.com/1.3.6/quill.snow.css') }}">
 
 
@@ -233,7 +232,7 @@
 
                 </li>
                 <li class="xn-openable">
-                    <a href="enquiry" id="CRM"><span class="fa fa-navicon"></span>CRM</a>
+                    <a href="{{ route('newclientindex') }}" id="CRM"><span class="fa fa-navicon"></span>CRM</a>
                     <ul>
                         <li><a href="{{ route('crm_lead_management') }}"><span class="fa fa-plus"></span>Leads
                                 Mangement</a>
@@ -255,7 +254,8 @@
                     </ul>
                 </li>
                 <li class="xn-openable">
-                    <a href="#" id="Registration Process"><span class="fa fa-file-text"></span>Customer Stages</a>
+                    <a href="javascript:void(0)" id="Registration Process"><span class="fa fa-file-text"></span>Customer
+                        Stagesss</a>
                     <ul>
                         <li><a href="{{ route('registrationChecklist')}}"><span class="fa fa-plus"></span>Registration
                                 Checklist</a></li>
@@ -284,6 +284,12 @@
                             <a href="{{ route('commision.plan') }}" id="commisionplan"><span
                                     class="fa fa-navicon"></span>Commision Plan Master</a>
                         </li>
+                        <li>
+
+                            <a href="{{ route('downlineindex') }}" id="downlineindex"><span
+                                    class="fa fa-navicon"></span>Buisness
+                            </a>
+                        </li>
                     </ul>
 
                 </li>
@@ -298,7 +304,8 @@
                     <a href="setting" id="Setting"><span class="fa fa-gear"> </span>Settings</a>
                 </li> -->
                 <li class="xn-openable">
-                    <a href="#" title="User Roles"><span class="fa fa-users"> </span>More</a>
+                    <a href="{{ route('landowner_index') }}" title="User Roles"><span class="fa fa-users">
+                        </span>More</a>
                     <ul>
                         <li><a href="{{ route('landowner_index') }}"><span class="fa fa-plus"></span>Land Owners</a>
                         </li>
@@ -456,7 +463,7 @@
                 <!-- END PRELOADS -->
                 <!-- START SCRIPTS -->
 
-                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                <script src="{{asset('https://code.jquery.com/jquery-3.6.4.min.js')}}"></script>
 
 
                 <script type="text/javascript" src="{{asset('panel/js/plugins/jquery/jquery.min.js')}}"></script>
@@ -522,58 +529,6 @@
                 </script>
 
 
-                {{-- Delete Alert Script --}}
-                {{-- <script>
-                    function openCustomModal(deleteUrl) {
-        // Set the delete URL in the modal
-        document.getElementById('customModal').deleteUrl = deleteUrl;
-
-        // Show the modal
-        $('#customModal').modal('show');
-    }
-
-
-    // ------
-    function openEditModal(editUrl) {
-        // Set the edit URL in the modal
-        document.getElementById('customModal').editUrl = editUrl;
-
-        // Show the modal with edit confirmation message
-        $('#customModal').find('.modal-title').text('Edit Confirmation');
-        $('#customModal').find('.modal-body').text('Are you sure you want to edit?');
-        $('#customModal').find('.btn-danger').text('Edit').removeClass('btn-danger').addClass('btn-primary').attr('onclick', 'editItem()');
-        $('#customModal').modal('show');
-    }
-
-    function editItem() {
-        // Get the edit URL from the modal
-        var editUrl = document.getElementById('customModal').editUrl;
-
-        // Redirect to the edit URL
-        window.location.href = editUrl;
-
-        // Hide the modal
-        $('#customModal').modal('hide');
-    }
-
-    // -------
-
-    function deleteItem() {
-        // Get the delete URL from the modal
-        var deleteUrl = document.getElementById('customModal').deleteUrl;
-
-        // Redirect to the delete URL
-        window.location.href = deleteUrl;
-
-        // Hide the modal
-        $('#customModal').modal('hide');
-    }
-
-    function closeCustomModal() {
-    // Hide the modal
-    $('#customModal').modal('hide');
-    }
-                </script> --}}
 
                 <script>
                     function openEditModal(editUrl) {

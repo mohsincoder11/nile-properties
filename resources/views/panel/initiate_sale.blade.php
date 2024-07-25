@@ -674,91 +674,67 @@
                         </div>
                     </div>
                     <div class="row">
-                        <h5 class="panel-title"
+                        {{-- <h5 class="panel-title"
                             style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
                             align="center">
                             <i class="fa fa-area-chart"></i> &nbsp;Plot/Unit Transaction
-                        </h5>
+                        </h5> --}}
 
                         <div class="col-md-12" style="margin-top: 2vh;">
-                            <table width="70%">
+                            <table width="100%">
                                 <tr style="height:30px;">
 
-                                    <th width="1%">Mauja</th>
-                                    <th width="1%">Kh No.</th>
-                                    <th width="1%">P.H.N.</th>
-                                    <th width="1%">Taluka</th>
+                                    <th width="2%">Mauja</th>
+                                    <th width="2%">Kh No.</th>
+                                    <th width="2%">P.H.N.</th>
+                                    <th width="2%">Taluka</th>
 
-                                    <th width="1%">District</th>
+                                    <th width="2%">District</th>
+                                    <th width="2%">East</th>
+                                    <th width="2%">West</th>
+                                    <th width="2%">North</th>
+                                    <th width="2%">South</th>
 
                                 </tr>
 
 
                                 <tr>
 
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" id="mauja" name="mauja" placeholder=""
                                             required />
                                     </td>
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" id="kh_no" name="kh_no" placeholder=""
                                             required />
                                     </td>
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" id="phn" name="phn" placeholder=""
                                             required />
                                     </td>
 
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" id="taluka" name="taluka" placeholder=""
                                             required />
                                     </td>
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" id="district" name="district"
                                             placeholder="" required />
                                     </td>
-
-                                </tr>
-
-                            </table>
-
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 1vh;">
-                        <h5 class="panel-title"
-                            style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
-                            align="center">
-                            <i class="fa fa-area-chart"></i> &nbsp;Direction
-                        </h5>
-
-                        <div class="col-md-12" style="margin-top: 2vh;">
-                            <table width="70%">
-                                <tr style="height:30px;">
-
-                                    <th width="1%">East</th>
-                                    <th width="1%">West</th>
-                                    <th width="1%">North</th>
-                                    <th width="1%">South</th>
-                                    <th width="2%"></th>
-                                </tr>
-
-
-                                <tr>
-
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" id="east" name="east" placeholder=""
                                             required />
                                     </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="number" class="form-control" id="west" name="west" placeholder=""
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="text" class="form-control" id="west" name="west" placeholder=""
                                             required />
                                     </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="number" class="form-control" id="north" name="north" placeholder=""
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="text" class="form-control" id="north" name="north" placeholder=""
                                             required />
                                     </td>
 
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" id="south" name="south" placeholder=""
                                             required />
                                     </td>
@@ -768,6 +744,34 @@
                                                 class="fa fa-floppy-o" aria-hidden="true"></i>
                                             Submit</button>
                                     </td>
+
+                                </tr>
+
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 1vh;">
+                        {{-- <h5 class="panel-title"
+                            style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
+                            align="center">
+                            <i class="fa fa-area-chart"></i> &nbsp;Direction
+                        </h5> --}}
+
+                        <div class="col-md-12" style="margin-top: 2vh;">
+                            <table width="70%">
+                                <tr style="height:30px;">
+
+
+
+                                    <th width="2%"></th>
+                                </tr>
+
+
+                                <tr>
+
+
+
                                 </tr>
 
                             </table>
@@ -856,7 +860,7 @@
             document.getElementById('customerForm').reset();
         });
 </script> --}}
-<script>
+{{-- <script>
     function toggleMarriageDate() {
         const maritalStatus = document.getElementById('marital_status').value;
         const marriageDateInput = document.getElementById('marriage_date').parentNode.parentNode.parentNode;
@@ -894,6 +898,23 @@
         const aadharFile = document.getElementById('aadhar').files[0];
         const panFile = document.getElementById('pan').files[0];
         const aadharFileURL = aadharFile ? URL.createObjectURL(aadharFile) : '';
+      //  console.log(aadharFileURL);
+
+      let file = e.target.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function(e) {
+    blob1 = e.target.result;
+};
+    src2 = URL.createObjectURL(e.target.files[0]);
+    let file = e.target.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function(e) {
+    blob2 = e.target.result;
+    };
+
+
         const panFileURL = panFile ? URL.createObjectURL(panFile) : '';
 
         const newRow = document.createElement('tr');
@@ -911,14 +932,18 @@
             <td><input type="hidden" name="marital_status[]" value="${marital_status}">${marital_status}</td>
             <td><input type="hidden" name="marriage_date[]" value="${formattedMarriageDate}">${formattedMarriageDate}</td>
             <td><input type="hidden" name="branch_id[]" value="${branch_id}">${branch_id}</td>
-            <td>
-                <a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
-
+           <td>
+                <input type="hidden" name="aadhar[]" value="${aadharFile ? aadharFile.name : ''}">
+                ${aadharFile ? aadharFile.name : 'N/A'}
+                ${aadharFile ? `<a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o"
+                        aria-hidden="true"></i></a>` : ''}
             </td>
             <td><input type="hidden" name="aadhar_no[]" value="${aadhar_no}">${aadhar_no}</td>
             <td>
-                <a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
-
+                <input type="hidden" name="pan[]" value="${panFile ? panFile.name : ''}">
+                ${panFile ? panFile.name : 'N/A'}
+                ${panFile ? `<a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o"
+                        aria-hidden="true"></i></a>` : ''}
             </td>
             <td><input type="hidden" name="pan_no[]" value="${pan_no}">${pan_no}</td>
         `;
@@ -942,6 +967,118 @@
         document.getElementById('pan_no').value = '';
         document.getElementById('aadhar').value = '';
         document.getElementById('pan').value = '';
+    });
+</script> --}}
+<script>
+    function toggleMarriageDate() {
+    const maritalStatus = document.getElementById('marital_status').value;
+    const marriageDateInput = document.getElementById('marriage_date').parentNode.parentNode.parentNode;
+    if (maritalStatus === 'married') {
+    marriageDateInput.style.display = 'table-row';
+    } else {
+    marriageDateInput.style.display = 'none';
+    }
+    }
+
+    document.getElementById('submitbuttonappend').addEventListener('click', function () {
+    const title = document.getElementById('title').value;
+    const name = document.getElementById('name').value;
+    const occupation_id = document.getElementById('occupation_id').value;
+    const email = document.getElementById('email').value;
+    const contact = document.getElementById('contact').value;
+    const city = document.getElementById('city').value;
+    const pin_code = document.getElementById('pin_code').value;
+    const address = document.getElementById('address').value;
+    const age = document.getElementById('age').value;
+    const dob = document.getElementById('dob').value;
+    const marital_status = document.getElementById('marital_status').value;
+    const marriage_date = document.getElementById('marriage_date').value;
+    const branch_id = document.getElementById('branch_id').value;
+    const aadhar_no = document.getElementById('aadhar_no').value;
+    const pan_no = document.getElementById('pan_no').value;
+
+    const formattedMarriageDate = marriage_date ? marriage_date : 'N/A';
+
+    if (!title || !name || !occupation_id || !email || !contact || !city || !pin_code || !address || !age || !dob ||
+    !branch_id || !aadhar_no || !pan_no) {
+    alert('Please fill all the fields before appending.');
+    return;
+    }
+
+    const aadharFile = document.getElementById('aadhar').files[0];
+    const panFile = document.getElementById('pan').files[0];
+    const panFileURL = panFile ? URL.createObjectURL(panFile) : '';
+    const aadharFileURL = aadharFile ? URL.createObjectURL(aadharFile) : '';
+    // Function to read file as base64
+    const readAsBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+    });
+    };
+
+    // Reading files and appending rows
+    Promise.all([
+    aadharFile ? readAsBase64(aadharFile) : Promise.resolve(''),
+    panFile ? readAsBase64(panFile) : Promise.resolve('')
+    ]).then(([aadharBase64, panBase64]) => {
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+    <td><input type="hidden" name="title[]" value="${title}">${title}</td>
+    <td><input type="hidden" name="name[]" value="${name}">${name}</td>
+    <td><input type="hidden" name="occupation_id[]" value="${occupation_id}">${occupation_id}</td>
+    <td><input type="hidden" name="email[]" value="${email}">${email}</td>
+    <td><input type="hidden" name="contact[]" value="${contact}">${contact}</td>
+    <td><input type="hidden" name="city[]" value="${city}">${city}</td>
+    <td><input type="hidden" name="pin_code[]" value="${pin_code}">${pin_code}</td>
+    <td><input type="hidden" name="address[]" value="${address}">${address}</td>
+    <td><input type="hidden" name="age[]" value="${age}">${age}</td>
+    <td><input type="hidden" name="dob[]" value="${dob}">${dob}</td>
+    <td><input type="hidden" name="marital_status[]" value="${marital_status}">${marital_status}</td>
+    <td><input type="hidden" name="marriage_date[]" value="${formattedMarriageDate}">${formattedMarriageDate}</td>
+    <td><input type="hidden" name="branch_id[]" value="${branch_id}">${branch_id}</td>
+    <td>
+        <input type="hidden" name="aadhar[]" value="${aadharBase64}">
+        ${aadharFile ? aadharFile.name : 'N/A'}
+        ${aadharFile ? `<a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o"
+                aria-hidden="true"></i></a>` : ''}
+    </td>
+    <td><input type="hidden" name="aadhar_no[]" value="${aadhar_no}">${aadhar_no}</td>
+    <td>
+        <input type="hidden" name="pan[]" value="${panBase64}">
+        ${panFile ? panFile.name : 'N/A'}
+        ${panFile ? `<a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o"
+                aria-hidden="true"></i></a>` : ''}
+    </td>
+    <td><input type="hidden" name="pan_no[]" value="${pan_no}">${pan_no}</td>
+    `;
+
+    document.getElementById('customerTableBody').appendChild(newRow);
+
+    // Clear the input fields
+    document.getElementById('title').value = '';
+    document.getElementById('name').value = '';
+    document.getElementById('occupation_id').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('contact').value = '';
+    document.getElementById('city').value = '';
+    document.getElementById('pin_code').value = '';
+    document.getElementById('address').value = '';
+    document.getElementById('age').value = '';
+    document.getElementById('dob').value = '';
+    document.getElementById('marital_status').value = 'single';
+    document.getElementById('marriage_date').value = '';
+    document.getElementById('branch_id').value = '';
+    document.getElementById('aadhar_no').value = '';
+    document.getElementById('pan_no').value = '';
+    document.getElementById('aadhar').value = '';
+    document.getElementById('pan').value = '';
+    }).catch(error => {
+    console.error('Error reading files: ', error);
+    alert('An error occurred while processing the files. Please try again.');
+    });
     });
 </script>
 <script>

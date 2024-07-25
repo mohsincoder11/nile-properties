@@ -28,10 +28,28 @@ class LeadassignToEmployeeController extends Controller
         $employees = EmployeeRegistrationMaster::whereIn('id', $employeeIds)->get();
 
         // Count the occurrences of each employee ID in LeadassignToEmployee
-        $employeesWithCounts = LeadassignToEmployee::select('leadassign_to_employee.employee_id', DB::raw('date(leadassign_to_employee.created_at) as date'), DB::raw('count(*) as count'), 'erm.name', 'erm.email', 'erm.contact_number', 'erm.city', 'erm.address')
+        $employeesWithCounts = LeadassignToEmployee::select(
+            'leadassign_to_employee.employee_id',
+            DB::raw('date(leadassign_to_employee.created_at) as date'),
+            DB::raw('count(*) as count'),
+            'erm.name',
+            'erm.email',
+            'erm.contact_number',
+            'erm.city',
+            'erm.address'
+        )
             ->join('employee_registration_master as erm', 'leadassign_to_employee.employee_id', '=', 'erm.id')
-            ->groupBy(['leadassign_to_employee.employee_id', 'date'])
+            ->groupBy(
+                'leadassign_to_employee.employee_id',
+                DB::raw('date(leadassign_to_employee.created_at)'),
+                'erm.name',
+                'erm.email',
+                'erm.contact_number',
+                'erm.city',
+                'erm.address'
+            )
             ->get();
+
         //   dd($employeesWithCounts);
 
 

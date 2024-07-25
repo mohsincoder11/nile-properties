@@ -2,23 +2,26 @@
 
 namespace App\Http\Controllers\panel;
 
+use App\Models\OtherCharges;
 use Illuminate\Http\Request;
 use App\Models\InitialEnquiry;
 use Illuminate\Support\Facades\DB;
 use App\Models\ClientDetailInitial;
 use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
+use App\Models\FirmRegistrationMaster;
 
 class PaymentCollectionController extends Controller
 {
     public function paymentcollection()
     {
         $client = ClientDetailInitial::all();
-        $projects = InitialEnquiry::with('project')->get('project_id');
-
+        $projects = InitialEnquiry::with('project')->distinct()->get(['project_id']);
+        $firm = FirmRegistrationMaster::all();
         // Fetch EMI payments for the first initial enquiry record
+        $charges = OtherCharges::all();
 
-        return view('panel.payment_collection', compact('client', 'projects'));
+        return view('panel.payment_collection', compact('client', 'projects', 'firm', 'charges'));
     }
 
 
