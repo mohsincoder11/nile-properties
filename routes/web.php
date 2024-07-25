@@ -13,11 +13,12 @@ use App\Http\Controllers\panel\ReportsController;
 // use App\Http\Controllers\panel\EnquiryController;
 use App\Http\Controllers\website\IndexController;
 use App\Http\Controllers\panel\FollowUpController;
-use App\Http\Controllers\panel\DashboardController;
+use App\Http\Controllers\AgreementMasterController;
 
 
 
 // WEBSITE
+use App\Http\Controllers\panel\DashboardController;
 use App\Http\Controllers\panel\LandownerController;
 use App\Http\Controllers\panel\UserModelController;
 use App\Http\Controllers\panel\cityMasterController;
@@ -310,6 +311,9 @@ Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
 Route::get('/registration-Checklist', [CustomeStagesController::class, 'registrationChecklist'])->name('registrationChecklist');
 //intiate sales
 
+
+Route::get('/agrrement-master', [AgreementMasterController::class, 'index'])->name('agrrementmaster');
+
 Route::get('/initiate-sale', [InitiatesellController::class, 'initiatesale'])->name('initiatesale');
 Route::get('/fetch-plots', [InitiatesellController::class, 'fetchPlots'])->name('fetchPlots');
 Route::post('/initiatesale/store', [InitiatesellController::class, 'store'])->name('initiatesale_store');
@@ -322,6 +326,8 @@ Route::get('/get-client-project-plot-data', [PaymentCollectionController::class,
 Route::get('/search_payment_collection_agains_client', [PaymentCollectionController::class, 'search_payment_collection_agains_client'])->name('search_payment_collection_agains_client');
 Route::post('/store_payment_installment', [PaymentCollectionController::class, 'store_payment_installment'])->name('store_payment_installment');
 Route::post('/update_installment', [PaymentCollectionController::class, 'update_installment'])->name('update_installment');
+Route::post('/othercharge_store', [PaymentCollectionController::class, 'othercharge_store'])->name('othercharge_store');
+
 
 Route::get('/newsale-sale', [InitiatesellController::class, 'newsale'])->name('newsale');
 Route::delete('/newsale-sale-delete/{id}', [InitiatesellController::class, 'delete'])->name('newsale_delete');

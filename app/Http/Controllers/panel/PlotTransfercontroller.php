@@ -16,7 +16,7 @@ class PlotTransfercontroller extends Controller
         $PersonalDetail = PersonalDetail::orderby('id', 'desc')->get();
         return view('panel.plot_transfer', [
             'PlotTransfer' => $PlotTransfer,
-            'PersonalDetail'=>$PersonalDetail
+            'PersonalDetail' => $PersonalDetail
         ]);
     }
 
@@ -26,23 +26,24 @@ class PlotTransfercontroller extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-            'application_number' => 'required|integer',
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'mobile_number' => 'required|string|max:10|min:10',
-            'alternate_number' => 'nullable|string|max:10|min:10',
-            'upload_photo' => 'nullable|file|mimes:jpg,jpeg,png,bmp,gif,svg,webp',
-            'dob' => 'required|date',
-            'city' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'nationality' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
-            'company_name' => 'nullable|string|max:255',
-            'pincode' => 'nullable|string|max:6||min:6',
-            'ownership_change' => 'nullable|string|max:255',
-            'designation' => 'nullable|string|max:100',
-        ]);
- if ($validator->fails()) {
+                'application_number' => 'required|integer',
+                'full_name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255',
+                'mobile_number' => 'required|string|max:10|min:10',
+                'alternate_number' => 'nullable|string|max:10|min:10',
+                'upload_photo' => 'nullable|file|mimes:jpg,jpeg,png,bmp,gif,svg,webp',
+                'dob' => 'required|date',
+                'city' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'nationality' => 'required|string|max:100',
+                'state' => 'required|string|max:100',
+                'company_name' => 'nullable|string|max:255',
+                'pincode' => 'nullable|string|max:6||min:6',
+                'ownership_change' => 'nullable|string|max:255',
+                'designation' => 'nullable|string|max:100',
+            ]
+        );
+        if ($validator->fails()) {
             $errors = '';
             $messages = $validator->messages();
             foreach ($messages->all() as $message) {
@@ -103,22 +104,23 @@ class PlotTransfercontroller extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-            'application_number' => 'required|integer',
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'mobile_number' => 'required|string|max:10|min:10',
-            'alternate_number' => 'nullable|string|max:10|min:10',
-            'upload_photo' => 'nullable|file|mimes:jpg,jpeg,png,bmp,gif,svg,webp',
-            'dob' => 'required|date',
-            'city' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'nationality' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
-            'company_name' => 'nullable|string|max:255',
-            'pincode' => 'nullable|string|max:6||min:6',
-            'ownership_change' => 'nullable|string|max:255',
-            'designation' => 'nullable|string|max:100',
-        ]);
+                'application_number' => 'required|integer',
+                'full_name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255',
+                'mobile_number' => 'required|string|max:10|min:10',
+                'alternate_number' => 'nullable|string|max:10|min:10',
+                'upload_photo' => 'nullable|file|mimes:jpg,jpeg,png,bmp,gif,svg,webp',
+                'dob' => 'required|date',
+                'city' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'nationality' => 'required|string|max:100',
+                'state' => 'required|string|max:100',
+                'company_name' => 'nullable|string|max:255',
+                'pincode' => 'nullable|string|max:6||min:6',
+                'ownership_change' => 'nullable|string|max:255',
+                'designation' => 'nullable|string|max:100',
+            ]
+        );
         if ($validator->fails()) {
             $errors = '';
             $messages = $validator->messages();
@@ -161,16 +163,17 @@ class PlotTransfercontroller extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-            'spouse_name' => 'required|string|max:100',
-            'spouse_mobile' => 'required|string|min:10|max:10',
-            'anniversary' => 'required|string|max:50',
-            'father_name' => 'required|string|max:100',
-            'mother_name' => 'required|string|max:100',
-            'nominee' => 'required|string|max:100',
-            'nominee_mobile' => 'required|string|min:10|max:10',
-        ]);
+                'spouse_name' => 'required|string|max:100',
+                'spouse_mobile' => 'required|string|min:10|max:10',
+                'anniversary' => 'required|string|max:50',
+                'father_name' => 'required|string|max:100',
+                'mother_name' => 'required|string|max:100',
+                'nominee' => 'required|string|max:100',
+                'nominee_mobile' => 'required|string|min:10|max:10',
+            ]
+        );
 
- if ($validator->fails()) {
+        if ($validator->fails()) {
             $errors = '';
             $messages = $validator->messages();
             foreach ($messages->all() as $message) {
@@ -206,7 +209,7 @@ class PlotTransfercontroller extends Controller
         $PlotTransfer = PlotTransfer::orderby('id', 'desc')->get();
         return view('panel.plot_transfer', [
             'PersonalDetail_edit' => $PersonalDetail_edit,
-            'PlotTransfer' => $PlotTransfer, 
+            'PlotTransfer' => $PlotTransfer,
             'PersonalDetail' => $PersonalDetail
         ]);
     }
@@ -216,15 +219,16 @@ class PlotTransfercontroller extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-            'spouse_name' => 'required|string|max:100',
-            'spouse_mobile' => 'required|string|min:10|max:10',
-            'anniversary' => 'required|string|max:50',
-            'father_name' => 'required|string|max:100',
-            'mother_name' => 'required|string|max:100',
-            'nominee' => 'required|string|max:100',
-            'nominee_mobile' => 'required|string|min:10|max:10',
-        ]);
-         if ($validator->fails()) {
+                'spouse_name' => 'required|string|max:100',
+                'spouse_mobile' => 'required|string|min:10|max:10',
+                'anniversary' => 'required|string|max:50',
+                'father_name' => 'required|string|max:100',
+                'mother_name' => 'required|string|max:100',
+                'nominee' => 'required|string|max:100',
+                'nominee_mobile' => 'required|string|min:10|max:10',
+            ]
+        );
+        if ($validator->fails()) {
             $errors = '';
             $messages = $validator->messages();
             foreach ($messages->all() as $message) {
@@ -246,11 +250,11 @@ class PlotTransfercontroller extends Controller
 
     public function plotShifting()
     {
-        return view('panel.plot_Shifting');
+        return view('panel.plot_shifting');
     }
     public function plotedit_Sale()
     {
-        return view('panel.edit_Sale');
+        return view('panel.edit_sale');
     }
     public function plotedit_bank_loan_details()
     {
