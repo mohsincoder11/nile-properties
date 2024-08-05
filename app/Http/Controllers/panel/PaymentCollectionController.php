@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ClientDetailInitial;
 use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
+use App\Models\OtherChargesForClient;
 use App\Models\FirmRegistrationMaster;
 
 class PaymentCollectionController extends Controller
@@ -60,26 +61,67 @@ class PaymentCollectionController extends Controller
 
         return response()->json(['html' => 'No Data Found!']);
     }
+    public function othercharge_store(Request $request)
+    {
+        // dd($request->all());
+        $validatedData = $request->validate([
+            'amount' => 'required|',
+            'project_id' => 'required|',
+            'plot_id' => 'required|',
+            'client_id' => 'required|',
+            'firm_id' => 'required|',
+            'charges_id' => 'required|', // Assuming charges_id is also required
+        ]);
 
+        // Create a new record in the other_charges_for_clients table
+        $otherCharge = OtherChargesForClient::create([
+            'amount' => $validatedData['amount'],
+            'project_id' => $validatedData['project_id'],
+            'plot_id' => $validatedData['plot_id'],
+            'client_id' => $validatedData['client_id'],
+            'firm_id' => $validatedData['firm_id'],
+            'charges_id' => $validatedData['charges_id'],
+        ]);
+        // dd(1);
+        // Redirect back with a success message
+        return response()->json([
+            'success' => true,
+            'message' => 'Other charges for client saved successfully!',
+            'data' => $otherCharge
+        ]);
+    }
+    public function getOtherCharges(Request $request)
+    {
+        $projectId = $request->input('project_id');
+        $plotId = $request->input('plot_id');
+        $clientId = $request->input('client_id'); // Get client_id from request
+
+        $charges = OtherChargesForClient::with('chargesname', 'projectname', 'clientname')->where('project_id', $projectId)
+            ->where('plot_id', $plotId)
+            ->where('client_id', $clientId) // Filter by client_id
+            ->get();
+
+        return response()->json($charges);
+    }
 
     public function getClientProjectPlotDatatwo(Request $request)
     {
-        // $client_id = $request->input('client_id');
         $project_id = $request->input('project_id');
         $plot_no = $request->input('plot_no');
 
         $initialEnquiry = InitialEnquiry::where('project_id', $project_id)->where('plot_no', $plot_no)->select('id')->first();
 
-        $emiPayments = EmiPaymentCollection::where('initial_enquiry_id', $initialEnquiry->id)->get();
-
-        // dd($initialEnquiry);
-
+        if ($initialEnquiry) {
+            $emiPayments = EmiPaymentCollection::where('initial_enquiry_id', $initialEnquiry->id)->get();
+        } else {
+            $emiPayments = collect(); // Empty collection
+        }
 
         $html = view('panel.payment_collection_emi', compact('emiPayments'))->render();
 
         return response()->json(['html' => $html]);
-
     }
+
 
     public function search_payment_collection_agains_client(Request $request)
     {

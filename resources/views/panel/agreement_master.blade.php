@@ -3,58 +3,112 @@
 @section('main_container')
 
 <div class="page-content-wrap">
+
+    <div class="row">
+        <div class="col-md-12" style="margin-top:5px;">
+            <label style="color:#000; background-color:#FFCC00; width:7%; height:25px; padding-top:5px;margin-top: 1vh;"
+                align="center"><span class="fa fa-desktop"></span> <strong>Masters</strong></label>
+
+
+            <a href="{{route('city_master')}}"> <button id="on" type="button" class="btn mjks"
+                    style="color:#FFFFFF; height:30px; width:auto;background-color: #993800;"><i
+                        class="fa fa-database"></i>City/Occupation/Layout Feature/Plot Sale Status/Transaction Type
+                    Masters</button>
+            </a>
+            <a href="{{route('branch')}}"> <button id="on" type="button" class="btn mjks"
+                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i
+                        class="fa fa-sitemap"></i>Branch</button>
+            </a>
+            <a href="{{route('firm_reg')}}"> <button id="on" type="button" class="btn mjks"
+                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i
+                        class="fa fa-sitemap"></i>Firm</button>
+            </a>
+
+            <a href="{{route('agent_reg')}}"> <button id="on" type="button" class="btn mjks"
+                    style="color:#FFFFFF; height:30px; width:auto;background-color: #218dbb;"><i
+                        class="fa fa-users"></i>Agent/Broker Registration</button>
+            </a>
+
+            <a href="{{route('emp_reg')}}"> <button id="on" type="button" class="btn mjks"
+                    style="color:#FFFFFF; height:30px; width:auto;background-color: #540338; "><i
+                        class="fa fa-user"></i>Employee Registration</button>
+            </a>
+            <a href="{{route('customerReg')}}"> <button id="on" type="button" class="btn mjks"
+                    style="color:#FFFFFF; height:30px; width:auto;background-color: #8dd510; "><i
+                        class="fa fa-user"></i>Customer Registration</button>
+            </a>
+            <a href="{{route('agrrementmaster')}}"> <button id="on" type="button" class="btn mjks"
+                    style="color:#FFFFFF; height:30px; width:auto;background-color: #d5cb10; "><i
+                        class="fa fa-user"></i>Agreement Master
+                </button>
+            </a>
+
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12 panel panel-default" style="margin-top: 5px;">
             <h5 class="panel-title"
                 style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
                 align="center"><i class="fa fa-file"></i> &nbsp;
-                Notification
+                Agreement Master
             </h5>
         </div>
+        <div class="col-md-12">
+            <div class="form-group" style="margin-top:10px;">
+                <div class="col-md-4" style="margin-top:15px;"></div>
+
+                <div class="col-md-2" style="margin-top:15px;">
+                    <label>Document Name</label>
+                    <td style="padding: 2px;" width="3%">
+                        <input type="text" class="form-control" name="name" placeholder="" />
+                    </td>
+                </div>
+                <div class="col-md-2" style="margin-top:15px;">
+                    <label> Language</label>
+                    <select name="layout_id" id="layout_id" required="" class="form-control select"
+                        data-live-search="true">
+                        <option value="">English</option>
+                        <option value="">Hindi</option>
+                        <option value="">Marathi</option>
+
+                    </select>
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row">
+
         <div class="col-md-2" style="margin-top: 1vh;"></div>
-        <div class="col-md-8" style="margin-top: 1vh;">
-            <table width="100%">
-                <tr style="height:30px;">
-                    <th width="2%">Title</th>
-                    <th width="3%">Add Notification</th>
-
-                    <th width="1%">Select User</th>
-
-                    <th width="2%"></th>
-                </tr>
+        <div class="col-md-10" style="margin-top: 1vh;">
+            <table style=" width: 78% !important;">
 
 
                 <tr>
-                    <td style="padding: 2px;" width="2%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
-                    </td>
 
-                    <td style="padding: 2px;" width="2%">
-                        <textarea rows="2" cols="20" class="form-control" id="editor" placeholder=""
-                            name=" "></textarea>
+                    <td style="padding: 2px;">
+                        <div id="editor" style="height: 500px; "></div>
                     </td>
 
 
-                    <td style="padding: 2px;" width="1%">
-                        <select class="form-control select" data-live-search="true">
-                            <option>All Users</option>
-                            <option>User 1</option>
-                            <option>User 2</option>
 
-                        </select>
-                    </td>
 
-                    <td>
-                        <button id="on" type="button" class="btn mjks"
-                            style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i
-                                class="fa fa-floppy-o" aria-hidden="true"></i>
-                            Submit</button>
-                    </td>
+
                 </tr>
 
             </table>
         </div>
+        <div class="col-md-2" style="margin-top: 1vh;"></div>
 
+    </div>
+    <div align="center" style="margin-top:1%;">
+        <button id="on" type="button" class="btn mjks"
+            style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i class="fa fa-floppy-o"
+                aria-hidden="true"></i>
+            Submit</button>
     </div>
     <div class="row">
         <div class="col-md-2" style="margin-top: 2vh;"></div>
@@ -67,19 +121,19 @@
                     <thead>
                         <tr>
                             <th>Sr. No.</th>
-                            <th>Title</th>
-                            <th>Added Notification</th>
-                            <th>Selected User</th>
+                            <th>Document Name</th>
+                            <th>Language</th>
+                            <th>Description</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>Test</td>
-                            <td>Test Test</td>
+                            <td>Saudaa Chitthi</td>
+                            <td>Hindi</td>
 
-                            <td>Employee</td>
+                            <td>plot no 1234.</td>
 
 
                             <td>
@@ -101,10 +155,6 @@
             </div>
 
             <!-- END DEFAULT DATATABLE -->
-
-
-
-
 
 
         </div>

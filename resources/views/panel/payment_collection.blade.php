@@ -120,7 +120,8 @@
 
                             <div class="col-md-2" style="margin-top:15px;">
                                 <label>Select Firm</label>
-                                <select class="form-control select" name="firm_id" data-live-search="true">
+                                <select class="form-control select" id="firm-select" name="firm_id"
+                                    data-live-search="true">
                                     @foreach($firm as $city)
                                     <option value="{{ $city->id }}">{{ $city->name }}</option>
                                     @endforeach
@@ -206,27 +207,35 @@
                 </h5>
             </div>
             <div class="col-md-12">
-                <form action="{{ route('othercharge_store') }}" method="post"></form>
-                <div class="col-md-2" style="margin-top:5px;"></div>
-                <div class="col-md-2" style="margin-top:5px;">
-                    <label>Enter other Amount</label>
-                    <input type="text" class="form-control" name="name" placeholder="" />
-                </div>
-                <div class="col-md-2" style="margin-top:5px;">
-                    <label>Select Charges</label>
-                    <select name="charges_id" required="" class="form-control select" data-live-search="true">
-                        <option value="">Select Charge</option>
-                        @foreach($charges as $charge)
-                        <option value="{{ $charge->id }}">{{ $charge->other_charges }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2" style="margin-top: 5px;">
-                    <button id="submit_other_charges" type="submit" class="btn mjks"
-                        style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
-                        <i class="fa fa-plus" aria-hidden="true"></i> Add other charges
-                    </button>
-                </div>
+                <form action="{{ route('othercharge_store') }}" method="post">
+                    @csrf
+                    <div class="col-md-2" style="margin-top:5px;"></div>
+                    <div class="col-md-2" style="margin-top:5px;">
+                        <label>Enter other Amount</label>
+                        <input type="text" class="form-control" name="amount" placeholder="" />
+                        <input type="hidden" class="form-control" name="project_id" id="other_project_id"
+                            placeholder="" />
+                        <input type="hidden" class="form-control" name="plot_id" id="other_plot_id" placeholder="" />
+                        <input type="hidden" class="form-control" name="client_id" id="other_client_id"
+                            placeholder="" />
+                        <input type="hidden" class="form-control" name="firm_id" id="other_firm_id" placeholder="" />
+                    </div>
+                    <div class="col-md-2" style="margin-top:5px;">
+                        <label>Select Charges</label>
+                        <select name="charges_id" required="" class="form-control select" data-live-search="true">
+                            <option value="">Select Charge</option>
+                            @foreach($charges as $charge)
+                            <option value="{{ $charge->id }}">{{ $charge->other_charges }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-2" style="margin-top: 5px;">
+                        <button id="submit_other_charges" type="submit" class="btn mjks"
+                            style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add other charges
+                        </button>
+                    </div>
+                </form>
                 {{-- <div class="col-md-2" style="margin-top: 5px;">
                     <button id="on" type="button" class="btn mjks" data-toggle="modal" data-target="#popup1"
                         style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
@@ -236,52 +245,21 @@
             </div>
             <div class="col-md-12" style="margin-top: 2vh;">
                 <table width="100%" border="1">
-                    <tr style="background-color:#f0f0f0; height:30px;">
-                        <th style="text-align:center">Type of Payment</th>
-                        <th style="text-align:center">Schedule Date</th>
-                        <th style="text-align:center">Amount</th>
-                        <th style="text-align:center">Paid ON</th>
-                        <th style="text-align:center">Payment Mode</th>
-                        <th style="text-align:center">Reference Number</th>
-                        <th style="text-align:center">Paid Amount</th>
-
-                        <th style="text-align:center">Action</th>
-                    </tr>
-
-
-                    <tr>
-                        <td style="padding:5px;" align="center">
-                            <label>Payment made towards</label>
-                        </td>
-                        <td style="padding:5px;" align="center">
-                            <label>22-03-2024</label>
-                        </td>
-                        <td style="padding:5px;" align="center">
-                            <label>650000</label>
-                        </td>
-                        <td style="padding:5px;" align="center">
-                            <label>24-03-2024</label>
-                        </td>
-                        <td style="padding:5px;" align="center">
-                            <label>NEFT</label>
-                        </td>
-                        <td style="padding:5px;" align="center">
-                            <label>66789809</label>
-                        </td>
-                        <td style="padding:5px;" align="center">
-                            <label>60000</label>
-                        </td>
-
-
-                        <td style="text-align:center; color:#FF0000">
-                            <button><i class="fa fa-edit"></i></button>
-                            <!-- <button><i class="fa fa-trash-o"></i></button> -->
-                        </td>
-                    </tr>
-
+                    <thead>
+                        <tr style="background-color:#f0f0f0; height:30px;">
+                            <th style="text-align:center">Type of Payment</th>
+                            <th style="text-align:center">Date</th>
+                            <th style="text-align:center">Amount</th>
+                            <th style="text-align:center">Plot No</th>
+                            <th style="text-align:center">Project Name</th>
+                            <th style="text-align:center">Firm Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="charges-table-body">
+                        <!-- Dynamic content will be inserted here -->
+                    </tbody>
                 </table>
             </div>
-
         </div>
         <div class="col-md-12" style="margin-top:5vh;">
             <div class="panel panel-default">
@@ -390,7 +368,30 @@
             </div>
         </div>
     </div>
-
+    <div style="position: fixed; bottom: 0; width: 100%;">
+        <div class="col-md-12" style="width: 100%;">
+            <div class="col-md-6" style="float: left; width: 50%;">
+                @if ($errors->any())
+                <div id="successscript" class="alert alert-danger mt-2"
+                    style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #d6dad6; padding: 10px; border-radius: 5px;">
+                    <ul style="margin: 0; padding: 0; list-style-type: none;">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+            </div>
+            <div class="col-md-6" style="float: left; width: 50%;">
+                @if(session('success'))
+                <div id="successscript" class="alert alert-success"
+                    style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #abafab; padding: 10px; border-radius: 5px;">
+                    {{ session('success') }}
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -763,5 +764,57 @@
     }
     });
 </script>
+<script>
+    $(document).ready(function() {
+        const routeUrl = "{{ route('get.other.charges') }}";
 
+        $('#view-button').on('click', function() {
+            const projectId = $('#project-select').val();
+            const plotId = $('#plot-select').val();
+            const clientId = $('#client-select').val(); // Get client_id value
+
+            const url = `${routeUrl}?project_id=${projectId}&plot_id=${plotId}&client_id=${clientId}`;
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(data) {
+                    const tbody = $('#charges-table-body');
+                    tbody.empty(); // Clear existing content
+
+                    data.forEach(function(item) {
+                        const row = `
+                            <tr>
+                                <td style="padding:5px;" align="center"><label>${item.payment_type}</label></td>
+                                <td style="padding:5px;" align="center"><label>${item.date}</label></td>
+                                <td style="padding:5px;" align="center"><label>${item.amount}</label></td>
+                                <td style="padding:5px;" align="center"><label>${item.plot_no}</label></td>
+                                <td style="padding:5px;" align="center"><label>${item.project_name}</label></td>
+                                <td style="padding:5px;" align="center"><label>${item.firm_name}</label></td>
+                            </tr>
+                        `;
+                        tbody.append(row);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('There was a problem with the AJAX request:', error);
+                }
+            });
+        });
+
+        // Optional: Update hidden fields on change of select boxes
+        $('#project-select').on('change', function() {
+            $('#other_project_id').val($(this).val());
+        });
+        $('#plot-select').on('change', function() {
+            $('#other_plot_id').val($(this).val());
+        });
+        $('#client-select').on('change', function() {
+            $('#other_client_id').val($(this).val());
+        });
+        $('#firm-select').on('change', function() {
+            $('#other_firm_id').val($(this).val());
+        });
+    });
+</script>
 @endsection
