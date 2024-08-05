@@ -20,9 +20,6 @@ class MyDownline extends Controller
         return view('panel.downline_buisness');
     }
 
-    public function commision_plan()
-    {
-        return view('panel.commision_plan');
-    }
+    
 
 }

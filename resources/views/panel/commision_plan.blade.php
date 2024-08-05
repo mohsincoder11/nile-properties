@@ -31,41 +31,40 @@
             <table width="100%">
                 <tr style="height: 30px">
                     <th width="3%">Profile Name</th>
-                    <th width="3%">Monthly Target From(INR)</th>
-                    <th width="3%">Monthly Target To(INR)</th>
-                    <th width="3%">Regular Benefit(%)</th>
-                    <th width="3%">Referral(%)</th>
+                    <th width="3%">Monthly Target From (INR)</th>
+                    <th width="3%">Monthly Target To (INR)</th>
+                    <th width="3%">Regular Benefit (%)</th>
+                    <th width="3%">Referral (%)</th>
                     <th></th>
                 </tr>
-
+            
                 <tr>
-                    <td style="padding: 2px" width="1%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
-                    </td>
-                    <td style="padding: 2px" width="1%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
-                    </td>
-                    <td style="padding: 2px" width="1%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
-                    </td>
-                    <td style="padding: 2px" width="1%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
-                    </td>
-                    <td style="padding: 2px" width="1%">
-                        <input type="text" class="form-control" name="name" placeholder="" />
-                    </td>
-                    <td style="padding: 2px" width="5%">
-                        <button id="on" type="button" class="btn mjks" style="
-                        color: #ffffff;
-                        height: 30px;
-                        width: auto;
-                        background-color: #006699;
-                      ">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add
-                        </button>
-                    </td>
+                    <form method="POST" action="{{ route('commission-plans.store') }}">
+                        @csrf
+                        <td style="padding: 2px" width="1%">
+                            <input type="text" class="form-control" name="profile_name" placeholder="Profile Name" />
+                        </td>
+                        <td style="padding: 2px" width="1%">
+                            <input type="text" class="form-control" name="monthly_target_from" placeholder="From" />
+                        </td>
+                        <td style="padding: 2px" width="1%">
+                            <input type="text" class="form-control" name="monthly_target_to" placeholder="To" />
+                        </td>
+                        <td style="padding: 2px" width="1%">
+                            <input type="text" class="form-control" name="regular_benefit" placeholder="Benefit" />
+                        </td>
+                        <td style="padding: 2px" width="1%">
+                            <input type="text" class="form-control" name="referral" placeholder="Referral" />
+                        </td>
+                        <td style="padding: 2px" width="5%">
+                            <button type="submit" class="btn mjks" style="color: #ffffff; height: 30px; width: auto; background-color: #006699;">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Add
+                            </button>
+                        </td>
+                    </form>
                 </tr>
             </table>
+            
         </div>
     </div>
 
