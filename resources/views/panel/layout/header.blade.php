@@ -13,6 +13,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" type="text/css" id="theme" href="{{asset('panel/css/theme-default.css')}}" />
     <link rel="stylesheet" type="text/css" id="theme" href="{{asset('panel/css/notification.css')}}" />
+    <link rel="stylesheet" type="text/css" id="theme" href="{{asset('panel/css/dropdown.css')}}" />
     <!-- EOF CSS INCLUDE -->
 
     {{-- Quill --}}
@@ -203,6 +204,10 @@
             z-index: 1040;
             /* Default z-index for Bootstrap modals */
         }
+        .no_click_readonly{
+            pointer-events: none;
+            background-color: #eee;
+        }
     </style>
     <!-- START PAGE CONTAINER -->
     <div class="page-container page-navigation-top">
@@ -255,7 +260,7 @@
                 </li>
                 <li class="xn-openable">
                     <a href="javascript:void(0)" id="Registration Process"><span class="fa fa-file-text"></span>Customer
-                        Stagesss</a>
+                        Stages</a>
                     <ul>
                         <li><a href="{{ route('registrationChecklist')}}"><span class="fa fa-plus"></span>Registration
                                 Checklist</a></li>
@@ -277,17 +282,17 @@
                     </ul>
                 </li>
                 <li class="xn-openable">
-                    <a href="{{ route('downlineindex') }}" id="CRM"><span class="fa fa-navicon"></span>Buisness</a>
+                    <a href="{{ route('downlineindex') }}" id="CRM"><span class="fa fa-navicon"></span>Business</a>
                     <ul>
                         <li>
 
-                            <a href="{{ route('commision.plan') }}" id="commisionplan"><span
+                            <a href="{{ route('commission-plans.index') }}" id="commisionplan"><span
                                     class="fa fa-navicon"></span>Commision Plan Master</a>
                         </li>
                         <li>
 
                             <a href="{{ route('downlineindex') }}" id="downlineindex"><span
-                                    class="fa fa-navicon"></span>Buisness
+                                    class="fa fa-navicon"></span>Business
                             </a>
                         </li>
                     </ul>
@@ -310,7 +315,7 @@
                         <li><a href="{{ route('landowner_index') }}"><span class="fa fa-plus"></span>Land Owners</a>
                         </li>
                         <li><a href="{{ route('expense.master') }}"><span class="fa fa-plus"></span>Account</a></li>
-                        <li><a href="{{ route('plot.transfer') }}"><span class="fa fa-plus"></span>Plot Transfer</a>
+                        {{-- <li><a href="{{ route('plot.transfer') }}"><span class="fa fa-plus"></span>Plot Transfer</a> --}}
                         </li>
                         <li><a href="{{ route('role') }}"><span class="fa fa-plus"></span>User Permission</a></li>
                         <li><a href="#"><span class="fa fa-plus"></span>User Logs</a></li>

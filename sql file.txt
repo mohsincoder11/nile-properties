@@ -1,1 +1,19 @@
-put sql file here
+04-08-2024
+CREATE TABLE plot_transfer_histories (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    plot_id BIGINT UNSIGNED NOT NULL,
+    previous_owner_id BIGINT UNSIGNED NOT NULL,
+    new_owner_id BIGINT UNSIGNED NOT NULL,
+    transfer_date DATE NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    
+);
+
+ALTER TABLE `client_details_intial`
+ADD COLUMN `is_transfer` ENUM('0', '1') NOT NULL DEFAULT '0' AFTER `sponsor` COMMENT 'for new purchase value 0, for transfer value 1';
+
+
+ALTER TABLE `initial_enquiries_clients` ADD `is_transfer_plot` ENUM('0','1') NOT NULL DEFAULT '0' COMMENT 'if another plot transfer to user' AFTER `south`;
+
+ALTER TABLE `plot_transfer_histories` CHANGE `plot_id` `initial_enquiry_id` BIGINT(20) UNSIGNED NOT NULL;

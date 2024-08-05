@@ -318,6 +318,16 @@
                                         <i class="fa fa-trash-o" style="margin-left:5px;"></i>
                                     </button>
                                 </form>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-exchange" style="margin-left:5px;"></i>
+                                      Plot Transfer
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                      <a class="dropdown-item" href="{{ route('plot.transfer',[$inquiry->id,1]  ) }}">Transfer User From Plot X to Y</a>
+                                      <a class="dropdown-item" href="{{ route('plot.transfer',[$inquiry->id,2]  ) }}">Transfer Plot From User X to Y</a>
+                                    </div>
+                                  </div>
                             </td>
                         </tr>
                         @endforeach

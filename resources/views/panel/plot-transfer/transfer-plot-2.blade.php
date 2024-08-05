@@ -3,6 +3,9 @@
 @section('main_container')
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
+    .form-control[disabled], .form-control[readonly] {
+    color: #555 !important;
+}
     .details {
         display: none;
         position: absolute;
@@ -23,11 +26,24 @@
         /* Ensures the image scales proportionally and fits within its container */
     }
 </style>
+@php
+    $type=request()->type;
+@endphp
 <div class="page-content-wrap">
     <div class="row">
+        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         <div class="col-md-12" style="margin-top:5px;">
             <div class="panel panel-default">
-                <form action="{{ route('initiatesale_store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('plot-transfers.store',[$inquiry->id]) }}" method="post" enctype="multipart/form-data">
                     @csrf
 
 
@@ -36,111 +52,17 @@
                         <h5 class="panel-title"
                             style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
                             align="center">
-                            <i class="fa fa-list"></i> &nbsp;Initiate Sale
+                            <i class="fa fa-list"></i> &nbsp;
+                            {{ 'Transfer Plot From User X to Y' }}
                         </h5>
 
                     </div>
-                    <div class="col-md-12" align="center" style="margin-top: 2vh;">
-                        <div class="icon-box-container" style="margin-left: 12%;">
-
-                            <div class="icon-box box-3" style="padding: 1vh;">
-                                <a href="{{ route('initiatesale')}}">
-                                    <img src="{{ asset('panel/assets/images/cards/13.png') }}" alt="" class="classic-1">
-                                    <p class="classic">ADD NEW SALE</p>
-                                </a>
-                            </div>
-
-                            <div style="margin-top: 10vh;font-size: large;">
-                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                            </div>
-                            <div class="icon-box box-1" style="padding: 1vh;">
-                                <a href="{{ route('newsale')}}">
-                                    <img src="{{ asset('panel/assets/images/cards/9.png') }}" alt="" class="classic-1">
-                                    <p class="classic">NEW SALE CONFIRMED</p>
-                                </a>
-                            </div>
-
-                            <div style="margin-top: 10vh;font-size: large;">
-                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                            </div>
-                            <div class="icon-box box-2">
-                                <a href="{{ route('paymentcollection')}}">
-                                    <img src="{{ asset('panel/assets/images/cards/7.png') }}" alt="" class="classic-1">
-                                    <p class="classic">PAYMENT COLLECTION</p>
-                                </a>
-
-                            </div>
-                            <div style="margin-top: 10vh;font-size: large;">
-                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                            </div>
-                            <div class="icon-box box-3">
-                                <a href="{{ route('registration')}}">
-                                    <img src="{{ asset('panel/assets/images/cards/11.png') }}" alt="" class="classic-1">
-                                    <p class="classic">REQUEST FOR REGISTRATION</p>
-                                </a>
-
-                            </div>
-                            <div style="margin-top: 10vh;font-size: large;">
-                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                            </div>
-
-                            <div class="icon-box box-1">
-                                <a href="{{ route('account')}}">
-                                    <img src="{{ asset('panel/assets/images/cards/6.png') }}" alt="" class="classic-1">
-                                    <p class="classic">ACCOUNTS CLEARANCE</p>
-                                </a>
-
-                            </div>
-                            <div style="margin-top: 10vh;font-size: large;">
-                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                            </div>
-                            <div class="icon-box box-2">
-                                <a href="{{ route('legalclearance')}}">
-                                    <img src="{{ asset('panel/assets/images/cards/4.png') }}" alt="" class="classic-1">
-                                    <p class="classic">LEGAL CLEARANCE</p>
-                                </a>
-
-                            </div>
-                            <div style="margin-top: 10vh;font-size: large;">
-                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                            </div>
-                            <div class="icon-box box-3">
-                                <a href="{{ route('registrationcompleted')}}">
-                                    <img src="{{ asset('panel/assets/images/cards/8.png') }}" alt="" class="classic-1">
-                                    <p class="classic">REGISTRATION COMPLETED</p>
-                                </a>
-
-                            </div>
-                            <div style="margin-top: 10vh;font-size: large;">
-                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                            </div>
-                            <div class="icon-box box-1">
-                                <a href="{{ route('saledeedscan')}}">
-                                    <img src="{{ asset('panel/assets/images/cards/12.png') }}" alt="" class="classic-1">
-                                    <p class="classic">SALEDEED SCAN</p>
-                                </a>
-
-                            </div>
-                            <div style="margin-top: 10vh;font-size: large;">
-                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                            </div>
-                            <div class="icon-box box-2">
-                                <a href="{{ route('handover')}}">
-                                    <img src="{{ asset('panel/assets/images/cards/10.png') }}" alt="" class="classic-1">
-                                    <p class="classic">HANDOVER COMPLETE</p>
-                                </a>
-
-                            </div>
-
-
-
-                            <!-- Add more boxes as needed -->
-                        </div>
-                    </div>
+                   
                     <div class="row">
                         <div class="col-md-12" style="margin-top: 2vh;">
                             <table width="100%">
                                 <tr style="height:30px;">
+                                    {{-- <th width="4%">User Type</th> --}}
                                     <th width="1%">Title</th>
                                     <th width="3%">Name</th>
                                     <th width="2%">Occupation</th>
@@ -156,6 +78,15 @@
 
 
                                 <tr>
+                                    {{-- <td style="padding: 2px;" width="2%">
+                                        <input type="radio" id="existing_user" name="user_type" value="agent"
+                                            >
+                                        <label for="existing_user">Existing User</label>
+                                        <input type="radio" id="new_user" name="user_type" value="executive"
+                                            >
+                                        <label for="new_user">New User</label>
+                                        
+                                    </td> --}}
                                     <td style="padding: 2px;" width="1%">
                                         <select class="form-control select" data-live-search="true" id="title"
                                             name="title">
@@ -238,7 +169,7 @@
                                     <td style="padding:2px;">
                                         <div style="width:100%;" class="input-group">
                                             <input type="date" id="marriage_date" class="form-control"
-                                                name="marriage_date" value="{{ old('marriage_date') }}" />
+                                                name="marriage_date" value="" />
                                         </div>
                                     </td>
                                     <td style="padding:2px;">
@@ -274,6 +205,7 @@
                         </div>
 
                     </div>
+                    
                     <h5 class="panel-title"
                         style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
                         align="center">
@@ -432,325 +364,257 @@
                             </table>
                         </div>
                     </div>
+                    
                     <div class="row">
-                        <h5 class="panel-title"
-                            style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh;"
-                            align="center">
-                            <i class="fa fa-list"></i> &nbsp;Project Details
-                        </h5>
+    <h5 class="panel-title" style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh;" align="center">
+        <i class="fa fa-list"></i> &nbsp;Project Details
+    </h5>
 
-                        <div class="col-md-12" style="margin-top: 2vh;">
-                            <table width="100%">
-                                <tr style="height:30px;">
-                                    <th width="2%">Firm</th>
-                                    <th width="2%">Project</th>
-                                    <th width="2%">Plot No.</th>
-                                    <th width="1%">Measurement (ft x ft)</th>
-                                    <th width="2%">Square Meter</th>
+    <div class="col-md-12" style="margin-top: 2vh;">
+        <table width="100%">
+            <tr style="height:30px;">
 
-                                    <th width="1%">Square Ft</th>
-                                    <th width="1%">Rate(per Sq Ft)</th>
-                                    <th width="1%">Total Cost</th>
-                                    <th width="1%">Discount Amount</th>
-                                    <th width="1%">Discount Type</th>
-                                </tr>
+                <th width="2%">Project </th>
+                <th width="2%">Plot No.</th>
+                <th width="1%">Measurement (ft x ft)</th>
+                <th width="2%">Square Meter</th>
+                <th width="1%">Square Ft</th>
+                <th width="1%">Rate(per Sq Ft)</th>
+                <th width="1%">Total Cost</th>
+                <th width="1%">Discount Amount</th>
+                <th width="1%">Discount Type</th>
+            </tr>
+            <tr>
+                <td style="padding: 2px;" width="2%">
+                    <select id="project-select" name="project_id" class="form-control select no_click_readonly" data-live-search="true" >
+                        @foreach($projects as $project)
+                        <option value="{{ $project->id }}" data-project-id="{{ $project->id }}" @if($inquiry->project_id == $project->id) selected @endif>
+                            {{ $project->project_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <select id="plot-select" name="plot_no" class="form-control select no_click_readonly" data-live-search="true">
+                        @foreach($enquiries as $enquiry)
+                        <option value="{{ $enquiry->plot_no ?? '' }}" @if($inquiry->plot_no ?? '' == $enquiry->plot_no ?? '') selected @endif>
+                            {{ $enquiry->plot_no ?? '' }}
+                        </option>
+                        @endforeach
+                        <!-- Plot options will be appended dynamically -->
+                    </select>
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <input type="text" class="form-control" name="Measurement" value="{{ $inquiry->measurement ?? '' }}" placeholder="" required readonly />
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <input type="text" class="form-control" value="{{ $inquiry->square_meter ?? '' }}" name="square_meter" placeholder="" required readonly />
+                </td>
 
+                <td style="padding: 2px;" width="1%">
+                    <input type="text" id="square_ft" class="form-control" value="{{ $inquiry->square_ft ?? '' }}" name="square_ft" placeholder="" readonly />
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <input type="text" class="form-control" name="rate" value="{{ $inquiry->rate ?? '' }}" placeholder="" readonly />
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <label id="total_cost" class="control-label">
+                        <input id="total_cost_input" type="hidden" value="{{ $inquiry->total_cost ?? '' }}" name="total_cost">
+                        <font id="total_cost_display" color="#ff0000">{{ $inquiry->total_cost ?? '' }}</font>
+                    </label>
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <input type="text" class="form-control" name="discount_amount" value="{{ $inquiry->discount_amount ?? '' }}" placeholder="" readonly />
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <select class="form-control select no_click_readonly" data-live-search="true" name="discount_type" id="discount_type">
+                        <option value="">Select Option</option>
+                        <option value="%" @if(isset($inquiry->discount_type) && $inquiry->discount_type == '%') selected @endif>%</option>
+                        <option value="₹" @if(isset($inquiry->discount_type) && $inquiry->discount_type == '₹') selected @endif>₹</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
 
-                                <tr>
-                                    <td style="padding: 2px;" width="2%">
-                                        <select id="firm-select" name="firm_id" class="form-control select"
-                                            data-live-search="true">
-                                            <option value="">Select Option</option>
-                                            @foreach($firm as $firm)
-                                            <option value="{{ $firm->id }}" data-project-id="{{ $firm->id }}">{{
-                                                $firm->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
+        <table width="100%">
+            <tr style="height:30px;">
+                <th width="1%">Final Amount</th>
+                <th width="1%">Down Payment</th>
+                <th width="1%">Balance Amount</th>
+                <th width="1%">Tenure</th>
+                <th width="1%">EMI Amount</th>
+                <th width="1%">Booking Date</th>
+                <th width="1%">Agreement Date</th>
+                <th width="1%">Status</th>
+                <th width="1%">EMI Start Date</th>
+            </tr>
 
-                                    <td style="padding: 2px;" width="2%">
-                                        <select id="project-select" name="project_id" class="form-control select"
-                                            data-live-search="true">
-                                            <option value="">Select Option</option>
-                                        </select>
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <select id="plot-select" name="plot_no" class="form-control select"
-                                            data-live-search="true">
-                                            <option value="">Select Option</option>
-                                            <!-- Plot options will be appended dynamically -->
-                                        </select>
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="Measurement" name="Measurement"
-                                            placeholder="" required />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="square_meter" name="square_meter"
-                                            placeholder="" oninput="convertSquareUnits(); " required />
-                                    </td>
-
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="square_ft" name="square_ft"
-                                            placeholder="" oninput="convertSquareUnits(); calculateAmounts()"
-                                            required />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="rate" name="rate" placeholder=""
-                                            oninput="calculateAmounts()" required />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <label id="total_cost" class="control-label">
-                                            <input id="total_cost_input" type="hidden" id="total_cost"
-                                                name="total_cost">
-                                            <font id="total_cost_display" id="total_cost" color="#ff0000"></font>
-                                        </label>
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" name="discount_amount" placeholder=""
-                                            oninput="calculateAmounts()" required />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" data-live-search="true" name="discount_type"
-                                            id="discount_type" onchange="calculateAmounts()">
-                                            <option value="">Select Option</option>
-                                            <option value="%">%</option>
-                                            <option value="₹">₹</option>
-                                        </select>
-                                    </td>
-
-                                </tr>
-
-                            </table>
-
-                            <table width="100%">
-                                <tr style="height:30px;">
-                                    <th width="1%">Final Amount</th>
-                                    <th width="1%">Down Payment</th>
-                                    <th width="1%">Balance Amount</th>
-                                    <th width="1">Tenure</th>
-                                    <th width="1%">EMI Amount</th>
-                                    <th width="1%">Booking Date</th>
-                                    <th width="1%">Agreement Date</th>
-
-                                    <th width="1%">Status</th>
-                                    <th width="1%">EMI Start Date</th>
-
-                                </tr>
-
-
-                                <tr>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="final_amount" name="final_amount"
-                                            placeholder="" readonly />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" name="down_payment" placeholder=""
-                                            oninput="calculateAmounts()" required />
-                                    </td>
-                                    <td id="balence_amount" style="padding: 2px;" width="1%">
-                                        <input type="hidden" name="balence_amount" id="balence_amount_input">
-                                        <label id="balence_amount_label" class="control-label">
-                                            <font id="balence_amount_display" color="#ff0000"></font>
-                                        </label>
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" name="tenure" placeholder=""
-                                            oninput="calculateAmounts()" required />
-                                    </td>
-                                    <td id="emi_ammount" style="padding: 2px;" width="1%">
-                                        <input type="hidden" name="emi_ammount" id="emi_ammount_input">
-                                        <label id="emi_ammount_label" class="control-label">
-                                            <font id="emi_ammount_display" color="#ff0000"></font>
-                                        </label>
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <div class="input-group" style="display: flex;">
-                                            <input type="text" id="booking_date" name="booking_date"
-                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
-                                            <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "><i
-                                                        class="glyphicon glyphicon-calendar"></i></span>
-                                            </div>
-                                        </div>
-
-
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <div class="input-group" style="display: flex;">
-                                            <input type="text" id="aggriment_date" name="aggriment_date"
-                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
-                                            <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "><i
-                                                        class="glyphicon glyphicon-calendar"></i></span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" name="staus_token" data-live-search="true">
-                                            @foreach ($tokenStatuses as $tokenStatus)
-                                            <option value="{{ $tokenStatus->id }}">{{ $tokenStatus->token }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <div class="input-group" style="display: flex;">
-                                            <input type="text" id="emi_start_date" name="emi_start_date"
-                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
-                                            <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "><i
-                                                        class="glyphicon glyphicon-calendar"></i></span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </table>
-
-                            <table width="100%">
-                                <tr style="height:30px;">
-                                    <th width="1%">Plot Status</th>
-                                    <th width="1%">A. Rate</th>
-                                    <th width="2%">Refered By</th>
-                                    <th width="1" id="agent-label-container">Agent Name</th>
-                                    <th width="1" id="employee-label-container">Executive Name</th>
-                                    <th width="2%">Remarks</th>
-
-                                </tr>
-
-
-                                <tr>
-                                    <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" data-live-search="true"
-                                            id="plot_sale_status" name="plot_sale_status">
-                                            @foreach($statuses as $status)
-                                            <option value="{{ $status->plot_sale_status ?? '' }}">
-                                                {{ $status->plot_sale_status ?? ''}}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" name="a_rate" placeholder="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="radio" id="agent_name" name="source_type" value="agent"
-                                            onclick="toggleEmployeeSelect()">
-                                        <label for="agent_name">Agent Name</label>
-                                        <input type="radio" id="executive_name" name="source_type" value="executive"
-                                            onclick="toggleEmployeeSelect()">
-                                        <label for="executive_name">Executive Name</label>
-                                        <input type="radio" id="direct_sourse" name="source_type" value="direct"
-                                            onclick="toggleEmployeeSelect()">
-                                        <label for="direct_sourse">Direct Source</label>
-                                    </td>
-                                    <td id="agent-select-container" style="padding: 2px; width: 1%;">
-                                        <select class="form-control select" data-live-search="true" id="agent-select"
-                                            name="agent_id">
-                                            @foreach($agent as $agent)
-                                            <option value="{{ $agent->id }}">{{ $agent->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td id="employee-select-container" style="padding: 2px; width: 1%;">
-                                        <select class="form-control select" data-live-search="true" id="employee-select"
-                                            name="employee">
-                                            @foreach($employees as $employee)
-                                            <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-
-                                    <td style="padding: 2px;" width="1%">
-                                        <textarea type="text" class="form-control" name="remark" placeholder="" rows="2"
-                                            cols="5"></textarea>
-                                    </td>
-
-                                </tr>
-
-                            </table>
-
+            <tr>
+                <td style="padding: 2px;" width="1%">
+                    <input type="text" class="form-control" id="final_amount" name="final_amount" placeholder="" value="{{ $inquiry->final_amount ?? '' }}" readonly />
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <input type="text" class="form-control" name="down_payment" placeholder="" value="{{ $inquiry->down_payment ?? '' }}" readonly />
+                </td>
+                <td id="balence_amount" style="padding: 2px;" width="1%">
+                    <input type="hidden" value="{{ $inquiry->balence_amount ?? '' }}" name="balence_amount" id="balence_amount_input">
+                    <label id="balence_amount_label" class="control-label">
+                        <font id="balence_amount_display" color="#ff0000">{{ $inquiry->balance_amount ?? '' }}</font>
+                    </label>
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <input type="text" class="form-control" value="{{ $inquiry->tenure ?? '' }}" name="tenure" placeholder="" readonly />
+                </td>
+                <td id="emi_ammount" style="padding: 2px;" width="1%">
+                    <input type="hidden" name="emi_ammount" value="{{ $inquiry->emi_ammount ?? '' }}" id="emi_ammount_input">
+                    <label id="emi_ammount_label" class="control-label">
+                        <font id="emi_ammount_display" color="#ff0000">{{ $inquiry->emi_amount ?? '' }}</font>
+                    </label>
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <div class="input-group" style="display: flex;">
+                        <input type="text" id="booking_date" value="{{ date('m/d/Y',strtotime($inquiry->booking_date)) }}" name="booking_date" class="form-control datepicker" placeholder="DD-MM-YYYY" readonly />
+                        <div class="" style="padding: 5px;">
+                            <span class="input-group-text" style="font-size: 20px;"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
                     </div>
-                    <div class="row">
-                        {{-- <h5 class="panel-title"
-                            style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
-                            align="center">
-                            <i class="fa fa-area-chart"></i> &nbsp;Plot/Unit Transaction
-                        </h5> --}}
-
-                        <div class="col-md-12" style="margin-top: 2vh;">
-                            <table width="100%">
-                                <tr style="height:30px;">
-
-                                    <th width="2%">Mauja</th>
-                                    <th width="2%">Kh No.</th>
-                                    <th width="2%">P.H.N.</th>
-                                    <th width="2%">Taluka</th>
-
-                                    <th width="2%">District</th>
-                                    <th width="2%">East</th>
-                                    <th width="2%">West</th>
-                                    <th width="2%">North</th>
-                                    <th width="2%">South</th>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="mauja" name="mauja" placeholder=""
-                                            required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="kh_no" name="kh_no" placeholder=""
-                                            required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="phn" name="phn" placeholder=""
-                                            required />
-                                    </td>
-
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="taluka" name="taluka" placeholder=""
-                                            required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="district" name="district"
-                                            placeholder="" required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="east" name="east" placeholder=""
-                                            required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="west" name="west" placeholder=""
-                                            required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="north" name="north" placeholder=""
-                                            required />
-                                    </td>
-
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="south" name="south" placeholder=""
-                                            required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <button id="" type="submit" class="btn mjks"
-                                            style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i
-                                                class="fa fa-floppy-o" aria-hidden="true"></i>
-                                            Submit</button>
-                                    </td>
-
-                                </tr>
-
-                            </table>
-
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <div class="input-group" style="display: flex;">
+                        <input type="text" id="aggriment_date" value="{{ date('m/d/Y',strtotime($inquiry->aggriment_date )) }}" name="aggriment_date" class="form-control datepicker" placeholder="DD-MM-YYYY" readonly />
+                        <div class="" style="padding: 5px;">
+                            <span class="input-group-text" style="font-size: 20px;"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
                     </div>
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <select class="form-control select no_click_readonly" name="staus_token" data-live-search="true">
+                        @foreach($tokenStatuses as $tokenStatus)
+                        <option value="{{ $tokenStatus->token }}" @if($inquiry->status_token == $tokenStatus->id) selected @endif>
+                            {{ $tokenStatus->token }}
+                        </option>
+                        @endforeach
+                    </select>
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <div class="input-group" style="display: flex;">
+                        <input type="text" id="emi_start_date" name="emi_start_date" value="{{ date('m/d/Y',strtotime($inquiry->emi_start_date)) }}" class="form-control datepicker" placeholder="DD-MM-YYYY" readonly />
+                        <div class="" style="padding: 5px;">
+                            <span class="input-group-text" style="font-size: 20px;"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <table width="100%">
+            <tr style="height:30px;">
+                <th width="1%">Plot Status</th>
+                <th width="1%">A. Rate</th>
+                <th width="2%">Referred By</th>
+                <th width="1" id="agent-label-container">Agent Name</th>
+                <th width="1" id="employee-label-container">Executive Name</th>
+                <th width="2%">Remarks</th>
+            </tr>
+
+            <tr>
+                <td style="padding: 2px;" width="1%">
+                    <select class="form-control select no_click_readonly" data-live-search="true" id="plot_sale_status" name="plot_sale_status">
+                        @foreach($statuses as $status)
+                        <option value="{{ $status->plot_sale_status }}" @if($inquiry->plot_sale_status == $status->plot_sale_status) selected @endif>
+                            {{ $status->plot_sale_status }}
+                        </option>
+                        @endforeach
+                    </select>
+                </td>
+                <td style="padding: 2px;" width="1%">
+                    <input type="text" class="form-control" name="a_rate" value="{{ $inquiry->a_rate }}" placeholder="" readonly />
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <input type="radio" id="agent_name" name="source_type" value="agent" onclick="toggleEmployeeSelect()" disabled>
+                    <label for="agent_name">Agent Name</label>
+                    <input type="radio" id="executive_name" name="source_type" value="executive" onclick="toggleEmployeeSelect()" checked disabled>
+                    <label for="executive_name">Executive Name</label>
+                    <input type="radio" id="direct_sourse" name="source_type" value="direct" onclick="toggleEmployeeSelect()" disabled>
+                    <label for="direct_sourse">Direct Source</label>
+                </td>
+                <td id="agent-select-container" style="padding: 2px; width: 1%;">
+                    <select class="form-control select no_click_readonly" data-live-search="true" id="agent-select" name="agent_id" >
+                        @foreach($agent as $agent)
+                        <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td id="employee-select-container" style="padding: 2px; width: 1%;">
+                    <select class="form-control select no_click_readonly" data-live-search="true" id="employee-select" name="employee" >
+                        @foreach($employees as $employee)
+                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                        @endforeach
+                    </select>
+                </td>
+
+                <td style="padding: 2px;" width="1%">
+                    <textarea type="text" class="form-control" name="remark" placeholder="" rows="2" cols="5" readonly>{{ $inquiry->remark ?? '' }}</textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12" style="margin-top: 2vh;">
+        <table width="100%">
+            <tr style="height:30px;">
+                <th width="2%">Mauja</th>
+                <th width="2%">Kh No.</th>
+                <th width="2%">P.H.N.</th>
+                <th width="2%">Taluka</th>
+                <th width="2%">District</th>
+                <th width="2%">East</th>
+                <th width="2%">West</th>
+                <th width="2%">North</th>
+                <th width="2%">South</th>
+            </tr>
+
+            <tr>
+                <td style="padding: 2px;" width="2%">
+                    <input type="text" class="form-control" name="mauja" placeholder="" value="{{ $inquiry->mauja ?? '' }}" readonly />
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <input type="text" class="form-control" name="kh_no" placeholder="" value="{{ $inquiry->kh_no ?? '' }}" readonly />
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <input type="text" class="form-control" name="phn" placeholder="" value="{{ $inquiry->phn ?? '' }}" readonly />
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <input type="text" class="form-control" name="taluka" placeholder="" value="{{ $inquiry->taluka ?? '' }}" readonly />
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <input type="text" class="form-control" name="district" placeholder="" value="{{ $inquiry->district ?? '' }}" readonly />
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <input type="text" class="form-control" name="east" placeholder="" value="{{ $inquiry->east ?? '' }}" readonly />
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <input type="number" class="form-control" name="west" placeholder="" value="{{ $inquiry->west ?? '' }}" readonly />
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <input type="number" class="form-control" name="north" placeholder="" value="{{ $inquiry->north ?? '' }}" readonly />
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <input type="text" class="form-control" name="south" placeholder="" value="{{ $inquiry->south ?? '' }}" readonly />
+                </td>
+                <td style="padding: 2px;" width="2%">
+                    <button id="" type="submit" class="btn mjks" style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;" >
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i> Submit
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
                     <div class="row" style="margin-top: 1vh;">
                         {{-- <h5 class="panel-title"
                             style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
@@ -970,6 +834,29 @@
     });
 </script> --}}
 <script>
+            $('input[name="user_type"]').on('change', function() {
+            if ($('#new_user').is(':checked')) {
+                $('#title').val('');
+                $('#name').val('');
+                $('#occupation_id').val('');
+                $('#email').val('');
+                $('#contact').val('');
+                $('#city').val('');
+                $('#pin_code').val('');
+                $('#address').val('');
+                $('#age').val('');
+                $('#dob').val('');
+                $('#marital_status').val('single');
+                $('#marriage_date').val('');
+                $('#branch_id').val('');
+                $('#aadhar').val('');
+                $('#aadhar_no').val('');
+                $('#pan').val('');
+                $('#pan_no').val('');
+            }
+        });
+
+        
     function toggleMarriageDate() {
     const maritalStatus = document.getElementById('marital_status').value;
     const marriageDateInput = document.getElementById('marriage_date').parentNode.parentNode.parentNode;
@@ -1224,7 +1111,9 @@ document.getElementById('emi_ammount_input').value = emiAmount.toFixed(2);
     $('#project-select').append('<option value="">Select Option</option>');
     }
     });
-
+setTimeout(() => {
+    $('#project-select').trigger('change');
+}, 500);
 
 $('#project-select').change(function() {
 var projectId = $(this).val();
@@ -1237,12 +1126,13 @@ data: {
 projectId: projectId
 },
 success: function(response) {
-console.log(response); // Log the response data
+//console.log(response); // Log the response data
 var plotSelect = $('#plot-select');
 plotSelect.empty(); // Clear existing options
 plotSelect.append('<option value="">Select Plot</option>');
 $.each(response, function(index, plot) {
-plotSelect.append('<option value="' + plot.id + '">' + plot.plot_no + '</option>');
+    var selected = (plot.plot_no == '{{ $inquiry->plot_no }}') ? 'selected' : '';
+    plotSelect.append('<option value="' + plot.id + '" ' + selected + '>' + plot.plot_no + '</option>');
 });
 // Reinitialize Bootstrap Select if needed
 plotSelect.selectpicker('refresh');
@@ -1266,14 +1156,12 @@ data: {
 projectId: projectId
 },
 success: function(response) {
-console.log(response);
 
 // Assuming the response contains project details
 if (response) {
 var projectDetails = response;
 
 // Log the response to verify the values
-console.log('Project Details:', projectDetails);
 
 // Set values to input fields
 $('input[name="mauja"]').val(projectDetails.mauja);
@@ -1307,16 +1195,13 @@ data: {
 plotId: plotId
 },
 success: function(response) {
-console.log(response);
 
 // Assuming the response contains plot details as an array
 if (response && response.length > 0) {
 var plotDetails = response[0]; // Access the first element of the array
 
 // Log the values of plot_length and plot_width to check for issues
-console.log('Plot Length:', plotDetails.plot_length);
-console.log('Plot Width:', plotDetails.plot_width);
-console.log(plotDetails);
+
 
 // Ensure the values are correctly parsed as floats
 var plotLength = parseFloat(plotDetails.plot_length);

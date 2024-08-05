@@ -14,9 +14,7 @@ use App\Http\Controllers\panel\ReportsController;
 use App\Http\Controllers\website\IndexController;
 use App\Http\Controllers\panel\FollowUpController;
 use App\Http\Controllers\AgreementMasterController;
-
-
-
+use App\Http\Controllers\panel\CommissionPlanController;
 // WEBSITE
 use App\Http\Controllers\panel\DashboardController;
 use App\Http\Controllers\panel\LandownerController;
@@ -33,8 +31,7 @@ use App\Http\Controllers\website\RegistrationController;
 use App\Http\Controllers\panel\customerRegMasterController;
 use App\Http\Controllers\panel\PaymentCollectionController;
 use App\Http\Controllers\panel\LeadassignToEmployeeController;
-
-
+use App\Models\CommissionPlan;
 
 /*
 |--------------------------------------------------------------------------
@@ -206,7 +203,14 @@ Route::get('allenquiry', [FollowupLeads::class, 'allenquiry'])->name('allenquiry
 Route::get('downlineindex', [MyDownline::class, 'downlineindex'])->name('downlineindex');
 Route::get('positionindex', [MyDownline::class, 'positionindex'])->name('positionindex');
 Route::get('downlinebuisnessindex', [MyDownline::class, 'downlinebuisnessindex'])->name('downlinebuisnessindex');
-Route::get('commision-plan', [MyDownline::class, 'commision_plan'])->name('commision.plan');
+
+
+Route::get('/commission-plans', [CommissionPlanController::class, 'index'])->name('commission-plans.index');
+Route::post('/commission-plans', [CommissionPlanController::class, 'store'])->name('commission-plans.store');
+Route::get('/commission-plans/{commissionPlan}/edit', [CommissionPlanController::class, 'edit'])->name('commission-plans.edit');
+Route::put('/commission-plans/{commissionPlan}', [CommissionPlanController::class, 'update'])->name('commission-plans.update');
+Route::delete('/commission-plans/{commissionPlan}', [CommissionPlanController::class, 'destroy'])->name('commission-plans.destroy');
+
 
 // Master Employ Registration
 Route::get('emp_reg', [empRegMasterController::class, 'index'])->name('emp_reg');
@@ -254,8 +258,9 @@ Route::get('/fetch-project-detailsextra', [ProjectEntryController::class, 'fetch
 
 
 //plot transfer
-Route::get('/plot-transfer', [PlotTransfercontroller::class, 'plottransfer'])->name('plot.transfer');
-Route::post('/plot-transfers/create', [PlotTransferController::class, 'plot_transfer_store'])->name('plot-transfers.store');
+Route::get('/plot-transfer/{id}/{type}', [PlotTransfercontroller::class, 'plottransfer'])->name('plot.transfer');
+Route::post('/plot-transfers/create/{id}', [PlotTransferController::class, 'plot_transfer_store'])->name('plot-transfers.store');
+Route::post('/user-transfer-plot/create/{id}', [PlotTransferController::class, 'user_transfer_plot_store'])->name('user-transfer-plot.store');
 Route::get('/plot-transfers/delete/{id}', [PlotTransferController::class, 'plot_transfer_delete'])->name('plot-transfers.delete');
 Route::get('/plot-transfers/edit/{id}', [PlotTransferController::class, 'plot_transfer_edit'])->name('plot-transfers.edit');
 Route::post('/plot-transfers/update/{id}', [PlotTransferController::class, 'plot_transfer_update'])->name('plot-transfers.update');
