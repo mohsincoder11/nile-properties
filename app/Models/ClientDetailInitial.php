@@ -9,7 +9,7 @@ class ClientDetailInitial extends Model
 {
     use HasFactory;
     protected $table = "client_details_intial";
-    protected $fillable = ['initial_enquiry_id', 'name', 'phone', 'address', 'sponsor', 'client_id'];
+    protected $fillable = ['initial_enquiry_id', 'name', 'phone', 'address', 'sponsor', 'client_id','is_transfer'];
 
     public function initialEnquiry()
     {

@@ -44,6 +44,7 @@ class InitialEnquiry extends Model
         'employee_id',
         'direct_sourse',
         'agent_id',
+        'is_transfer_plot'
     ];
 
     public function clientsigle()

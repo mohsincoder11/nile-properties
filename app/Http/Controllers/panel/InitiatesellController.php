@@ -254,7 +254,6 @@ class InitiatesellController extends Controller
             $client->phone = $request->contact[$index];
             $client->address = $request->address[$index];
             $client->client_id = $reg->id;
-
             $client->save();
         }
 

@@ -1,0 +1,6 @@
+queries:
+1)after plot transfer where to show old buyers data
+
+2)what to do with emi of old customer.
+
+3)already sold plot validation while adding entry or transfer.
