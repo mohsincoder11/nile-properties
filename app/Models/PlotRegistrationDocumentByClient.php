@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OtherCharges extends Model
+class PlotRegistrationDocumentByClient extends Model
 {
     use HasFactory;
-    protected $table = 'other_charges';
+    protected $table = 'plot_registration_document_by_client';
     protected $primarykey = 'id';
     protected $fillable = [
-        'other_charges',
+        'document_name',
     ];
 }

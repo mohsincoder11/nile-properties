@@ -332,6 +332,7 @@ Route::get('/search_payment_collection_agains_client', [PaymentCollectionControl
 Route::post('/store_payment_installment', [PaymentCollectionController::class, 'store_payment_installment'])->name('store_payment_installment');
 Route::post('/update_installment', [PaymentCollectionController::class, 'update_installment'])->name('update_installment');
 Route::post('/othercharge_store', [PaymentCollectionController::class, 'othercharge_store'])->name('othercharge_store');
+Route::get('/get-other-charges', [PaymentCollectionController::class, 'getOtherCharges'])->name('get.other.charges');
 
 
 Route::get('/newsale-sale', [InitiatesellController::class, 'newsale'])->name('newsale');
