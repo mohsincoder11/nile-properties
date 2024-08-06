@@ -123,6 +123,7 @@
                                 <select class="form-control select" id="firm-select" name="firm_id"
                                     data-live-search="true">
                                     @foreach($firm as $city)
+                                    <option value="">Select Firm</option>
                                     <option value="{{ $city->id }}">{{ $city->name }}</option>
                                     @endforeach
                                 </select>
@@ -207,7 +208,7 @@
                 </h5>
             </div>
             <div class="col-md-12">
-                <form action="{{ route('othercharge_store') }}" method="post">
+                <form id="other-charges-form" action="{{ route('othercharge_store') }}" method="post">
                     @csrf
                     <div class="col-md-2" style="margin-top:5px;"></div>
                     <div class="col-md-2" style="margin-top:5px;">
@@ -230,8 +231,8 @@
                         </select>
                     </div>
                     <div class="col-md-2" style="margin-top: 5px;">
-                        <button id="submit_other_charges" type="submit" class="btn mjks"
-                            style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
+                        <button id="submit_other_charges" type="button" class="btn mjks"
+                            style="color:#FFFFFF; height:30px; width:auto; background-color: #006699; margin-top: 3vh;">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add other charges
                         </button>
                     </div>
@@ -313,19 +314,11 @@
                 </h5>
             </div>
 
-            <form action="{{ route('upload.documents') }}" method="POST" enctype="multipart/form-data">
+            <form id="upload-documents-form" action="{{ route('upload.documents') }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
-                <!-- Include CSRF token for Laravel -->
                 <div class="row">
                     <div class="col-md-2" style="margin-top:5px;"></div>
-                    <input type="hidden" class="form-control" name="project_id" id="other_project_id" placeholder=""
-                        required />
-                    <input type="hidden" class="form-control" name="plot_id" id="other_plot_id" placeholder=""
-                        required />
-                    <input type="hidden" class="form-control" name="client_id" id="other_client_id" placeholder=""
-                        required />
-                    <input type="hidden" class="form-control" name="firm_id" id="other_firm_id" placeholder=""
-                        required />
                     <div class="col-md-3" style="margin-top:5px;">
                         <label for="registration_receipt">Registration Receipt</label>
                         <input type="file" class="form-control" name="documents[]" multiple>
@@ -334,9 +327,15 @@
                     <div class="col-md-3" style="margin-top:5px;">
                         <label for="selected_scan_copies">Selected Scan Copies</label>
                         <input type="file" class="form-control" name="documents[]" multiple>
+                        <input type="hidden" class="form-control" name="project_id" id="oother_project_id"
+                            placeholder="" />
+                        <input type="hidden" class="form-control" name="plot_id" id="oother_plot_id" placeholder="" />
+                        <input type="hidden" class="form-control" name="client_id" id="oother_client_id"
+                            placeholder="" />
+                        <input type="hidden" class="form-control" name="firm_id" id="oother_firm_id" placeholder="" />
                     </div>
                     <div class="col-md-2" style="margin-top:21px;">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" id="submit-documents" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </form>
@@ -352,45 +351,24 @@
             </div>
             <div class="col-md-12" style="margin-top: 2vh;margin-bottom: 10vh;">
                 <table width="100%" border="1">
-                    <tr style="background-color:#f0f0f0; height:30px;">
-                        <th style="text-align:center">Document Name</th>
-                        <th style="text-align:center">Updated By</th>
-                        <th style="text-align:center">Updated Date</th>
-                        <th style="text-align:center">Download</th>
-                    </tr>
+                    <thead>
+                        <tr style="background-color:#f0f0f0; height:30px;">
+                            <th style="text-align:center">Document Name</th>
+                            <th style="text-align:center">Updated By</th>
+                            <th style="text-align:center">Updated Date</th>
+                            <th style="text-align:center">Download</th>
+                            <th style="text-align:center">Plot No</th>
+                            <th style="text-align:center">Project Name</th>
+                            <th style="text-align:center">Firm Name</th>
+                        </tr>
+                    </thead>
                     <tbody id="documents-table-body">
                         <!-- Dynamic content will be inserted here -->
                     </tbody>
                 </table>
             </div>
         </div>
-        <div style="position: fixed; bottom: 0; width: 100%;">
-            <div class="col-md-12" style="width: 100%;">
-                <div class="col-md-6" style="float: left; width: 50%;">
-                    @if ($errors->any())
-                    <div id="successscript" class="alert alert-danger mt-2"
-                        style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #d6dad6; padding: 10px; border-radius: 5px;">
-                        <ul style="margin: 0; padding: 0; list-style-type: none;">
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
-                </div>
-                <div class="col-md-6" style="float: left; width: 50%;">
-                    @if(session('success'))
-                    <div id="successscript" class="alert alert-success"
-                        style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #abafab; padding: 10px; border-radius: 5px;">
-                        {{ session('success') }}
-                    </div>
-                    @endif
-                </div>
-            </div>
-        </div>
     </div>
-
-
     <!-- payment store model  start -->
     <!-- Store Installment Modal -->
     <div class="modal fade" id="storeInstallmentModal" tabindex="-1" role="dialog"
@@ -556,8 +534,36 @@
         </div>
     </div>
     <!-- payment edit model  end -->
+    <div style="position: fixed; bottom: 0; width: 100%;">
+        <div class="col-md-12" style="width: 100%;">
+            <div class="col-md-6" style="float: left; width: 50%;">
+                @if ($errors->any())
+                <div id="successscript" class="alert alert-danger mt-2"
+                    style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #d6dad6; padding: 10px; border-radius: 5px;">
+                    <ul style="margin: 0; padding: 0; list-style-type: none;">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+            </div>
+            <div class="col-md-6" style="float: left; width: 50%;">
+                @if(session('success'))
+                <div id="successscript" class="alert alert-success"
+                    style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #abafab; padding: 10px; border-radius: 5px;">
+                    {{ session('success') }}
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
 </div>
 
+
+
+</div>
+</div>
 @stop
 
 @section('js')
@@ -573,6 +579,7 @@
     success: function(response) {
     var plotSelect = $('#plot-select');
     plotSelect.empty(); // Clear existing options
+    plotSelect.append('<option value="">Select plot</option>');
     $.each(response, function(index, plot) {
     plotSelect.append('<option value="' + plot.plot_no + '">' + plot.plot_no + '</option>');
     });
@@ -811,74 +818,165 @@
         $('#firm-select').on('change', function() {
             $('#other_firm_id').val($(this).val());
         });
+
+        $('#project-select').on('change', function() {
+            $('#oother_project_id').val($(this).val());
+            });
+            $('#plot-select').on('change', function() {
+            $('#oother_plot_id').val($(this).val());
+            });
+            $('#client-select').on('change', function() {
+            $('#oother_client_id').val($(this).val());
+            });
+            $('#firm-select').on('change', function() {
+            $('#oother_firm_id').val($(this).val());
+            });
     });
 </script>
 <script>
     $(document).ready(function() {
-    $('form').on('submit', function(e) {
-        e.preventDefault();
+    $('#submit_other_charges').on('click', function() {
+    var form = $('#other-charges-form');
+    var formData = form.serialize();
 
-        var formData = new FormData(this);
+    $.ajax({
+    type: "POST",
+    url: form.attr('action'),
+    data: formData,
+    success: function(response) {
+    if (response.success) {
+    // Construct the new row
+    var newRow = `
+    <tr>
+        <td style="padding:5px;" align="center"><label>${response.data.charges_id}</label></td>
+        <td style="padding:5px;" align="center"><label>${new Date().toISOString().split('T')[0]}</label></td>
+        <td style="padding:5px;" align="center"><label>${response.data.amount}</label></td>
+        <td style="padding:5px;" align="center"><label>${response.data.plot_id}</label></td>
+        <td style="padding:5px;" align="center"><label>${response.data.project_name}</label></td>
+        <td style="padding:5px;" align="center"><label>${response.data.firm_name}</label></td>
+    </tr>
+    `;
 
-        $.ajax({
-            url: "{{ route('upload.documents') }}",
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                $('#documents-table-body').empty();
-                data.forEach(function(item) {
-                    var row = `
-                        <tr>
-                            <td style="padding:5px;" align="center">${item.document_name}</td>
-                            <td style="padding:5px;" align="center">test</td>
-                            <td style="padding:5px;" align="center">${new Date(item.created_at).toLocaleDateString()}</td>
-                            <td style="padding:5px;" align="center">
-                                <a href="/storage/${item.document_name}" download>
-                                    <i class="fa fa-download"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    `;
-                    $('#documents-table-body').append(row);
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('There was a problem with the AJAX request:', error);
-            }
-        });
-    });
+    // Append the new row to the table
+    $('#charges-table-body').append(newRow);
 
-    function loadDocuments() {
-        $.ajax({
-            url: "{{ route('get.documents') }}",
-            type: 'GET',
-            success: function(data) {
-                $('#documents-table-body').empty();
-                data.forEach(function(item) {
-                    var row = `
-                        <tr>
-                            <td style="padding:5px;" align="center">${item.document_name}</td>
-                            <td style="padding:5px;" align="center">test</td>
-                            <td style="padding:5px;" align="center">${new Date(item.created_at).toLocaleDateString()}</td>
-                            <td style="padding:5px;" align="center">
-                                <a href="/storage/${item.document_name}" download>
-                                    <i class="fa fa-download"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    `;
-                    $('#documents-table-body').append(row);
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('There was a problem with the AJAX request:', error);
-            }
-        });
+    // Optionally, clear the form fields after submission
+    form[0].reset();
+    } else {
+    alert('Failed to save charges.');
     }
+    },
+    error: function(xhr, status, error) {
+    console.error('There was a problem with the AJAX request:', error);
+    }
+    });
+    });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+$('#submit-documents').on('click', function() {
+var form = $('#upload-documents-form')[0];
+var formData = new FormData(form);
 
-    loadDocuments();
+$.ajax({
+type: "POST",
+url: $(form).attr('action'),
+data: formData,
+contentType: false,
+processData: false,
+success: function(response) {
+if (Array.isArray(response) && response.length > 0) {
+var documentsTableBody = $('#documents-table-body');
+
+// Clear existing content
+// documentsTableBody.empty();
+
+// Append new documents to the table
+response.forEach(function(document) {
+// Update path to include base URL
+var documentPath =
+`http://localhost/laravelwebmedia/nile-properties/public/documents/${document.document_name}`;
+var row = `
+<tr>
+    <td style="padding:5px;" align="center"><label>${document.document_name}</label></td>
+    <td style="padding:5px;" align="center"><label>${document.updated_by}</label></td>
+    <td style="padding:5px;" align="center"><label>${document.updated_date}</label></td>
+    <td style="padding:5px;" align="center">
+        <a href="${documentPath}" target="_blank">Download</a>
+    </td>
+    <td style="padding:5px;" align="center"><label>${document.plot_no}</label></td>
+    <td style="padding:5px;" align="center"><label>${document.project_name}</label></td>
+    <td style="padding:5px;" align="center"><label>${document.firm_name}</label></td>
+</tr>
+`;
+documentsTableBody.append(row);
+});
+
+// Optionally, clear the form fields after submission
+form.reset();
+} else {
+alert('Failed to upload documents.');
+}
+},
+error: function(xhr, status, error) {
+console.error('There was a problem with the AJAX request:', error);
+}
+});
+});
+});
+</script>
+
+<script>
+    $(document).ready(function() {
+const routeUrl = "{{ route('document.fetch') }}";
+
+$('#view-button').on('click', function() {
+const projectId = $('#project-select').val();
+const plotId = $('#plot-select').val();
+const clientId = $('#client-select').val();
+
+const url = `${routeUrl}?project_id=${projectId}&plot_id=${plotId}&client_id=${clientId}`;
+
+$.ajax({
+url: url,
+method: 'GET',
+success: function(data) {
+console.log(data); // Log the response for debugging
+var documentsTableBody = $('#documents-table-body');
+documentsTableBody.empty(); // Clear existing content
+
+if (Array.isArray(data) && data.length > 0) {
+data.forEach(function(document) {
+// Construct the full URL for the document
+var documentPath = `{{ asset('documents') }}/${document.document_name}`;
+var row = `
+<tr>
+    <td style="padding:5px;" align="center"><label>${document.document_name}</label></td>
+    <td style="padding:5px;" align="center"><label>${document.clientname ? document.clientname.name :
+            'N/A'}</label></td>
+    <td style="padding:5px;" align="center"><label>${new Date(document.created_at).toLocaleDateString()}</label></td>
+    <td style="padding:5px;" align="center">
+        <a href="${documentPath}" target="_blank">Download</a>
+    </td>
+    <td style="padding:5px;" align="center"><label>${document.plot_id}</label></td>
+    <td style="padding:5px;" align="center"><label>${document.projectname ? document.projectname.project_name :
+            'N/A'}</label></td>
+    <td style="padding:5px;" align="center"><label>${document.firmname ? document.firmname.name : 'N/A'}</label>
+    </td>
+</tr>
+`;
+documentsTableBody.append(row);
+});
+} else {
+documentsTableBody.append('<tr><td colspan="7" align="center">No documents found</td></tr>');
+}
+},
+error: function(xhr, status, error) {
+console.error('There was a problem with the AJAX request:', error);
+}
+});
+});
 });
 </script>
 @endsection

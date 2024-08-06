@@ -328,6 +328,9 @@ Route::put('panel/initiate-sell/{id}', [InitiatesellController::class, 'update']
 Route::get('/getClientProjectPlotDatatwo', [PaymentCollectionController::class, 'getClientProjectPlotDatatwo'])->name('getClientProjectPlotDatatwo');
 Route::post('/upload-documents', [PaymentCollectionController::class, 'documentstore'])->name('upload.documents');
 Route::get('/get-documents', [PaymentCollectionController::class, 'documentindex'])->name('get.documents');
+Route::get('/fetchDocuments', [PaymentCollectionController::class, 'fetchDocuments'])->name('document.fetch');
+
+
 Route::get('/get-client-project-plot-data', [PaymentCollectionController::class, 'getClientProjectPlotData'])->name('getClientProjectPlotData');
 Route::get('/search_payment_collection_agains_client', [PaymentCollectionController::class, 'search_payment_collection_agains_client'])->name('search_payment_collection_agains_client');
 Route::post('/document_payment_installment', [PaymentCollectionController::class, 'store_payment_installment'])->name('store_payment_installment');
