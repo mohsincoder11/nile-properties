@@ -7,13 +7,23 @@ CREATE TABLE plot_transfer_histories (
     transfer_date DATE NOT NULL,
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    
+
 );
 
 ALTER TABLE `client_details_intial`
-ADD COLUMN `is_transfer` ENUM('0', '1') NOT NULL DEFAULT '0' AFTER `sponsor` COMMENT 'for new purchase value 0, for transfer value 1';
+ADD COLUMN `is_transfer` ENUM('0', '1') NOT NULL DEFAULT '0' COMMENT 'for new purchase value 0, for transfer value 1' AFTER `sponsor`;
+
 
 
 ALTER TABLE `initial_enquiries_clients` ADD `is_transfer_plot` ENUM('0','1') NOT NULL DEFAULT '0' COMMENT 'if another plot transfer to user' AFTER `south`;
 
 ALTER TABLE `plot_transfer_histories` CHANGE `plot_id` `initial_enquiry_id` BIGINT(20) UNSIGNED NOT NULL;
+
+
+06/08/2024 by yd
+CREATE TABLE plot_registration_document_by_client (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    document_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT NULL,
+    updated_at TIMESTAMP NULL DEFAULT NULL
+);

@@ -96,13 +96,27 @@ class PaymentCollectionController extends Controller
         $plotId = $request->input('plot_id');
         $clientId = $request->input('client_id'); // Get client_id from request
 
-        $charges = OtherChargesForClient::with('chargesname', 'projectname', 'clientname')->where('project_id', $projectId)
+        $charges = OtherChargesForClient::with('chargesname', 'projectname', 'firmname', 'clientname')
+            ->where('project_id', $projectId)
             ->where('plot_id', $plotId)
             ->where('client_id', $clientId) // Filter by client_id
             ->get();
 
-        return response()->json($charges);
+        $result = $charges->map(function ($charge) {
+            return [
+                'payment_type' => $charge->chargesname->other_charges,
+                'date' => $charge->created_at->format('Y-m-d'),
+                'amount' => $charge->amount,
+                'plot_no' => $charge->plot_id,
+                'project_name' => $charge->projectname->project_name,
+                'firm_name' => $charge->firmname->name,
+            ];
+        });
+
+        return response()->json($result);
     }
+
+
 
     public function getClientProjectPlotDatatwo(Request $request)
     {

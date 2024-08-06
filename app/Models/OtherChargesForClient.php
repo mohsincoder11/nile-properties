@@ -25,12 +25,16 @@ class OtherChargesForClient extends Model
 
     public function chargesname()
     {
-        return $this->belongsTo(LandRegistrationMaster::class, 'charges_id');
+        return $this->belongsTo(OtherCharges::class, 'charges_id');
     }
 
     public function projectname()
     {
         return $this->belongsTo(ProjectEntry::class, 'project_id');
+    }
+    public function firmname()
+    {
+        return $this->belongsTo(FirmRegistrationMaster::class, 'firm_id');
     }
 
     public function clientname()
