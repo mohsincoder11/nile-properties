@@ -204,7 +204,8 @@
             z-index: 1040;
             /* Default z-index for Bootstrap modals */
         }
-        .no_click_readonly{
+
+        .no_click_readonly {
             pointer-events: none;
             background-color: #eee;
         }
@@ -315,7 +316,8 @@
                         <li><a href="{{ route('landowner_index') }}"><span class="fa fa-plus"></span>Land Owners</a>
                         </li>
                         <li><a href="{{ route('expense.master') }}"><span class="fa fa-plus"></span>Account</a></li>
-                        {{-- <li><a href="{{ route('plot.transfer') }}"><span class="fa fa-plus"></span>Plot Transfer</a> --}}
+                        {{-- <li><a href="{{ route('plot.transfer') }}"><span class="fa fa-plus"></span>Plot
+                                Transfer</a> --}}
                         </li>
                         <li><a href="{{ route('role') }}"><span class="fa fa-plus"></span>User Permission</a></li>
                         <li><a href="#"><span class="fa fa-plus"></span>User Logs</a></li>

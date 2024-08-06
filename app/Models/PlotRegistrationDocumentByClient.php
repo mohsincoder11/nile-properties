@@ -12,5 +12,26 @@ class PlotRegistrationDocumentByClient extends Model
     protected $primarykey = 'id';
     protected $fillable = [
         'document_name',
+        'plot_id',
+
+        'firm_id',
+
+        'project_id',
+        'client_id',
+
     ];
+
+    public function projectname()
+    {
+        return $this->belongsTo(ProjectEntry::class, 'project_id');
+    }
+    public function firmname()
+    {
+        return $this->belongsTo(FirmRegistrationMaster::class, 'firm_id');
+    }
+
+    public function clientname()
+    {
+        return $this->belongsTo(CustomerRegistrationMaster::class, 'client_id');
+    }
 }

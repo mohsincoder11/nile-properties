@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
 use App\Models\OtherChargesForClient;
 use App\Models\FirmRegistrationMaster;
+use App\Models\PlotRegistrationDocumentByClient;
 
 class PaymentCollectionController extends Controller
 {
@@ -63,14 +64,13 @@ class PaymentCollectionController extends Controller
     }
     public function othercharge_store(Request $request)
     {
-        // dd($request->all());
         $validatedData = $request->validate([
-            'amount' => 'required|',
-            'project_id' => 'required|',
-            'plot_id' => 'required|',
-            'client_id' => 'required|',
-            'firm_id' => 'required|',
-            'charges_id' => 'required|', // Assuming charges_id is also required
+            'amount' => 'required|numeric',
+            'project_id' => 'required|integer',
+            'plot_id' => 'required|integer',
+            'client_id' => 'required|integer',
+            'firm_id' => 'required|integer',
+            'charges_id' => 'required|integer',
         ]);
 
         // Create a new record in the other_charges_for_clients table
@@ -82,14 +82,24 @@ class PaymentCollectionController extends Controller
             'firm_id' => $validatedData['firm_id'],
             'charges_id' => $validatedData['charges_id'],
         ]);
-        // dd(1);
-        // Redirect back with a success message
+
+        // Fetch additional data for the response
+        $chargeData = OtherChargesForClient::with('chargesname', 'projectname', 'firmname', 'clientname')
+            ->find($otherCharge->id);
+
         return response()->json([
             'success' => true,
             'message' => 'Other charges for client saved successfully!',
-            'data' => $otherCharge
+            'data' => [
+                'amount' => $chargeData->amount,
+                'plot_id' => $chargeData->plot_id,
+                'project_name' => $chargeData->projectname->project_name,
+                'firm_name' => $chargeData->firmname->name,
+                'charges_id' => $chargeData->chargesname->other_charges
+            ]
         ]);
     }
+
     public function getOtherCharges(Request $request)
     {
         $projectId = $request->input('project_id');
@@ -115,8 +125,73 @@ class PaymentCollectionController extends Controller
 
         return response()->json($result);
     }
+    // DocumentController.php
+    public function fetchDocuments(Request $request)
+    {
+        $query = PlotRegistrationDocumentByClient::query();
+
+        if ($request->has('project_id')) {
+            $query->where('project_id', $request->input('project_id'));
+        }
+
+        if ($request->has('plot_id')) {
+            $query->where('plot_id', $request->input('plot_id'));
+        }
+
+        if ($request->has('client_id')) {
+            $query->where('client_id', $request->input('client_id'));
+        }
+
+        // Eager load the relationships
+        $documents = $query->with('projectname', 'firmname', 'clientname')->get();
+
+        return response()->json($documents);
+    }
 
 
+
+    public function documentstore(Request $request)
+    {
+        $documents = [];
+
+        if ($request->hasFile('documents')) {
+            foreach ($request->file('documents') as $file) {
+                // Generate a unique name for the file
+                $filename = rand(0000, 8888) . time() . '.' . $file->getClientOriginalExtension();
+
+                // Move the file to the 'documents' directory in the 'public' disk
+                $file->move(public_path('documents'), $filename);
+
+                // Store file information in the database
+                $document = PlotRegistrationDocumentByClient::create([
+                    'document_name' => $filename,
+                    'plot_id' => $request->input('plot_id'),
+                    'project_id' => $request->input('project_id'),
+                    'client_id' => $request->input('client_id'),
+                    'firm_id' => $request->input('firm_id'),
+                ]);
+
+                $documents[] = [
+                    'document_name' => $filename,
+                    'updated_by' => $document->clientname->name ?? 'N/A',
+                    'updated_date' => $document->created_at->format('Y-m-d'),
+                    'plot_no' => $document->plot_id,
+                    'project_name' => $document->projectname->project_name ?? 'N/A',
+                    'firm_name' => $document->firmname->name ?? 'N/A',
+                ];
+            }
+        }
+
+        return response()->json($documents);
+    }
+
+
+
+    // public function documentindex()
+    // {
+    //     $documents = PlotRegistrationDocumentByClient::all();
+    //     return response()->json($documents);
+    // }
 
     public function getClientProjectPlotDatatwo(Request $request)
     {

@@ -18,6 +18,7 @@ class OtherChargesForClient extends Model
         'plot_id',
         'firm_id',
         'project_id',
+        'client_id',
 
 
 

@@ -21,9 +21,20 @@ ALTER TABLE `plot_transfer_histories` CHANGE `plot_id` `initial_enquiry_id` BIGI
 
 
 06/08/2024 by yd
-CREATE TABLE plot_registration_document_by_client (
+CREATE TABLE other_charges_for_clients (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    document_name VARCHAR(255) NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    charges_id BIGINT UNSIGNED NOT NULL,
+    client_id BIGINT UNSIGNED NOT NULL,
+    plot_id BIGINT UNSIGNED NOT NULL,
+    firm_id BIGINT UNSIGNED NOT NULL,
+    project_id BIGINT UNSIGNED NOT NULL,
     created_at TIMESTAMP NULL DEFAULT NULL,
-    updated_at TIMESTAMP NULL DEFAULT NULL
+    updated_at TIMESTAMP NULL DEFAULT NULL,
+    FOREIGN KEY (charges_id) REFERENCES land_registration_masters(id) ON DELETE CASCADE,
+    FOREIGN KEY (client_id) REFERENCES customer_registration_masters(id) ON DELETE CASCADE,
+    FOREIGN KEY (plot_id) REFERENCES plot_registration_masters(id) ON DELETE CASCADE,
+    FOREIGN KEY (firm_id) REFERENCES firm_registration_masters(id) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES project_entries(id) ON DELETE CASCADE
 );
+
