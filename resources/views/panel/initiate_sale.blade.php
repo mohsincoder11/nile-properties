@@ -221,10 +221,21 @@
                                     <th style="padding:5px;text-align:left;"></th>
                                 </tr>
                                 <tr>
-                                    <td style="padding:2px;">
+                                    {{-- <td style="padding:2px;">
                                         <div style="width:100%;" class="input-group">
                                             <input type="date" class="form-control" id="dob" value="" />
                                         </div>
+                                    </td> --}}
+                                    <td style="padding: 2px;">
+                                        <div class="input-group" style="width:100%;">
+                                            <input type="text" id="dob" value="{{ old('marriage_date') }}" name="dob"
+                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
+                                            <div class="" style="padding: 5px;">
+                                                <span class="input-group-text" style="font-size: 20px;  "></span>
+                                            </div>
+                                        </div>
+
+
                                     </td>
                                     <td style="padding:2px;">
                                         <select id="marital_status" name="marital_status" id="marital_status"
@@ -235,11 +246,23 @@
                                             <option value="widowed">Widowed</option>
                                         </select>
                                     </td>
-                                    <td style="padding:2px;">
+                                    {{-- <td style="padding:2px;">
                                         <div style="width:100%;" class="input-group">
                                             <input type="date" id="marriage_date" class="form-control"
                                                 name="marriage_date" value="{{ old('marriage_date') }}" />
                                         </div>
+                                    </td> --}}
+                                    <td style="padding: 2px;">
+                                        <div class="input-group" style="width:100%;">
+                                            <input type="text" id="marriage_date" value="{{ old('marriage_date') }}"
+                                                name="marriage_date" class="form-control datepicker"
+                                                placeholder="DD-MM-YYYY" required />
+                                            <div class="" style="padding: 5px;">
+                                                <span class="input-group-text" style="font-size: 20px;  "></span>
+                                            </div>
+                                        </div>
+
+
                                     </td>
                                     <td style="padding:2px;">
                                         <select style="width:100%;" class="form-control select" data-live-search="true"

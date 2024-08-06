@@ -87,7 +87,7 @@
             <!-- START X-NAVIGATION VERTICAL -->
             <ul class="x-navigation x-navigation-horizontal">
                 <li class="xn-logo" style="margin-right:30px;">
-                    <a> <img src="../../logo/logo.png" alt="" style="width: 80%;margin-top: -2vh;" /></a>
+                    <a> <img src="{{asset('panel/logo/logo.png')}}" alt="" style="width: 80%;margin-top: -2vh;" /></a>
                     <a href="#" class="x-navigation-control"></a>
                 </li>
                 <li class="xn-profile">

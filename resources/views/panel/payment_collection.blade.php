@@ -1,7 +1,7 @@
 @extends('panel.layout.header')
 
 @section('main_container')
-<div class="page-content-wrap">
+<div class="page-content-wrap" style="height: 200px;">
     <div class="row">
 
         <div class="col-md-12" style="margin-top:5px;">
@@ -244,7 +244,7 @@
                     </button>
                 </div> --}}
             </div>
-            <div class="col-md-12" style="margin-top: 2vh;">
+            <div class="col-md-12" style="margin-top: 2vh; ">
                 <table width="100%" border="1">
                     <thead>
                         <tr style="background-color:#f0f0f0; height:30px;">
@@ -903,7 +903,7 @@ var row = `
     <td style="padding:5px;" align="center"><label>${document.updated_by}</label></td>
     <td style="padding:5px;" align="center"><label>${document.updated_date}</label></td>
     <td style="padding:5px;" align="center">
-        <a href="${documentPath}" target="_blank">Download</a>
+        <a style="color:blue;" href="${documentPath}" target="_blank">Download</a>
     </td>
     <td style="padding:5px;" align="center"><label>${document.plot_no}</label></td>
     <td style="padding:5px;" align="center"><label>${document.project_name}</label></td>
@@ -957,7 +957,7 @@ var row = `
             'N/A'}</label></td>
     <td style="padding:5px;" align="center"><label>${new Date(document.created_at).toLocaleDateString()}</label></td>
     <td style="padding:5px;" align="center">
-        <a href="${documentPath}" target="_blank">Download</a>
+        <a href="${documentPath}" style="color:blue;" target="_blank">Download</a>
     </td>
     <td style="padding:5px;" align="center"><label>${document.plot_id}</label></td>
     <td style="padding:5px;" align="center"><label>${document.projectname ? document.projectname.project_name :

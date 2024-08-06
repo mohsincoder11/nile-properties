@@ -108,6 +108,12 @@ class agentRegMasterController extends Controller
                 $message->to($request->input('email'), $request->input('name'))->subject('Welcome to Nile Properties');
                 $message->from('yashdhokane890@gmail.com', 'Nile Properties');
             });
+            app('UserActionLogger')->logAction(
+                'Agent creation',
+                $agentRegistration->id, // Replace with the actual entity ID
+                'Agent',       // Replace with the actual entity type
+                'Create'    // Replace with actual details or changes
+            );
 
             return redirect(route('agent_reg'))->with('success', 'Agent successfully added.');
         } catch (\Exception $e) {

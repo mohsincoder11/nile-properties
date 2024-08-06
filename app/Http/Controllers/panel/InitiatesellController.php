@@ -102,7 +102,28 @@ class InitiatesellController extends Controller
         $plots = ProjectEntryAppendData::where('project_entry_id', $projectId)->get();
         return response()->json($plots);
     }
+    public function deleteNominee($id)
+    {
+        $nominee = NomineeDetailInitial::find($id);
 
+        if ($nominee) {
+            $nominee->delete();
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Nominee not found']);
+    }
+    public function deleteClient($id)
+    {
+        $client = ClientDetailInitial::where('client_id', $id)->first();
+
+        if ($client) {
+            $client->delete();
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Client not found']);
+    }
     public function store(Request $request)
     {
         // Step 1: Store initial enquiry details
