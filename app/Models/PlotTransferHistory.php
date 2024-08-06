@@ -10,6 +10,7 @@ class PlotTransferHistory extends Model
     use HasFactory;
     protected $fillable = [
         'initial_enquiry_id',
+        'previous_enquiry_id',
         'previous_owner_id',
         'new_owner_id',
         'transfer_date',
