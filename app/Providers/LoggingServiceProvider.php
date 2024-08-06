@@ -4,18 +4,18 @@ namespace App\Providers;
 
 use App\Models\UserActionLog;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class LoggingServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register services.
      *
      * @return void
      */
     public function register()
     {
+        //
         $this->app->singleton('UserActionLogger', function () {
             return new class {
                 public function logAction($action, $entityId = null, $entityType = null, $details = null)
@@ -34,16 +34,15 @@ class AppServiceProvider extends ServiceProvider
                 }
             };
         });
-        //
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
      *
      * @return void
      */
     public function boot()
     {
-        Schema::defaultStringLength(191);
+        //
     }
 }

@@ -15,6 +15,15 @@ use App\Http\Controllers\Controller;
 
 class MasterController extends Controller
 {
+    public function login_index_get()
+    {
+        return view('panel.login_index');
+    }
+
+    public function login_index()
+    {
+        return view('panel.login_index');
+    }
     public function index()
     {
 

@@ -245,9 +245,11 @@
                                         value="{{ $customer->marital_status ?? '' }}">
                                 </td>
                                 <td style="padding:5px;" align="center">
-                                    <label>{{ $customer->marriage_date ?? 'N/A' }}</label>
+                                    <label>{{ $customer->marriage_date ?
+                                        \Carbon\Carbon::parse($customer->marriage_date)->format('d/m/y') : 'N/A'
+                                        }}</label>
                                     <input type="hidden" name="client_marriage_date_pre[]"
-                                        value="{{ $customer->marriage_date ?? '' }}">
+                                        value="{{ $customer->marriage_date ? \Carbon\Carbon::parse($customer->marriage_date)->format('d/m/y') : 'N/A' }}">
                                 </td>
                                 <td style="padding:5px;" align="center">
                                     <label>{{ $customer->branch_name->branch ?? $customer->branch_id ?? 'N/A' }}</label>
@@ -286,8 +288,8 @@
                                         value="{{ $customer->pan_no ?? '' }}">
                                 </td>
                                 <td style="text-align:center; color:#FF0000">
-                                    <button type="button" class="delete-client-btn_pre"
-                                        style="border:none; background:none;">
+                                    <button type="button" data-id="{{ $customer->id ?? '' }}"
+                                        class="delete-client-btn_pre" style="border:none; background:none;">
                                         <i class="fa fa-trash-o"></i>
                                     </button>
                                 </td>
@@ -507,8 +509,8 @@
                                             <input type="hidden" name="nominee_pan_pre[]" value="{{ $nominee->pan }}">
                                         </td>
                                         <td style="text-align:center; color:#FF0000">
-                                            <button type="button" class="delete-client-btn_pre"
-                                                style="border:none; background:none;">
+                                            <button type="button" data-id="{{ $nominee->id ?? '' }}"
+                                                class="delete-client-btn_pre" style="border:none; background:none;">
                                                 <i class="fa fa-trash-o"></i>
                                             </button>
                                         </td>
@@ -666,8 +668,9 @@
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="booking_date"
-                                                value="{{ $inquiry->booking_date ?? '' }}" name="booking_date"
-                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
+                                                value="{{ $inquiry->booking_date ? \Carbon\Carbon::parse($inquiry->booking_date)->format('d/m/y') : 'N/A' }}"
+                                                name="booking_date" class="form-control datepicker"
+                                                placeholder="DD-MM-YYYY" required />
                                             <div class="" style="padding: 5px;">
                                                 <span class="input-group-text" style="font-size: 20px;  "><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
@@ -680,8 +683,9 @@
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="aggriment_date"
-                                                value="{{ $inquiry->aggriment_date ?? '' }}" name="aggriment_date"
-                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
+                                                value="{{ $inquiry->aggriment_date ? \Carbon\Carbon::parse($inquiry->aggriment_date)->format('d/m/y') : 'N/A' }}"
+                                                name="aggriment_date" class="form-control datepicker"
+                                                placeholder="DD-MM-YYYY" required />
                                             <div class="" style="padding: 5px;">
                                                 <span class="input-group-text" style="font-size: 20px;  "><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
@@ -703,8 +707,8 @@
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="emi_start_date" name="emi_start_date"
-                                                value="{{ $inquiry->emi_start_date }}" class="form-control datepicker"
-                                                placeholder="DD-MM-YYYY" required />
+                                                value="{{ $inquiry->emi_start_date ? \Carbon\Carbon::parse($inquiry->emi_start_date)->format('d/m/y') : 'N/A' }}"
+                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
                                             <div class="" style="padding: 5px;">
                                                 <span class="input-group-text" style="font-size: 20px;  "><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
@@ -1452,7 +1456,7 @@ row.parentNode.removeChild(row);
                         <input type="hidden" name="nominee_pan[]" value="${nomineePAN}">
                     </td>
                     <td style="text-align:center; color:#FF0000">
-                        <button type="button" class="delete-client-btn_pre" style="border:none; background:none;">
+                        <button type="button" class="delete-nominee-btn_pre" style="border:none; background:none;">
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </td>
@@ -1475,6 +1479,65 @@ row.parentNode.removeChild(row);
             if (e.target && (e.target.matches('.delete-nominee-btn') || e.target.matches('.delete-nominee-btn i'))) {
                 const row = e.target.closest('tr');
                 row.parentNode.removeChild(row);
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.delete-nominee-btn_pre').click(function() {
+            const nomineeId = $(this).data('id');
+            const row = $(this).closest('tr');
+
+            if (confirm('Are you sure you want to delete this nominee?')) {
+                $.ajax({
+                    url: '{{ route("delete.nominee", ":id") }}'.replace(':id', nomineeId),
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            row.remove();
+                            alert('Nominee deleted successfully.');
+                        } else {
+                            alert('Failed to delete nominee. ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred while deleting the nominee. Please try again.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('.delete-client-btn_pre').click(function() {
+            const clientId = $(this).data('id');
+            const row = $(this).closest('tr');
+
+            if (confirm('Are you sure you want to delete this client?')) {
+                $.ajax({
+                    url: '{{ route("delete.client", ":id") }}'.replace(':id', clientId),
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            row.remove();
+                            alert('Client deleted successfully.');
+                        } else {
+                            alert('Failed to delete client. ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred while deleting the client. Please try again.');
+                    }
+                });
             }
         });
     });

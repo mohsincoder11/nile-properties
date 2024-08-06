@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Nile-Properties Login</title>
-    <link rel="icon" href="../../logo/favicon.png" type="image/x-icon" />
+    <link rel="icon" href="{{asset('panel/logo/favicon.png')}}" type="image/x-icon" />
     <style>
         html {
             height: 100%;
@@ -14,7 +14,7 @@
             padding: 0;
             font-family: sans-serif;
             /* background: linear-gradient(#141e30, #243b55); */
-            background-image: url('../../img/bg_new.jpg');
+            background-image: url("{{ asset('panel/img/bg_new.jpg') }}");
             background-size: 100% 100%;
         }
 
@@ -195,18 +195,18 @@
 
         <h2>Login</h2>
 
-        <form>
-
+        <form action="{{ route('user_check') }}" method="POST">
+            @csrf
             <div class="user-box">
-                <input type="text" name="" required="">
+                <input type="text" name="email" required="">
                 <label>Username</label>
             </div>
             <div class="user-box">
-                <input type="password" name="" required="">
+                <input type="password" name="password" required="">
                 <label>Password</label>
             </div>
             <div style="text-align: center;">
-                <a href="#">
+                <a href="#" onclick="event.preventDefault(); this.closest('form').submit();">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -214,7 +214,6 @@
                     LOGIN
                 </a>
             </div>
-
         </form>
     </div>
 

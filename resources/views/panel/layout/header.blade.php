@@ -321,7 +321,7 @@
                         </li>
                         <li><a href="{{ route('role') }}"><span class="fa fa-plus"></span>User Permission</a></li>
                         <li><a href="#"><span class="fa fa-plus"></span>User Logs</a></li>
-                        <li><a href="#"><span class="fa fa-sign-out"></span>Logout</a></li>
+                        <li><a href="{{ route('logout') }}"><span class="fa fa-sign-out"></span>Logout</a></li>
                     </ul>
                 </li>
 
@@ -331,7 +331,7 @@
                 <!-- MESSAGES -->
                 <li class="xn-icon-button pull-right"
                     style="margin-right:25px; min-width:100px; color:#FFFFFF; padding-top:20px;">
-                    Welcome, Admin
+                    Welcome, {{ Auth::user()->name ?? '' }}
                 </li>
 
             </ul>
