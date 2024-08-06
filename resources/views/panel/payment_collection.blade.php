@@ -307,22 +307,39 @@
         <div class="col-md-12" style="margin-top:1vh;">
             <div class="panel panel-default">
                 <h5 class="panel-title"
-                    style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
+                    style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px; margin-top: 1vh;"
                     align="center">
-                    <i class="fa fa-file"></i> &nbsp;Registration Document
+                    <i class="fa fa-file"></i> &nbsp;Registration Document Uploads
                 </h5>
             </div>
 
-            <div class="col-md-2" style="margin-top:5px;"></div>
-            <div class="col-md-3" style="margin-top:5px;">
-                <label>Registration Receipt <span style="color: red;">(File not available)</span></label>
-
-            </div>
-            <div class="col-md-1" style="margin-top:5px;"></div>
-            <div class="col-md-3" style="margin-top:5px;">
-                <label>Selected Scan Copies <span style="color: red;">(File not available)</span></label>
-
-            </div>
+            <form action="{{ route('upload.documents') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <!-- Include CSRF token for Laravel -->
+                <div class="row">
+                    <div class="col-md-2" style="margin-top:5px;"></div>
+                    <input type="hidden" class="form-control" name="project_id" id="other_project_id" placeholder=""
+                        required />
+                    <input type="hidden" class="form-control" name="plot_id" id="other_plot_id" placeholder=""
+                        required />
+                    <input type="hidden" class="form-control" name="client_id" id="other_client_id" placeholder=""
+                        required />
+                    <input type="hidden" class="form-control" name="firm_id" id="other_firm_id" placeholder=""
+                        required />
+                    <div class="col-md-3" style="margin-top:5px;">
+                        <label for="registration_receipt">Registration Receipt</label>
+                        <input type="file" class="form-control" name="documents[]" multiple>
+                    </div>
+                    <div class="col-md-1" style="margin-top:5px;"></div>
+                    <div class="col-md-3" style="margin-top:5px;">
+                        <label for="selected_scan_copies">Selected Scan Copies</label>
+                        <input type="file" class="form-control" name="documents[]" multiple>
+                    </div>
+                    <div class="col-md-2" style="margin-top:21px;">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <div class="col-md-12" style="margin-top:1vh;">
@@ -340,226 +357,205 @@
                         <th style="text-align:center">Updated By</th>
                         <th style="text-align:center">Updated Date</th>
                         <th style="text-align:center">Download</th>
-                        <!-- <th  style="text-align:center">Payment Mode</th>
-                                    <th  style="text-align:center">Reference Number</th>
-                                    <th  style="text-align:center">Paid Amount</th>
-
-                                    <th  style="text-align:center">Action</th> -->
                     </tr>
-
-
-                    <!-- <tr>
-                                    <td style="padding:5px;" align="center">
-                                        <label>Payment made towards</label>
-                                    </td>
-                                    <td style="padding:5px;" align="center">
-                                        <label>22-03-2024</label>
-                                    </td>
-                                    <td style="padding:5px;" align="center">
-                                        <label>650000</label>
-                                    </td>
-                                    <td style="padding:5px;" align="center">
-                                        <label>24-03-2024</label>
-                                    </td>
-
-                                </tr> -->
-
+                    <tbody id="documents-table-body">
+                        <!-- Dynamic content will be inserted here -->
+                    </tbody>
                 </table>
             </div>
         </div>
-    </div>
-    <div style="position: fixed; bottom: 0; width: 100%;">
-        <div class="col-md-12" style="width: 100%;">
-            <div class="col-md-6" style="float: left; width: 50%;">
-                @if ($errors->any())
-                <div id="successscript" class="alert alert-danger mt-2"
-                    style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #d6dad6; padding: 10px; border-radius: 5px;">
-                    <ul style="margin: 0; padding: 0; list-style-type: none;">
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+        <div style="position: fixed; bottom: 0; width: 100%;">
+            <div class="col-md-12" style="width: 100%;">
+                <div class="col-md-6" style="float: left; width: 50%;">
+                    @if ($errors->any())
+                    <div id="successscript" class="alert alert-danger mt-2"
+                        style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #d6dad6; padding: 10px; border-radius: 5px;">
+                        <ul style="margin: 0; padding: 0; list-style-type: none;">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </div>
-                @endif
-            </div>
-            <div class="col-md-6" style="float: left; width: 50%;">
-                @if(session('success'))
-                <div id="successscript" class="alert alert-success"
-                    style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #abafab; padding: 10px; border-radius: 5px;">
-                    {{ session('success') }}
+                <div class="col-md-6" style="float: left; width: 50%;">
+                    @if(session('success'))
+                    <div id="successscript" class="alert alert-success"
+                        style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #abafab; padding: 10px; border-radius: 5px;">
+                        {{ session('success') }}
+                    </div>
+                    @endif
                 </div>
-                @endif
             </div>
         </div>
     </div>
-</div>
 
 
-<!-- payment store model  start -->
-<!-- Store Installment Modal -->
-<div class="modal fade" id="storeInstallmentModal" tabindex="-1" role="dialog"
-    aria-labelledby="storeInstallmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="storeInstallmentModalLabel">Store Installment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="storeInstallmentForm" autocomplete="off" role="form" method="POST">
-                    @csrf
-                    <input type="hidden" id="initial_enquiry_id" name="initial_enquiry_id" value="">
-                    <input type="hidden" id="installment" name="installment" value="">
+    <!-- payment store model  start -->
+    <!-- Store Installment Modal -->
+    <div class="modal fade" id="storeInstallmentModal" tabindex="-1" role="dialog"
+        aria-labelledby="storeInstallmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="storeInstallmentModalLabel">Store Installment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="storeInstallmentForm" autocomplete="off" role="form" method="POST">
+                        @csrf
+                        <input type="hidden" id="initial_enquiry_id" name="initial_enquiry_id" value="">
+                        <input type="hidden" id="installment" name="installment" value="">
 
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Date <font color="#FF0000">*</font></label>
-                            <input type="date" id="date2" class="form-control" name="date" required>
-                        </div>
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Date <font color="#FF0000">*</font></label>
+                                <input type="date" id="date2" class="form-control" name="date" required>
+                            </div>
 
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Payment Type <font color="#FF0000">*</font></label>
-                            <select id="payment_type2" class="form-control select" data-live-search="true"
-                                name="payment_type" required>
-                                <option value="">Select</option>
-                                <option value="Cash">Cash</option>
-                                <option value="Cheque">Cheque</option>
-                                <option value="NEFT / RTGS">NEFT / RTGS</option>
-                                <option value="UPI / WALLET">UPI / WALLET</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Amount <font color="#FF0000">*</font></label>
-                            <input type="number" class="form-control" id="paid_amount2" name="paid_amount" required>
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Payment Type <font color="#FF0000">*</font></label>
+                                <select id="payment_type2" class="form-control select" data-live-search="true"
+                                    name="payment_type" required>
+                                    <option value="">Select</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Cheque">Cheque</option>
+                                    <option value="NEFT / RTGS">NEFT / RTGS</option>
+                                    <option value="UPI / WALLET">UPI / WALLET</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Bank Name</label>
-                            <input type="text" id="bank_name2" class="form-control" name="bank_name">
-                        </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Amount <font color="#FF0000">*</font></label>
+                                <input type="number" class="form-control" id="paid_amount2" name="paid_amount" required>
+                            </div>
 
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Acc No</label>
-                            <input type="text" id="account_no2" class="form-control" name="account_no">
-                        </div>
-
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Cheque No</label>
-                            <input type="text" id="cheque_no2" class="form-control" name="cheque_no">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>IFSC</label>
-                            <input type="text" id="ifsc2" class="form-control" name="ifsc">
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Bank Name</label>
+                                <input type="text" id="bank_name2" class="form-control" name="bank_name">
+                            </div>
                         </div>
 
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Remark</label>
-                            <input type="text" id="remark2" class="form-control" name="remark">
-                        </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Acc No</label>
+                                <input type="text" id="account_no2" class="form-control" name="account_no">
+                            </div>
 
-                    <div class="row">
-                        <div class="col-md-12" style="margin-top:30px;" align="center">
-                            <button type="button" id="submitForm" class="btn btn-primary">
-                                <i class="fa fa-save"></i> Submit
-                            </button>
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Cheque No</label>
+                                <input type="text" id="cheque_no2" class="form-control" name="cheque_no">
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- payment store model  end -->
 
-<!-- payment edit model  start -->
-<!-- Edit Installment Modal -->
-<div class="modal fade" id="editInstallmentModal" tabindex="-1" role="dialog"
-    aria-labelledby="editInstallmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editInstallmentModalLabel">Edit Installment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editInstallmentForm" autocomplete="off" role="form" action="{{ route('update_installment') }}"
-                    method="POST">
-                    @csrf
-                    <input type="hidden" id="initial_enquiry_id_one" name="initial_enquiry_id">
-                    <input type="hidden" id="installment_one" name="installment">
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Date <font color="#FF0000">*</font></label>
-                            <input type="date" id="date1" class="form-control" name="date" required>
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>IFSC</label>
+                                <input type="text" id="ifsc2" class="form-control" name="ifsc">
+                            </div>
+
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Remark</label>
+                                <input type="text" id="remark2" class="form-control" name="remark">
+                            </div>
                         </div>
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Payment Type <font color="#FF0000">*</font></label>
-                            <select id="payment_type1" class="form-control select" data-live-search="true"
-                                name="payment_type" required>
-                                <option value="">Select</option>
-                                <option value="Cash">Cash</option>
-                                <option value="Cheque">Cheque</option>
-                                <option value="NEFT / RTGS">NEFT / RTGS</option>
-                                <option value="UPI / WALLET">UPI / WALLET</option>
-                            </select>
+
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:30px;" align="center">
+                                <button type="button" id="submitForm" class="btn btn-primary">
+                                    <i class="fa fa-save"></i> Submit
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Amount <font color="#FF0000">*</font></label>
-                            <input type="number" class="form-control" id="paid_amount1" name="paid_amount" required>
-                        </div>
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Bank Name</label>
-                            <input type="text" id="bank_name1" class="form-control" name="bank_name">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Acc No</label>
-                            <input type="text" id="account_no1" class="form-control" name="account_no">
-                        </div>
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Cheque No</label>
-                            <input type="text" id="cheque_no1" class="form-control" name="cheque_no">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>IFSC</label>
-                            <input type="text" id="ifsc1" class="form-control" name="ifsc">
-                        </div>
-                        <div class="col-md-6" style="margin-top:15px;">
-                            <label>Remark</label>
-                            <input type="text" id="remark1" class="form-control" name="remark">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12" style="margin-top:30px;" align="center">
-                            <button type="button" id="submitEditForm" name="submit" class="btn btn-primary">
-                                <i class="fa fa-save"></i> Edit
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- payment edit model  end -->
+    <!-- payment store model  end -->
+
+    <!-- payment edit model  start -->
+    <!-- Edit Installment Modal -->
+    <div class="modal fade" id="editInstallmentModal" tabindex="-1" role="dialog"
+        aria-labelledby="editInstallmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editInstallmentModalLabel">Edit Installment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editInstallmentForm" autocomplete="off" role="form"
+                        action="{{ route('update_installment') }}" method="POST">
+                        @csrf
+                        <input type="hidden" id="initial_enquiry_id_one" name="initial_enquiry_id">
+                        <input type="hidden" id="installment_one" name="installment">
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Date <font color="#FF0000">*</font></label>
+                                <input type="date" id="date1" class="form-control" name="date" required>
+                            </div>
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Payment Type <font color="#FF0000">*</font></label>
+                                <select id="payment_type1" class="form-control select" data-live-search="true"
+                                    name="payment_type" required>
+                                    <option value="">Select</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Cheque">Cheque</option>
+                                    <option value="NEFT / RTGS">NEFT / RTGS</option>
+                                    <option value="UPI / WALLET">UPI / WALLET</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Amount <font color="#FF0000">*</font></label>
+                                <input type="number" class="form-control" id="paid_amount1" name="paid_amount" required>
+                            </div>
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Bank Name</label>
+                                <input type="text" id="bank_name1" class="form-control" name="bank_name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Acc No</label>
+                                <input type="text" id="account_no1" class="form-control" name="account_no">
+                            </div>
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Cheque No</label>
+                                <input type="text" id="cheque_no1" class="form-control" name="cheque_no">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>IFSC</label>
+                                <input type="text" id="ifsc1" class="form-control" name="ifsc">
+                            </div>
+                            <div class="col-md-6" style="margin-top:15px;">
+                                <label>Remark</label>
+                                <input type="text" id="remark1" class="form-control" name="remark">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:30px;" align="center">
+                                <button type="button" id="submitEditForm" name="submit" class="btn btn-primary">
+                                    <i class="fa fa-save"></i> Edit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- payment edit model  end -->
 </div>
 
 @stop
@@ -816,5 +812,73 @@
             $('#other_firm_id').val($(this).val());
         });
     });
+</script>
+<script>
+    $(document).ready(function() {
+    $('form').on('submit', function(e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: "{{ route('upload.documents') }}",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                $('#documents-table-body').empty();
+                data.forEach(function(item) {
+                    var row = `
+                        <tr>
+                            <td style="padding:5px;" align="center">${item.document_name}</td>
+                            <td style="padding:5px;" align="center">test</td>
+                            <td style="padding:5px;" align="center">${new Date(item.created_at).toLocaleDateString()}</td>
+                            <td style="padding:5px;" align="center">
+                                <a href="/storage/${item.document_name}" download>
+                                    <i class="fa fa-download"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                    $('#documents-table-body').append(row);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('There was a problem with the AJAX request:', error);
+            }
+        });
+    });
+
+    function loadDocuments() {
+        $.ajax({
+            url: "{{ route('get.documents') }}",
+            type: 'GET',
+            success: function(data) {
+                $('#documents-table-body').empty();
+                data.forEach(function(item) {
+                    var row = `
+                        <tr>
+                            <td style="padding:5px;" align="center">${item.document_name}</td>
+                            <td style="padding:5px;" align="center">test</td>
+                            <td style="padding:5px;" align="center">${new Date(item.created_at).toLocaleDateString()}</td>
+                            <td style="padding:5px;" align="center">
+                                <a href="/storage/${item.document_name}" download>
+                                    <i class="fa fa-download"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                    $('#documents-table-body').append(row);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('There was a problem with the AJAX request:', error);
+            }
+        });
+    }
+
+    loadDocuments();
+});
 </script>
 @endsection

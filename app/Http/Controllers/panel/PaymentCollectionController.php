@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
 use App\Models\OtherChargesForClient;
 use App\Models\FirmRegistrationMaster;
+use App\Models\PlotRegistrationDocumentByClient;
 
 class PaymentCollectionController extends Controller
 {
@@ -116,7 +117,28 @@ class PaymentCollectionController extends Controller
         return response()->json($result);
     }
 
+    public function documentstore(Request $request)
+    {
+        $documents = [];
 
+        if ($request->hasFile('documents')) {
+            foreach ($request->file('documents') as $file) {
+                $path = $file->store('documents', 'public');
+                $document = PlotRegistrationDocumentByClient::create([
+                    'document_name' => $path,
+                ]);
+                $documents[] = $document;
+            }
+        }
+
+        return response()->json($documents);
+    }
+
+    public function documentindex()
+    {
+        $documents = PlotRegistrationDocumentByClient::all();
+        return response()->json($documents);
+    }
 
     public function getClientProjectPlotDatatwo(Request $request)
     {

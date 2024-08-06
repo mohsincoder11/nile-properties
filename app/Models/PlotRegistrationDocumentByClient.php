@@ -12,5 +12,11 @@ class PlotRegistrationDocumentByClient extends Model
     protected $primarykey = 'id';
     protected $fillable = [
         'document_name',
+        'plot_id',
+
+        'firm_id',
+
+        'project_id',
+
     ];
 }

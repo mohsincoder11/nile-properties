@@ -325,11 +325,12 @@ Route::post('/initiatesale/store', [InitiatesellController::class, 'store'])->na
 Route::get('/inquiry-details', [InitiatesellController::class, 'showDetails'])->name('inquiry.details');
 Route::put('panel/initiate-sell/{id}', [InitiatesellController::class, 'update'])->name('panel.initiate-sell.update');
 
-Route::get('/ggetClientProjectPlotDatatwo', [PaymentCollectionController::class, 'getClientProjectPlotDatatwo'])->name('getClientProjectPlotDatatwo');
-
+Route::get('/getClientProjectPlotDatatwo', [PaymentCollectionController::class, 'getClientProjectPlotDatatwo'])->name('getClientProjectPlotDatatwo');
+Route::post('/upload-documents', [PaymentCollectionController::class, 'documentstore'])->name('upload.documents');
+Route::get('/get-documents', [PaymentCollectionController::class, 'documentindex'])->name('get.documents');
 Route::get('/get-client-project-plot-data', [PaymentCollectionController::class, 'getClientProjectPlotData'])->name('getClientProjectPlotData');
 Route::get('/search_payment_collection_agains_client', [PaymentCollectionController::class, 'search_payment_collection_agains_client'])->name('search_payment_collection_agains_client');
-Route::post('/store_payment_installment', [PaymentCollectionController::class, 'store_payment_installment'])->name('store_payment_installment');
+Route::post('/document_payment_installment', [PaymentCollectionController::class, 'store_payment_installment'])->name('store_payment_installment');
 Route::post('/update_installment', [PaymentCollectionController::class, 'update_installment'])->name('update_installment');
 Route::post('/othercharge_store', [PaymentCollectionController::class, 'othercharge_store'])->name('othercharge_store');
 Route::get('/get-other-charges', [PaymentCollectionController::class, 'getOtherCharges'])->name('get.other.charges');
