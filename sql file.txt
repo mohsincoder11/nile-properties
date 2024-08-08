@@ -48,10 +48,18 @@ CREATE TABLE `user_action_log` (
     `entity_type` VARCHAR(255) NULL,
     `details` TEXT NULL,
     `created_at` TIMESTAMP NULL DEFAULT NULL,
+
     `updated_at` TIMESTAMP NULL DEFAULT NULL,
+
 ) ;
 
 
 
 username = admin@gmail.com
 password = 1234567890
+
+
+
+07-08-2024
+ALTER TABLE `plot_transfer_histories` ADD `previous_enquiry_id` INT NOT NULL COMMENT 'when plot change existing enquiry id' AFTER `initial_enquiry_id`;
+
