@@ -239,21 +239,25 @@
                             <td>
                                 <div class="popover__wrapper">
                                     <a href="#">
-                                        <h2 class="popover__title">{{ $inquiry->square_ft?? '' }} sq ft</h2>
+                                        <h2 class="popover__title">{{ $inquiry->square_ft ?? '' }} sq ft</h2>
                                     </a>
                                     <div class="popover__content">
                                         <div class="modal-area">
-                                            <p>Open space<br>
+                                            <p>
+                                                <strong>East:</strong> {{ $inquiry->east ?? '' }}<br>
+                                                <strong>West:</strong> {{ $inquiry->west ?? '' }}<br>
+                                                <strong>North:</strong> {{ $inquiry->north ?? '' }}<br>
+                                                <strong>South:</strong> {{ $inquiry->south ?? '' }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                @if(!empty($inquiry->employee->name))
+                                @if(!empty($inquiry->employee_id))
                                 <div class="popover__wrapper">
                                     <a href="#">
-                                        <h2 class="popover__title">{{ $inquiry->employee->name }}</h2>
+                                        <h2 class="popover__title">{{ $inquiry->employee->name ?? ''}}</h2>
                                     </a>
                                     <div class="popover__content">
                                         <div class="modal-area">
@@ -263,10 +267,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                @elseif(!empty($inquiry->agent->name))
+                                @elseif(!empty($inquiry->agent_id))
                                 <div class="popover__wrapper">
                                     <a href="#">
-                                        <h2 class="popover__title">{{ $inquiry->agent->name }}</h2>
+                                        <h2 class="popover__title">{{ $inquiry->agent->name ?? '' }}</h2>
                                     </a>
                                     <div class="popover__content">
                                         <div class="modal-area">
@@ -279,7 +283,7 @@
                                 @else
                                 <div class="popover__wrapper">
                                     <a href="#">
-                                        <h2 class="popover__title">Direct Source :</h2>
+                                        <h2 class="popover__title">Direct Source</h2>
                                     </a>
                                     <div class="popover__content">
                                         <div class="modal-area">
@@ -319,15 +323,20 @@
                                     </button>
                                 </form>
                                 <div class="btn-group" role="group">
-                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa fa-exchange" style="margin-left:5px;"></i>
-                                      Plot Transfer
+                                        Plot Transfer
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                      <a class="dropdown-item" href="{{ route('plot.transfer',[$inquiry->id,1]  ) }}">Transfer User From Plot X to Y</a>
-                                      <a class="dropdown-item" href="{{ route('plot.transfer',[$inquiry->id,2]  ) }}">Transfer Plot From User X to Y</a>
+                                        <a class="dropdown-item"
+                                            href="{{ route('plot.transfer',[$inquiry->id,1]  ) }}">Transfer User From
+                                            Plot X to Y</a>
+                                        <a class="dropdown-item"
+                                            href="{{ route('plot.transfer',[$inquiry->id,2]  ) }}">Transfer Plot From
+                                            User X to Y</a>
                                     </div>
-                                  </div>
+                                </div>
                             </td>
                         </tr>
                         @endforeach

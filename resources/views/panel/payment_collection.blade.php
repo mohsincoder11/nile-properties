@@ -122,8 +122,8 @@
                                 <label>Select Firm</label>
                                 <select class="form-control select" id="firm-select" name="firm_id"
                                     data-live-search="true">
-                                    @foreach($firm as $city)
                                     <option value="">Select Firm</option>
+                                    @foreach($firm as $city)
                                     <option value="{{ $city->id }}">{{ $city->name }}</option>
                                     @endforeach
                                 </select>
@@ -139,6 +139,12 @@
                                         $project->project->project_name }}</option>
                                     @endforeach
                                 </select>
+
+                                {{-- <select id="project-select" name="project_id" class="form-control select"
+                                    data-live-search="true">
+                                    <option value="">Select Option</option>
+                                </select> --}}
+
                             </div>
                             <div class="col-md-2" style="margin-top:15px;">
                                 <label>Select Plot</label>
@@ -567,6 +573,30 @@
 @stop
 
 @section('js')
+<script>
+    $(document).ready(function() {$('#firm-select').on('change', function() {
+
+var firmId = $(this).val();
+if (firmId) {
+$.ajax({
+url: '{{ route("projects.by.firm", ["firm_id" => "FIRM_ID"]) }}'.replace('FIRM_ID', firmId),
+type: 'GET',
+dataType: 'json',
+success: function(data) {
+$('#project-select').empty(); // Clear the dropdown
+$('#project-select').append('<option value="">Select Option</option>');
+$.each(data, function(key, project) {
+$('#project-select').append('<option value="' + project.id + '">' + project.project_name + '</option>');
+});
+}
+});
+} else {
+$('#project-select').empty(); // Clear the dropdown
+$('#project-select').append('<option value="">Select Option</option>');
+}
+});
+});
+</script>
 <script>
     $(document).ready(function() {
     // Handle project select change

@@ -41,6 +41,11 @@
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #8dd510; "><i
                         class="fa fa-user"></i>Customer Registration</button>
             </a>
+            <a href="{{route('agrrementmaster')}}"> <button id="on" type="button" class="btn mjks"
+                    style="color:#FFFFFF; height:30px; width:auto;background-color: #d5cb10; "><i
+                        class="fa fa-user"></i>Agreement Master
+                </button>
+            </a>
 
         </div>
     </div>

@@ -55,3 +55,15 @@ CREATE TABLE `user_action_log` (
 
 username = admin@gmail.com
 password = 1234567890
+
+
+
+8/8/2024 table
+CREATE TABLE `agreement_master` (
+    `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `document_name` VARCHAR(255) NOT NULL,
+    `language` VARCHAR(255) NOT NULL,
+    `description` TEXT NULL,
+    `created_at` TIMESTAMP NULL DEFAULT NULL,
+    `updated_at` TIMESTAMP NULL DEFAULT NULL
+);

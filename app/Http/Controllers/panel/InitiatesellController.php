@@ -35,7 +35,7 @@ class InitiatesellController extends Controller
         $statuses = PlotSaleStatus::all();
         $employees = EmployeeRegistrationMaster::all();
         $agent = AgentRegistrationMaster::all();
-
+        $clients = CustomerRegistrationMaster::all();
         $occupation = Occupation::all();
         $branch = BranchMaster::all();
         $firm = FirmRegistrationMaster::all();
@@ -52,6 +52,7 @@ class InitiatesellController extends Controller
                 'occupation',
                 'branch',
                 'agent',
+                'clients',
             )
         );
     }
@@ -73,12 +74,14 @@ class InitiatesellController extends Controller
         $occupation = Occupation::all();
         $branch = BranchMaster::all();
         $firm = FirmRegistrationMaster::all();
+        $clients = CustomerRegistrationMaster::all();
 
 
 
         return view(
             'panel.initiate_sale_edit',
             compact(
+                'clients',
                 'inquiry',
                 'occupation',
                 'branch',
@@ -126,9 +129,47 @@ class InitiatesellController extends Controller
     }
     public function store(Request $request)
     {
+
+        $existingEnquiry = InitialEnquiry::where('project_id', $request->project_id)
+            ->where('firm_id', $request->firm_id)
+            ->where('plot_no', $request->plot_no)
+            ->first();
+
+        if ($existingEnquiry) {
+            return redirect()->back()->with('error', 'This plot is already taken.');
+        }
+
+        // Ensure all required fields are present
+        $requiredFields = [
+            'title',
+            'name',
+            'occupation_id',
+            'email',
+            'contact',
+            'city',
+            'pin_code',
+            'address',
+            'age',
+            'dob',
+            'marital_status',
+            'branch_id',
+            'aadhar_no',
+            'pan_no',
+        ];
+
+        foreach ($requiredFields as $field) {
+            if (!isset($request->$field) || !is_array($request->$field) || count($request->$field) === 0) {
+                return redirect()->back()->with('error', 'Please fill all required fields.');
+            }
+        }
+
+
+
         // Step 1: Store initial enquiry details
         $initialEnquiry = new InitialEnquiry();
         $initialEnquiry->project_id = $request->project_id;
+        $initialEnquiry->firm_id = $request->firm_id;
+
         $initialEnquiry->measurement = $request->Measurement;
         $initialEnquiry->square_meter = $request->square_meter;
         $initialEnquiry->square_ft = $request->square_ft;
@@ -168,17 +209,7 @@ class InitiatesellController extends Controller
         $initialEnquiry->south = $request->south;
         $initialEnquiry->save();
 
-        // Step 2: Store client details if not empty
-        if (!empty($request->name)) {
-            $clientsCount = count($request->name);
-            for ($i = 0; $i < $clientsCount; $i++) {
-                if (!empty($request->name[$i]) && !empty($request->contact[$i]) && !empty($request->address[$i])) {
-                    // Client details processing if necessary
-                }
-            }
-        }
-
-        // Step 3: Store nominee details if not empty
+        // Step 2: Store nominee details if not empty
         if (!empty($request->nominee_name)) {
             $nomineesCount = count($request->nominee_name);
             for ($i = 0; $i < $nomineesCount; $i++) {
@@ -196,6 +227,7 @@ class InitiatesellController extends Controller
             }
         }
 
+        // Generate EMI Payments
         $emiStartDate = Carbon::createFromFormat('d/m/Y', $request->emi_start_date);
         for ($i = 0; $i < $request->tenure; $i++) {
             $emiPayment = new EmiPaymentCollection();
@@ -227,6 +259,7 @@ class InitiatesellController extends Controller
                 continue; // Skip this iteration if any required fields are missing
             }
 
+            // Handle file uploads for aadhar and pan images
             $image_name_array = [];
             foreach ($request->aadhar as $key => $image) {
                 $extension = explode('/', mime_content_type($image))[1];
@@ -266,9 +299,7 @@ class InitiatesellController extends Controller
             $reg->aadhar_no = $request->aadhar_no[$index];
             $reg->pan = $panImages;
             $reg->pan_no = $request->pan_no[$index];
-
             $reg->save();
-
             $client = new ClientDetailInitial();
             $client->initial_enquiry_id = $initialEnquiry->id;
             $client->name = $request->name[$index];
@@ -276,18 +307,39 @@ class InitiatesellController extends Controller
             $client->address = $request->address[$index];
             $client->client_id = $reg->id;
             $client->save();
-        }
+            // Handle client details
+            if (isset($request->existing_client_id[$index]) && !empty($request->existing_client_id[$index])) {
+                $client = new ClientDetailInitial();
+                $client->initial_enquiry_id = $initialEnquiry->id;
+                $client->name = $request->name_existing[$index];
+                $client->phone = $request->contact_existing[$index];
+                $client->address = $request->address_existing[$index];
+                $client->client_id = $request->existing_client_id[$index];
+                $client->save();
+            }
 
-        //  dd(1);
+            // Check if `existing_client_id` is not set or is empty, then store new client details
+
+        }
+        // dd(1);
         return redirect()->back()->with('success', 'Data saved successfully.');
     }
+
 
     public function update(Request $request, $id)
     {
         //  dd($request->all());
+
         // Step 1: Update initial enquiry details
         $initialEnquiry = InitialEnquiry::find($id);
+        if (!$initialEnquiry) {
+            return redirect()->back()->with('error', 'Enquiry not found.');
+        }
+
+        // Update initial enquiry details
         $initialEnquiry->project_id = $request->project_id;
+        $initialEnquiry->firm_id = $request->firm_id;
+
         $initialEnquiry->measurement = $request->Measurement;
         $initialEnquiry->square_meter = $request->square_meter;
         $initialEnquiry->square_ft = $request->square_ft;
@@ -298,7 +350,7 @@ class InitiatesellController extends Controller
         $initialEnquiry->discount_type = $request->discount_type;
         $initialEnquiry->final_amount = $request->final_amount;
         $initialEnquiry->down_payment = $request->down_payment;
-        $initialEnquiry->balance_amount = $request->balence_amount;
+        $initialEnquiry->balance_amount = $request->balance_amount;
         $initialEnquiry->tenure = $request->tenure;
         $initialEnquiry->emi_amount = $request->emi_ammount;
         $initialEnquiry->booking_date = Carbon::createFromFormat('d/m/Y', $request->booking_date)->toDateString();
@@ -308,13 +360,9 @@ class InitiatesellController extends Controller
         $initialEnquiry->plot_sale_status = $request->plot_sale_status;
         $initialEnquiry->a_rate = $request->a_rate;
         $initialEnquiry->source_type = $request->source_type;
-        if ($request->has('employee')) {
-            $initialEnquiry->employee_id = $request->employee;
-        } elseif ($request->has('agent_id')) {
-            $initialEnquiry->agent_id = $request->agent_id;
-        } else {
-            $initialEnquiry->direct_sourse = 'yes';
-        }
+        $initialEnquiry->employee_id = $request->has('employee') ? $request->employee : null;
+        $initialEnquiry->agent_id = $request->has('agent_id') ? $request->agent_id : null;
+        $initialEnquiry->direct_sourse = $request->has('employee') || $request->has('agent_id') ? null : 'yes';
         $initialEnquiry->remark = $request->remark;
         $initialEnquiry->mauja = $request->mauja;
         $initialEnquiry->kh_no = $request->kh_no;
@@ -327,23 +375,38 @@ class InitiatesellController extends Controller
         $initialEnquiry->south = $request->south;
         $initialEnquiry->save();
 
-        // Step 2: Update client details if not empty
-        if (!empty($request->name)) {
-            // ClientDetailInitial::where('initial_enquiry_id', $id)->delete(); // Clear existing records
-            $clientsCount = count($request->name);
-            for ($i = 0; $i < $clientsCount; $i++) {
-                if (!empty($request->name[$i]) && !empty($request->contact[$i]) && !empty($request->address[$i])) {
-                    // Client details processing if necessary
-                }
+        // Step 2: Update EMI payments if no payment made for the first installment
+        $existingEmiPayments = EmiPaymentCollection::where('initial_enquiry_id', $id)
+            ->where('inst_no', 1)
+            ->whereNotNull('paid_amt')
+            ->exists();
+
+        if (!$existingEmiPayments) {
+            EmiPaymentCollection::where('initial_enquiry_id', $id)->delete();
+            $emiStartDate = Carbon::createFromFormat('d/m/Y', $request->emi_start_date);
+            for ($i = 0; $i < $request->tenure; $i++) {
+                $emiPayment = new EmiPaymentCollection();
+                $emiPayment->initial_enquiry_id = $initialEnquiry->id;
+                $emiPayment->inst_no = $i + 1;
+                $emiPayment->inst_amt = $request->emi_ammount;
+                $emiPayment->status = 'pending';
+                $emiPayment->edop = $emiStartDate->copy()->addMonths($i)->toDateString();
+                $emiPayment->save();
             }
         }
 
-        // Step 3: Update nominee details if not empty
+        // Step 3: Update nominee details if provided
         if (!empty($request->nominee_name)) {
-            // NomineeDetailInitial::where('initial_enquiry_id', $id)->delete(); // Clear existing records
             $nomineesCount = count($request->nominee_name);
             for ($i = 0; $i < $nomineesCount; $i++) {
-                if (!empty($request->nominee_name[$i]) && !empty($request->nominee_age[$i]) && !empty($request->nominee_relation[$i]) && !empty($request->nominee_dob[$i]) && !empty($request->nominee_aadhar[$i]) && !empty($request->nominee_pan[$i])) {
+                if (
+                    !empty($request->nominee_name[$i]) &&
+                    !empty($request->nominee_age[$i]) &&
+                    !empty($request->nominee_relation[$i]) &&
+                    !empty($request->nominee_dob[$i]) &&
+                    !empty($request->nominee_aadhar[$i]) &&
+                    !empty($request->nominee_pan[$i])
+                ) {
                     $nominee = new NomineeDetailInitial();
                     $nominee->initial_enquiry_id = $initialEnquiry->id;
                     $nominee->name = $request->nominee_name[$i];
@@ -357,103 +420,103 @@ class InitiatesellController extends Controller
             }
         }
 
-        // EmiPaymentCollection::where('initial_enquiry_id', $id)->delete(); // Clear existing records
-        $emiStartDate = Carbon::createFromFormat('d/m/Y', $request->emi_start_date);
-        for ($i = 0; $i < $request->tenure; $i++) {
-            $emiPayment = new EmiPaymentCollection();
-            $emiPayment->initial_enquiry_id = $initialEnquiry->id;
-            $emiPayment->inst_no = $i + 1;
-            $emiPayment->inst_amt = $request->emi_ammount;
-            $emiPayment->status = 'pending';
-            $emiPayment->edop = $emiStartDate->copy()->addMonths($i)->toDateString();
-            $emiPayment->save();
+        // Step 4: Update or create new client details
+        if (!empty($request->title)) { // Check if the title field is not empty
+            foreach ($request->title as $index => $title) {
+                if (
+                    !isset($title) ||
+                    !isset($request->name[$index]) ||
+                    !isset($request->occupation_id[$index]) ||
+                    !isset($request->email[$index]) ||
+                    !isset($request->contact[$index]) ||
+                    !isset($request->city[$index]) ||
+                    !isset($request->pin_code[$index]) ||
+                    !isset($request->address[$index]) ||
+                    !isset($request->age[$index]) ||
+                    !isset($request->dob[$index]) ||
+                    !isset($request->branch_id[$index]) ||
+                    !isset($request->aadhar_no[$index]) ||
+                    !isset($request->pan_no[$index])
+                ) {
+                    continue; // Skip this iteration if any required fields are missing
+                }
+
+                $aadharImages = $this->handleFileUploads($request->aadhar, 'customer_reg');
+                $panImages = $this->handleFileUploads($request->pan, 'customer_reg');
+
+                // Create a new customer registration record
+                $reg = new CustomerRegistrationMaster();
+                $reg->title = $title;
+                $reg->name = $request->name[$index];
+                $reg->occupation_id = $request->occupation_id[$index];
+                $reg->email = $request->email[$index];
+                $reg->contact = $request->contact[$index];
+                $reg->city = $request->city[$index];
+                $reg->pin_code = $request->pin_code[$index];
+                $reg->address = $request->address[$index];
+                $reg->age = $request->age[$index];
+                $reg->dob = Carbon::createFromFormat('d/m/Y', $request->dob[$index])->toDateString();
+                $reg->marital_status = $request->marital_status[$index];
+                $reg->marriage_date = $request->marriage_date[$index] ? Carbon::createFromFormat('d/m/Y', $request->marriage_date[$index])->toDateString() : null;
+                $reg->branch_id = $request->branch_id[$index];
+                $reg->aadhar = $aadharImages;
+                $reg->aadhar_no = $request->aadhar_no[$index];
+                $reg->pan = $panImages;
+                $reg->pan_no = $request->pan_no[$index];
+                $reg->save();
+
+                // Save client details
+                $client = new ClientDetailInitial();
+                $client->initial_enquiry_id = $initialEnquiry->id;
+                $client->name = $request->name[$index];
+                $client->phone = $request->contact[$index];
+                $client->address = $request->address[$index];
+                $client->client_id = $reg->id;
+                $client->save();
+            }
         }
 
-        // CustomerRegistrationMaster::whereIn('id', $initialEnquiry->clients->pluck('client_id'))->delete(); // Clear existing records
-        foreach ($request->title as $index => $title) {
-            // Check if any required fields are empty
-            if (
-                !isset($title) ||
-                !isset($request->name[$index]) ||
-                !isset($request->occupation_id[$index]) ||
-                !isset($request->email[$index]) ||
-                !isset($request->contact[$index]) ||
-                !isset($request->city[$index]) ||
-                !isset($request->pin_code[$index]) ||
-                !isset($request->address[$index]) ||
-                !isset($request->age[$index]) ||
-                !isset($request->dob[$index]) ||
-                !isset($request->branch_id[$index]) ||
-                !isset($request->aadhar_no[$index]) ||
-                !isset($request->pan_no[$index])
-            ) {
-                continue; // Skip this iteration if any required fields are missing
+        // Step 5: Handle existing clients if provided
+        if (!empty($request->existing_client_id)) { // Check if the existing_client_id field is not empty
+            foreach ($request->existing_client_id as $index => $existingClientId) {
+                if (!empty($existingClientId)) {
+                    $client = new ClientDetailInitial();
+                    $client->initial_enquiry_id = $initialEnquiry->id;
+                    $client->name = $request->name_existing[$index];
+                    $client->phone = $request->contact_existing[$index];
+                    $client->address = $request->address_existing[$index];
+                    $client->client_id = $existingClientId;
+                    $client->save();
+                }
             }
-
-            $image_name_array = [];
-            foreach ($request->aadhar as $key => $image) {
-                $extension = explode('/', mime_content_type($image))[1];
-                $data = base64_decode(substr($image, strpos($image, ',') + 1));
-                $imgname1 = 'e' . rand(000, 999) . $key . time() . '.' . $extension;
-                file_put_contents(public_path('customer_reg/') . '/' . $imgname1, $data);
-                $image_name_array[] = $imgname1;
-            }
-            $aadharImages = implode(',', $image_name_array);
-
-            $answerKey = [];
-            foreach ($request->pan as $key => $image) {
-                $extension = explode('/', mime_content_type($image))[1];
-                $data = base64_decode(substr($image, strpos($image, ',') + 1));
-                $imgname = 'e' . rand(000, 999) . $key . time() . '.' . $extension;
-                file_put_contents(public_path('customer_reg/') . '/' . $imgname, $data);
-                $answerKey[] = $imgname;
-            }
-            $panImages = implode(',', $answerKey);
-
-            // Create a new customer registration record
-            $reg = new CustomerRegistrationMaster();
-            $reg->title = $title;
-            $reg->name = $request->name[$index];
-            $reg->occupation_id = $request->occupation_id[$index];
-            $reg->email = $request->email[$index];
-            $reg->contact = $request->contact[$index];
-            $reg->city = $request->city[$index];
-            $reg->pin_code = $request->pin_code[$index];
-            $reg->address = $request->address[$index];
-            $reg->age = $request->age[$index];
-            $reg->dob = $request->dob[$index];
-            $reg->marital_status = $request->marital_status[$index];
-            $reg->marriage_date = $request->marriage_date[$index];
-            $reg->branch_id = $request->branch_id[$index];
-            $reg->aadhar = $aadharImages;
-            $reg->aadhar_no = $request->aadhar_no[$index];
-            $reg->pan = $panImages;
-            $reg->pan_no = $request->pan_no[$index];
-
-            $reg->save();
-
-            $client = new ClientDetailInitial();
-            $client->initial_enquiry_id = $initialEnquiry->id;
-            $client->name = $request->name[$index];
-            $client->phone = $request->contact[$index];
-            $client->address = $request->address[$index];
-            $client->client_id = $reg->id;
-
-            $client->save();
         }
+        // dd(1);
+        // Step 6: Redirect or return response
+        return redirect()->route('newsale')->with('success', 'Enquiry updated successfully.');
+    }
+    // Helper function
 
-        //  dd(1);
-        return redirect()->route('initiatesale')->with('success', 'Data updated successfully.');
+    // Helper function to handle file uploads
+    private function handleFileUploads($files, $directory)
+    {
+        $image_name_array = [];
+        foreach ($files as $key => $image) {
+            $extension = explode('/', mime_content_type($image))[1];
+            $data = base64_decode(substr($image, strpos($image, ',') + 1));
+            $imgname = 'e' . rand(000, 999) . $key . time() . '.' . $extension;
+            file_put_contents(public_path($directory) . '/' . $imgname, $data);
+            $image_name_array[] = $imgname;
+        }
+        return implode(',', $image_name_array);
     }
 
 
-    // public function store(Request $request)
+
+    // public function update(Request $request, $id)
     // {
-
-
     //     // dd($request->all());
-    //     // Step 1: Store initial enquiry details
-    //     $initialEnquiry = new InitialEnquiry();
+    //     // Step 1: Update initial enquiry details
+    //     $initialEnquiry = InitialEnquiry::find($id);
     //     $initialEnquiry->project_id = $request->project_id;
     //     $initialEnquiry->measurement = $request->Measurement;
     //     $initialEnquiry->square_meter = $request->square_meter;
@@ -482,7 +545,6 @@ class InitiatesellController extends Controller
     //     } else {
     //         $initialEnquiry->direct_sourse = 'yes';
     //     }
-
     //     $initialEnquiry->remark = $request->remark;
     //     $initialEnquiry->mauja = $request->mauja;
     //     $initialEnquiry->kh_no = $request->kh_no;
@@ -495,18 +557,20 @@ class InitiatesellController extends Controller
     //     $initialEnquiry->south = $request->south;
     //     $initialEnquiry->save();
 
-    //     // Step 2: Store client details if not empty
+    //     // Step 2: Update client details if not empty
     //     if (!empty($request->name)) {
+    //         // ClientDetailInitial::where('initial_enquiry_id', $id)->delete(); // Clear existing records
     //         $clientsCount = count($request->name);
     //         for ($i = 0; $i < $clientsCount; $i++) {
     //             if (!empty($request->name[$i]) && !empty($request->contact[$i]) && !empty($request->address[$i])) {
-
+    //                 // Client details processing if necessary
     //             }
     //         }
     //     }
 
-    //     // Step 3: Store nominee details if not empty
+    //     // Step 3: Update nominee details if not empty
     //     if (!empty($request->nominee_name)) {
+    //         // NomineeDetailInitial::where('initial_enquiry_id', $id)->delete(); // Clear existing records
     //         $nomineesCount = count($request->nominee_name);
     //         for ($i = 0; $i < $nomineesCount; $i++) {
     //             if (!empty($request->nominee_name[$i]) && !empty($request->nominee_age[$i]) && !empty($request->nominee_relation[$i]) && !empty($request->nominee_dob[$i]) && !empty($request->nominee_aadhar[$i]) && !empty($request->nominee_pan[$i])) {
@@ -523,7 +587,7 @@ class InitiatesellController extends Controller
     //         }
     //     }
 
-
+    //     // EmiPaymentCollection::where('initial_enquiry_id', $id)->delete(); // Clear existing records
     //     $emiStartDate = Carbon::createFromFormat('d/m/Y', $request->emi_start_date);
     //     for ($i = 0; $i < $request->tenure; $i++) {
     //         $emiPayment = new EmiPaymentCollection();
@@ -535,7 +599,7 @@ class InitiatesellController extends Controller
     //         $emiPayment->save();
     //     }
 
-
+    //     // CustomerRegistrationMaster::whereIn('id', $initialEnquiry->clients->pluck('client_id'))->delete(); // Clear existing records
     //     foreach ($request->title as $index => $title) {
     //         // Check if any required fields are empty
     //         if (
@@ -556,12 +620,7 @@ class InitiatesellController extends Controller
     //             continue; // Skip this iteration if any required fields are missing
     //         }
 
-
     //         $image_name_array = [];
-
-
-
-
     //         foreach ($request->aadhar as $key => $image) {
     //             $extension = explode('/', mime_content_type($image))[1];
     //             $data = base64_decode(substr($image, strpos($image, ',') + 1));
@@ -569,15 +628,9 @@ class InitiatesellController extends Controller
     //             file_put_contents(public_path('customer_reg/') . '/' . $imgname1, $data);
     //             $image_name_array[] = $imgname1;
     //         }
-
-
-
-
-
-
+    //         $aadharImages = implode(',', $image_name_array);
 
     //         $answerKey = [];
-
     //         foreach ($request->pan as $key => $image) {
     //             $extension = explode('/', mime_content_type($image))[1];
     //             $data = base64_decode(substr($image, strpos($image, ',') + 1));
@@ -585,12 +638,10 @@ class InitiatesellController extends Controller
     //             file_put_contents(public_path('customer_reg/') . '/' . $imgname, $data);
     //             $answerKey[] = $imgname;
     //         }
-
-
-
+    //         $panImages = implode(',', $answerKey);
 
     //         // Create a new customer registration record
-    //         $reg = new CustomerRegistrationMaster;
+    //         $reg = new CustomerRegistrationMaster();
     //         $reg->title = $title;
     //         $reg->name = $request->name[$index];
     //         $reg->occupation_id = $request->occupation_id[$index];
@@ -604,12 +655,13 @@ class InitiatesellController extends Controller
     //         $reg->marital_status = $request->marital_status[$index];
     //         $reg->marriage_date = $request->marriage_date[$index];
     //         $reg->branch_id = $request->branch_id[$index];
-    //         $reg->aadhar = $image_name_array;
+    //         $reg->aadhar = $aadharImages;
     //         $reg->aadhar_no = $request->aadhar_no[$index];
-    //         $reg->pan = $answerKey;
+    //         $reg->pan = $panImages;
     //         $reg->pan_no = $request->pan_no[$index];
 
     //         $reg->save();
+
     //         $client = new ClientDetailInitial();
     //         $client->initial_enquiry_id = $initialEnquiry->id;
     //         $client->name = $request->name[$index];
@@ -617,13 +669,12 @@ class InitiatesellController extends Controller
     //         $client->address = $request->address[$index];
     //         $client->client_id = $reg->id;
 
-
     //         $client->save();
     //     }
-    //     dd(1);
-    //     return redirect()->back()->with('success', 'Data saved successfully.');
-    // }
 
+    //     //  dd(1);
+    //     return redirect()->route('initiatesale')->with('success', 'Data updated successfully.');
+    // }
 
 
     public function delete($id)

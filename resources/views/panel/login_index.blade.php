@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -13,7 +14,6 @@
             margin: 0;
             padding: 0;
             font-family: sans-serif;
-            /* background: linear-gradient(#141e30, #243b55); */
             background-image: url("{{ asset('panel/img/bg_new.jpg') }}");
             background-size: 100% 100%;
         }
@@ -195,7 +195,7 @@
 
         <h2>Login</h2>
 
-        <form action="{{ route('user_check') }}" method="POST">
+        <form action="{{ route('user_check') }}" method="POST" id="loginForm">
             @csrf
             <div class="user-box">
                 <input type="text" name="email" required="">
@@ -216,7 +216,19 @@
             </div>
         </form>
     </div>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var inputs = document.querySelectorAll('.user-box input');
+            inputs.forEach(function(input) {
+                input.addEventListener('keypress', function(event) {
+                    if (event.keyCode === 13) {
+                        event.preventDefault();
+                        document.getElementById('loginForm').submit();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
