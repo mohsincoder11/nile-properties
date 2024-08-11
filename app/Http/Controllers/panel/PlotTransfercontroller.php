@@ -223,7 +223,7 @@ class PlotTransferController extends Controller
     public function user_transfer_plot_store(Request $request, $inquiry_id)
     {
         DB::beginTransaction();
-        // try {
+        try {
             // Step 1: Mark the old record as transferred
             InitialEnquiry::where('id', $inquiry_id)->where('is_transfer_plot', '0')->update(['is_transfer_plot' => 1]);
     
@@ -281,13 +281,13 @@ class PlotTransferController extends Controller
                     !isset($request->age[$index]) ||
                     !isset($request->dob[$index]) ||
                     !isset($request->branch_id[$index]) ||
-                    !isset($request->aadhar_no[$index]) ||
+                     !isset($request->aadhar_no[$index]) ||
                     !isset($request->pan_no[$index])
                 ) {
                     continue; // Skip this iteration if any required fields are missing
                 }
-    if(!isset($request->existing_customer_id[$index])){
 
+    if(!isset($request->existing_customer_id[$index])){
                 $image_name_array = [];
                 foreach ($request->aadhar as $key => $image) {
                     $extension = explode('/', mime_content_type($image))[1];
@@ -328,6 +328,12 @@ class PlotTransferController extends Controller
                     'pan' => $panImages,
                     'pan_no' => $request->pan_no[$index],
                 ]);
+                $client_id = $reg->id;
+
+            } else {
+                // Use existing customer ID
+                $client_id = $request->existing_customer_id[$index];
+            }
     
                 // Associate customer with new initial enquiry
                 ClientDetailInitial::create([
@@ -335,11 +341,12 @@ class PlotTransferController extends Controller
                     'name' => $request->name[$index],
                     'phone' => $request->contact[$index],
                     'address' => $request->address[$index],
-                    'client_id' => $reg->id,
+                    'client_id' => $client_id,
                 ]);
     
-                $newOwnerIds[] = $reg->id;
-            }
+                $newOwnerIds[] = $client_id;
+           
+
 
             }
     
@@ -356,11 +363,11 @@ class PlotTransferController extends Controller
             ])->whereIn('client_id', $previousOwners)->update(['is_transfer' => '1']);
         }
 
-        // Record the transfer history
         foreach ($previousOwners as $previousOwner) {
             foreach ($newOwnerIds as $newOwnerId) {
                 PlotTransferHistory::create([
                     'initial_enquiry_id' => $newInitialEnquiry->id,
+                    'previous_enquiry_id' => $inquiry_id,
                     'previous_owner_id' => $previousOwner,
                     'new_owner_id' => $newOwnerId,
                     'transfer_date' => now(),
@@ -372,11 +379,11 @@ class PlotTransferController extends Controller
             DB::commit();
     
             return redirect()->route('newsale')->with('success', 'Plot transferred successfully.');
-        // } catch (\Exception $e) {
-        //     DB::rollBack();
-        //     Log::error('Plot transfer failed: ' . $e->getMessage());
-        //     return redirect()->route('newsale')->with('error', 'Plot transfer failed: ' . $e->getMessage());
-        // }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Plot transfer failed: ' . $e->getMessage());
+            return redirect()->route('newsale')->with('error', 'Plot transfer failed: ' . $e->getMessage());
+        }
     }
     
 
