@@ -78,6 +78,8 @@ class ProjectEntryController extends Controller
     }
 
 
+
+
     public function index()
     {
         $firm = FirmRegistrationMaster::all();

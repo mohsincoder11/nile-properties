@@ -20,7 +20,78 @@
                         </h5>
 
                     </div>
+                    {{-- <h5 class="panel-title"
+                        style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
+                        align="center">
+                        <i class="fa fa-user"></i> &nbsp;Select Existing Customer Or New Customer
+                    </h5> --}}
 
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top: 2vh;">
+
+                            <div class="col-md-5"></div>
+                            <div class="col-md-2">
+                                <label class="control-label" style="margin-left: 5px;">Select
+                                    Existing
+                                    Customer<font color="#000099">
+                                    </font></label>
+                                {{-- <select id="client-select" class="form-control select" data-live-search="true">
+                                    <option value="">Select a client</option>
+                                    @foreach($enquiries as $enquiry)
+                                    <option value="{{ $enquiry->client_name->id }}"
+                                        data-client-name="{{ $enquiry->client_name->name }}"
+                                        data-client-phone="{{ $enquiry->client_name->contact }}"
+                                        data-client-address="{{ $enquiry->client_name->address }}"
+                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
+                                        {{ $enquiry->client_name->name }}
+                                    </option>
+                                    @endforeach
+                                </select> --}}
+                                <select id="client-select" class="form-control select" data-live-search="true">
+                                    <option value="">Select a client</option>
+                                    @foreach($clients as $client)
+                                    <option value="{{ $client->id ?? ''}}" data-client-name="{{ $client->name ?? ''}}"
+                                        data-client-phone="{{ $client->contact ?? ''}}"
+                                        data-client-address="{{ $client->address ?? ''}}"
+                                        data-client-sponsor="{{ $client->sponsor_id ?? '' ?? ''}}"
+                                        data-title="{{ $client->title ?? ''}}"
+                                        data-occupation="{{ $client->occupation_name->occupation ?? ''}}"
+                                        data-occupation-id="{{ $client->occupation_name->id ?? ''}}"
+                                        data-email="{{ $client->email ?? ''}}" data-city="{{ $client->city ?? ''}}"
+                                        data-pin-code="{{ $client->pin_code ?? ''}}" data-age="{{ $client->age ?? ''}}"
+                                        data-dob="{{ $client->dob ?? ''}}"
+                                        data-marriage-date="{{ $client->marriage_date ?? ''}}"
+                                        data-branch-id="{{ $client->branch_name->id ?? ''}}"
+                                        data-branch="{{ $client->branch_name->branch ?? ''}}"
+                                        data-aadhar="{{ $client->aadhar ?? ''}}"
+                                        data-aadhar-no="{{ $client->aadhar_no ?? ''}}"
+                                        data-pan="{{ $client->pan ?? ''}}" data-pan-no="{{ $client->pan_no ?? ''}}"
+                                        data-client-id="{{ $client->id ?? ''}}"
+                                        data-marital-status="{{ $client->marital_status ?? ''}}">
+                                        {{ $client->name ?? '' }}
+                                    </option>
+                                    @endforeach
+                                </select>
+
+
+
+
+                            </div>
+                            <div class="col-md-3">
+                                <button id="add-client-btn" type="button" class="btn mjks"
+                                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12" style="margin-top: 3vh;">
+                        <label class="control-label" style="text-align: center; display: block;">
+                            Fill New Customer Details<font color="#000099"></font>
+                        </label>
+                    </div>
                     <div class="row">
                         <div class="col-md-12" style="margin-top: 2vh;">
                             <table width="100%">
@@ -41,8 +112,8 @@
 
                                 <tr>
                                     <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" data-live-search="true" id="title"
-                                            name="title">
+                                        <select class="form-control select" data-live-search="true" id="title">
+                                            <option value="">Select Option</option>
                                             <option>Mr.</option>
                                             <option>Mrs.</option>
                                             <option>Ku.</option>
@@ -61,7 +132,7 @@
                                             {{-- <option>Govt</option>
                                             <option>Business</option>
                                             <option>Other</option> --}}
-                                            <option value="">--Select--</option>
+                                            <option value="">Select Option</option>
                                             @foreach ($occupation as $occupation_name)
                                             <option value="{{$occupation_name->occupation}}">
                                                 {{$occupation_name->occupation}}</option>
@@ -111,8 +182,9 @@
                                         </div>
                                     </td>
                                     <td style="padding:2px;">
-                                        <select id="marital_status" name="marital_status" id="marital_status"
-                                            class="form-control" onchange="toggleMarriageDate()">
+                                        <select id="marital_status" class="form-control"
+                                            onchange="toggleMarriageDate()">
+                                            <option value="">Select Option</option>
                                             <option value="single">Single</option>
                                             <option value="married">Married</option>
                                             <option value="divorced">Divorced</option>
@@ -122,14 +194,13 @@
                                     <td style="padding:2px;">
                                         <div style="width:100%;" class="input-group">
                                             <input type="date" id="marriage_date" class="form-control"
-                                                name="marriage_date" value="{{ old('marriage_date') }}" />
+                                                value="{{ old('marriage_date') }}" />
                                         </div>
                                     </td>
                                     <td style="padding:2px;">
                                         <select style="width:100%;" class="form-control select" data-live-search="true"
-                                            name="branch_id" id="branch_id">
-                                            <option value="">--Select--</option>
-                                            @foreach ($branch as $branch_name)
+                                            id="branch_id">
+                                            <option value="">Select Option</option> @foreach ($branch as $branch_name)
                                             <option value="{{$branch_name->branch}}">{{$branch_name->branch}}
                                             </option>
                                             @endforeach
@@ -194,6 +265,7 @@
                                 <td style="padding:5px;" align="center">
                                     <label>{{ $customer->title ?? 'N/A' }}</label>
                                     <input type="hidden" name="client_title_pre[]" value="{{ $customer->title ?? '' }}">
+                                    <input type="hidden" name="client_id_pre[]" value="{{ $customer->id ?? '' }}">
                                 </td>
                                 <td style="padding:5px;" align="center">
                                     <label>{{ $customer->name ?? 'N/A' }}</label>
@@ -234,10 +306,14 @@
                                     <input type="hidden" name="client_age_pre[]" value="{{ $customer->age ?? '' }}">
                                 </td>
                                 <td style="padding:5px;" align="center">
-                                    <label>{{ $customer->dob ? \Carbon\Carbon::parse($customer->dob)->format('d/m/y') :
-                                        'N/A' }}</label>
+                                    @if ($customer->dob && $customer->dob !== 'N/A')
+                                    <label>{{ \Carbon\Carbon::parse($customer->dob)->format('d/m/y') }}</label>
                                     <input type="hidden" name="client_dob_pre[]"
-                                        value="{{ $customer->dob ? \Carbon\Carbon::parse($customer->dob)->format('d/m/y') : 'N/A' }}">
+                                        value="{{ \Carbon\Carbon::parse($customer->dob)->format('d/m/y') }}">
+                                    @else
+                                    <label>N/A</label>
+                                    <input type="hidden" name="client_dob_pre[]" value="">
+                                    @endif
                                 </td>
                                 <td style="padding:5px;" align="center">
                                     <label>{{ $customer->marital_status ?? 'N/A' }}</label>
@@ -245,11 +321,15 @@
                                         value="{{ $customer->marital_status ?? '' }}">
                                 </td>
                                 <td style="padding:5px;" align="center">
-                                    <label>{{ $customer->marriage_date ?
-                                        \Carbon\Carbon::parse($customer->marriage_date)->format('d/m/y') : 'N/A'
+                                    @if ($customer->marriage_date && $customer->marriage_date !== 'N/A')
+                                    <label>{{ \Carbon\Carbon::parse($customer->marriage_date)->format('d/m/y')
                                         }}</label>
                                     <input type="hidden" name="client_marriage_date_pre[]"
-                                        value="{{ $customer->marriage_date ? \Carbon\Carbon::parse($customer->marriage_date)->format('d/m/y') : 'N/A' }}">
+                                        value="{{ \Carbon\Carbon::parse($customer->marriage_date)->format('d/m/y') }}">
+                                    @else
+                                    <label></label>
+                                    <input type="hidden" name="client_marriage_date_pre[]" value="">
+                                    @endif
                                 </td>
                                 <td style="padding:5px;" align="center">
                                     <label>{{ $customer->branch_name->branch ?? $customer->branch_id ?? 'N/A' }}</label>
@@ -259,7 +339,7 @@
                                 <td style="padding:5px;" align="center">
                                     @if($customer->aadhar)
                                     <a href="{{ asset('customer_reg/' . $customer->aadhar ?? '' ) }}" target="_blank">
-                                        <i style="background-color:rgb(4, 255, 0);" class="fa fa-file-pdf-o"></i>
+                                        <i style="background-color:red;" class="fa fa-file-pdf-o"></i>
                                     </a>
                                     @else
                                     <label>N/A</label>
@@ -275,7 +355,7 @@
                                 <td style="padding:5px;" align="center">
                                     @if($customer->pan)
                                     <a href="{{ asset('customer_reg/' . $customer->pan ?? '' ) }}" target="_blank">
-                                        <i style="background-color:red;" class="fa fa-file-pdf-o"></i>
+                                        <i style="background-color:blue;" class="fa fa-file-pdf-o"></i>
                                     </a>
                                     @else
                                     <label>N/A</label>
@@ -289,7 +369,7 @@
                                 </td>
                                 <td style="text-align:center; color:#FF0000">
                                     <button type="button" data-id="{{ $customer->id ?? '' }}"
-                                        class="delete-client-btn_pre" style="border:none; background:none;">
+                                        class="delete-client-btn_pre">
                                         <i class="fa fa-trash-o"></i>
                                     </button>
                                 </td>
@@ -431,6 +511,7 @@
                                     <td style="padding: 2px;" width="1%">
                                         <select class="form-control select" data-live-search="true"
                                             id="nominee-relation">
+                                            <option value="">Select Option</option>
                                             <option>Father</option>
                                             <option>Wife</option>
                                             <option>Mother</option>
@@ -440,7 +521,7 @@
                                     <td style="padding: 2px;" width="2%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="nominee-dob" class="form-control datepicker"
-                                                placeholder="DD-MM-YYYY" />
+                                                placeholder="DD/MM/YYYY" />
                                             <div class="input-group-append" style="padding: 5px;">
                                                 <span class="input-group-text" style="font-size: 20px;  "><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
@@ -496,7 +577,7 @@
                                         <td style="padding:5px;" align="center">
                                             <label>{{ \Carbon\Carbon::parse($nominee->dob)->format('d/m/y') }}
                                             </label>
-                                            <input type="hidden" name="nominee_dob_pre[]" value="{{ $nominee->dob ? \Carbon\Carbon::parse($nominee->dob)->format('d/m/y') : 'N/A' }}
+                                            <input type="hidden" name="nominee_dob_pre[]" value="{{ $nominee->dob ? \Carbon\Carbon::parse($nominee->dob)->format('d/m/y') : '' }}
 ">
                                         </td>
                                         <td style="padding:5px;" align="center">
@@ -510,7 +591,7 @@
                                         </td>
                                         <td style="text-align:center; color:#FF0000">
                                             <button type="button" data-id="{{ $nominee->id ?? '' }}"
-                                                class="delete-client-btn_pre" style="border:none; background:none;">
+                                                class="delete-client-btn_pre">
                                                 <i class="fa fa-trash-o"></i>
                                             </button>
                                         </td>
@@ -531,7 +612,7 @@
                         <div class="col-md-12" style="margin-top: 2vh;">
                             <table width="100%">
                                 <tr style="height:30px;">
-
+                                    <th width="2%">Firm</th>
                                     <th width="2%">Project</th>
                                     <th width="2%">Plot No.</th>
                                     <th width="1%">Measurement (ft x ft)</th>
@@ -546,13 +627,25 @@
 
 
                                 <tr>
+                                    <td style="padding: 2px;" width="2%">
+                                        <select id="firm-select" name="firm_id" class="form-control select"
+                                            data-live-search="true">
+                                            <option value="">Select Option</option>
+                                            @foreach($firm as $firm)
+                                            <option value="{{ $firm->id }}" @if($inquiry->firm_id == $firm->id) selected
+                                                @endif>
+                                                {{ $firm->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
 
                                     <td style="padding: 2px;" width="2%">
                                         <select id="project-select" name="project_id" class="form-control select"
                                             data-live-search="true">
+                                            <option value="">Select Option</option>
                                             @foreach($projects as $project)
-                                            <option value="{{ $project->id }}" data-project-id="{{ $project->id }}"
-                                                @if($enquiry->project_id == $project->id)
+                                            <option value="{{ $project->id }}" @if($inquiry->project_id == $project->id)
                                                 selected @endif>
                                                 {{ $project->project_name }}
                                             </option>
@@ -562,6 +655,7 @@
                                     <td style="padding: 2px;" width="2%">
                                         <select id="plot-select" name="plot_no" class="form-control select"
                                             data-live-search="true">
+                                            <option value="">Select Option</option>
                                             @foreach($enquiries as $enquiry)
                                             <option value="{{ $enquiry->plot_no ?? '' }}" @if($inquiry->plot_no ?? '' ==
                                                 $enquiry->plot_no ?? '') selected @endif>
@@ -646,8 +740,8 @@
                                             required />
                                     </td>
                                     <td id="balence_amount" style="padding: 2px;" width="1%">
-                                        <input type="hidden" value="{{ $inquiry->balence_amount ?? '' }}"
-                                            name="balence_amount" id="balence_amount_input">
+                                        <input type="hidden" value="{{ $inquiry->balance_amount ?? '' }}"
+                                            name="balance_amount" id="balence_amount_input">
                                         <label id="balence_amount_label" class="control-label">
                                             <font id="balence_amount_display" color="#ff0000"> {{
                                                 $inquiry->balance_amount ?? '' }}</font>
@@ -658,42 +752,42 @@
                                             name="tenure" placeholder="" oninput="calculateAmounts()" required />
                                     </td>
                                     <td id="emi_ammount" style="padding: 2px;" width="1%">
-                                        <input type="hidden" name="emi_ammount"
-                                            value="{{ $inquiry->emi_ammount ?? '' }}" id="emi_ammount_input">
+                                        <input type="hidden" name="emi_ammount" value="{{ $inquiry->emi_amount ?? '' }}"
+                                            id="emi_ammount_input">
                                         <label id="emi_ammount_label" class="control-label">
-                                            <font id="emi_ammount_display" color="#ff0000">{{ $inquiry->emi_amount ?? ''
+                                            <font id="emi_ammount_display" color="#ff0000">{{ $inquiry->emi_amount ??
+                                                ''
                                                 }}</font>
                                         </label>
                                     </td>
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="booking_date"
-                                                value="{{ $inquiry->booking_date ? \Carbon\Carbon::parse($inquiry->booking_date)->format('d/m/y') : 'N/A' }}"
+                                                value="{{ $inquiry->booking_date && $inquiry->booking_date !== 'N/A' ? \Carbon\Carbon::parse($inquiry->booking_date)->format('d/m/y') : '' }}"
                                                 name="booking_date" class="form-control datepicker"
-                                                placeholder="DD-MM-YYYY" required />
+                                                placeholder="DD/MM/YYYY" required />
                                             <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "><i
+                                                <span class="input-group-text" style="font-size: 20px;"><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </div>
-
-
                                     </td>
 
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="aggriment_date"
-                                                value="{{ $inquiry->aggriment_date ? \Carbon\Carbon::parse($inquiry->aggriment_date)->format('d/m/y') : 'N/A' }}"
+                                                value="{{ $inquiry->agreement_date && $inquiry->agreement_date !== 'N/A' ? \Carbon\Carbon::parse($inquiry->agreement_date)->format('d/m/y') : '' }}"
                                                 name="aggriment_date" class="form-control datepicker"
-                                                placeholder="DD-MM-YYYY" required />
+                                                placeholder="DD/MM/YYYY" required />
                                             <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "><i
+                                                <span class="input-group-text" style="font-size: 20px;"><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </div>
                                     </td>
                                     <td style="padding: 2px;" width="1%">
                                         <select class="form-control select" name="staus_token" data-live-search="true">
+                                            <option value="">Select Option</option>
                                             @foreach($tokenStatuses as $tokenStatus)
                                             <option value="{{ $tokenStatus->token }}" @if($inquiry->status_token ==
                                                 $tokenStatus->id) selected @endif>
@@ -707,10 +801,10 @@
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="emi_start_date" name="emi_start_date"
-                                                value="{{ $inquiry->emi_start_date ? \Carbon\Carbon::parse($inquiry->emi_start_date)->format('d/m/y') : 'N/A' }}"
-                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
+                                                value="{{ $inquiry->emi_start_date && $inquiry->emi_start_date !== 'N/A' ? \Carbon\Carbon::parse($inquiry->emi_start_date)->format('d/m/y') : '' }}"
+                                                class="form-control datepicker" placeholder="DD/MM/YYYY" required />
                                             <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "><i
+                                                <span class="input-group-text" style="font-size: 20px;"><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </div>
@@ -735,6 +829,7 @@
                                     <td style="padding: 2px;" width="1%">
                                         <select class="form-control select" data-live-search="true"
                                             id="plot_sale_status" name="plot_sale_status">
+                                            <option value="">Select Option</option>
                                             @foreach($statuses as $status)
                                             <option value="{{ $status->plot_sale_status }}" @if($inquiry->
                                                 plot_sale_status == $status->plot_sale_status) selected
@@ -750,28 +845,42 @@
                                     </td>
                                     <td style="padding: 2px;" width="2%">
                                         <input type="radio" id="agent_name" name="source_type" value="agent"
-                                            onclick="toggleEmployeeSelect()">
+                                            onclick="toggleEmployeeSelect()" {{ $inquiry->agent_id ? 'checked' : '' }}>
                                         <label for="agent_name">Agent Name</label>
+
                                         <input type="radio" id="executive_name" name="source_type" value="executive"
-                                            onclick="toggleEmployeeSelect()" checked>
+                                            onclick="toggleEmployeeSelect()" {{ $inquiry->employee_id &&
+                                        !$inquiry->direct_sourse ? 'checked' : '' }}>
                                         <label for="executive_name">Executive Name</label>
+
                                         <input type="radio" id="direct_sourse" name="source_type" value="direct"
-                                            onclick="toggleEmployeeSelect()">
+                                            onclick="toggleEmployeeSelect()" {{ $inquiry->direct_sourse ? 'checked' : ''
+                                        }}>
                                         <label for="direct_sourse">Direct Source</label>
                                     </td>
+
                                     <td id="agent-select-container" style="padding: 2px; width: 1%;">
                                         <select class="form-control select" data-live-search="true" id="agent-select"
-                                            name="agent_id">
+                                            name="agent_id" {{ $inquiry->agent_id
+                                            ? '' : 'disabled' }}>
+                                            <option value="">Select Option</option>
                                             @foreach($agent as $agent)
-                                            <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+                                            <option value="{{ $agent->id }}" {{ $inquiry->agent_id == $agent->id ?
+                                                'selected' : '' }}>
+                                                {{ $agent->name }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </td>
+
                                     <td id="employee-select-container" style="padding: 2px; width: 1%;">
                                         <select class="form-control select" data-live-search="true" id="employee-select"
-                                            name="employee">
+                                            name="employee" {{ $inquiry->employee_id && !$inquiry->direct_sourse ? '' :
+                                            'disabled' }}>
+                                            <option value="">Select Option</option>
                                             @foreach($employees as $employee)
-                                            <option value="{{ $employee->id }}">
+                                            <option value="{{ $employee->id }}" {{ $inquiry->employee_id ==
+                                                $employee->id ? 'selected' : '' }}>
                                                 {{ $employee->name }}
                                             </option>
                                             @endforeach
@@ -987,7 +1096,7 @@
     const aadhar_no = document.getElementById('aadhar_no').value;
     const pan_no = document.getElementById('pan_no').value;
 
-    const formattedMarriageDate = marriage_date ? marriage_date : 'N/A';
+    const formattedMarriageDate = marriage_date ? marriage_date : '';
 
     if (!title || !name || !occupation_id || !email || !contact || !city || !pin_code || !address || !age || !dob ||
     !branch_id || !aadhar_no || !pan_no) {
@@ -1031,20 +1140,19 @@
     <td><input type="hidden" name="branch_id[]" value="${branch_id}">${branch_id}</td>
     <td>
         <input type="hidden" name="aadhar[]" value="${aadharBase64}">
-        ${aadharFile ? aadharFile.name : 'N/A'}
+
         ${aadharFile ? `<a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o"
                 aria-hidden="true"></i></a>` : ''}
     </td>
     <td><input type="hidden" name="aadhar_no[]" value="${aadhar_no}">${aadhar_no}</td>
     <td>
         <input type="hidden" name="pan[]" value="${panBase64}">
-        ${panFile ? panFile.name : 'N/A'}
         ${panFile ? `<a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o"
                 aria-hidden="true"></i></a>` : ''}
     </td>
     <td><input type="hidden" name="pan_no[]" value="${pan_no}">${pan_no}</td>
     <td style="text-align:center; color:#FF0000">
-        <button class="delete-clients-btn"><i class="fa fa-trash-o"></i></button>
+        <button class="remove-row-btn"><i class="fa fa-trash-o"></i></button>
     </td>
     `;
 
@@ -1113,31 +1221,31 @@
 </script>
 <script>
     function toggleEmployeeSelect() {
-    const agentRadio = document.getElementById('agent_name');
-    const executiveRadio = document.getElementById('executive_name');
-    const directSourceRadio = document.getElementById('direct_sourse');
-    const agentSelect = document.getElementById('agent-select');
-    const employeeSelect = document.getElementById('employee-select');
+        const agentRadio = document.getElementById('agent_name');
+        const executiveRadio = document.getElementById('executive_name');
+        const directSourceRadio = document.getElementById('direct_sourse');
+        const agentSelect = document.getElementById('agent-select');
+        const employeeSelect = document.getElementById('employee-select');
 
-    if (agentRadio.checked) {
-    agentSelect.disabled = false;
-    employeeSelect.disabled = true;
-    employeeSelect.value = ""; // Clear executive dropdown value
-    } else if (executiveRadio.checked) {
-    agentSelect.disabled = true;
-    employeeSelect.disabled = false;
-    agentSelect.value = ""; // Clear agent dropdown value
-    } else if (directSourceRadio.checked) {
-    agentSelect.disabled = true;
-    employeeSelect.disabled = true;
-    agentSelect.value = ""; // Clear agent dropdown value
-    employeeSelect.value = ""; // Clear executive dropdown value
-    }
+        if (agentRadio.checked) {
+            agentSelect.disabled = false;
+            employeeSelect.disabled = true;
+            employeeSelect.value = ""; // Clear executive dropdown value
+        } else if (executiveRadio.checked) {
+            agentSelect.disabled = true;
+            employeeSelect.disabled = false;
+            agentSelect.value = ""; // Clear agent dropdown value
+        } else if (directSourceRadio.checked) {
+            agentSelect.disabled = true;
+            employeeSelect.disabled = true;
+            agentSelect.value = ""; // Clear agent dropdown value
+            employeeSelect.value = ""; // Clear executive dropdown value
+        }
     }
 
     // Call toggleEmployeeSelect on page load to set the initial state
     window.onload = function() {
-    toggleEmployeeSelect();
+        toggleEmployeeSelect();
     };
 </script>
 <script>
@@ -1391,7 +1499,7 @@ newRow.innerHTML = `
     <input type="hidden" name="client_sponsor[]" value="${clientSponsor}">
 </td>
 <td style="text-align:center; color:#FF0000">
-    <button type="button" class="delete-client-btn_pre" style="border:none; background:none;">
+    <button type="button" class="delete-client-btn_pre" >
         <i class="fa fa-trash-o"></i>
     </button>
 </td>
@@ -1414,7 +1522,7 @@ row.parentNode.removeChild(row);
     document.addEventListener('DOMContentLoaded', function () {
         // Initialize datepicker
         $('.datepicker').datepicker({
-            format: 'dd-mm-yyyy'
+            format: 'dd/mm/yyyy'
         });
 
         // Handle adding nominee details to the table
@@ -1456,7 +1564,7 @@ row.parentNode.removeChild(row);
                         <input type="hidden" name="nominee_pan[]" value="${nomineePAN}">
                     </td>
                     <td style="text-align:center; color:#FF0000">
-                        <button type="button" class="delete-nominee-btn_pre" style="border:none; background:none;">
+                        <button type="button" class="delete-nominee-btn_pre" >
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </td>
@@ -1541,5 +1649,134 @@ row.parentNode.removeChild(row);
             }
         });
     });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('add-client-btn').addEventListener('click', function () {
+        const clientSelect = document.getElementById('client-select');
+        const selectedOption = clientSelect.options[clientSelect.selectedIndex];
+
+        if (selectedOption.value !== '') {
+            const clientData = {
+                title: selectedOption.getAttribute('data-title'),
+                name: selectedOption.getAttribute('data-client-name'),
+                occupation_id: selectedOption.getAttribute('data-occupation-id'),
+                occupation: selectedOption.getAttribute('data-occupation'),
+                email: selectedOption.getAttribute('data-email'),
+                phone: selectedOption.getAttribute('data-client-phone'),
+                city: selectedOption.getAttribute('data-city'),
+                pinCode: selectedOption.getAttribute('data-pin-code'),
+                address: selectedOption.getAttribute('data-client-address'),
+                age: selectedOption.getAttribute('data-age'),
+                dob: selectedOption.getAttribute('data-dob'),
+                maritalStatus: selectedOption.getAttribute('data-marital-status'),
+                marriageDate: selectedOption.getAttribute('data-marriage-date'),
+                branch: selectedOption.getAttribute('data-branch'),
+                branch_id: selectedOption.getAttribute('data-branch-id'),
+                aadhar: selectedOption.getAttribute('data-aadhar'),
+                aadharNo: selectedOption.getAttribute('data-aadhar-no'),
+                pan: selectedOption.getAttribute('data-pan'),
+                panNo: selectedOption.getAttribute('data-pan-no'),
+                id: selectedOption.getAttribute('data-client-id')
+            };
+
+            const tableBody = document.getElementById('customerTableBody');
+            const newRow = document.createElement('tr');
+
+            // Define base URL for file access
+            const baseUrl = 'http://localhost/laravelwebmedia/nile-properties/public/customer_reg/';
+
+            newRow.innerHTML = `
+            <td style="padding:5px;" align="center">
+                <label>${clientData.title}</label>
+                <input type="hidden" name="title_existing[]" value="${clientData.title}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.name}</label>
+                <input type="hidden" name="name_existing[]" value="${clientData.name}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.occupation}</label>
+                <input type="hidden" name="occupation_id_existing[]" value="${clientData.occupation_id}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.email}</label>
+                <input type="hidden" name="email_existing[]" value="${clientData.email}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.phone}</label>
+                <input type="hidden" name="contact_existing[]" value="${clientData.phone}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.city}</label>
+                <input type="hidden" name="city_existing[]" value="${clientData.city}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.pinCode}</label>
+                <input type="hidden" name="pin_code_existing[]" value="${clientData.pinCode}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.address}</label>
+                <input type="hidden" name="address_existing[]" value="${clientData.address}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.age}</label>
+                <input type="hidden" name="age_existing[]" value="${clientData.age}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.dob}</label>
+                <input type="hidden" name="dob_existing[]" value="${clientData.dob}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.maritalStatus}</label>
+                <input type="hidden" name="marital_status_existing[]" value="${clientData.maritalStatus}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.marriageDate}</label>
+                <input type="hidden" name="marriage_date_existing[]" value="${clientData.marriageDate}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.branch}</label>
+                <input type="hidden" name="branch_id_existing[]" value="${clientData.branch_id}">
+            </td>
+            <td style="padding:5px;" align="center">
+                ${clientData.aadhar ? `<a href="${baseUrl}${clientData.aadhar}" target="_blank" download="aadhar">
+                    <i class="fa fa-file-pdf-o" style="background-color:red;" aria-hidden="true"></i> AADHAR
+                </a>` : 'N/A'}
+                <input type="hidden" name="aadhar_existing[]" value="${clientData.aadhar}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.aadharNo}</label>
+                <input type="hidden" name="aadhar_no_existing[]" value="${clientData.aadharNo}">
+            </td>
+            <td style="padding:5px;" align="center">
+                ${clientData.pan ? `<a href="${baseUrl}${clientData.pan}" target="_blank" download="pan">
+                    <i class="fa fa-file-pdf-o" style="background-color:blue;" aria-hidden="true"></i> PAN
+                </a>` : 'N/A'}
+                <input type="hidden" name="pan_existing[]" value="${clientData.pan}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.panNo}</label>
+                <input type="hidden" name="pan_no_existing[]" value="${clientData.panNo}">
+                <input type="hidden" name="existing_client_id[]" value="${clientData.id}">
+            </td>
+            <td style="text-align:center; color:#FF0000">
+                <button type="button" class="remove-row-btn"><i class="fa fa-trash-o"></i></button>
+            </td>
+            `;
+
+            tableBody.appendChild(newRow);
+        }
+    });
+
+    // Handle deleting client details from the table
+    document.querySelector('#customerTableBody').addEventListener('click', function (e) {
+        if (e.target && (e.target.matches('.remove-row-btn') || e.target.matches('.remove-row-btn i'))) {
+            const row = e.target.closest('tr');
+            row.parentNode.removeChild(row);
+        }
+    });
+});
 </script>
 @stop

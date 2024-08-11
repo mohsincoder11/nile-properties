@@ -219,7 +219,7 @@
             <ul class="x-navigation x-navigation-horizontal">
                 <li class="xn-logo" style="margin-right:30px;">
                     <a> <img src="{{asset('panel/logo/logo.png')}}" alt="" style="width: 80%;margin-top: -2vh;" /></a>
-                    <a href="#" class="x-navigation-control"></a>
+                    <a href="#." class="x-navigation-control"></a>
                 </li>
                 <li class="xn-profile">
                     <a href="('#" class="profile-mini">
@@ -260,7 +260,8 @@
                     </ul>
                 </li>
                 <li class="xn-openable">
-                    <a href="javascript:void(0)" id="Registration Process"><span class="fa fa-file-text"></span>Customer
+                    <a href="{{ route('initiatesale')}}" id="Registration Process"><span
+                            class="fa fa-file-text"></span>Customer
                         Stages</a>
                     <ul>
                         <li><a href="{{ route('registrationChecklist')}}"><span class="fa fa-plus"></span>Registration

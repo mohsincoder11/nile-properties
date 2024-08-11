@@ -137,6 +137,79 @@
                             <!-- Add more boxes as needed -->
                         </div>
                     </div>
+
+                    <h5 class="panel-title"
+                        style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
+                        align="center">
+                        <i class="fa fa-user"></i> &nbsp;Select Existing Customer Or New Customer
+                    </h5>
+
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top: 2vh;">
+
+                            <div class="col-md-5"></div>
+                            <div class="col-md-2">
+                                <label class="control-label" style="margin-left: 5px;">Select
+                                    Existing
+                                    Customer<font color="#000099">
+                                    </font></label>
+                                {{-- <select id="client-select" class="form-control select" data-live-search="true">
+                                    <option value="">Select a client</option>
+                                    @foreach($enquiries as $enquiry)
+                                    <option value="{{ $enquiry->client_name->id }}"
+                                        data-client-name="{{ $enquiry->client_name->name }}"
+                                        data-client-phone="{{ $enquiry->client_name->contact }}"
+                                        data-client-address="{{ $enquiry->client_name->address }}"
+                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
+                                        {{ $enquiry->client_name->name }}
+                                    </option>
+                                    @endforeach
+                                </select> --}}
+                                <select id="client-select" class="form-control select" data-live-search="true">
+                                    <option value="">Select a client</option>
+                                    @foreach($clients as $client)
+                                    <option value="{{ $client->id ?? ''}}" data-client-name="{{ $client->name ?? ''}}"
+                                        data-client-phone="{{ $client->contact ?? ''}}"
+                                        data-client-address="{{ $client->address ?? ''}}"
+                                        data-client-sponsor="{{ $client->sponsor_id ?? '' ?? ''}}"
+                                        data-title="{{ $client->title ?? ''}}"
+                                        data-occupation="{{ $client->occupation_name->occupation ?? ''}}"
+                                        data-occupation-id="{{ $client->occupation_name->id ?? ''}}"
+                                        data-email="{{ $client->email ?? ''}}" data-city="{{ $client->city ?? ''}}"
+                                        data-pin-code="{{ $client->pin_code ?? ''}}" data-age="{{ $client->age ?? ''}}"
+                                        data-dob="{{ $client->dob ?? ''}}"
+                                        data-marriage-date="{{ $client->marriage_date ?? ''}}"
+                                        data-branch-id="{{ $client->branch_name->id ?? ''}}"
+                                        data-branch="{{ $client->branch_name->branch ?? ''}}"
+                                        data-aadhar="{{ $client->aadhar ?? ''}}"
+                                        data-aadhar-no="{{ $client->aadhar_no ?? ''}}"
+                                        data-pan="{{ $client->pan ?? ''}}" data-pan-no="{{ $client->pan_no ?? ''}}"
+                                        data-client-id="{{ $client->id ?? ''}}"
+                                        data-marital-status="{{ $client->marital_status ?? ''}}">
+                                        {{ $client->name ?? '' }}
+                                    </option>
+                                    @endforeach
+                                </select>
+
+
+
+
+                            </div>
+                            <div class="col-md-3">
+                                <button id="add-client-btn" type="button" class="btn mjks"
+                                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12" style="margin-top: 3vh;">
+                        <label class="control-label" style="text-align: center; display: block;">
+                            Fill New Customer Details<font color="#000099"></font>
+                        </label>
+                    </div>
                     <div class="row">
                         <div class="col-md-12" style="margin-top: 2vh;">
                             <table width="100%">
@@ -159,6 +232,7 @@
                                     <td style="padding: 2px;" width="1%">
                                         <select class="form-control select" data-live-search="true" id="title"
                                             name="title">
+                                            <option value="">Select Option</option>
                                             <option>Mr.</option>
                                             <option>Mrs.</option>
                                             <option>Ku.</option>
@@ -177,9 +251,9 @@
                                             {{-- <option>Govt</option>
                                             <option>Business</option>
                                             <option>Other</option> --}}
-                                            <option value="">--Select--</option>
+                                            <option value="">Select Option</option>
                                             @foreach ($occupation as $occupation_name)
-                                            <option value="{{$occupation_name->occupation}}">
+                                            <option value="{{$occupation_name->id}}">
                                                 {{$occupation_name->occupation}}</option>
 
                                             @endforeach
@@ -228,8 +302,8 @@
                                     </td> --}}
                                     <td style="padding: 2px;">
                                         <div class="input-group" style="width:100%;">
-                                            <input type="text" id="dob" value="{{ old('marriage_date') }}" name="dob"
-                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
+                                            <input type="text" id="dob" value="{{ old('dob') }}" name="dob"
+                                                class="form-control datepicker" placeholder="DD/MM/YYYY" />
                                             <div class="" style="padding: 5px;">
                                                 <span class="input-group-text" style="font-size: 20px;  "></span>
                                             </div>
@@ -240,6 +314,7 @@
                                     <td style="padding:2px;">
                                         <select id="marital_status" name="marital_status" id="marital_status"
                                             class="form-control" onchange="toggleMarriageDate()">
+                                            <option value="">Select Option</option>
                                             <option value="single">Single</option>
                                             <option value="married">Married</option>
                                             <option value="divorced">Divorced</option>
@@ -256,7 +331,7 @@
                                         <div class="input-group" style="width:100%;">
                                             <input type="text" id="marriage_date" value="{{ old('marriage_date') }}"
                                                 name="marriage_date" class="form-control datepicker"
-                                                placeholder="DD-MM-YYYY" required />
+                                                placeholder="DD/MM/YYYY" />
                                             <div class="" style="padding: 5px;">
                                                 <span class="input-group-text" style="font-size: 20px;  "></span>
                                             </div>
@@ -267,9 +342,9 @@
                                     <td style="padding:2px;">
                                         <select style="width:100%;" class="form-control select" data-live-search="true"
                                             name="branch_id" id="branch_id">
-                                            <option value="">--Select--</option>
+                                            <option value="">Select Option</option>
                                             @foreach ($branch as $branch_name)
-                                            <option value="{{$branch_name->branch}}">{{$branch_name->branch}}
+                                            <option value="{{$branch_name->id}}">{{$branch_name->branch}}
                                             </option>
                                             @endforeach
                                         </select>
@@ -304,60 +379,72 @@
                     </h5>
                     <table class="table table-bordered mt-3" width="100%" border="1">
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Name</th>
-                                <th>Occupation</th>
-                                <th>Email</th>
-                                <th>Mobile No.</th>
-                                <th>City/Village</th>
-                                <th>Pincode</th>
-                                <th>Address</th>
-                                <th>Age</th>
-                                <th>DOB</th>
-                                <th>Marital Status</th>
-                                <th>Marriage Date</th>
-                                <th>Branch</th>
-                                <th>AADHAR</th>
-                                <th>AADHAR No.</th>
-                                <th>PAN</th>
-                                <th>PAN No.</th>
+                            <tr style="background-color:#f0f0f0 ; height:30px !important;" border="2">
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Title</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Name</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Occupation</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Email</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Mobile No.</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    City/Village</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Pincode</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Address</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Age
+                                </th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    DOB
+                                </th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Marital Status</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Marriage Date</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Branch</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    AADHAR</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    AADHAR No.</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    PAN
+                                </th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    PAN
+                                    No.</th>
+                                <th
+                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                    Action</th>
                             </tr>
                         </thead>
                         <tbody id="customerTableBody">
                             <!-- Rows will be added here -->
                         </tbody>
                     </table>
-                    <div class="row" style="display: none;">
-                        <div class="col-md-12" style="margin-top: 2vh;">
 
-                            <div class="col-md-5"></div>
-                            <div class="col-md-2">
-                                <label class="control-label">Select Existing Customer<font color="#000099">
-                                    </font></label>
-                                <select id="client-select" class="form-control select" data-live-search="true">
-                                    <option value="">Select a client</option>
-                                    @foreach($enquiries as $enquiry)
-                                    <option value="{{ $enquiry->client_name->id }}"
-                                        data-client-name="{{ $enquiry->client_name->name }}"
-                                        data-client-phone="{{ $enquiry->client_name->contact }}"
-                                        data-client-address="{{ $enquiry->client_name->address }}"
-                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
-                                        {{ $enquiry->client_name->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <button id="add-client-btn" type="button" class="btn mjks"
-                                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="col-md-2"></div>
-                        </div>
-
-                    </div>
                     <div class="row" style="display: none;" style="margin-top: 2vh;">
                         <div class="col-md-12">
                             <table id="client-details-table" width="100%" border="1">
@@ -404,6 +491,7 @@
                                     <td style="padding: 2px;" width="1%">
                                         <select class="form-control select" data-live-search="true"
                                             id="nominee-relation">
+                                            <option value="">Select Option</option>
                                             <option>Father</option>
                                             <option>Wife</option>
                                             <option>Mother</option>
@@ -413,7 +501,7 @@
                                     <td style="padding: 2px;" width="2%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="nominee-dob" class="form-control datepicker"
-                                                placeholder="DD-MM-YYYY" />
+                                                placeholder="DD/MM/YYYY" />
                                             <div class="input-group-append" style="padding: 5px;">
                                                 <span class="input-group-text" style="font-size: 20px;  "><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
@@ -590,7 +678,7 @@
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="booking_date" name="booking_date"
-                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
+                                                class="form-control datepicker" placeholder="DD/MM/YYYY" required />
                                             <div class="" style="padding: 5px;">
                                                 <span class="input-group-text" style="font-size: 20px;  "><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
@@ -602,7 +690,7 @@
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="aggriment_date" name="aggriment_date"
-                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
+                                                class="form-control datepicker" placeholder="DD/MM/YYYY" required />
                                             <div class="" style="padding: 5px;">
                                                 <span class="input-group-text" style="font-size: 20px;  "><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
@@ -620,7 +708,7 @@
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="emi_start_date" name="emi_start_date"
-                                                class="form-control datepicker" placeholder="DD-MM-YYYY" required />
+                                                class="form-control datepicker" placeholder="DD/MM/YYYY" required />
                                             <div class="" style="padding: 5px;">
                                                 <span class="input-group-text" style="font-size: 20px;  "><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
@@ -647,6 +735,7 @@
                                     <td style="padding: 2px;" width="1%">
                                         <select class="form-control select" data-live-search="true"
                                             id="plot_sale_status" name="plot_sale_status">
+                                            <option value="">Select Option</option>
                                             @foreach($statuses as $status)
                                             <option value="{{ $status->plot_sale_status ?? '' }}">
                                                 {{ $status->plot_sale_status ?? ''}}
@@ -671,6 +760,7 @@
                                     <td id="agent-select-container" style="padding: 2px; width: 1%;">
                                         <select class="form-control select" data-live-search="true" id="agent-select"
                                             name="agent_id">
+                                            <option value="">Select Option</option>
                                             @foreach($agent as $agent)
                                             <option value="{{ $agent->id }}">{{ $agent->name }}</option>
                                             @endforeach
@@ -679,6 +769,7 @@
                                     <td id="employee-select-container" style="padding: 2px; width: 1%;">
                                         <select class="form-control select" data-live-search="true" id="employee-select"
                                             name="employee">
+                                            <option value="">Select Option</option>
                                             @foreach($employees as $employee)
                                             <option value="{{ $employee->id }}">{{ $employee->name }}</option>
                                             @endforeach
@@ -997,16 +1088,18 @@
     const maritalStatus = document.getElementById('marital_status').value;
     const marriageDateInput = document.getElementById('marriage_date').parentNode.parentNode.parentNode;
     if (maritalStatus === 'married') {
-    marriageDateInput.style.display = 'table-row';
+        marriageDateInput.style.display = 'table-row';
     } else {
-    marriageDateInput.style.display = 'none';
+        marriageDateInput.style.display = 'none';
     }
-    }
+}
 
-    document.getElementById('submitbuttonappend').addEventListener('click', function () {
+document.getElementById('submitbuttonappend').addEventListener('click', function () {
     const title = document.getElementById('title').value;
     const name = document.getElementById('name').value;
-    const occupation_id = document.getElementById('occupation_id').value;
+    const occupationSelect = document.getElementById('occupation_id');
+    const occupation_id = occupationSelect.value;
+    const occupation_name = occupationSelect.options[occupationSelect.selectedIndex].text;
     const email = document.getElementById('email').value;
     const contact = document.getElementById('contact').value;
     const city = document.getElementById('city').value;
@@ -1016,93 +1109,107 @@
     const dob = document.getElementById('dob').value;
     const marital_status = document.getElementById('marital_status').value;
     const marriage_date = document.getElementById('marriage_date').value;
-    const branch_id = document.getElementById('branch_id').value;
+    const branchSelect = document.getElementById('branch_id');
+    const branch_id = branchSelect.value;
+    const branch_name = branchSelect.options[branchSelect.selectedIndex].text;
     const aadhar_no = document.getElementById('aadhar_no').value;
     const pan_no = document.getElementById('pan_no').value;
 
     const formattedMarriageDate = marriage_date ? marriage_date : 'N/A';
 
     if (!title || !name || !occupation_id || !email || !contact || !city || !pin_code || !address || !age || !dob ||
-    !branch_id || !aadhar_no || !pan_no) {
-    alert('Please fill all the fields before appending.');
-    return;
+        !branch_id || !aadhar_no || !pan_no) {
+        alert('Please fill all the fields before appending.');
+        return;
     }
 
     const aadharFile = document.getElementById('aadhar').files[0];
     const panFile = document.getElementById('pan').files[0];
     const panFileURL = panFile ? URL.createObjectURL(panFile) : '';
     const aadharFileURL = aadharFile ? URL.createObjectURL(aadharFile) : '';
+
     // Function to read file as base64
     const readAsBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-    reader.readAsDataURL(file);
-    });
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
     };
 
     // Reading files and appending rows
     Promise.all([
-    aadharFile ? readAsBase64(aadharFile) : Promise.resolve(''),
-    panFile ? readAsBase64(panFile) : Promise.resolve('')
+        aadharFile ? readAsBase64(aadharFile) : Promise.resolve(''),
+        panFile ? readAsBase64(panFile) : Promise.resolve('')
     ]).then(([aadharBase64, panBase64]) => {
-    const newRow = document.createElement('tr');
-    newRow.innerHTML = `
-    <td><input type="hidden" name="title[]" value="${title}">${title}</td>
-    <td><input type="hidden" name="name[]" value="${name}">${name}</td>
-    <td><input type="hidden" name="occupation_id[]" value="${occupation_id}">${occupation_id}</td>
-    <td><input type="hidden" name="email[]" value="${email}">${email}</td>
-    <td><input type="hidden" name="contact[]" value="${contact}">${contact}</td>
-    <td><input type="hidden" name="city[]" value="${city}">${city}</td>
-    <td><input type="hidden" name="pin_code[]" value="${pin_code}">${pin_code}</td>
-    <td><input type="hidden" name="address[]" value="${address}">${address}</td>
-    <td><input type="hidden" name="age[]" value="${age}">${age}</td>
-    <td><input type="hidden" name="dob[]" value="${dob}">${dob}</td>
-    <td><input type="hidden" name="marital_status[]" value="${marital_status}">${marital_status}</td>
-    <td><input type="hidden" name="marriage_date[]" value="${formattedMarriageDate}">${formattedMarriageDate}</td>
-    <td><input type="hidden" name="branch_id[]" value="${branch_id}">${branch_id}</td>
-    <td>
-        <input type="hidden" name="aadhar[]" value="${aadharBase64}">
-        ${aadharFile ? aadharFile.name : 'N/A'}
-        ${aadharFile ? `<a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o"
-                aria-hidden="true"></i></a>` : ''}
-    </td>
-    <td><input type="hidden" name="aadhar_no[]" value="${aadhar_no}">${aadhar_no}</td>
-    <td>
-        <input type="hidden" name="pan[]" value="${panBase64}">
-        ${panFile ? panFile.name : 'N/A'}
-        ${panFile ? `<a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o"
-                aria-hidden="true"></i></a>` : ''}
-    </td>
-    <td><input type="hidden" name="pan_no[]" value="${pan_no}">${pan_no}</td>
-    `;
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+        <td><input type="hidden" name="title[]" value="${title}">${title}</td>
+        <td><input type="hidden" name="name[]" value="${name}">${name}</td>
+        <td><input type="hidden" name="occupation_id[]" value="${occupation_id}">${occupation_name}</td>
+        <td><input type="hidden" name="email[]" value="${email}">${email}</td>
+        <td><input type="hidden" name="contact[]" value="${contact}">${contact}</td>
+        <td><input type="hidden" name="city[]" value="${city}">${city}</td>
+        <td><input type="hidden" name="pin_code[]" value="${pin_code}">${pin_code}</td>
+        <td><input type="hidden" name="address[]" value="${address}">${address}</td>
+        <td><input type="hidden" name="age[]" value="${age}">${age}</td>
+        <td><input type="hidden" name="dob[]" value="${dob}">${dob}</td>
+        <td><input type="hidden" name="marital_status[]" value="${marital_status}">${marital_status}</td>
+        <td><input type="hidden" name="marriage_date[]" value="${formattedMarriageDate}">${formattedMarriageDate}</td>
+        <td><input type="hidden" name="branch_id[]" value="${branch_id}">${branch_name}</td>
+        <td>
+            <input type="hidden" name="aadhar[]" value="${aadharBase64}">
 
-    document.getElementById('customerTableBody').appendChild(newRow);
+            ${aadharFile ? `<a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>` : ''}
+        </td>
+        <td><input type="hidden" name="aadhar_no[]" value="${aadhar_no}">${aadhar_no}</td>
+        <td>
+            <input type="hidden" name="pan[]" value="${panBase64}">
 
-    // Clear the input fields
-    document.getElementById('title').value = '';
-    document.getElementById('name').value = '';
-    document.getElementById('occupation_id').value = '';
-    document.getElementById('email').value = '';
-    document.getElementById('contact').value = '';
-    document.getElementById('city').value = '';
-    document.getElementById('pin_code').value = '';
-    document.getElementById('address').value = '';
-    document.getElementById('age').value = '';
-    document.getElementById('dob').value = '';
-    document.getElementById('marital_status').value = 'single';
-    document.getElementById('marriage_date').value = '';
-    document.getElementById('branch_id').value = '';
-    document.getElementById('aadhar_no').value = '';
-    document.getElementById('pan_no').value = '';
-    document.getElementById('aadhar').value = '';
-    document.getElementById('pan').value = '';
+            ${panFile ? `<a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>` : ''}
+        </td>
+        <td><input type="hidden" name="pan_no[]" value="${pan_no}">${pan_no}</td>
+        <td style="text-align:center; color:#FF0000">
+            <button type="button" class="remove-row-btn"><i class="fa fa-trash-o"></i></button>
+        </td>
+        `;
+
+        document.getElementById('customerTableBody').appendChild(newRow);
+
+        // Clear the input fields
+        document.getElementById('title').value = '';
+        document.getElementById('name').value = '';
+        document.getElementById('occupation_id').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('contact').value = '';
+        document.getElementById('city').value = '';
+        document.getElementById('pin_code').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('age').value = '';
+        document.getElementById('dob').value = '';
+        document.getElementById('marital_status').value = 'single';
+        document.getElementById('marriage_date').value = '';
+        document.getElementById('branch_id').value = '';
+        document.getElementById('aadhar_no').value = '';
+        document.getElementById('pan_no').value = '';
+        document.getElementById('aadhar').value = '';
+        document.getElementById('pan').value = '';
     }).catch(error => {
-    console.error('Error reading files: ', error);
-    alert('An error occurred while processing the files. Please try again.');
+        console.error('Error reading files: ', error);
+        alert('An error occurred while processing the files. Please try again.');
     });
-    });
+});
+
+// Delegate the delete button click event to the table body
+document.getElementById('customerTableBody').addEventListener('click', function (event) {
+    if (event.target.classList.contains('remove-row-btn') || event.target.closest('.remove-row-btn')) {
+        const row = event.target.closest('tr');
+        if (row) {
+            row.remove();
+        }
+    }
+});
 </script>
 <script>
     function toggleMarriageDate() {
@@ -1213,9 +1320,14 @@ balanceAmount = Math.max(balanceAmount, 0);
 document.getElementById('balence_amount_display').textContent = balanceAmount.toFixed(2);
 document.getElementById('balence_amount_input').value = balanceAmount.toFixed(2);
 
-// Get the tenure in days and calculate EMI
-let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
-let tenureMonths = Math.ceil(tenureDays / 30); // Convert days to months
+// // Get the tenure in days and calculate EMI
+// let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
+// let tenureMonths = Math.ceil(tenureDays / 30); // Convert days to months
+
+// // Calculate EMI amount
+// let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
+
+let tenureMonths = parseInt(document.getElementsByName('tenure')[0].value) || 0;
 
 // Calculate EMI amount
 let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
@@ -1388,61 +1500,140 @@ $('input[name="south"]').val('');
 });
 
 </script>
+<!-- new for exsting client -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-document.getElementById('add-client-btn').addEventListener('click', function () {
-const clientSelect = document.getElementById('client-select');
-const selectedOption = clientSelect.options[clientSelect.selectedIndex];
+    document.getElementById('add-client-btn').addEventListener('click', function () {
+        const clientSelect = document.getElementById('client-select');
+        const selectedOption = clientSelect.options[clientSelect.selectedIndex];
 
-if (selectedOption.value !== '') {
-const clientName = selectedOption.getAttribute('data-client-name');
-const clientPhone = selectedOption.getAttribute('data-client-phone');
-const clientAddress = selectedOption.getAttribute('data-client-address');
-const clientSponsor = selectedOption.getAttribute('data-client-sponsor');
+        if (selectedOption.value !== '') {
+            const clientData = {
+                title: selectedOption.getAttribute('data-title'),
+                name: selectedOption.getAttribute('data-client-name'),
+                occupation_id: selectedOption.getAttribute('data-occupation-id'),
+                occupation: selectedOption.getAttribute('data-occupation'),
+                email: selectedOption.getAttribute('data-email'),
+                phone: selectedOption.getAttribute('data-client-phone'),
+                city: selectedOption.getAttribute('data-city'),
+                pinCode: selectedOption.getAttribute('data-pin-code'),
+                address: selectedOption.getAttribute('data-client-address'),
+                age: selectedOption.getAttribute('data-age'),
+                dob: selectedOption.getAttribute('data-dob'),
+                maritalStatus: selectedOption.getAttribute('data-marital-status'),
+                marriageDate: selectedOption.getAttribute('data-marriage-date'),
+                branch: selectedOption.getAttribute('data-branch'),
+                branch_id: selectedOption.getAttribute('data-branch-id'),
+                aadhar: selectedOption.getAttribute('data-aadhar'),
+                aadharNo: selectedOption.getAttribute('data-aadhar-no'),
+                pan: selectedOption.getAttribute('data-pan'),
+                panNo: selectedOption.getAttribute('data-pan-no'),
+                id: selectedOption.getAttribute('data-client-id')
+            };
 
-const tableBody = document.querySelector('#client-details-table tbody');
-const newRow = document.createElement('tr');
+            const tableBody = document.getElementById('customerTableBody');
+            const newRow = document.createElement('tr');
 
-newRow.innerHTML = `
-<td style="padding:5px;" align="center">
-    <label>${clientName}</label>
-    <input type="hidden" name="client_name[]" value="${clientName}">
-</td>
-<td style="padding:5px;" align="center">
-    <label>${clientPhone}</label>
-    <input type="hidden" name="client_phone[]" value="${clientPhone}">
-</td>
-<td style="padding:5px;" align="center">
-    <label>${clientAddress}</label>
-    <input type="hidden" name="clients_address[]" value="${clientAddress}">
-</td>
-<td style="padding:5px;" align="center">
-    <label>${clientSponsor}</label>
-    <input type="hidden" name="client_sponsor[]" value="${clientSponsor}">
-</td>
-<td style="text-align:center; color:#FF0000">
-    <button class="delete-client-btn"><i class="fa fa-trash-o"></i></button>
-</td>
-`;
+            // Define base URL for file access
+            const baseUrl = 'http://localhost/laravelwebmedia/nile-properties/public/customer_reg/';
 
-tableBody.appendChild(newRow);
-}
-});
+            newRow.innerHTML = `
+            <td style="padding:5px;" align="center">
+                <label>${clientData.title}</label>
+                <input type="hidden" name="title_existing[]" value="${clientData.title}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.name}</label>
+                <input type="hidden" name="name_existing[]" value="${clientData.name}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.occupation}</label>
+                <input type="hidden" name="occupation_id_existing[]" value="${clientData.occupation_id}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.email}</label>
+                <input type="hidden" name="email_existing[]" value="${clientData.email}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.phone}</label>
+                <input type="hidden" name="contact_existing[]" value="${clientData.phone}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.city}</label>
+                <input type="hidden" name="city_existing[]" value="${clientData.city}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.pinCode}</label>
+                <input type="hidden" name="pin_code_existing[]" value="${clientData.pinCode}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.address}</label>
+                <input type="hidden" name="address_existing[]" value="${clientData.address}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.age}</label>
+                <input type="hidden" name="age_existing[]" value="${clientData.age}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.dob}</label>
+                <input type="hidden" name="dob_existing[]" value="${clientData.dob}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.maritalStatus}</label>
+                <input type="hidden" name="marital_status_existing[]" value="${clientData.maritalStatus}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.marriageDate}</label>
+                <input type="hidden" name="marriage_date_existing[]" value="${clientData.marriageDate}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.branch}</label>
+                <input type="hidden" name="branch_id_existing[]" value="${clientData.branch_id}">
+            </td>
+            <td style="padding:5px;" align="center">
+                ${clientData.aadhar ? `<a href="${baseUrl}${clientData.aadhar}" target="_blank" download="aadhar">
+                    <i class="fa fa-file-pdf-o" style="background-color:red;" aria-hidden="true"></i> AADHAR
+                </a>` : 'N/A'}
+                <input type="hidden" name="aadhar_existing[]" value="${clientData.aadhar}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.aadharNo}</label>
+                <input type="hidden" name="aadhar_no_existing[]" value="${clientData.aadharNo}">
+            </td>
+            <td style="padding:5px;" align="center">
+                ${clientData.pan ? `<a href="${baseUrl}${clientData.pan}" target="_blank" download="pan">
+                    <i class="fa fa-file-pdf-o" style="background-color:blue;" aria-hidden="true"></i> PAN
+                </a>` : 'N/A'}
+                <input type="hidden" name="pan_existing[]" value="${clientData.pan}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.panNo}</label>
+                <input type="hidden" name="pan_no_existing[]" value="${clientData.panNo}">
+                <input type="hidden" name="existing_client_id[]" value="${clientData.id}">
+            </td>
+            <td style="text-align:center; color:#FF0000">
+                <button type="button" class="remove-row-btn"><i class="fa fa-trash-o"></i></button>
+            </td>
+            `;
 
-// Handle deleting client details from the table
-document.querySelector('#client-details-table').addEventListener('click', function (e) {
-if (e.target && (e.target.matches('.delete-client-btn') || e.target.matches('.delete-client-btn i'))) {
-const row = e.target.closest('tr');
-row.parentNode.removeChild(row);
-}
-});
+            tableBody.appendChild(newRow);
+        }
+    });
+
+    // Handle deleting client details from the table
+    document.querySelector('#customerTableBody').addEventListener('click', function (e) {
+        if (e.target && (e.target.matches('.remove-row-btn') || e.target.matches('.remove-row-btn i'))) {
+            const row = e.target.closest('tr');
+            row.parentNode.removeChild(row);
+        }
+    });
 });
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Initialize datepicker
         $('.datepicker').datepicker({
-            format: 'dd-mm-yyyy'
+            format: 'DD/MM/YYYY'
         });
 
         // Handle adding nominee details to the table
@@ -1484,8 +1675,9 @@ row.parentNode.removeChild(row);
                         <input type="hidden" name="nominee_pan[]" value="${nomineePAN}">
                     </td>
                     <td style="text-align:center; color:#FF0000">
-                        <button class="delete-nominee-btn btn btn-danger"><i class="fa fa-trash-o"></i></button>
+                        <button class="delete-nominee-btn"><i class="fa fa-trash-o"></i></button>
                     </td>
+
                 `;
 
                 tableBody.appendChild(newRow);

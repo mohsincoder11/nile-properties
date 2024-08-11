@@ -13,7 +13,7 @@ use App\Http\Controllers\panel\ReportsController;
 // use App\Http\Controllers\panel\EnquiryController;
 use App\Http\Controllers\website\IndexController;
 use App\Http\Controllers\panel\FollowUpController;
-use App\Http\Controllers\AgreementMasterController;
+use App\Http\Controllers\panel\AgreementMasterController;
 use App\Http\Controllers\panel\CommissionPlanController;
 // WEBSITE
 use App\Http\Controllers\panel\DashboardController;
@@ -337,7 +337,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/registration-Checklist', [CustomeStagesController::class, 'registrationChecklist'])->name('registrationChecklist');
     //intiate sales
 
+    Route::post('/agreement-master/store', [AgreementMasterController::class, 'store'])->name('agrrementmaster.store');
+    Route::get('agreement-master/{id}', [AgreementMasterController::class, 'destroy'])->name('agreement-master.destroy');
 
+    Route::get('/agreements/{id}', [AgreementMasterController::class, 'show'])->name('agreements.show');
+    Route::get('agreement-master/{id}/edit', [AgreementMasterController::class, 'edit'])->name('agreement-master.edit');
+    Route::post('agreement-master/{id}/update', [AgreementMasterController::class, 'update'])->name('agreement-master.update');
     Route::get('/agrrement-master', [AgreementMasterController::class, 'index'])->name('agrrementmaster');
     Route::delete('/delete-nominee/{id}', [InitiatesellController::class, 'deleteNominee'])->name('delete.nominee');
     Route::delete('/delete-client/{id}', [InitiatesellController::class, 'deleteClient'])->name('delete.client');

@@ -60,6 +60,18 @@ password = 1234567890
 
 
 
+<<<<<<< HEAD
+8/8/2024 table
+CREATE TABLE `agreement_master` (
+    `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `document_name` VARCHAR(255) NOT NULL,
+    `language` VARCHAR(255) NOT NULL,
+    `description` TEXT NULL,
+    `created_at` TIMESTAMP NULL DEFAULT NULL,
+    `updated_at` TIMESTAMP NULL DEFAULT NULL
+);
+=======
 07-08-2024
 ALTER TABLE `plot_transfer_histories` ADD `previous_enquiry_id` INT NOT NULL COMMENT 'when plot change existing enquiry id' AFTER `initial_enquiry_id`;
 
+>>>>>>> 8c7d73e18afeb0fee56304fd2aada453f78038de

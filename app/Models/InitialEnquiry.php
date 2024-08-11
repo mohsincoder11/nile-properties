@@ -10,6 +10,8 @@ class InitialEnquiry extends Model
     use HasFactory;
     protected $table = "initial_enquiries_clients";
     protected $fillable = [
+        'firm_id',
+
         'project_id',
         'measurement',
         'square_meter',
@@ -64,6 +66,10 @@ class InitialEnquiry extends Model
     {
         return $this->hasOne(ProjectEntry::class, 'id', 'project_id');
     }
+    public function firm()
+    {
+        return $this->hasOne(FirmRegistrationMaster::class, 'id', 'firm_id');
+    }
     public function emi()
     {
         return $this->hasMany(EmiPaymentCollection::class, 'initial_enquiry_id', 'id');
@@ -75,7 +81,7 @@ class InitialEnquiry extends Model
     }
     public function agent()
     {
-        return $this->hasOne(EmployeeRegistrationMaster::class, 'id', 'agent_id');
+        return $this->hasOne(AgentRegistrationMaster::class, 'id', 'agent_id');
     }
     public function statustoken()
     {

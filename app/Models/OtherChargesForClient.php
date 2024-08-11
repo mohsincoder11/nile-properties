@@ -19,6 +19,7 @@ class OtherChargesForClient extends Model
         'firm_id',
         'project_id',
         'client_id',
+        'status'
 
 
 

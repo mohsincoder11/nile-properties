@@ -18,6 +18,7 @@ class PlotRegistrationDocumentByClient extends Model
 
         'project_id',
         'client_id',
+        'status'
 
     ];
 
