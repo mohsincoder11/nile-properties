@@ -24,13 +24,46 @@ class AgentRegistrationMaster extends Model
         'username',
         'password',
         'agent_number',
-        'role',
+        'profile',
+        'total_sales',
+        'parent_id'
 
     ];
 
     public function bankDetails()
     {
         return $this->hasMany(AgentBankDetailsRegistrationMaster::class, 'agent_id', 'id');
+    }
+    public function parent()
+    {
+        return $this->belongsTo(Agent::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Agent::class, 'parent_id');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function commissionSlab()
+    {
+        return $this->hasOne(CommissionSlab::class, 'profile', 'profile');
+    }
+
+    public function updateProfileBasedOnSales()
+    {
+        $slab = CommissionSlab::where('min_sales', '<=', $this->total_sales)
+                              ->where('max_sales', '>=', $this->total_sales)
+                              ->first();
+
+        if ($slab) {
+            $this->profile = $slab->profile;
+            $this->save();
+        }
     }
 
 }

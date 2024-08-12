@@ -138,9 +138,9 @@ class PaymentCollectionController extends Controller
             $query->where('plot_id', $request->input('plot_id'));
         }
 
-        if ($request->has('client_id')) {
-            $query->where('client_id', $request->input('client_id'));
-        }
+        // if ($request->has('client_id')) {
+        //     $query->where('client_id', $request->input('client_id'));
+        // }
 
         // Eager load the relationships
         $documents = $query->with('projectname', 'firmname', 'clientname')->get();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\panel;
 
 use App\Models\AgentRegistrationMaster;
 use App\Models\FirmRegistrationMaster;
+use App\Models\PlotTransaction;
 use Carbon\Carbon;
 use App\Models\Enquiry;
 use App\Models\Occupation;
@@ -34,7 +35,10 @@ class InitiatesellController extends Controller
         $projects = ProjectEntry::all();
         $statuses = PlotSaleStatus::all();
         $employees = EmployeeRegistrationMaster::all();
-        $agent = AgentRegistrationMaster::all();
+
+        $agent = AgentRegistrationMaster::
+        whereIn('profile',[get_agent_profile(1),get_agent_profile(2),get_agent_profile(3)])
+        ->get();
         $clients = CustomerRegistrationMaster::all();
         $occupation = Occupation::all();
         $branch = BranchMaster::all();
@@ -131,7 +135,7 @@ class InitiatesellController extends Controller
     {
 
         $existingEnquiry = InitialEnquiry::where('project_id', $request->project_id)
-            ->where('firm_id', $request->firm_id)
+           // ->where('firm_id', $request->firm_id)
             ->where('plot_no', $request->plot_no)
             ->first();
 
@@ -157,11 +161,11 @@ class InitiatesellController extends Controller
             'pan_no',
         ];
 
-        foreach ($requiredFields as $field) {
-            if (!isset($request->$field) || !is_array($request->$field) || count($request->$field) === 0) {
-                return redirect()->back()->with('error', 'Please fill all required fields.');
-            }
-        }
+        // foreach ($requiredFields as $field) {
+        //     if (!isset($request->$field) || !is_array($request->$field) || count($request->$field) === 0) {
+        //         return redirect()->back()->with('error', 'Please fill all required fields.');
+        //     }
+        // }
 
 
 
@@ -321,6 +325,42 @@ class InitiatesellController extends Controller
             // Check if `existing_client_id` is not set or is empty, then store new client details
 
         }
+
+//save agent business and transaction details
+$agent = AgentRegistrationMaster::find($request->agent_id);
+        $parentAgent = $agent->parent;
+
+        // Update the agent's total_sales
+        $agent->total_sales += $request->total_cost;
+        $agent->save();
+
+        // If the agent has a parent, update the parent's total_sales
+        if ($parentAgent) {
+            $parentAgent->total_sales += $request->total_cost;
+            $parentAgent->save();
+        }
+
+        // Calculate the agent's commission
+        $commissionSlab = $agent->commissionSlab; // Assuming the Agent model has this relationship
+        $agentCommission = $request->total_cost * ($commissionSlab->commission_rate / 100);
+
+        // Calculate the parent agent's commission, if applicable
+        $parentCommission = 0;
+        if ($parentAgent) {
+            $parentCommissionRate = $parentAgent->commissionSlab->commission_rate;
+            $parentCommission = $request->total_cost * (($parentCommissionRate - $commissionSlab->commission_rate) / 100);
+        }
+
+ // Create a transaction record
+ PlotTransaction::create([
+    'initial_enquiry_id' => $initialEnquiry->id,
+    'agent_id' => $request->agent_id,
+    'sale_price' => $request->total_cost,
+    'commission_amount' => $agentCommission,
+    'parent_commission_amount' => $parentCommission,
+    'sale_date' => $request->sale_date,
+]);
+dd('success');
         // dd(1);
         return redirect()->back()->with('success', 'Data saved successfully.');
     }

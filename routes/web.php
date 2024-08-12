@@ -139,7 +139,7 @@ Route::middleware(['auth'])->group(function () {
     //MASTER BRANCH END
 
     // Master Agent / Broker Registration
-    Route::get('agent_reg', [agentRegMasterController::class, 'index'])->name('agent_reg');
+    Route::get('agent-registration', [agentRegMasterController::class, 'index'])->name('agent_reg');
     Route::post('agent_reg_store', [agentRegMasterController::class, 'agent_reg_store'])->name('agent_reg_store');
     Route::get('agent_destroy/{id}', [agentRegMasterController::class, 'agent_destroy'])->name('agent_destroy');
     Route::get('agent_list_destroy/{id}', [agentRegMasterController::class, 'agent_list_destroy'])->name('agent_list_destroy');
