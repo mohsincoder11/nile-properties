@@ -9,17 +9,15 @@ class PlotTransaction extends Model
 {
     use HasFactory;
      // Specify the table name if it's not the plural form of the model name
-     protected $table = 'transactions';
 
      // The attributes that are mass assignable
      protected $fillable = [
-         'plot_id',
-         'customer_id',
          'agent_id',
          'sale_price',
          'commission_amount',
          'parent_commission_amount',
          'sale_date',
+         'initial_enquiry_id'
      ];
  
      // Define relationships

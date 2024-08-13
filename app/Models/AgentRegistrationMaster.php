@@ -36,27 +36,27 @@ class AgentRegistrationMaster extends Model
     }
     public function parent()
     {
-        return $this->belongsTo(Agent::class, 'parent_id');
+        return $this->belongsTo(AgentRegistrationMaster::class, 'parent_id');
     }
 
     public function children()
     {
-        return $this->hasMany(Agent::class, 'parent_id');
+        return $this->hasMany(AgentRegistrationMaster::class, 'parent_id');
     }
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(PlotTransaction::class);
     }
 
     public function commissionSlab()
     {
-        return $this->hasOne(CommissionSlab::class, 'profile', 'profile');
+        return $this->hasOne(CommisionSlab::class, 'profile', 'profile');
     }
 
     public function updateProfileBasedOnSales()
     {
-        $slab = CommissionSlab::where('min_sales', '<=', $this->total_sales)
+        $slab = CommisionSlab::where('min_sales', '<=', $this->total_sales)
                               ->where('max_sales', '>=', $this->total_sales)
                               ->first();
 

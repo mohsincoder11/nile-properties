@@ -29,6 +29,7 @@
                                         @endforeach
                                     </select>
                                 </div>
+                              
                                 <div class="col-md-2" style="margin-top:15px;">
                                     <label>Select Layout</label>
                                     <select id="project-select" name="project_id" class="form-control select"
@@ -37,7 +38,7 @@
                                         @foreach ($projects as $project)
                                             <option value="{{ $project->project_id }}"
                                                 data-project-id="{{ $project->project_id }}">
-                                                {{ $project->project->project_name }}</option>
+                                                {{ $project->project->project_name ?? '' }}</option>
                                         @endforeach
                                     </select>
 
