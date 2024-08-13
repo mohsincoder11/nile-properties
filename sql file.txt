@@ -60,7 +60,6 @@ password = 1234567890
 
 
 
-<<<<<<< HEAD
 8/8/2024 table
 CREATE TABLE `agreement_master` (
     `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -70,8 +69,25 @@ CREATE TABLE `agreement_master` (
     `created_at` TIMESTAMP NULL DEFAULT NULL,
     `updated_at` TIMESTAMP NULL DEFAULT NULL
 );
-=======
+
 07-08-2024
 ALTER TABLE `plot_transfer_histories` ADD `previous_enquiry_id` INT NOT NULL COMMENT 'when plot change existing enquiry id' AFTER `initial_enquiry_id`;
 
->>>>>>> 8c7d73e18afeb0fee56304fd2aada453f78038de
+11-08-24
+CREATE TABLE IF NOT EXISTS `commission_plans` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `profile_name` varchar(255) NOT NULL,
+  `monthly_target_from` decimal(10,2) NOT NULL,
+  `monthly_target_to` decimal(10,2) NOT NULL,
+  `regular_benefit` decimal(5,2) NOT NULL,
+  `referral` decimal(5,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
+12-08-2024
+ALTER TABLE `agent_registration_master` ADD `total_sales` FLOAT NOT NULL COMMENT 'total sales by agent' AFTER `profile`;
+ALTER TABLE `agent_registration_master` CHANGE `parent_id` `parent_id` INT(11) NULL DEFAULT NULL COMMENT 'parent id of agent';
+ALTER TABLE `agent_registration_master` CHANGE `total_sales` `total_sales` FLOAT NOT NULL DEFAULT '0' COMMENT 'total sales by agent';
