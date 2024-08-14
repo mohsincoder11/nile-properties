@@ -26,7 +26,13 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
+<<<<<<< HEAD
         }
+=======
+        },
+        "files": ["app/Http/Helpers.php"]
+
+>>>>>>> 5eb4c98ccc500e044650ee92b8f18c931608fe41
     },
     "autoload-dev": {
         "psr-4": {

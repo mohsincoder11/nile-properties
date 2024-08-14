@@ -61,6 +61,9 @@ password = 1234567890
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5eb4c98ccc500e044650ee92b8f18c931608fe41
 8/8/2024 table
 CREATE TABLE `agreement_master` (
     `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -70,6 +73,7 @@ CREATE TABLE `agreement_master` (
     `created_at` TIMESTAMP NULL DEFAULT NULL,
     `updated_at` TIMESTAMP NULL DEFAULT NULL
 );
+<<<<<<< HEAD
 =======
 07-08-2024
 ALTER TABLE `plot_transfer_histories` ADD `previous_enquiry_id` INT NOT NULL COMMENT 'when plot change existing enquiry id' AFTER `initial_enquiry_id`;
@@ -90,3 +94,95 @@ CREATE TABLE plot_registration_document_by_client (
     created_at TIMESTAMP NULL DEFAULT NULL,
     updated_at TIMESTAMP NULL DEFAULT NULL
 );
+=======
+
+07-08-2024
+ALTER TABLE `plot_transfer_histories` ADD `previous_enquiry_id` INT NOT NULL COMMENT 'when plot change existing enquiry id' AFTER `initial_enquiry_id`;
+
+11-08-24
+CREATE TABLE IF NOT EXISTS `commission_plans` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `profile_name` varchar(255) NOT NULL,
+  `monthly_target_from` decimal(10,2) NOT NULL,
+  `monthly_target_to` decimal(10,2) NOT NULL,
+  `regular_benefit` decimal(5,2) NOT NULL,
+  `referral` decimal(5,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
+12-08-2024
+ALTER TABLE `agent_registration_master` ADD `total_sales` FLOAT NOT NULL COMMENT 'total sales by agent' AFTER `profile`;
+ALTER TABLE `agent_registration_master` CHANGE `parent_id` `parent_id` INT(11) NULL DEFAULT NULL COMMENT 'parent id of agent';
+ALTER TABLE `agent_registration_master` CHANGE `total_sales` `total_sales` FLOAT NOT NULL DEFAULT '0' COMMENT 'total sales by agent';
+
+
+
+14-08-24
+CREATE TABLE expense_income (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    bill_no VARCHAR(255) NOT NULL,            
+    firm_id INT NOT NULL,                     
+    project_id INT NOT NULL,                 
+    income_category ENUM('Client', 'Loan') NOT NULL, 
+    client_id INT NOT NULL,                  
+    plot_no VARCHAR(255) NOT NULL,           
+   
+    bank_name VARCHAR(255) NOT NULL,          
+    amount DECIMAL(15, 2) NOT NULL,          
+    remarks VARCHAR(255) NOT NULL,           
+    emi_no INT NOT NULL,                      
+    mode_of_payment ENUM('Bank NEFT/RTGS', 'Online Banking', 'UPI', 'Bank Deposit', 'Cash') NOT NULL,  
+    attach_proof VARCHAR(255),                
+    narration TEXT,                          
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS `commision_slabs` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `profile` varchar(75) DEFAULT NULL,
+  `commission_rate` decimal(5,2) DEFAULT NULL,
+  `min_sales` decimal(15,2) DEFAULT NULL,
+  `max_sales` decimal(15,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `commision_slabs`
+--
+
+INSERT INTO `commision_slabs` (`id`, `profile`, `commission_rate`, `min_sales`, `max_sales`, `created_at`, `updated_at`) VALUES
+(1, 'Assistant Sales Executive', 5.00, 100000.00, 400000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32'),
+(2, 'Sales Executive', 7.00, 400001.00, 700000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32'),
+(3, 'Senior Sales Executive', 9.00, 700001.00, 1000000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32'),
+(4, 'Sales Representative', 10.00, 1000001.00, 1500000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32'),
+(5, 'Assistant Sale Representative', 12.00, 1500001.00, 2000000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32'),
+(6, 'Senior Sale Representative', 14.00, 2000001.00, 2500000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32'),
+(7, 'Assistant Manager', 15.00, 2500001.00, 3000000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32'),
+(8, 'Manager', 16.00, 3000001.00, 3500000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32'),
+(9, 'Senior Manager', 17.00, 3500001.00, 4000000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32'),
+(10, 'Director', 18.00, 4000001.00, 4500000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32'),
+(11, 'King', 20.00, 4500001.00, 5000000.00, '2024-08-12 18:48:32', '2024-08-12 18:48:32');
+
+CREATE TABLE IF NOT EXISTS `plot_transactions` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `initial_enquiry_id` bigint(20) UNSIGNED NOT NULL,
+  `agent_id` bigint(20) UNSIGNED NOT NULL,
+  `sale_price` decimal(15,2) NOT NULL,
+  `commission_amount` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `parent_commission_amount` decimal(15,2) DEFAULT 0.00,
+  `sale_date` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `initial_enquiry_id` (`initial_enquiry_id`),
+  KEY `agent_id` (`agent_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+>>>>>>> 5eb4c98ccc500e044650ee92b8f18c931608fe41

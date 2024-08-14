@@ -1779,8 +1779,4 @@ row.parentNode.removeChild(row);
     });
 });
 </script>
-
-
-
-
 @stop
