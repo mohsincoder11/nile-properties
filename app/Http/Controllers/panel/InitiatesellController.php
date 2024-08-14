@@ -37,9 +37,8 @@ class InitiatesellController extends Controller
         $statuses = PlotSaleStatus::all();
         $employees = EmployeeRegistrationMaster::all();
 
-        $agent = AgentRegistrationMaster::
-        whereIn('profile',[get_agent_profile(1),get_agent_profile(2),get_agent_profile(3)])
-        ->get();
+        $agent = AgentRegistrationMaster::whereIn('profile', [get_agent_profile(1), get_agent_profile(2), get_agent_profile(3)])
+            ->get();
         $clients = CustomerRegistrationMaster::all();
         $occupation = Occupation::all();
         $branch = BranchMaster::all();
@@ -326,8 +325,8 @@ class InitiatesellController extends Controller
             // Check if `existing_client_id` is not set or is empty, then store new client details
 
         }
-//save agent business and transaction details
-$agent = AgentRegistrationMaster::find($request->agent_id);
+        //save agent business and transaction details
+        $agent = AgentRegistrationMaster::find($request->agent_id);
         $parentAgent = $agent->parent;
 
         // Update the agent's total_sales
@@ -339,41 +338,41 @@ $agent = AgentRegistrationMaster::find($request->agent_id);
             $parentAgent->total_sales += $request->total_cost;
             $parentAgent->save();
         }
-//update agent profile after transaction
-$this->updateAgentProfile($agent);
- if ($parentAgent) {
+        //update agent profile after transaction
+        $this->updateAgentProfile($agent);
+        if ($parentAgent) {
             $this->updateAgentProfile($parentAgent);
         }
-      
+
         // Calculate the agent's commission
-$commissionSlab = $agent->commissionSlab; // Assuming the Agent model has this relationship
-$agentCommission = $request->total_cost * ($commissionSlab->commission_rate / 100);
+        $commissionSlab = $agent->commissionSlab; // Assuming the Agent model has this relationship
+        $agentCommission = $request->total_cost * ($commissionSlab->commission_rate / 100);
 
-// Calculate the parent agent's commission, if applicable
-$parentCommission = 0;
-if ($parentAgent) {
-    $parentCommissionRate = $parentAgent->commissionSlab->commission_rate;
-    $parentCommission = $request->total_cost * (($parentCommissionRate - $commissionSlab->commission_rate) / 100);
-}
+        // Calculate the parent agent's commission, if applicable
+        $parentCommission = 0;
+        if ($parentAgent) {
+            $parentCommissionRate = $parentAgent->commissionSlab->commission_rate;
+            $parentCommission = $request->total_cost * (($parentCommissionRate - $commissionSlab->commission_rate) / 100);
+        }
 
- // Create a transaction record
- PlotTransaction::create([
-    'initial_enquiry_id' => $initialEnquiry->id,
-    'agent_id' => $request->agent_id,
-    'sale_price' => $request->total_cost,
-    'commission_amount' => $agentCommission,
-    'parent_commission_amount' => $parentCommission,
-    'sale_date' => now(),
-]);
+        // Create a transaction record
+        PlotTransaction::create([
+            'initial_enquiry_id' => $initialEnquiry->id,
+            'agent_id' => $request->agent_id,
+            'sale_price' => $request->total_cost,
+            'commission_amount' => $agentCommission,
+            'parent_commission_amount' => $parentCommission,
+            'sale_date' => now(),
+        ]);
 
-return redirect()->back()->with('success', 'Data saved successfully.');
-}
+        return redirect()->route('newsale')->with('success', 'Data saved successfully.');
+    }
     protected function updateAgentProfile(AgentRegistrationMaster $agent)
     {
         // Find the appropriate commission slab for the agent's total sales
         $newSlab = CommisionSlab::where('min_sales', '<=', $agent->total_sales)
-                                 ->where('max_sales', '>=', $agent->total_sales)
-                                 ->first();
+            ->where('max_sales', '>=', $agent->total_sales)
+            ->first();
 
         // Update the agent's profile if a new slab is found and it's different from the current profile
         if ($newSlab && $agent->profile != $newSlab->profile) {
@@ -775,8 +774,4 @@ return redirect()->back()->with('success', 'Data saved successfully.');
         $inquiryHtml = view('panel.new_sale_model_client_info', compact('inquiry'))->render();
         return response()->json(['html' => $inquiryHtml]);
     }
-
-
-
-
 }

@@ -68,7 +68,7 @@ class PaymentCollectionController extends Controller
             'amount' => 'required|numeric',
             'project_id' => 'required|integer',
             'plot_id' => 'required|integer',
-            'client_id' => 'required|integer',
+           // 'client_id' => 'required|integer',
             'firm_id' => 'required|integer',
             'charges_id' => 'required|integer',
         ]);
@@ -78,7 +78,7 @@ class PaymentCollectionController extends Controller
             'amount' => $validatedData['amount'],
             'project_id' => $validatedData['project_id'],
             'plot_id' => $validatedData['plot_id'],
-            'client_id' => $validatedData['client_id'],
+            'client_id' => $validatedData['client_id'] ?? null,
             'firm_id' => $validatedData['firm_id'],
             'charges_id' => $validatedData['charges_id'],
         ]);
