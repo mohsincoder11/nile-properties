@@ -92,7 +92,7 @@ class InitialEnquiry extends Model
         return $this->hasOne(ProjectEntryAppendData::class, 'id', 'plot_no');
     }
 
-     public function plotname()
+    public function plotname()
     {
         return $this->hasOne(ProjectEntryAppendData::class, 'id', 'plot_no');
     }

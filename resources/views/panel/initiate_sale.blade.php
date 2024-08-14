@@ -737,7 +737,7 @@
                                             id="plot_sale_status" name="plot_sale_status">
                                             <option value="">Select Option</option>
                                             @foreach($statuses as $status)
-                                            <option value="{{ $status->plot_sale_status ?? '' }}">
+                                            <option value="{{ $status->id ?? '' }}">
                                                 {{ $status->plot_sale_status ?? ''}}
                                             </option>
                                             @endforeach

@@ -37,7 +37,15 @@
     <tbody>
         @foreach($plotDocuments as $document)
         <tr>
-            <td>{{ $document->document_name ?? 'N/A' }}</td>
+            <td>
+                <!-- Document Link with Icon and Styled Button -->
+                <a href="{{ asset('documents/' . $document->document_name) }}" target="_blank" class="btn btn-link">
+                    <!-- File Icon -->
+                    <i class="ri-file-line" style="margin-right: 5px;"></i>
+                    <!-- Document Name with Custom Color -->
+                    <span style="color: #007bff;">{{ $document->document_name ?? 'N/A' }}</span>
+                </a>
+            </td>
             <td>{{ $document->status ?? 'N/A' }}</td>
         </tr>
         @endforeach
