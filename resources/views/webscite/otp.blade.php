@@ -1,0 +1,112 @@
+@extends('webscite.layout')
+@section('content')
+<!-- End Main Header -->
+
+<!--Page Title-->
+<!--- <section class="page-banner curve-offwhite" style="background-image:url(public/images1/background/1.jpg);">
+        <div class="auto-container">
+            <h1>Contact Us</h1>
+            <a href="index.html" class="home-btn"><span class="flaticon-house-outline"></span></a>
+        </div>
+    </section>--->
+<!--End Page Title-->
+
+<!-- Contact Section -->
+<style>
+
+
+    .customBtn {
+        border-radius: 0px;
+        padding: 10px;
+
+    }
+
+    form input {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        background-color: #cbcbcb;
+    }
+</style>
+<section class="contact-section">
+    <div class="auto-container">
+        <div class="row">
+
+
+            <div class="form-column col-lg-6 col-md-12 col-sm-12">
+                <h1 align="center" style="margin-bottom: 5px;" class="spectral"> <b style="color:black;">OTP
+                        Verification</b></h1>
+                <div class="contact-form">
+
+
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-12 text-center">
+                                <div class="row">
+                                    <div class="col-sm-12 mt-5 bgWhite">
+                                        <div class="title spectral"  style="margin-top: -40px;">
+                                            OTP Sent on Your Email
+                                        </div>
+
+                                        <form action="{{ route('user.verifyRegistrationOtp') }}" method="post" style="margin-top: 5px;">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{ $user_id }}">
+
+                                        {{--    <div class="form-group" style="margin-top: 7px;">
+                                                <input class=" otp" type="text" name="otp" oninput='digitValidate(this)'
+                                                    onkeyup='tabChange(1)' maxlength="6"
+                                                    style="width: 90px; height: 30px; border: 1px solid black; margin-left: 200px; background-color:white; padding: 2px; font-size: 16px;"
+                                                    placeholder=""> --}}
+												<input class="otp" type="text" name="otp1"  oninput='digitValidate(this)'
+                                                        onkeyup='tabChange(1)' maxlength=1
+                                                        style=" border: 1px black !important;" required >
+                                                    <input class="otp" type="text" name="otp2" oninput='digitValidate(this)'
+                                                        onkeyup='tabChange(2)' maxlength=1 required> 
+                                                    <input class="otp" type="text" name="otp3" oninput='digitValidate(this)'
+                                                        onkeyup='tabChange(3)' maxlength=1 required>
+                                                    <input class="otp" type="text" name="otp4" oninput='digitValidate(this)'
+                                                        onkeyup='tabChange(4)' maxlength=1 required>
+												  <input class="otp" type="text" name="otp5" oninput='digitValidate(this)'
+                                                        onkeyup='tabChange(4)' maxlength=1 required>
+												  <input class="otp" type="text" name="otp6" oninput='digitValidate(this)'
+                                                        onkeyup='tabChange(4)' maxlength=1 required>
+                                           {{-- </div> --}}
+
+
+                                            <hr class="mt-4">
+                                            &nbsp;
+                                            &nbsp; &nbsp;
+
+
+                                            <div class="col-lg-12 col-md-12 col-sm-12" align="center"
+                                                style="margin-bottom:5%;">
+                                                <button class="theme-btn btn-style-one spectral padding5" type="submit"
+                                                    style="border-radius:35px; background-color: 5E69FF !important; color: white; padding-right:100px; padding-left:100px;">Verify
+                                                    & Process</button></a>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                            &nbsp;
+                            &nbsp; &nbsp;
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="text-column col-lg-6 col-md-12 col-sm-12">
+                <img src="public/images1/otp.png" style="margin-top: -12%;">
+            </div>
+        </div>
+    </div>
+</section>
+<!--End Contact Section -->
+
+
+
+@stop
