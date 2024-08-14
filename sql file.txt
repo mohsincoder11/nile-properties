@@ -60,6 +60,10 @@ password = 1234567890
 
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5eb4c98ccc500e044650ee92b8f18c931608fe41
 8/8/2024 table
 CREATE TABLE `agreement_master` (
     `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -69,6 +73,28 @@ CREATE TABLE `agreement_master` (
     `created_at` TIMESTAMP NULL DEFAULT NULL,
     `updated_at` TIMESTAMP NULL DEFAULT NULL
 );
+<<<<<<< HEAD
+=======
+07-08-2024
+ALTER TABLE `plot_transfer_histories` ADD `previous_enquiry_id` INT NOT NULL COMMENT 'when plot change existing enquiry id' AFTER `initial_enquiry_id`;
+
+>>>>>>> 8c7d73e18afeb0fee56304fd2aada453f78038de
+
+
+
+CREATE TABLE plot_registration_document_by_client (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    document_name VARCHAR(255) NOT NULL,
+    plot_id BIGINT UNSIGNED NOT NULL,
+    firm_id BIGINT UNSIGNED NOT NULL,
+    project_id BIGINT UNSIGNED NOT NULL,
+    client_id BIGINT UNSIGNED NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    initial_enquiry_id BIGINT UNSIGNED NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT NULL,
+    updated_at TIMESTAMP NULL DEFAULT NULL
+);
+=======
 
 07-08-2024
 ALTER TABLE `plot_transfer_histories` ADD `previous_enquiry_id` INT NOT NULL COMMENT 'when plot change existing enquiry id' AFTER `initial_enquiry_id`;
@@ -159,3 +185,4 @@ CREATE TABLE IF NOT EXISTS `plot_transactions` (
   KEY `agent_id` (`agent_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+>>>>>>> 5eb4c98ccc500e044650ee92b8f18c931608fe41

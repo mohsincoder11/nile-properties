@@ -123,7 +123,7 @@
             <tr style="height: 30px">
                 <td style="padding: 2px" width="1%">
                     <label class="control-label">Balance Amt :
-                        <font color="#000099">{{ $inquiry->balence_amount ?? '' }}</font>
+                        <font color="#000099">{{ $inquiry->balance_amount ?? '' }}</font>
                     </label>
                 </td>
                 <td style="padding: 2px" width="1%">

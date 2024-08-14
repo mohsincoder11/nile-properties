@@ -515,7 +515,7 @@
                                             <option>Father</option>
                                             <option>Wife</option>
                                             <option>Mother</option>
-                                            <option>Sun</option>
+                                            <option>Son</option>
                                         </select>
                                     </td>
                                     <td style="padding: 2px;" width="2%">
@@ -591,7 +591,7 @@
                                         </td>
                                         <td style="text-align:center; color:#FF0000">
                                             <button type="button" data-id="{{ $nominee->id ?? '' }}"
-                                                class="delete-client-btn_pre">
+                                                class="delete-nominee-btn_pre">
                                                 <i class="fa fa-trash-o"></i>
                                             </button>
                                         </td>
@@ -656,9 +656,9 @@
                                         <select id="plot-select" name="plot_no" class="form-control select"
                                             data-live-search="true">
                                             <option value="">Select Option</option>
-                                            @foreach($enquiries as $enquiry)
-                                            <option value="{{ $enquiry->plot_no ?? '' }}" @if($inquiry->plot_no ?? '' ==
-                                                $enquiry->plot_no ?? '') selected @endif>
+                                            @foreach($plot as $enquiry)
+                                            <option value="{{ $enquiry->id ?? '' }}" @if($inquiry->plot_no ?? '' ==
+                                                $enquiry->id ?? '') selected @endif>
                                                 {{ $enquiry->plot_no ?? '' }}
                                             </option>
                                             @endforeach
@@ -789,7 +789,7 @@
                                         <select class="form-control select" name="staus_token" data-live-search="true">
                                             <option value="">Select Option</option>
                                             @foreach($tokenStatuses as $tokenStatus)
-                                            <option value="{{ $tokenStatus->token }}" @if($inquiry->status_token ==
+                                            <option value="{{ $tokenStatus->id }}" @if($inquiry->status_token ==
                                                 $tokenStatus->id) selected @endif>
                                                 {{ $tokenStatus->token }}
                                             </option>

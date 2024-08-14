@@ -139,7 +139,7 @@ Route::middleware(['auth'])->group(function () {
     //MASTER BRANCH END
 
     // Master Agent / Broker Registration
-    Route::get('agent-registration', [agentRegMasterController::class, 'index'])->name('agent_reg');
+    Route::get('agent_reg', [agentRegMasterController::class, 'index'])->name('agent_reg');
     Route::post('agent_reg_store', [agentRegMasterController::class, 'agent_reg_store'])->name('agent_reg_store');
     Route::get('agent_destroy/{id}', [agentRegMasterController::class, 'agent_destroy'])->name('agent_destroy');
     Route::get('agent_list_destroy/{id}', [agentRegMasterController::class, 'agent_list_destroy'])->name('agent_list_destroy');
@@ -180,11 +180,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/expense-entry', [AccountController::class, 'exepence_entry'])->name('expense.entry');
     Route::get('/expense-master', [AccountController::class, 'exepence_master'])->name('expense.master');
     Route::get('/expense-income', [AccountController::class, 'income'])->name('expense.income');
-    Route::post('/expense_store', [AccountController::class, 'expense_store'])->name('expense.store');
-    Route::get('/get-sold-plot-details', [AccountController::class, 'get_sold_plot_details'])->name('get-sold-plot-details');
-
-    
-    
     //FollowUp leads controller
 //usermodel controller
     Route::get('/user-model-dashboard', [UserModelController::class, 'userdashboard'])->name('user_model.dashboard');
@@ -278,7 +273,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/projects-by-firm/{firm_id}', [ProjectEntryController::class, 'getProjectsByFirm'])->name('projects.by.firm');
     Route::get('/fetch-plots-details', [ProjectEntryController::class, 'fetchPlotDetails'])->name('fetchPlotDetails');
     Route::get('/fetch-project-detailsextra', [ProjectEntryController::class, 'fetchProjectDetailsextra'])->name('fetchProjectDetailsextra');
-    
+
 
 
 
@@ -354,8 +349,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/initiate-sale', [InitiatesellController::class, 'initiatesale'])->name('initiatesale');
     Route::get('/fetch-plots', [InitiatesellController::class, 'fetchPlots'])->name('fetchPlots');
+    Route::get('/fetchPlotspaymentsection', [InitiatesellController::class, 'fetchPlotspaymentsection'])->name('fetchPlotspaymentsection');
+
     Route::post('/initiatesale/store', [InitiatesellController::class, 'store'])->name('initiatesale_store');
     Route::get('/inquiry-details', [InitiatesellController::class, 'showDetails'])->name('inquiry.details');
+    Route::get('/inquiry-docs-details', [CustomeStagesController::class, 'showDetails'])->name('inquiry.docs.details');
+
     Route::put('panel/initiate-sell/{id}', [InitiatesellController::class, 'update'])->name('panel.initiate-sell.update');
 
     Route::get('/getClientProjectPlotDatatwo', [PaymentCollectionController::class, 'getClientProjectPlotDatatwo'])->name('getClientProjectPlotDatatwo');
@@ -363,6 +362,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-documents', [PaymentCollectionController::class, 'documentindex'])->name('get.documents');
     Route::get('/fetchDocuments', [PaymentCollectionController::class, 'fetchDocuments'])->name('document.fetch');
 
+    Route::get('/getClientIdByPlot', [PaymentCollectionController::class, 'getClientIdByPlot'])->name('getClientIdByPlot');
 
     Route::get('/get-client-project-plot-data', [PaymentCollectionController::class, 'getClientProjectPlotData'])->name('getClientProjectPlotData');
     Route::get('/search_payment_collection_agains_client', [PaymentCollectionController::class, 'search_payment_collection_agains_client'])->name('search_payment_collection_agains_client');
