@@ -180,6 +180,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/expense-entry', [AccountController::class, 'exepence_entry'])->name('expense.entry');
     Route::get('/expense-master', [AccountController::class, 'exepence_master'])->name('expense.master');
     Route::get('/expense-income', [AccountController::class, 'income'])->name('expense.income');
+    Route::post('/expense_store', [AccountController::class, 'expense_store'])->name('expense.store');
+    Route::get('/get-sold-plot-details', [AccountController::class, 'get_sold_plot_details'])->name('get-sold-plot-details');
+
+    
+    
     //FollowUp leads controller
 //usermodel controller
     Route::get('/user-model-dashboard', [UserModelController::class, 'userdashboard'])->name('user_model.dashboard');
@@ -273,7 +278,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/projects-by-firm/{firm_id}', [ProjectEntryController::class, 'getProjectsByFirm'])->name('projects.by.firm');
     Route::get('/fetch-plots-details', [ProjectEntryController::class, 'fetchPlotDetails'])->name('fetchPlotDetails');
     Route::get('/fetch-project-detailsextra', [ProjectEntryController::class, 'fetchProjectDetailsextra'])->name('fetchProjectDetailsextra');
-
+    
 
 
 

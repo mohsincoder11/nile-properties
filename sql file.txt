@@ -91,3 +91,26 @@ CREATE TABLE IF NOT EXISTS `commission_plans` (
 ALTER TABLE `agent_registration_master` ADD `total_sales` FLOAT NOT NULL COMMENT 'total sales by agent' AFTER `profile`;
 ALTER TABLE `agent_registration_master` CHANGE `parent_id` `parent_id` INT(11) NULL DEFAULT NULL COMMENT 'parent id of agent';
 ALTER TABLE `agent_registration_master` CHANGE `total_sales` `total_sales` FLOAT NOT NULL DEFAULT '0' COMMENT 'total sales by agent';
+
+
+
+14-08-24
+CREATE TABLE expense_income (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    bill_no VARCHAR(255) NOT NULL,            
+    firm_id INT NOT NULL,                     
+    project_id INT NOT NULL,                 
+    income_category ENUM('Client', 'Loan') NOT NULL, 
+    client_id INT NOT NULL,                  
+    plot_no VARCHAR(255) NOT NULL,           
+   
+    bank_name VARCHAR(255) NOT NULL,          
+    amount DECIMAL(15, 2) NOT NULL,          
+    remarks VARCHAR(255) NOT NULL,           
+    emi_no INT NOT NULL,                      
+    mode_of_payment ENUM('Bank NEFT/RTGS', 'Online Banking', 'UPI', 'Bank Deposit', 'Cash') NOT NULL,  
+    attach_proof VARCHAR(255),                
+    narration TEXT,                          
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

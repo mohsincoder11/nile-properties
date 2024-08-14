@@ -849,7 +849,7 @@
                             response.forEach(function(document) {
                                 // Update path to include base URL
                                 var documentPath =
-                                    `http://localhost/laravelwebmedia/nile-properties/public/documents/${document.document_name}`;
+                                `{{ asset('documents') }}/${document.document_name}`;
                                 var row = `
 <tr>
     <td style="padding:5px;" align="center"><label>${document.document_name}</label></td>
