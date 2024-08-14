@@ -96,7 +96,7 @@
 
             <!-- START DEFAULT DATATABLE -->
             <div class="col-md-12" align="center">
-                <div class="icon-box-container" style="margin-left: 12%;">
+                <div class="icon-box-container" style="margin-left: 16%;">
 
                     <div class="icon-box box-3" style="padding: 1vh;">
                         <a href="{{ route('initiatesale') }}">
@@ -135,17 +135,17 @@
                         </a>
 
                     </div>
-                    <div style="margin-top: 10vh;font-size: large;">
+                    {{-- <div style="margin-top: 10vh;font-size: large;">
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    </div>
+                    </div> --}}
 
-                    <div class="icon-box box-1">
+                    {{-- <div class="icon-box box-1">
                         <a href="{{ route('account') }}">
                             <img src="{{ asset('panel/assets/images/cards/6.png') }}" alt="" class="classic-1">
                             <p class="classic">ACCOUNTS CLEARANCE</p>
                         </a>
 
-                    </div>
+                    </div> --}}
                     <div style="margin-top: 10vh;font-size: large;">
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </div>

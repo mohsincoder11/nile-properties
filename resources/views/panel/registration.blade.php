@@ -84,7 +84,7 @@
 
             <!-- START DEFAULT DATATABLE -->
             <div class=" col-md-12" align="center">
-            <div class="icon-box-container" style="margin-left: 12%;">
+            <div class="icon-box-container" style="margin-left: 16%;">
 
                 <div class="icon-box box-3" style="padding: 1vh;">
                     <a href="{{ route('initiatesale')}}">
@@ -123,17 +123,17 @@
                     </a>
 
                 </div>
-                <div style="margin-top: 10vh;font-size: large;">
+                {{-- <div style="margin-top: 10vh;font-size: large;">
                     <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                </div>
+                </div> --}}
 
-                <div class="icon-box box-1">
+                {{-- <div class="icon-box box-1">
                     <a href="{{ route('account')}}">
                         <img src="{{ asset('panel/assets/images/cards/6.png') }}" alt="" class="classic-1">
                         <p class="classic">ACCOUNTS CLEARANCE</p>
                     </a>
 
-                </div>
+                </div> --}}
                 <div style="margin-top: 10vh;font-size: large;">
                     <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                 </div>
@@ -199,7 +199,7 @@
                         <th>Plot Cost</th>
                         <th>Customer Name</th>
                         <th>Nominee</th>
-                        <th>View</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -253,11 +253,36 @@
                                 type="button" class="btn btn-info view-details-btn" data-placement="top" title="View">
                                 <i class="fa fa-eye" style="margin-left:5px;"></i>
                             </button>
-                            <button
-                                style="background-color:blue; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
-                                type="button" class="btn btn-info" data-placement="top" title="Check">
+
+                            <!-- Hidden form that will be submitted if conditions are met -->
+                            <form id="form-{{ $enquiry->id }}"
+                                action="{{ route('registrationcompleteapprove_legalclrarance') }}" method="POST"
+                                style="display:none;">
+                                @csrf
+                                <input type="hidden" name="enquiry_id" value="{{ $enquiry->id ?? '' }}">
+                                <!-- Other form fields go here if needed -->
+                            </form>
+
+                            <!-- Button to trigger the check and form submission -->
+                            @if($enquiry->is_request_registration_completed == 1)
+                            <button data-id="{{ $enquiry->id ?? '' }}"
+                                style="background-color:rgb(255, 0, 195); border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                type="button" class="btn btn-info check-status-btn" data-placement="top"
+                                title="Approved">
                                 <i class="fa fa-check" style="margin-left:5px;"></i>
                             </button>
+                            @else
+                            <button data-id="{{ $enquiry->id ?? '' }}"
+                                style="background-color:blue; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                type="button" class="btn btn-info check-status-btn" data-placement="top" title="Check">
+                                <i class="fa fa-check" style="margin-left:5px;"></i>
+                            </button>
+                            @endif
+
+                            <!-- Generate the URL for the named route in the Blade template -->
+                            <script>
+                                const checkStatusUrl = "{{ route('checkstatusforregistrationcomplete_legalclrarance', ['id' => ':id']) }}";
+                            </script>
                         </td>
                     </tr>
                     @endforeach
@@ -294,34 +319,66 @@
 
 </div>
 @stop
-
 @section('js')
 <script>
-    $(document).on('click', '.view-details-btn', function() {
-            $("#popup3").modal({
-                backdrop: "static",
-                keyboard: false,
-            });
-            var inquiryId = $(this).data('id'); // Get the data-id value
-            $("#appendbody").empty();
-            $.ajax({
-                url: '{{ route('inquiry.docs.details') }}',
-                type: 'get',
-                data: {
-                    id: inquiryId
-                },
-                dataType: 'json',
-                success: function(data) {
-                    if (data.html) {
-                        $("#appendbody").html(data.html);
-                    } else if (data.error) {
-                        $("#appendbody").html('<p>' + data.error + '</p>');
-                    }
-                },
-                error: function() {
-                    $("#appendbody").html('<p>An error occurred while fetching the details.</p>');
-                }
-            });
+    $(document).on('click', '.view-details-btn', function () {
+        $("#popup3").modal({
+            backdrop: "static",
+            keyboard: false,
         });
+        var inquiryId = $(this).data('id'); // Get the data-id value
+        $("#appendbody").empty();
+        $.ajax({
+            url: '{{ route('inquiry.docs.details') }}',
+            type: 'get',
+            data: {
+                id: inquiryId
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.html) {
+                    $("#appendbody").html(data.html);
+                } else if (data.error) {
+                    $("#appendbody").html('<p>' + data.error + '</p>');
+                }
+            },
+            error: function () {
+                $("#appendbody").html('<p>An error occurred while fetching the details.</p>');
+            }
+        });
+    });
+
+    $(document).on('click', '.check-status-btn', function () {
+        const enquiryId = $(this).data('id');
+        if (enquiryId) {
+            checkConditionsAndSubmitForm(enquiryId, this);
+        }
+    });
+
+    function checkConditionsAndSubmitForm(enquiryId, buttonElement) {
+        // Replace the placeholder in the URL with the actual enquiryId
+        const url = checkStatusUrl.replace(':id', enquiryId);
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Submit the specific form for this enquiry
+                    document.getElementById('form-' + enquiryId).submit();
+                } else {
+                    // Show a popup message if the conditions are not met
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 </script>
 @stop

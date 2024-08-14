@@ -431,7 +431,7 @@ class InitiatesellController extends Controller
         }
 
         // Update plot registration documents
-        $plotRegistrationDocuments = PlotRegistrationDocumentByClient::where('initial_enquiry_id', $initialEnquiry->id)->get();
+        $plotRegistrationDocuments = PlotRegistrationDocumentByClient::where('initial_enquiry_id', $id)->get();
         foreach ($plotRegistrationDocuments as $plotRegistrationDocument) {
             $plotRegistrationDocument->update([
                 'plot_id' => $request->plot_no,
@@ -441,7 +441,7 @@ class InitiatesellController extends Controller
         }
 
         // Update other charges
-        $otherChargesList = OtherChargesForClient::where('initial_enquiry_id', $initialEnquiry->id)->get();
+        $otherChargesList = OtherChargesForClient::where('initial_enquiry_id', $id)->get();
         foreach ($otherChargesList as $otherCharges) {
             $otherCharges->update([
                 'plot_id' => $request->plot_no,
@@ -813,7 +813,195 @@ class InitiatesellController extends Controller
         return response()->json(['html' => $inquiryHtml]);
     }
 
+    public function registrationcompleteapprove(Request $request)
+    {
+        // dd($request->all());
+        // Validate the incoming request
+        $request->validate([
+            'enquiry_id' => 'required|'
+        ]);
 
+        // Find the InitialEnquiry record that matches the enquiry_id
+        $initialEnquiry = InitialEnquiry::find($request->enquiry_id);
 
+        if ($initialEnquiry) {
+            // Update the fields
+            $initialEnquiry->plot_stage_status = 'REQUEST_FOR_REGISTRATION';
+            $initialEnquiry->is_request_registration_completed = 1;
+
+            // Save the changes
+            $initialEnquiry->save();
+
+            // Return a success response
+            return redirect()->back()->with('success', 'Registration completed and approved.');
+
+        }
+
+        // Return a failure response if the record is not found
+        return redirect()->back()->with('error', 'Data not found.');
+    }
+
+    public function registrationcompleteapprove_legalclrarance_with_date(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'enquiry_id' => 'required|integer',
+            'date' => 'required|date_format:m/d/Y'
+        ]);
+
+        // Find the InitialEnquiry record that matches the enquiry_id
+        $initialEnquiry = InitialEnquiry::find($request->enquiry_id);
+
+        if ($initialEnquiry) {
+            // Convert the date format from MM/DD/YYYY to YYYY-MM-DD
+            $date = \DateTime::createFromFormat('m/d/Y', $request->date);
+            $formattedDate = $date ? $date->format('Y-m-d') : null;
+
+            // Update the fields
+            $initialEnquiry->plot_stage_status = 'LEGAL_CLEARANCE';
+            $initialEnquiry->is_legal_clearance = 1;
+            $initialEnquiry->legal_clearance_date = $formattedDate;
+
+            // Save the changes
+            $initialEnquiry->save();
+
+            // Return a success response
+            return redirect()->back()->with('success', 'Legal clearance completed and approved.');
+        }
+
+        // Return a failure response if the record is not found
+        return redirect()->back()->with('error', 'Data not found.');
+    }
+
+    public function registrationcomplete_with_date_file(Request $request)
+    {
+        // dd($request->all());
+        // Validate the request
+        $request->validate([
+            'enquiry_id' => 'required|',
+            'date' => 'required|',
+            'registration_receipt' => 'required|', // Optional: Specify file types and size limit
+        ]);
+
+        // Find the InitialEnquiry record that matches the enquiry_id
+        $initialEnquiry = InitialEnquiry::find($request->enquiry_id);
+
+        if ($initialEnquiry) {
+            // Convert the date format from MM/DD/YYYY to YYYY-MM-DD
+            $date = \DateTime::createFromFormat('m/d/Y', $request->date);
+            $formattedDate = $date ? $date->format('Y-m-d') : null;
+
+            // Handle file upload if present
+            if ($request->hasFile('registration_receipt')) {
+                $file = $request->file('registration_receipt');
+                $fileName = rand(0000, 8888) . time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('registration_receipts/'), $fileName);
+
+                // Store the file name or path in the database
+                $initialEnquiry->registration_receipt = $fileName;
+            }
+
+            // Update the fields
+            $initialEnquiry->plot_stage_status = 'REGISTRATION_COMPLETED';
+            $initialEnquiry->is_registration_completed = 1;
+            $initialEnquiry->registration_complete_date = $formattedDate;
+
+            // Save the changes
+            $initialEnquiry->save();
+
+            // Return a success response
+            return redirect()->back()->with('success', 'Registration completed .');
+        }
+
+        // Return a failure response if the record is not found
+        return redirect()->back()->with('error', 'Data not found.');
+    }
+
+    public function saleded_with_date_file(Request $request)
+    {
+        // dd($request->all());
+        // Validate the request
+        $request->validate([
+            'enquiry_id' => 'required|',
+            'date' => 'required|',
+            'registration_receipt' => 'required|', // Optional: Specify file types and size limit
+        ]);
+
+        // Find the InitialEnquiry record that matches the enquiry_id
+        $initialEnquiry = InitialEnquiry::find($request->enquiry_id);
+
+        if ($initialEnquiry) {
+            // Convert the date format from MM/DD/YYYY to YYYY-MM-DD
+            $date = \DateTime::createFromFormat('m/d/Y', $request->date);
+            $formattedDate = $date ? $date->format('Y-m-d') : null;
+
+            // Handle file upload if present
+            if ($request->hasFile('registration_receipt')) {
+                $file = $request->file('registration_receipt');
+                $fileName = rand(0000, 8888) . time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('saleded_receipt/'), $fileName);
+
+                // Store the file name or path in the database
+                $initialEnquiry->saleded_receipt = $fileName;
+            }
+
+            // Update the fields
+            $initialEnquiry->plot_stage_status = 'SALEDEED_SCAN';
+            $initialEnquiry->is_saleded_completed = 1;
+            $initialEnquiry->saleded_completed_date = $formattedDate;
+
+            // Save the changes
+            $initialEnquiry->save();
+
+            // Return a success response
+            return redirect()->back()->with('success', 'Saleded Scan completed .');
+        }
+
+        // Return a failure response if the record is not found
+        return redirect()->back()->with('error', 'Data not found.');
+    }
+    public function handover_with_date_file(Request $request)
+    {
+        // dd($request->all());
+        // Validate the request
+        $request->validate([
+            'enquiry_id' => 'required|',
+            'date' => 'required|',
+            'registration_receipt' => 'required|', // Optional: Specify file types and size limit
+        ]);
+
+        // Find the InitialEnquiry record that matches the enquiry_id
+        $initialEnquiry = InitialEnquiry::find($request->enquiry_id);
+
+        if ($initialEnquiry) {
+            // Convert the date format from MM/DD/YYYY to YYYY-MM-DD
+            $date = \DateTime::createFromFormat('m/d/Y', $request->date);
+            $formattedDate = $date ? $date->format('Y-m-d') : null;
+
+            // Handle file upload if present
+            if ($request->hasFile('registration_receipt')) {
+                $file = $request->file('registration_receipt');
+                $fileName = rand(0000, 8888) . time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('handover_receipt/'), $fileName);
+
+                // Store the file name or path in the database
+                $initialEnquiry->handover_receipt = $fileName;
+            }
+
+            // Update the fields
+            $initialEnquiry->plot_stage_status = 'HANDOVER_COMPLETE';
+            $initialEnquiry->is_handover_completed = 1;
+            $initialEnquiry->handover_completed_date = $formattedDate;
+
+            // Save the changes
+            $initialEnquiry->save();
+
+            // Return a success response
+            return redirect()->back()->with('success', 'Handover completed .');
+        }
+
+        // Return a failure response if the record is not found
+        return redirect()->back()->with('error', 'Data not found.');
+    }
 
 }
