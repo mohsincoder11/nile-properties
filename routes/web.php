@@ -352,6 +352,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/fetchPlotspaymentsection', [InitiatesellController::class, 'fetchPlotspaymentsection'])->name('fetchPlotspaymentsection');
 
     Route::post('/initiatesale/store', [InitiatesellController::class, 'store'])->name('initiatesale_store');
+
+    Route::get('/check-status/{id}', [CustomeStagesController::class, 'checkStatus'])->name('checkstatusforregistrationcomplete_legalclrarance');
+    Route::post('/registration-complete-approve', [InitiatesellController::class, 'registrationcompleteapprove'])->name('registrationcompleteapprove_legalclrarance');
+    Route::post('/registration-complete-approve-with-date', [InitiatesellController::class, 'registrationcompleteapprove_legalclrarance_with_date'])->name('registrationcompleteapprove_legalclrarance_with_date');
+    Route::post('/registrationcomplete-with-date-file', [InitiatesellController::class, 'registrationcomplete_with_date_file'])->name('registrationcomplete_with_date_file');
+
+    Route::post('/handover-with-date-file', [InitiatesellController::class, 'handover_with_date_file'])->name('handover_with_date_file');
+
+    Route::post('/saleded-with-date-file', [InitiatesellController::class, 'saleded_with_date_file'])->name('saleded_with_date_file');
+
     Route::get('/inquiry-details', [InitiatesellController::class, 'showDetails'])->name('inquiry.details');
     Route::get('/inquiry-docs-details', [CustomeStagesController::class, 'showDetails'])->name('inquiry.docs.details');
 

@@ -17,7 +17,7 @@
                 <div class="col-md-12" align="center" style="margin-top: 2vh;">
 
                     <div class="col-md-12" align="center">
-                        <div class="icon-box-container" style="margin-left: 12%;">
+                        <div class="icon-box-container" style="margin-left: 16%;">
 
                             <div class="icon-box box-3" style="padding: 1vh;">
                                 <a href="{{ route('initiatesale')}}">
@@ -56,17 +56,17 @@
                                 </a>
 
                             </div>
-                            <div style="margin-top: 10vh;font-size: large;">
+                            {{-- <div style="margin-top: 10vh;font-size: large;">
                                 <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                            </div>
-
+                            </div> --}}
+                            {{--
                             <div class="icon-box box-1">
                                 <a href="{{ route('account')}}">
                                     <img src="{{ asset('panel/assets/images/cards/6.png') }}" alt="" class="classic-1">
                                     <p class="classic">ACCOUNTS CLEARANCE</p>
                                 </a>
 
-                            </div>
+                            </div> --}}
                             <div style="margin-top: 10vh;font-size: large;">
                                 <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                             </div>
@@ -174,7 +174,8 @@
                             </div>
                             <div class="col-md-2" style="margin-top:3.1rem;" align="center">
 
-                                <div class="input-group" style="margin-top:-5px; margin-bottom:15px;">
+                                <div class="input-group"
+                                    style="margin-top:-5px; margin-bottom:15px;margin-left:-125px;">
 
                                     <button type="button" id="view-button" class="btn btn-primary"><span
                                             class="fa fa-stack-overflow"></span> View
@@ -221,7 +222,7 @@
                     <i class="fa fa-rupee"></i> &nbsp;Other charges
                 </h5>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12" style="margin-left: 15%;;">
                 <form id="other-charges-form" action="{{ route('othercharge_store') }}" method="post">
                     @csrf
                     <div class="col-md-2" style="margin-top:5px;"></div>

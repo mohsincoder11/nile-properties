@@ -35,6 +35,25 @@ class CustomeStagesController extends Controller
         $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
         return view('panel.registration', compact('nominee', 'client', 'inquery'));
     }
+    public function checkStatus($id)
+    {
+        // Check in OtherChargesForClient model
+        $chargesPaid = OtherChargesForClient::where('initial_enquiry_id', $id)
+            ->where('status', 'paid')
+            ->exists();
+
+        // Check in PlotRegistrationDocumentByClient model
+        $documentApproved = PlotRegistrationDocumentByClient::where('initial_enquiry_id', $id)
+            ->where('status', 'approved')
+            ->exists();
+
+        if ($chargesPaid && $documentApproved) {
+            return response()->json(['status' => 'success']);
+        } else {
+            return response()->json(['status' => 'fail', 'message' => 'Please go to the account section and ensure the document is approved and other charges were paid.']);
+        }
+    }
+
 
     public function showDetails(Request $request)
     {
@@ -56,13 +75,21 @@ class CustomeStagesController extends Controller
         $otherCharges = OtherChargesForClient::where('plot_id', $plotId)
             ->where('firm_id', $firmId)
             ->where('project_id', $projectId)
+            ->whereNotNull('amount')
+            ->whereNotNull('client_id')
+
+            ->whereNotNull('initial_enquiry_id')
             ->get();
 
         // Get data from PlotRegistrationDocumentByClient model
         $plotDocuments = PlotRegistrationDocumentByClient::where('plot_id', $plotId)
             ->where('firm_id', $firmId)
             ->where('project_id', $projectId)
+            ->whereNotNull('document_name')
+            ->whereNotNull('initial_enquiry_id')
+
             ->get();
+
 
 
         // Render the Blade view with all the data
@@ -79,19 +106,32 @@ class CustomeStagesController extends Controller
 
     public function legalclearance()
     {
-        return view('panel.legal_clearance');
+
+        $nominee = NomineeDetailInitial::all();
+        $client = ClientDetailInitial::all();
+        $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        return view('panel.legal_clearance', compact('nominee', 'client', 'inquery'));
     }
     public function registrationcompleted()
     {
-        return view('panel.registration_completed');
+        $nominee = NomineeDetailInitial::all();
+        $client = ClientDetailInitial::all();
+        $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        return view('panel.registration_completed', compact('nominee', 'client', 'inquery'));
     }
 
     public function saledeedscan()
     {
-        return view('panel.saledeed_scan');
+        $nominee = NomineeDetailInitial::all();
+        $client = ClientDetailInitial::all();
+        $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        return view('panel.saledeed_scan', compact('nominee', 'client', 'inquery'));
     }
     public function handover()
     {
-        return view('panel.handover');
+        $nominee = NomineeDetailInitial::all();
+        $client = ClientDetailInitial::all();
+        $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        return view('panel.handover', compact('nominee', 'client', 'inquery'));
     }
 }
