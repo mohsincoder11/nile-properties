@@ -173,7 +173,7 @@ class PaymentCollectionController extends Controller
             ->whereNotNull('status');
 
         // Eager load the relationships
-        $documents = $query->with('projectname','plotname', 'firmname', 'clientname')->get();
+        $documents = $query->with('projectname', 'plotname', 'firmname', 'clientname')->get();
 
         return response()->json($documents);
     }

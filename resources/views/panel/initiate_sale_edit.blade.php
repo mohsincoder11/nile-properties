@@ -657,8 +657,9 @@
                                             data-live-search="true">
                                             <option value="">Select Option</option>
                                             @foreach($plot as $enquiry)
-                                            <option value="{{ $enquiry->id ?? '' }}" @if($inquiry->plot_no ?? '' ==
-                                                $enquiry->id ?? '') selected @endif>
+                                            <option value="{{ $enquiry->id ?? '' }}" @if(isset($inquiry) && $inquiry->
+                                                plot_no == $enquiry->id) selected
+                                                @endif>
                                                 {{ $enquiry->plot_no ?? '' }}
                                             </option>
                                             @endforeach
@@ -786,7 +787,7 @@
                                         </div>
                                     </td>
                                     <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" name="staus_token" data-live-search="true">
+                                        <select class="form-control select" name="status_token" data-live-search="true">
                                             <option value="">Select Option</option>
                                             @foreach($tokenStatuses as $tokenStatus)
                                             <option value="{{ $tokenStatus->id }}" @if($inquiry->status_token ==
@@ -831,8 +832,8 @@
                                             id="plot_sale_status" name="plot_sale_status">
                                             <option value="">Select Option</option>
                                             @foreach($statuses as $status)
-                                            <option value="{{ $status->plot_sale_status }}" @if($inquiry->
-                                                plot_sale_status == $status->plot_sale_status) selected
+                                            <option value="{{ $status->id }}" @if(isset($inquiry) && $inquiry->
+                                                plot_sale_status == $status->id) selected
                                                 @endif>
                                                 {{ $status->plot_sale_status }}
                                             </option>
