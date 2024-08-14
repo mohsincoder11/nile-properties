@@ -158,3 +158,4 @@ CREATE TABLE IF NOT EXISTS `plot_transactions` (
   KEY `initial_enquiry_id` (`initial_enquiry_id`),
   KEY `agent_id` (`agent_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
