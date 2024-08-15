@@ -185,4 +185,4 @@ CREATE TABLE IF NOT EXISTS `plot_transactions` (
   KEY `agent_id` (`agent_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
->>>>>>> 5eb4c98ccc500e044650ee92b8f18c931608fe41
+ALTER TABLE `other_charges_for_clients` ADD `status` VARCHAR(10) NOT NULL DEFAULT 'pending' COMMENT 'pending,paid' AFTER `project_id`;

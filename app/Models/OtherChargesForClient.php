@@ -19,9 +19,7 @@ class OtherChargesForClient extends Model
         'firm_id',
         'project_id',
         'client_id',
-        'status',
-        'initial_enquiry_id',
-
+        'status'
 
 
 
@@ -35,11 +33,6 @@ class OtherChargesForClient extends Model
     public function projectname()
     {
         return $this->belongsTo(ProjectEntry::class, 'project_id');
-    }
-
-    public function plotname()
-    {
-        return $this->hasOne(ProjectEntryAppendData::class, 'id', 'plot_id');
     }
     public function firmname()
     {
