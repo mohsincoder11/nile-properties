@@ -30,7 +30,7 @@
         background-color: #fcfcfc;
         padding: 1rem;
         box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-        width: 960%;
+        width: 250%;
     }
 
     .popover__content:before {
@@ -96,10 +96,10 @@
 
             <!-- START DEFAULT DATATABLE -->
             <div class="col-md-12" align="center">
-                <div class="icon-box-container" style="margin-left: 12%;">
+                <div class="icon-box-container" style="margin-left: 16%;">
 
                     <div class="icon-box box-3" style="padding: 1vh;">
-                        <a href="{{ route('user_model.initiatesale')}}">
+                        <a href="{{ route('user_model.initiatesale') }}">
                             <img src="{{ asset('panel/assets/images/cards/13.png') }}" alt="" class="classic-1">
                             <p class="classic">ADD NEW SALE</p>
                         </a>
@@ -109,7 +109,7 @@
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </div>
                     <div class="icon-box box-1" style="padding: 1vh;">
-                        <a href="{{ route('user_model.newsale')}}">
+                        <a href="{{ route('user_model.newsale') }}">
                             <img src="{{ asset('panel/assets/images/cards/9.png') }}" alt="" class="classic-1">
                             <p class="classic">NEW SALE CONFIRMED</p>
                         </a>
@@ -119,7 +119,7 @@
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </div>
                     <div class="icon-box box-2">
-                        <a href="{{ route('user_model.paymentcollection')}}">
+                        <a href="{{ route('user_model.paymentcollection') }}">
                             <img src="{{ asset('panel/assets/images/cards/7.png') }}" alt="" class="classic-1">
                             <p class="classic">PAYMENT COLLECTION</p>
                         </a>
@@ -129,28 +129,28 @@
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </div>
                     <div class="icon-box box-3">
-                        <a href="{{ route('user_model.registration')}}">
+                        <a href="{{ route('user_model.registration') }}">
                             <img src="{{ asset('panel/assets/images/cards/11.png') }}" alt="" class="classic-1">
                             <p class="classic">REQUEST FOR REGISTRATION</p>
                         </a>
 
                     </div>
-                    <div style="margin-top: 10vh;font-size: large;">
+                    {{-- <div style="margin-top: 10vh;font-size: large;">
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    </div>
+                    </div> --}}
 
-                    <div class="icon-box box-1">
-                        <a href="{{ route('user_model.account')}}">
+                    {{-- <div class="icon-box box-1">
+                        <a href="{{ route('user_model.account') }}">
                             <img src="{{ asset('panel/assets/images/cards/6.png') }}" alt="" class="classic-1">
                             <p class="classic">ACCOUNTS CLEARANCE</p>
                         </a>
 
-                    </div>
+                    </div> --}}
                     <div style="margin-top: 10vh;font-size: large;">
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </div>
                     <div class="icon-box box-2">
-                        <a href="{{ route('user_model.legalclearance')}}">
+                        <a href="{{ route('user_model.legalclearance') }}">
                             <img src="{{ asset('panel/assets/images/cards/4.png') }}" alt="" class="classic-1">
                             <p class="classic">LEGAL CLEARANCE</p>
                         </a>
@@ -160,7 +160,7 @@
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </div>
                     <div class="icon-box box-3">
-                        <a href="{{ route('user_model.registrationcompleted')}}">
+                        <a href="{{ route('user_model.registrationcompleted') }}">
                             <img src="{{ asset('panel/assets/images/cards/8.png') }}" alt="" class="classic-1">
                             <p class="classic">REGISTRATION COMPLETED</p>
                         </a>
@@ -170,7 +170,7 @@
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </div>
                     <div class="icon-box box-1">
-                        <a href="{{ route('user_model.saledeedscan')}}">
+                        <a href="{{ route('user_model.saledeedscan') }}">
                             <img src="{{ asset('panel/assets/images/cards/12.png') }}" alt="" class="classic-1">
                             <p class="classic">SALEDEED SCAN</p>
                         </a>
@@ -180,7 +180,7 @@
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </div>
                     <div class="icon-box box-2">
-                        <a href="{{ route('user_model.handover')}}">
+                        <a href="{{ route('user_model.handover') }}">
                             <img src="{{ asset('panel/assets/images/cards/10.png') }}" alt="" class="classic-1">
                             <p class="classic">HANDOVER COMPLETE</p>
                         </a>
@@ -198,7 +198,7 @@
         </div>
         <div class="col-md-12" style="margin-top:5px;">
 
-            @if(session('success'))
+            @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
@@ -211,17 +211,16 @@
                             <th>Sr. No.</th>
                             <th>Customer Details</th>
                             <th>Property Details</th>
-                            <th>Agent</th>
+                            <th>Source</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($inquery as $key => $inquiry)
                         <tr>
-                            <td>{{ $loop->index + 1}}</td>
+                            <td>{{ $loop->index + 1 }}</td>
                             <td>
                                 @foreach ($inquiry->clients as $item)
-
                                 <div class="popover__wrapper">
                                     <a href="#">
                                         <h2 class="popover__title">{{ $item->name ?? '' }}</h2>
@@ -239,32 +238,61 @@
                             <td>
                                 <div class="popover__wrapper">
                                     <a href="#">
-                                        <h2 class="popover__title">{{ $inquiry->square_ft?? '' }} sq ft</h2>
+                                        <h2 class="popover__title">{{ $inquiry->square_ft ?? '' }} sq ft</h2>
                                     </a>
                                     <div class="popover__content">
                                         <div class="modal-area">
-                                            <p>Open space<br>
+                                            <p>
+                                                <strong>East:</strong> {{ $inquiry->east ?? 'N/A' }}<br>
+                                                <strong>West:</strong> {{ $inquiry->west ?? 'N/A' }}<br>
+                                                <strong>North:</strong> {{ $inquiry->north ?? 'N/A' }}<br>
+                                                <strong>South:</strong> {{ $inquiry->south ?? 'N/A' }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                @foreach ($inquiry->clients as $item)
+                                @if (!empty($inquiry->employee_id))
                                 <div class="popover__wrapper">
                                     <a href="#">
-                                        <h2 class="popover__title">{{ $item->agent->name ?? '' }}</h2>
+                                        <h2 class="popover__title">{{ $inquiry->employee->name ?? ''}}</h2>
                                     </a>
                                     <div class="popover__content">
                                         <div class="modal-area">
-                                            <p>Address: {{ $item->agent->address ?? '' }}<br>
-                                                Mobile No. : {{ $item->agent->contact_number ?? ''
-                                                }}<br>
+                                            <p>Address: {{ $inquiry->employee->address ?? '' }}<br>
+                                                Mobile No. : {{ $inquiry->employee->contact_number ?? '' }}<br>
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
+                                @elseif(!empty($inquiry->agent_id ?? ''))
+                                <div class="popover__wrapper">
+                                    <a href="#">
+                                        <h2 class="popover__title">{{ $inquiry->agent->name }}</h2>
+                                    </a>
+                                    <div class="popover__content">
+                                        <div class="modal-area">
+                                            <p>Address: {{ $inquiry->agent->address ?? '' }}<br>
+                                                Mobile No. : {{ $inquiry->agent->contact_number ?? '' }}<br>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                @else
+                                <div class="popover__wrapper">
+                                    <a href="#">
+                                        <h2 class="popover__title">Direct Source :</h2>
+                                    </a>
+                                    <div class="popover__content">
+                                        <div class="modal-area">
+                                            <p>YES<br>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
                             </td>
                             <td>
                                 <button
@@ -273,7 +301,7 @@
                                     data-placement="top" title="View" data-id="{{ $inquiry->id }}">
                                     <i class="fa fa-eye" style="margin-left:5px;"></i>
                                 </button>
-                                <a href="{{ route('newsale_edit', $inquiry->id) }}">
+                                <a href="{{ route('user_model.userinitiatesaleedit', $inquiry->id) }}">
                                     <button
                                         style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
                                         type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
@@ -293,6 +321,23 @@
                                         <i class="fa fa-trash-o" style="margin-left:5px;"></i>
                                     </button>
                                 </form>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-exchange" style="margin-left:5px;"></i>
+                                        Plot Transfer
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item"
+                                            href="{{ route('plot.transfer', [$inquiry->id, 1]) }}">Transfer
+                                            User
+                                            From Plot X to Y</a>
+                                        <a class="dropdown-item"
+                                            href="{{ route('plot.transfer', [$inquiry->id, 2]) }}">Transfer
+                                            Plot
+                                            From User X to Y</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
@@ -321,8 +366,15 @@
             <div class="modal-footer" style="border: none !important; background-color: #fff !important">
                 <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
             </div>
+
         </div>
     </div>
+</div>
+
+
+</div>
+
+
 </div>
 
 @stop
@@ -330,28 +382,30 @@
 @section('js')
 <script>
     $(document).on('click', '.view-details-btn', function() {
-$("#popup3").modal({
-backdrop: "static",
-keyboard: false,
-});
-var inquiryId = $(this).data('id'); // Get the data-id value
-$("#appendbody").empty();
-$.ajax({
-url: '{{ route("inquiry.details") }}',
-type: 'get',
-data: { id: inquiryId },
-dataType: 'json',
-success: function(data) {
-if (data.html) {
-$("#appendbody").html(data.html);
-} else if (data.error) {
-$("#appendbody").html('<p>' + data.error + '</p>');
-}
-},
-error: function() {
-$("#appendbody").html('<p>An error occurred while fetching the details.</p>');
-}
-});
-});
+            $("#popup3").modal({
+                backdrop: "static",
+                keyboard: false,
+            });
+            var inquiryId = $(this).data('id'); // Get the data-id value
+            $("#appendbody").empty();
+            $.ajax({
+                url: '{{ route('inquiry.details') }}',
+                type: 'get',
+                data: {
+                    id: inquiryId
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.html) {
+                        $("#appendbody").html(data.html);
+                    } else if (data.error) {
+                        $("#appendbody").html('<p>' + data.error + '</p>');
+                    }
+                },
+                error: function() {
+                    $("#appendbody").html('<p>An error occurred while fetching the details.</p>');
+                }
+            });
+        });
 </script>
 @stop

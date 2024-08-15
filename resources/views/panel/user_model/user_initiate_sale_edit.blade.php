@@ -2,34 +2,29 @@
 
 @section('main_container')
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<style>
-    .details {
-        display: none;
-        position: absolute;
-        background-color: white;
-        border: 1px solid #ccc;
-        padding: 10px;
-        z-index: 1000;
-    }
-
-    .table-hover-row:hover .details {
-        display: block;
-    }
-
-    #fileViewer {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        /* Ensures the image scales proportionally and fits within its container */
-    }
-</style>
 <div class="page-content-wrap">
     <div class="row">
         <div class="col-md-12" style="margin-top:5px;">
             <div class="panel panel-default">
-                <form action="{{ route('initiatesale_store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('panel.initiate-sell.update', $inquiry->id) }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
 
+                    <div class="col-md-12">
+
+                        <h5 class="panel-title"
+                            style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
+                            align="center">
+                            <i class="fa fa-list"></i> &nbsp;Initiate Sale Edit
+                        </h5>
+
+                    </div>
+                    {{-- <h5 class="panel-title"
+                        style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
+                        align="center">
+                        <i class="fa fa-user"></i> &nbsp;Select Existing Customer Or New Customer
+                    </h5> --}}
 
                     <div class="col-md-12" align="center" style="margin-top: 2vh;">
 
@@ -144,74 +139,6 @@
 
 
                     </div>
-
-                    <h5 class="panel-title"
-                        style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
-                        align="center">
-                        <i class="fa fa-user"></i> &nbsp;Select Existing Customer Or New Customer
-                    </h5>
-
-                    <div class="row">
-                        <div class="col-md-12" style="margin-top: 2vh;">
-
-                            <div class="col-md-5"></div>
-                            <div class="col-md-2">
-                                <label class="control-label" style="margin-left: 5px;">Select
-                                    Existing
-                                    Customer<font color="#000099">
-                                    </font></label>
-                                {{-- <select id="client-select" class="form-control select" data-live-search="true">
-                                    <option value="">Select a client</option>
-                                    @foreach($enquiries as $enquiry)
-                                    <option value="{{ $enquiry->client_name->id }}"
-                                        data-client-name="{{ $enquiry->client_name->name }}"
-                                        data-client-phone="{{ $enquiry->client_name->contact }}"
-                                        data-client-address="{{ $enquiry->client_name->address }}"
-                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
-                                        {{ $enquiry->client_name->name }}
-                                    </option>
-                                    @endforeach
-                                </select> --}}
-                                <select id="client-select" class="form-control select" data-live-search="true">
-                                    <option value="">Select a client</option>
-                                    @foreach($clients as $client)
-                                    <option value="{{ $client->id ?? ''}}" data-client-name="{{ $client->name ?? ''}}"
-                                        data-client-phone="{{ $client->contact ?? ''}}"
-                                        data-client-address="{{ $client->address ?? ''}}"
-                                        data-client-sponsor="{{ $client->sponsor_id ?? '' ?? ''}}"
-                                        data-title="{{ $client->title ?? ''}}"
-                                        data-occupation="{{ $client->occupation_name->occupation ?? ''}}"
-                                        data-occupation-id="{{ $client->occupation_name->id ?? ''}}"
-                                        data-email="{{ $client->email ?? ''}}" data-city="{{ $client->city ?? ''}}"
-                                        data-pin-code="{{ $client->pin_code ?? ''}}" data-age="{{ $client->age ?? ''}}"
-                                        data-dob="{{ $client->dob ?? ''}}"
-                                        data-marriage-date="{{ $client->marriage_date ?? ''}}"
-                                        data-branch-id="{{ $client->branch_name->id ?? ''}}"
-                                        data-branch="{{ $client->branch_name->branch ?? ''}}"
-                                        data-aadhar="{{ $client->aadhar ?? ''}}"
-                                        data-aadhar-no="{{ $client->aadhar_no ?? ''}}"
-                                        data-pan="{{ $client->pan ?? ''}}" data-pan-no="{{ $client->pan_no ?? ''}}"
-                                        data-client-id="{{ $client->id ?? ''}}"
-                                        data-marital-status="{{ $client->marital_status ?? ''}}">
-                                        {{ $client->name ?? '' }}
-                                    </option>
-                                    @endforeach
-                                </select>
-
-
-
-
-                            </div>
-                            <div class="col-md-3">
-                                <button id="add-client-btn" type="button" class="btn mjks"
-                                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="col-md-2"></div>
-                        </div>
-
-                    </div>
                     <div class="col-md-12" style="margin-top: 3vh;">
                         <label class="control-label" style="text-align: center; display: block;">
                             Fill New Customer Details<font color="#000099"></font>
@@ -237,8 +164,7 @@
 
                                 <tr>
                                     <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" data-live-search="true" id="title"
-                                            name="title">
+                                        <select class="form-control select" data-live-search="true" id="title">
                                             <option value="">Select Option</option>
                                             <option>Mr.</option>
                                             <option>Mrs.</option>
@@ -260,7 +186,7 @@
                                             <option>Other</option> --}}
                                             <option value="">Select Option</option>
                                             @foreach ($occupation as $occupation_name)
-                                            <option value="{{$occupation_name->id}}">
+                                            <option value="{{$occupation_name->occupation}}">
                                                 {{$occupation_name->occupation}}</option>
 
                                             @endforeach
@@ -302,25 +228,14 @@
                                     <th style="padding:5px;text-align:left;"></th>
                                 </tr>
                                 <tr>
-                                    {{-- <td style="padding:2px;">
+                                    <td style="padding:2px;">
                                         <div style="width:100%;" class="input-group">
                                             <input type="date" class="form-control" id="dob" value="" />
                                         </div>
-                                    </td> --}}
-                                    <td style="padding: 2px;">
-                                        <div class="input-group" style="width:100%;">
-                                            <input type="text" id="dob" value="{{ old('dob') }}" name="dob"
-                                                class="form-control datepicker" placeholder="DD/MM/YYYY" />
-                                            <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "></span>
-                                            </div>
-                                        </div>
-
-
                                     </td>
                                     <td style="padding:2px;">
-                                        <select id="marital_status" name="marital_status" id="marital_status"
-                                            class="form-control" onchange="toggleMarriageDate()">
+                                        <select id="marital_status" class="form-control"
+                                            onchange="toggleMarriageDate()">
                                             <option value="">Select Option</option>
                                             <option value="single">Single</option>
                                             <option value="married">Married</option>
@@ -328,30 +243,17 @@
                                             <option value="widowed">Widowed</option>
                                         </select>
                                     </td>
-                                    {{-- <td style="padding:2px;">
+                                    <td style="padding:2px;">
                                         <div style="width:100%;" class="input-group">
                                             <input type="date" id="marriage_date" class="form-control"
-                                                name="marriage_date" value="{{ old('marriage_date') }}" />
+                                                value="{{ old('marriage_date') }}" />
                                         </div>
-                                    </td> --}}
-                                    <td style="padding: 2px;">
-                                        <div class="input-group" style="width:100%;">
-                                            <input type="text" id="marriage_date" value="{{ old('marriage_date') }}"
-                                                name="marriage_date" class="form-control datepicker"
-                                                placeholder="DD/MM/YYYY" />
-                                            <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "></span>
-                                            </div>
-                                        </div>
-
-
                                     </td>
                                     <td style="padding:2px;">
                                         <select style="width:100%;" class="form-control select" data-live-search="true"
-                                            name="branch_id" id="branch_id">
-                                            <option value="">Select Option</option>
-                                            @foreach ($branch as $branch_name)
-                                            <option value="{{$branch_name->id}}">{{$branch_name->branch}}
+                                            id="branch_id">
+                                            <option value="">Select Option</option> @foreach ($branch as $branch_name)
+                                            <option value="{{$branch_name->branch}}">{{$branch_name->branch}}
                                             </option>
                                             @endforeach
                                         </select>
@@ -386,72 +288,185 @@
                     </h5>
                     <table class="table table-bordered mt-3" width="100%" border="1">
                         <thead>
-                            <tr style="background-color:#f0f0f0 ; height:30px !important;" border="2">
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Title</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Name</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Occupation</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Email</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Mobile No.</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    City/Village</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Pincode</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Address</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Age
-                                </th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    DOB
-                                </th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Marital Status</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Marriage Date</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Branch</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    AADHAR</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    AADHAR No.</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    PAN
-                                </th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    PAN
-                                    No.</th>
-                                <th
-                                    style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
-                                    Action</th>
+                            <tr>
+                                <th>Title</th>
+                                <th>Name</th>
+                                <th>Occupation</th>
+                                <th>Email</th>
+                                <th>Mobile No.</th>
+                                <th>City/Village</th>
+                                <th>Pincode</th>
+                                <th>Address</th>
+                                <th>Age</th>
+                                <th>DOB</th>
+                                <th>Marital Status</th>
+                                <th>Marriage Date</th>
+                                <th>Branch</th>
+                                <th>AADHAR</th>
+                                <th>AADHAR No.</th>
+                                <th>PAN</th>
+                                <th>PAN No.</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
+                        @if($inquiry->clients->isNotEmpty())
                         <tbody id="customerTableBody">
-                            <!-- Rows will be added here -->
+                            @foreach($inquiry->clients as $client)
+                            @foreach($client->clientn as $customer)
+                            <tr>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->title ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_title_pre[]" value="{{ $customer->title ?? '' }}">
+                                    <input type="hidden" name="client_id_pre[]" value="{{ $customer->id ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->name ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_name_pre[]" value="{{ $customer->name ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->occupation_name->occupation ?? $customer->occupation_id ??
+                                        'N/A'
+                                        }}</label>
+                                    <input type="hidden" name="client_occupation_pre[]"
+                                        value="{{ $customer->occupation_name->name ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->email ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_email_pre[]" value="{{ $customer->email ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->contact ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_contact_pre[]"
+                                        value="{{ $customer->contact ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->city ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_city_pre[]" value="{{ $customer->city ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->pin_code ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_pincode_pre[]"
+                                        value="{{ $customer->pin_code ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->address ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_address_pre[]"
+                                        value="{{ $customer->address ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->age ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_age_pre[]" value="{{ $customer->age ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    @if ($customer->dob && $customer->dob !== 'N/A')
+                                    <label>{{ \Carbon\Carbon::parse($customer->dob)->format('d/m/y') }}</label>
+                                    <input type="hidden" name="client_dob_pre[]"
+                                        value="{{ \Carbon\Carbon::parse($customer->dob)->format('d/m/y') }}">
+                                    @else
+                                    <label>N/A</label>
+                                    <input type="hidden" name="client_dob_pre[]" value="">
+                                    @endif
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->marital_status ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_marital_status_pre[]"
+                                        value="{{ $customer->marital_status ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    @if ($customer->marriage_date && $customer->marriage_date !== 'N/A')
+                                    <label>{{ \Carbon\Carbon::parse($customer->marriage_date)->format('d/m/y')
+                                        }}</label>
+                                    <input type="hidden" name="client_marriage_date_pre[]"
+                                        value="{{ \Carbon\Carbon::parse($customer->marriage_date)->format('d/m/y') }}">
+                                    @else
+                                    <label></label>
+                                    <input type="hidden" name="client_marriage_date_pre[]" value="">
+                                    @endif
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->branch_name->branch ?? $customer->branch_id ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_branch_pre[]"
+                                        value="{{ $customer->branch_name->branch ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    @if($customer->aadhar)
+                                    <a href="{{ asset('customer_reg/' . $customer->aadhar ?? '' ) }}" target="_blank">
+                                        <i style="background-color:red;" class="fa fa-file-pdf-o"></i>
+                                    </a>
+                                    @else
+                                    <label>N/A</label>
+                                    @endif
+                                    <input type="hidden" name="client_aadhar_pre[]"
+                                        value="{{ $customer->aadhar ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->aadhar_no ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_aadhar_no_pre[]"
+                                        value="{{ $customer->aadhar_no ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    @if($customer->pan)
+                                    <a href="{{ asset('customer_reg/' . $customer->pan ?? '' ) }}" target="_blank">
+                                        <i style="background-color:blue;" class="fa fa-file-pdf-o"></i>
+                                    </a>
+                                    @else
+                                    <label>N/A</label>
+                                    @endif
+                                    <input type="hidden" name="client_pan_pre[]" value="{{ $customer->pan ?? '' }}">
+                                </td>
+                                <td style="padding:5px;" align="center">
+                                    <label>{{ $customer->pan_no ?? 'N/A' }}</label>
+                                    <input type="hidden" name="client_pan_no_pre[]"
+                                        value="{{ $customer->pan_no ?? '' }}">
+                                </td>
+                                <td style="text-align:center; color:#FF0000">
+                                    <button type="button" data-id="{{ $customer->id ?? '' }}"
+                                        class="delete-client-btn_pre">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @endforeach
+                            @endforeach
                         </tbody>
+                        @else
+                        <tbody id="customerTableBody">
+                            <tr>
+                                <td colspan="18" style="text-align:center;"></td>
+                            </tr>
+                        </tbody>
+                        @endif
                     </table>
+                    <div class="row" style="display: none;">
+                        <div class="col-md-12" style="margin-top: 2vh;">
 
+                            <div class="col-md-5"></div>
+                            <div class="col-md-2">
+                                <label class="control-label">Select Existing Customer<font color="#000099">
+                                    </font></label>
+                                <select id="client-select" class="form-control select" data-live-search="true">
+                                    <option value="">Select a client</option>
+                                    @foreach($enquiries as $enquiry)
+                                    <option value="{{ $enquiry->client_name->id }}"
+                                        data-client-name="{{ $enquiry->client_name->name }}"
+                                        data-client-phone="{{ $enquiry->client_name->contact }}"
+                                        data-client-address="{{ $enquiry->client_name->address }}"
+                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
+                                        {{ $enquiry->client_name->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button id="add-client-btn" type="button" class="btn mjks"
+                                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+
+                    </div>
                     <div class="row" style="display: none;" style="margin-top: 2vh;">
                         <div class="col-md-12">
                             <table id="client-details-table" width="100%" border="1">
@@ -470,6 +485,56 @@
                             </table>
                         </div>
                     </div>
+                    {{-- <div class="row" style="margin-top: 2vh;">
+                        <div class="col-md-12">
+                            <table id="client-details-table" width="100%" border="1">
+                                <thead>
+                                    <tr style="background-color:#f0f0f0; height:30px;">
+                                        <th style="text-align:center">Client Name</th>
+                                        <th style="text-align:center">Mobile No</th>
+                                        <th style="text-align:center">Address</th>
+                                        <th style="text-align:center">Sponsor ID</th>
+                                        <th style="text-align:center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (!empty($inquiry->clients) && $inquiry->clients->count())
+                                    @foreach ($inquiry->clients as $client)
+                                    <tr>
+                                        <td style="padding:5px;" align="center">
+                                            <label>{{ $client->name }}</label>
+                                            <input type="hidden" name="client_name_pre[]" value="{{ $client->name }}">
+                                        </td>
+                                        <td style="padding:5px;" align="center">
+                                            <label>{{ $client->phone }}</label>
+                                            <input type="hidden" name="client_phone_pre[]" value="{{ $client->phone }}">
+                                        </td>
+                                        <td style="padding:5px;" align="center">
+                                            <label>{{ $client->address }}</label>
+                                            <input type="hidden" name="clients_address_pre[]"
+                                                value="{{ $client->address }}">
+                                        </td>
+                                        <td style="padding:5px;" align="center">
+                                            <label>{{ $client->sponsor_id }}</label>
+                                            <input type="hidden" name="client_sponsor_pre[]"
+                                                value="{{ $client->sponsor_id }}">
+                                        </td>
+                                        <td style="text-align:center; color:#FF0000">
+                                            <button type="button" class="delete-client-btn_pre"
+                                                style="border:none; background:none;">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    @endif
+
+
+                                    <!-- Client details will be appended here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> --}}
                     <div class="row" style="margin-top: 1vh;">
                         <h5 class="panel-title"
                             style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
@@ -545,7 +610,46 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Nominee details will be appended here -->
+                                    @if (!empty($inquiry->nominees) && $inquiry->nominees->count())
+                                    @foreach ($inquiry->nominees as $nominee)
+                                    <tr>
+                                        <td style="padding:5px;" align="center">
+                                            <label>{{ $nominee->name }}</label>
+                                            <input type="hidden" name="nominee_name_pre[]" value="{{ $nominee->name }}">
+                                        </td>
+                                        <td style="padding:5px;" align="center">
+                                            <label>{{ $nominee->age }}</label>
+                                            <input type="hidden" name="nominee_age_pre[]" value="{{ $nominee->age }}">
+                                        </td>
+                                        <td style="padding:5px;" align="center">
+                                            <label>{{ $nominee->relation }}</label>
+                                            <input type="hidden" name="nominee_relation_pre[]"
+                                                value="{{ $nominee->relation }}">
+                                        </td>
+                                        <td style="padding:5px;" align="center">
+                                            <label>{{ \Carbon\Carbon::parse($nominee->dob)->format('d/m/y') }}
+                                            </label>
+                                            <input type="hidden" name="nominee_dob_pre[]" value="{{ $nominee->dob ? \Carbon\Carbon::parse($nominee->dob)->format('d/m/y') : '' }}
+">
+                                        </td>
+                                        <td style="padding:5px;" align="center">
+                                            <label>{{ $nominee->aadhar }}</label>
+                                            <input type="hidden" name="nominee_aadhar_pre[]"
+                                                value="{{ $nominee->aadhar }}">
+                                        </td>
+                                        <td style="padding:5px;" align="center">
+                                            <label>{{ $nominee->pan }}</label>
+                                            <input type="hidden" name="nominee_pan_pre[]" value="{{ $nominee->pan }}">
+                                        </td>
+                                        <td style="text-align:center; color:#FF0000">
+                                            <button type="button" data-id="{{ $nominee->id ?? '' }}"
+                                                class="delete-nominee-btn_pre">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -580,8 +684,10 @@
                                             data-live-search="true">
                                             <option value="">Select Option</option>
                                             @foreach($firm as $firm)
-                                            <option value="{{ $firm->id }}" data-project-id="{{ $firm->id }}">{{
-                                                $firm->name }}</option>
+                                            <option value="{{ $firm->id }}" @if($inquiry->firm_id == $firm->id) selected
+                                                @endif>
+                                                {{ $firm->name }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -590,50 +696,69 @@
                                         <select id="project-select" name="project_id" class="form-control select"
                                             data-live-search="true">
                                             <option value="">Select Option</option>
+                                            @foreach($projects as $project)
+                                            <option value="{{ $project->id }}" @if($inquiry->project_id == $project->id)
+                                                selected @endif>
+                                                {{ $project->project_name }}
+                                            </option>
+                                            @endforeach
                                         </select>
                                     </td>
                                     <td style="padding: 2px;" width="2%">
                                         <select id="plot-select" name="plot_no" class="form-control select"
                                             data-live-search="true">
                                             <option value="">Select Option</option>
+                                            @foreach($plot as $enquiry)
+                                            <option value="{{ $enquiry->id ?? '' }}" @if(isset($inquiry) && $inquiry->
+                                                plot_no == $enquiry->id) selected
+                                                @endif>
+                                                {{ $enquiry->plot_no ?? '' }}
+                                            </option>
+                                            @endforeach
                                             <!-- Plot options will be appended dynamically -->
                                         </select>
                                     </td>
                                     <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="Measurement" name="Measurement"
-                                            placeholder="" required />
+                                        <input type="text" class="form-control" name="Measurement"
+                                            value="{{ $inquiry->measurement ?? '' }}" placeholder="" required />
                                     </td>
                                     <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="square_meter" name="square_meter"
-                                            placeholder="" oninput="convertSquareUnits(); " required />
+                                        <input type="text" class="form-control"
+                                            value="{{ $inquiry->square_meter ?? '' }}" name="square_meter"
+                                            placeholder="" required />
                                     </td>
 
                                     <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="square_ft" name="square_ft"
-                                            placeholder="" oninput="convertSquareUnits(); calculateAmounts()"
-                                            required />
+                                        <input type="text" id="square_ft" class="form-control"
+                                            value="{{ $inquiry->square_ft ?? '' }}" name="square_ft" placeholder=""
+                                            oninput="calculateAmounts()" required />
                                     </td>
                                     <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="rate" name="rate" placeholder=""
+                                        <input type="text" class="form-control" name="rate"
+                                            value="{{ $inquiry->rate ?? '' }}" placeholder=""
                                             oninput="calculateAmounts()" required />
                                     </td>
                                     <td style="padding: 2px;" width="1%">
                                         <label id="total_cost" class="control-label">
-                                            <input id="total_cost_input" type="hidden" id="total_cost"
-                                                name="total_cost">
-                                            <font id="total_cost_display" id="total_cost" color="#ff0000"></font>
+                                            <input id="total_cost_input" type="hidden"
+                                                value="{{ $inquiry->total_cost ?? '' }}" name="total_cost">
+                                            <font id="total_cost_display" color="#ff0000">{{ $inquiry->total_cost ?? ''
+                                                }}</font>
                                         </label>
                                     </td>
                                     <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" name="discount_amount" placeholder=""
+                                        <input type="text" class="form-control" name="discount_amount"
+                                            value="{{ $inquiry->discount_amount ?? '' }}" placeholder=""
                                             oninput="calculateAmounts()" required />
                                     </td>
                                     <td style="padding: 2px;" width="1%">
                                         <select class="form-control select" data-live-search="true" name="discount_type"
                                             id="discount_type" onchange="calculateAmounts()">
                                             <option value="">Select Option</option>
-                                            <option value="%">%</option>
-                                            <option value="₹">₹</option>
+                                            <option value="%" @if(isset($inquiry->discount_type) &&
+                                                $inquiry->discount_type == '%') selected @endif>%</option>
+                                            <option value="₹" @if(isset($inquiry->discount_type) &&
+                                                $inquiry->discount_type == '₹') selected @endif>₹</option>
                                         </select>
                                     </td>
 
@@ -660,64 +785,79 @@
                                 <tr>
                                     <td style="padding: 2px;" width="1%">
                                         <input type="text" class="form-control" id="final_amount" name="final_amount"
-                                            placeholder="" readonly />
+                                            placeholder="" value="{{ $inquiry->final_amount ?? '' }}" readonly />
                                     </td>
                                     <td style="padding: 2px;" width="1%">
                                         <input type="text" class="form-control" name="down_payment" placeholder=""
-                                            oninput="calculateAmounts()" required />
+                                            oninput="calculateAmounts()" value="{{ $inquiry->down_payment ?? '' }}"
+                                            required />
                                     </td>
                                     <td id="balence_amount" style="padding: 2px;" width="1%">
-                                        <input type="hidden" name="balence_amount" id="balence_amount_input">
+                                        <input type="hidden" value="{{ $inquiry->balance_amount ?? '' }}"
+                                            name="balance_amount" id="balence_amount_input">
                                         <label id="balence_amount_label" class="control-label">
-                                            <font id="balence_amount_display" color="#ff0000"></font>
+                                            <font id="balence_amount_display" color="#ff0000"> {{
+                                                $inquiry->balance_amount ?? '' }}</font>
                                         </label>
                                     </td>
                                     <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" name="tenure" placeholder=""
-                                            oninput="calculateAmounts()" required />
+                                        <input type="text" class="form-control" value="{{ $inquiry->tenure ?? '' }}"
+                                            name="tenure" placeholder="" oninput="calculateAmounts()" required />
                                     </td>
                                     <td id="emi_ammount" style="padding: 2px;" width="1%">
-                                        <input type="hidden" name="emi_ammount" id="emi_ammount_input">
+                                        <input type="hidden" name="emi_ammount" value="{{ $inquiry->emi_amount ?? '' }}"
+                                            id="emi_ammount_input">
                                         <label id="emi_ammount_label" class="control-label">
-                                            <font id="emi_ammount_display" color="#ff0000"></font>
+                                            <font id="emi_ammount_display" color="#ff0000">{{ $inquiry->emi_amount ??
+                                                ''
+                                                }}</font>
                                         </label>
                                     </td>
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
-                                            <input type="text" id="booking_date" name="booking_date"
-                                                class="form-control datepicker" placeholder="DD/MM/YYYY" required />
+                                            <input type="text" id="booking_date"
+                                                value="{{ $inquiry->booking_date && $inquiry->booking_date !== 'N/A' ? \Carbon\Carbon::parse($inquiry->booking_date)->format('d/m/y') : '' }}"
+                                                name="booking_date" class="form-control datepicker"
+                                                placeholder="DD/MM/YYYY" required />
                                             <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "><i
+                                                <span class="input-group-text" style="font-size: 20px;"><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </div>
-
-
                                     </td>
+
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
-                                            <input type="text" id="aggriment_date" name="aggriment_date"
-                                                class="form-control datepicker" placeholder="DD/MM/YYYY" required />
+                                            <input type="text" id="aggriment_date"
+                                                value="{{ $inquiry->agreement_date && $inquiry->agreement_date !== 'N/A' ? \Carbon\Carbon::parse($inquiry->agreement_date)->format('d/m/y') : '' }}"
+                                                name="aggriment_date" class="form-control datepicker"
+                                                placeholder="DD/MM/YYYY" required />
                                             <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "><i
+                                                <span class="input-group-text" style="font-size: 20px;"><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </div>
                                     </td>
                                     <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" name="staus_token" data-live-search="true">
-                                            @foreach ($tokenStatuses as $tokenStatus)
-                                            <option value="{{ $tokenStatus->id }}">{{ $tokenStatus->token }}
+                                        <select class="form-control select" name="status_token" data-live-search="true">
+                                            <option value="">Select Option</option>
+                                            @foreach($tokenStatuses as $tokenStatus)
+                                            <option value="{{ $tokenStatus->id }}" @if($inquiry->status_token ==
+                                                $tokenStatus->id) selected @endif>
+                                                {{ $tokenStatus->token }}
                                             </option>
                                             @endforeach
                                         </select>
+
+
                                     </td>
                                     <td style="padding: 2px;" width="1%">
                                         <div class="input-group" style="display: flex;">
                                             <input type="text" id="emi_start_date" name="emi_start_date"
+                                                value="{{ $inquiry->emi_start_date && $inquiry->emi_start_date !== 'N/A' ? \Carbon\Carbon::parse($inquiry->emi_start_date)->format('d/m/y') : '' }}"
                                                 class="form-control datepicker" placeholder="DD/MM/YYYY" required />
                                             <div class="" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "><i
+                                                <span class="input-group-text" style="font-size: 20px;"><i
                                                         class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </div>
@@ -744,48 +884,65 @@
                                             id="plot_sale_status" name="plot_sale_status">
                                             <option value="">Select Option</option>
                                             @foreach($statuses as $status)
-                                            <option value="{{ $status->id ?? '' }}">
-                                                {{ $status->plot_sale_status ?? ''}}
+                                            <option value="{{ $status->id }}" @if(isset($inquiry) && $inquiry->
+                                                plot_sale_status == $status->id) selected
+                                                @endif>
+                                                {{ $status->plot_sale_status }}
                                             </option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" name="a_rate" placeholder="" />
+                                        <input type="text" class="form-control" name="a_rate"
+                                            value="{{ $inquiry->a_rate }}" placeholder="" />
                                     </td>
                                     <td style="padding: 2px;" width="2%">
                                         <input type="radio" id="agent_name" name="source_type" value="agent"
-                                            onclick="toggleEmployeeSelect()">
+                                            onclick="toggleEmployeeSelect()" {{ $inquiry->agent_id ? 'checked' : '' }}>
                                         <label for="agent_name">Agent Name</label>
+
                                         <input type="radio" id="executive_name" name="source_type" value="executive"
-                                            onclick="toggleEmployeeSelect()">
+                                            onclick="toggleEmployeeSelect()" {{ $inquiry->employee_id &&
+                                        !$inquiry->direct_sourse ? 'checked' : '' }}>
                                         <label for="executive_name">Executive Name</label>
+
                                         <input type="radio" id="direct_sourse" name="source_type" value="direct"
-                                            onclick="toggleEmployeeSelect()">
+                                            onclick="toggleEmployeeSelect()" {{ $inquiry->direct_sourse ? 'checked' : ''
+                                        }}>
                                         <label for="direct_sourse">Direct Source</label>
                                     </td>
+
                                     <td id="agent-select-container" style="padding: 2px; width: 1%;">
                                         <select class="form-control select" data-live-search="true" id="agent-select"
-                                            name="agent_id">
+                                            name="agent_id" {{ $inquiry->agent_id
+                                            ? '' : 'disabled' }}>
                                             <option value="">Select Option</option>
                                             @foreach($agent as $agent)
-                                            <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+                                            <option value="{{ $agent->id }}" {{ $inquiry->agent_id == $agent->id ?
+                                                'selected' : '' }}>
+                                                {{ $agent->name }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </td>
+
                                     <td id="employee-select-container" style="padding: 2px; width: 1%;">
                                         <select class="form-control select" data-live-search="true" id="employee-select"
-                                            name="employee">
+                                            name="employee" {{ $inquiry->employee_id && !$inquiry->direct_sourse ? '' :
+                                            'disabled' }}>
                                             <option value="">Select Option</option>
                                             @foreach($employees as $employee)
-                                            <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                            <option value="{{ $employee->id }}" {{ $inquiry->employee_id ==
+                                                $employee->id ? 'selected' : '' }}>
+                                                {{ $employee->name }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </td>
 
                                     <td style="padding: 2px;" width="1%">
                                         <textarea type="text" class="form-control" name="remark" placeholder="" rows="2"
-                                            cols="5"></textarea>
+                                            cols="5">{{ $inquiry->remark ?? '' }}</textarea>
                                     </td>
 
                                 </tr>
@@ -822,48 +979,48 @@
                                 <tr>
 
                                     <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="mauja" name="mauja" placeholder=""
-                                            required />
+                                        <input type="text" class="form-control" name="mauja" placeholder=""
+                                            value="{{ $inquiry->mauja ?? '' }}" />
                                     </td>
                                     <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="kh_no" name="kh_no" placeholder=""
-                                            required />
+                                        <input type="text" class="form-control" name="kh_no" placeholder=""
+                                            value="{{ $inquiry->kh_no ?? '' }}" />
                                     </td>
                                     <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="phn" name="phn" placeholder=""
-                                            required />
-                                    </td>
-
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="taluka" name="taluka" placeholder=""
-                                            required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="district" name="district"
-                                            placeholder="" required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="east" name="east" placeholder=""
-                                            required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="west" name="west" placeholder=""
-                                            required />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="north" name="north" placeholder=""
-                                            required />
+                                        <input type="text" class="form-control" name="phn" placeholder=""
+                                            value="{{ $inquiry->phn ?? '' }}" />
                                     </td>
 
                                     <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="south" name="south" placeholder=""
-                                            required />
+                                        <input type="text" class="form-control" name="taluka" placeholder=""
+                                            value="{{ $inquiry->taluka ?? '' }}" />
+                                    </td>
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="text" class="form-control" name="district" placeholder=""
+                                            value="{{ $inquiry->district ?? '' }}" />
+                                    </td>
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="text" class="form-control" name="east" placeholder="" value="{{
+                                                                                $inquiry->east ?? '' }}" />
+                                    </td>
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="number" class="form-control" name="west" placeholder="" value="{{
+                                                                                $inquiry->west ?? '' }}" />
+                                    </td>
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="number" class="form-control" name="north" placeholder="" value="{{
+                                                                                $inquiry->north ?? '' }}" />
+                                    </td>
+
+                                    <td style="padding: 2px;" width="2%">
+                                        <input type="text" class="form-control" name="south" placeholder="" value="{{
+                                                                                $inquiry->south ?? '' }}" />
                                     </td>
                                     <td style="padding: 2px;" width="2%">
                                         <button id="" type="submit" class="btn mjks"
                                             style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i
                                                 class="fa fa-floppy-o" aria-hidden="true"></i>
-                                            Submit</button>
+                                            Update</button>
                                     </td>
 
                                 </tr>
@@ -884,13 +1041,11 @@
                                 <tr style="height:30px;">
 
 
-
                                     <th width="2%"></th>
                                 </tr>
 
 
                                 <tr>
-
 
 
                                 </tr>
@@ -911,57 +1066,11 @@
         </div>
     </div>
 </div>
-<div style="position: fixed; bottom: 0; width: 100%;">
-    <div class="col-md-12" style="width: 100%;">
-        <div class="col-md-6" style="float: left; width: 50%;">
-            @if ($errors->any())
-            <div id="successscript" class="alert alert-danger mt-2"
-                style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #d6dad6; padding: 10px; border-radius: 5px;">
-                <ul style="margin: 0; padding: 0; list-style-type: none;">
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-        </div>
-        <div class="col-md-6" style="float: left; width: 50%;">
-            @if(session('success'))
-            <div id="successscript" class="alert alert-success"
-                style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #abafab; padding: 10px; border-radius: 5px;">
-                {{ session('success') }}
-            </div>
-            @endif
-        </div>
-        <div class="col-md-6" style="float: left; width: 50%;">
-            @if(session('error'))
-            <div id="successscript" class="alert alert-success"
-                style="background-color: rgba(209, 215, 209, 0.1); color: #1f1e1e; border: 1px solid #abafab; padding: 10px; border-radius: 5px;">
-                {{ session('error') }}
-            </div>
-            @endif
-        </div>
-    </div>
-</div>
+
 <!-- START DEFAULT DATATABLE -->
 
-<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="fileModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img id="fileViewer" src="" alt="File Preview" style="width: 100%;">
-            </div>
-        </div>
-    </div>
-</div>
-</div>
 
+</div>
 @stop
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -1012,132 +1121,21 @@
             document.getElementById('customerForm').reset();
         });
 </script> --}}
-{{-- <script>
-    function toggleMarriageDate() {
-        const maritalStatus = document.getElementById('marital_status').value;
-        const marriageDateInput = document.getElementById('marriage_date').parentNode.parentNode.parentNode;
-        if (maritalStatus === 'married') {
-            marriageDateInput.style.display = 'table-row';
-        } else {
-            marriageDateInput.style.display = 'none';
-        }
-    }
-
-    document.getElementById('submitbuttonappend').addEventListener('click', function () {
-        const title = document.getElementById('title').value;
-        const name = document.getElementById('name').value;
-        const occupation_id = document.getElementById('occupation_id').value;
-        const email = document.getElementById('email').value;
-        const contact = document.getElementById('contact').value;
-        const city = document.getElementById('city').value;
-        const pin_code = document.getElementById('pin_code').value;
-        const address = document.getElementById('address').value;
-        const age = document.getElementById('age').value;
-        const dob = document.getElementById('dob').value;
-        const marital_status = document.getElementById('marital_status').value;
-        const marriage_date = document.getElementById('marriage_date').value;
-        const branch_id = document.getElementById('branch_id').value;
-        const aadhar_no = document.getElementById('aadhar_no').value;
-        const pan_no = document.getElementById('pan_no').value;
-
-        const formattedMarriageDate = marriage_date ? marriage_date : 'N/A';
-
-        if (!title || !name || !occupation_id || !email || !contact || !city || !pin_code || !address || !age || !dob || !branch_id || !aadhar_no || !pan_no) {
-            alert('Please fill all the fields before appending.');
-            return;
-        }
-
-        const aadharFile = document.getElementById('aadhar').files[0];
-        const panFile = document.getElementById('pan').files[0];
-        const aadharFileURL = aadharFile ? URL.createObjectURL(aadharFile) : '';
-      //  console.log(aadharFileURL);
-
-      let file = e.target.files[0];
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function(e) {
-    blob1 = e.target.result;
-};
-    src2 = URL.createObjectURL(e.target.files[0]);
-    let file = e.target.files[0];
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function(e) {
-    blob2 = e.target.result;
-    };
-
-
-        const panFileURL = panFile ? URL.createObjectURL(panFile) : '';
-
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = `
-            <td><input type="hidden" name="title[]" value="${title}">${title}</td>
-            <td><input type="hidden" name="name[]" value="${name}">${name}</td>
-            <td><input type="hidden" name="occupation_id[]" value="${occupation_id}">${occupation_id}</td>
-            <td><input type="hidden" name="email[]" value="${email}">${email}</td>
-            <td><input type="hidden" name="contact[]" value="${contact}">${contact}</td>
-            <td><input type="hidden" name="city[]" value="${city}">${city}</td>
-            <td><input type="hidden" name="pin_code[]" value="${pin_code}">${pin_code}</td>
-            <td><input type="hidden" name="address[]" value="${address}">${address}</td>
-            <td><input type="hidden" name="age[]" value="${age}">${age}</td>
-            <td><input type="hidden" name="dob[]" value="${dob}">${dob}</td>
-            <td><input type="hidden" name="marital_status[]" value="${marital_status}">${marital_status}</td>
-            <td><input type="hidden" name="marriage_date[]" value="${formattedMarriageDate}">${formattedMarriageDate}</td>
-            <td><input type="hidden" name="branch_id[]" value="${branch_id}">${branch_id}</td>
-           <td>
-                <input type="hidden" name="aadhar[]" value="${aadharFile ? aadharFile.name : ''}">
-                ${aadharFile ? aadharFile.name : 'N/A'}
-                ${aadharFile ? `<a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o"
-                        aria-hidden="true"></i></a>` : ''}
-            </td>
-            <td><input type="hidden" name="aadhar_no[]" value="${aadhar_no}">${aadhar_no}</td>
-            <td>
-                <input type="hidden" name="pan[]" value="${panFile ? panFile.name : ''}">
-                ${panFile ? panFile.name : 'N/A'}
-                ${panFile ? `<a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o"
-                        aria-hidden="true"></i></a>` : ''}
-            </td>
-            <td><input type="hidden" name="pan_no[]" value="${pan_no}">${pan_no}</td>
-        `;
-
-        document.getElementById('customerTableBody').appendChild(newRow);
-
-        document.getElementById('title').value = '';
-        document.getElementById('name').value = '';
-        document.getElementById('occupation_id').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('contact').value = '';
-        document.getElementById('city').value = '';
-        document.getElementById('pin_code').value = '';
-        document.getElementById('address').value = '';
-        document.getElementById('age').value = '';
-        document.getElementById('dob').value = '';
-        document.getElementById('marital_status').value = 'single';
-        document.getElementById('marriage_date').value = '';
-        document.getElementById('branch_id').value = '';
-        document.getElementById('aadhar_no').value = '';
-        document.getElementById('pan_no').value = '';
-        document.getElementById('aadhar').value = '';
-        document.getElementById('pan').value = '';
-    });
-</script> --}}
 <script>
     function toggleMarriageDate() {
     const maritalStatus = document.getElementById('marital_status').value;
     const marriageDateInput = document.getElementById('marriage_date').parentNode.parentNode.parentNode;
     if (maritalStatus === 'married') {
-        marriageDateInput.style.display = 'table-row';
+    marriageDateInput.style.display = 'table-row';
     } else {
-        marriageDateInput.style.display = 'none';
+    marriageDateInput.style.display = 'none';
     }
-}
+    }
 
-document.getElementById('submitbuttonappend').addEventListener('click', function () {
+    document.getElementById('submitbuttonappend').addEventListener('click', function () {
     const title = document.getElementById('title').value;
     const name = document.getElementById('name').value;
-    const occupationSelect = document.getElementById('occupation_id');
-    const occupation_id = occupationSelect.value;
-    const occupation_name = occupationSelect.options[occupationSelect.selectedIndex].text;
+    const occupation_id = document.getElementById('occupation_id').value;
     const email = document.getElementById('email').value;
     const contact = document.getElementById('contact').value;
     const city = document.getElementById('city').value;
@@ -1147,107 +1145,95 @@ document.getElementById('submitbuttonappend').addEventListener('click', function
     const dob = document.getElementById('dob').value;
     const marital_status = document.getElementById('marital_status').value;
     const marriage_date = document.getElementById('marriage_date').value;
-    const branchSelect = document.getElementById('branch_id');
-    const branch_id = branchSelect.value;
-    const branch_name = branchSelect.options[branchSelect.selectedIndex].text;
+    const branch_id = document.getElementById('branch_id').value;
     const aadhar_no = document.getElementById('aadhar_no').value;
     const pan_no = document.getElementById('pan_no').value;
 
-    const formattedMarriageDate = marriage_date ? marriage_date : 'N/A';
+    const formattedMarriageDate = marriage_date ? marriage_date : '';
 
     if (!title || !name || !occupation_id || !email || !contact || !city || !pin_code || !address || !age || !dob ||
-        !branch_id || !aadhar_no || !pan_no) {
-        alert('Please fill all the fields before appending.');
-        return;
+    !branch_id || !aadhar_no || !pan_no) {
+    alert('Please fill all the fields before appending.');
+    return;
     }
 
     const aadharFile = document.getElementById('aadhar').files[0];
     const panFile = document.getElementById('pan').files[0];
     const panFileURL = panFile ? URL.createObjectURL(panFile) : '';
     const aadharFileURL = aadharFile ? URL.createObjectURL(aadharFile) : '';
-
     // Function to read file as base64
     const readAsBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
+    return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+    });
     };
 
     // Reading files and appending rows
     Promise.all([
-        aadharFile ? readAsBase64(aadharFile) : Promise.resolve(''),
-        panFile ? readAsBase64(panFile) : Promise.resolve('')
+    aadharFile ? readAsBase64(aadharFile) : Promise.resolve(''),
+    panFile ? readAsBase64(panFile) : Promise.resolve('')
     ]).then(([aadharBase64, panBase64]) => {
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = `
-        <td><input type="hidden" name="title[]" value="${title}">${title}</td>
-        <td><input type="hidden" name="name[]" value="${name}">${name}</td>
-        <td><input type="hidden" name="occupation_id[]" value="${occupation_id}">${occupation_name}</td>
-        <td><input type="hidden" name="email[]" value="${email}">${email}</td>
-        <td><input type="hidden" name="contact[]" value="${contact}">${contact}</td>
-        <td><input type="hidden" name="city[]" value="${city}">${city}</td>
-        <td><input type="hidden" name="pin_code[]" value="${pin_code}">${pin_code}</td>
-        <td><input type="hidden" name="address[]" value="${address}">${address}</td>
-        <td><input type="hidden" name="age[]" value="${age}">${age}</td>
-        <td><input type="hidden" name="dob[]" value="${dob}">${dob}</td>
-        <td><input type="hidden" name="marital_status[]" value="${marital_status}">${marital_status}</td>
-        <td><input type="hidden" name="marriage_date[]" value="${formattedMarriageDate}">${formattedMarriageDate}</td>
-        <td><input type="hidden" name="branch_id[]" value="${branch_id}">${branch_name}</td>
-        <td>
-            <input type="hidden" name="aadhar[]" value="${aadharBase64}">
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+    <td><input type="hidden" name="title[]" value="${title}">${title}</td>
+    <td><input type="hidden" name="name[]" value="${name}">${name}</td>
+    <td><input type="hidden" name="occupation_id[]" value="${occupation_id}">${occupation_id}</td>
+    <td><input type="hidden" name="email[]" value="${email}">${email}</td>
+    <td><input type="hidden" name="contact[]" value="${contact}">${contact}</td>
+    <td><input type="hidden" name="city[]" value="${city}">${city}</td>
+    <td><input type="hidden" name="pin_code[]" value="${pin_code}">${pin_code}</td>
+    <td><input type="hidden" name="address[]" value="${address}">${address}</td>
+    <td><input type="hidden" name="age[]" value="${age}">${age}</td>
+    <td><input type="hidden" name="dob[]" value="${dob}">${dob}</td>
+    <td><input type="hidden" name="marital_status[]" value="${marital_status}">${marital_status}</td>
+    <td><input type="hidden" name="marriage_date[]" value="${formattedMarriageDate}">${formattedMarriageDate}</td>
+    <td><input type="hidden" name="branch_id[]" value="${branch_id}">${branch_id}</td>
+    <td>
+        <input type="hidden" name="aadhar[]" value="${aadharBase64}">
 
-            ${aadharFile ? `<a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>` : ''}
-        </td>
-        <td><input type="hidden" name="aadhar_no[]" value="${aadhar_no}">${aadhar_no}</td>
-        <td>
-            <input type="hidden" name="pan[]" value="${panBase64}">
+        ${aadharFile ? `<a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o"
+                aria-hidden="true"></i></a>` : ''}
+    </td>
+    <td><input type="hidden" name="aadhar_no[]" value="${aadhar_no}">${aadhar_no}</td>
+    <td>
+        <input type="hidden" name="pan[]" value="${panBase64}">
+        ${panFile ? `<a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o"
+                aria-hidden="true"></i></a>` : ''}
+    </td>
+    <td><input type="hidden" name="pan_no[]" value="${pan_no}">${pan_no}</td>
+    <td style="text-align:center; color:#FF0000">
+        <button class="remove-row-btn"><i class="fa fa-trash-o"></i></button>
+    </td>
+    `;
 
-            ${panFile ? `<a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>` : ''}
-        </td>
-        <td><input type="hidden" name="pan_no[]" value="${pan_no}">${pan_no}</td>
-        <td style="text-align:center; color:#FF0000">
-            <button type="button" class="remove-row-btn"><i class="fa fa-trash-o"></i></button>
-        </td>
-        `;
+    document.getElementById('customerTableBody').appendChild(newRow);
 
-        document.getElementById('customerTableBody').appendChild(newRow);
-
-        // Clear the input fields
-        document.getElementById('title').value = '';
-        document.getElementById('name').value = '';
-        document.getElementById('occupation_id').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('contact').value = '';
-        document.getElementById('city').value = '';
-        document.getElementById('pin_code').value = '';
-        document.getElementById('address').value = '';
-        document.getElementById('age').value = '';
-        document.getElementById('dob').value = '';
-        document.getElementById('marital_status').value = 'single';
-        document.getElementById('marriage_date').value = '';
-        document.getElementById('branch_id').value = '';
-        document.getElementById('aadhar_no').value = '';
-        document.getElementById('pan_no').value = '';
-        document.getElementById('aadhar').value = '';
-        document.getElementById('pan').value = '';
+    // Clear the input fields
+    document.getElementById('title').value = '';
+    document.getElementById('name').value = '';
+    document.getElementById('occupation_id').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('contact').value = '';
+    document.getElementById('city').value = '';
+    document.getElementById('pin_code').value = '';
+    document.getElementById('address').value = '';
+    document.getElementById('age').value = '';
+    document.getElementById('dob').value = '';
+    document.getElementById('marital_status').value = 'single';
+    document.getElementById('marriage_date').value = '';
+    document.getElementById('branch_id').value = '';
+    document.getElementById('aadhar_no').value = '';
+    document.getElementById('pan_no').value = '';
+    document.getElementById('aadhar').value = '';
+    document.getElementById('pan').value = '';
     }).catch(error => {
-        console.error('Error reading files: ', error);
-        alert('An error occurred while processing the files. Please try again.');
+    console.error('Error reading files: ', error);
+    alert('An error occurred while processing the files. Please try again.');
     });
-});
-
-// Delegate the delete button click event to the table body
-document.getElementById('customerTableBody').addEventListener('click', function (event) {
-    if (event.target.classList.contains('remove-row-btn') || event.target.closest('.remove-row-btn')) {
-        const row = event.target.closest('tr');
-        if (row) {
-            row.remove();
-        }
-    }
-});
+    });
 </script>
 <script>
     function toggleMarriageDate() {
@@ -1288,31 +1274,31 @@ document.getElementById('customerTableBody').addEventListener('click', function 
 </script>
 <script>
     function toggleEmployeeSelect() {
-    const agentRadio = document.getElementById('agent_name');
-    const executiveRadio = document.getElementById('executive_name');
-    const directSourceRadio = document.getElementById('direct_sourse');
-    const agentSelect = document.getElementById('agent-select');
-    const employeeSelect = document.getElementById('employee-select');
+        const agentRadio = document.getElementById('agent_name');
+        const executiveRadio = document.getElementById('executive_name');
+        const directSourceRadio = document.getElementById('direct_sourse');
+        const agentSelect = document.getElementById('agent-select');
+        const employeeSelect = document.getElementById('employee-select');
 
-    if (agentRadio.checked) {
-    agentSelect.disabled = false;
-    employeeSelect.disabled = true;
-    employeeSelect.value = ""; // Clear executive dropdown value
-    } else if (executiveRadio.checked) {
-    agentSelect.disabled = true;
-    employeeSelect.disabled = false;
-    agentSelect.value = ""; // Clear agent dropdown value
-    } else if (directSourceRadio.checked) {
-    agentSelect.disabled = true;
-    employeeSelect.disabled = true;
-    agentSelect.value = ""; // Clear agent dropdown value
-    employeeSelect.value = ""; // Clear executive dropdown value
-    }
+        if (agentRadio.checked) {
+            agentSelect.disabled = false;
+            employeeSelect.disabled = true;
+            employeeSelect.value = ""; // Clear executive dropdown value
+        } else if (executiveRadio.checked) {
+            agentSelect.disabled = true;
+            employeeSelect.disabled = false;
+            agentSelect.value = ""; // Clear agent dropdown value
+        } else if (directSourceRadio.checked) {
+            agentSelect.disabled = true;
+            employeeSelect.disabled = true;
+            agentSelect.value = ""; // Clear agent dropdown value
+            employeeSelect.value = ""; // Clear executive dropdown value
+        }
     }
 
     // Call toggleEmployeeSelect on page load to set the initial state
     window.onload = function() {
-    toggleEmployeeSelect();
+        toggleEmployeeSelect();
     };
 </script>
 <script>
@@ -1358,14 +1344,9 @@ balanceAmount = Math.max(balanceAmount, 0);
 document.getElementById('balence_amount_display').textContent = balanceAmount.toFixed(2);
 document.getElementById('balence_amount_input').value = balanceAmount.toFixed(2);
 
-// // Get the tenure in days and calculate EMI
-// let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
-// let tenureMonths = Math.ceil(tenureDays / 30); // Convert days to months
-
-// // Calculate EMI amount
-// let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
-
-let tenureMonths = parseInt(document.getElementsByName('tenure')[0].value) || 0;
+// Get the tenure in days and calculate EMI
+let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
+let tenureMonths = Math.ceil(tenureDays / 30); // Convert days to months
 
 // Calculate EMI amount
 let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
@@ -1538,7 +1519,320 @@ $('input[name="south"]').val('');
 });
 
 </script>
-<!-- new for exsting client -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+document.getElementById('add-client-btn').addEventListener('click', function () {
+const clientSelect = document.getElementById('client-select');
+const selectedOption = clientSelect.options[clientSelect.selectedIndex];
+
+if (selectedOption.value !== '') {
+const clientName = selectedOption.getAttribute('data-client-name');
+const clientPhone = selectedOption.getAttribute('data-client-phone');
+const clientAddress = selectedOption.getAttribute('data-client-address');
+const clientSponsor = selectedOption.getAttribute('data-client-sponsor');
+
+const tableBody = document.querySelector('#client-details-table tbody');
+const newRow = document.createElement('tr');
+
+newRow.innerHTML = `
+<td style="padding:5px;" align="center">
+    <label>${clientName}</label>
+    <input type="hidden" name="client_name[]" value="${clientName}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientPhone}</label>
+    <input type="hidden" name="client_phone[]" value="${clientPhone}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientAddress}</label>
+    <input type="hidden" name="clients_address[]" value="${clientAddress}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientSponsor}</label>
+    <input type="hidden" name="client_sponsor[]" value="${clientSponsor}">
+</td>
+<td style="text-align:center; color:#FF0000">
+    <button type="button" class="delete-client-btn_pre" >
+        <i class="fa fa-trash-o"></i>
+    </button>
+</td>
+`;
+
+tableBody.appendChild(newRow);
+}
+});
+
+// Handle deleting client details from the table
+document.querySelector('#client-details-table').addEventListener('click', function (e) {
+if (e.target && (e.target.matches('.delete-client-btn') || e.target.matches('.delete-client-btn i'))) {
+const row = e.target.closest('tr');
+row.parentNode.removeChild(row);
+}
+});
+});
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize datepicker
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy'
+        });
+
+        // Handle adding nominee details to the table
+        document.getElementById('add-nominee-btn').addEventListener('click', function () {
+            const nomineeName = document.getElementById('nominee-name').value;
+            const nomineeAge = document.getElementById('nominee-age').value;
+            const nomineeRelation = document.getElementById('nominee-relation').value;
+            const nomineeDOB = document.getElementById('nominee-dob').value;
+            const nomineeAadhar = document.getElementById('nominee-aadhar').value;
+            const nomineePAN = document.getElementById('nominee-pan').value;
+
+            if (nomineeName && nomineeAge && nomineeRelation && nomineeDOB && nomineeAadhar && nomineePAN) {
+                const tableBody = document.querySelector('#nominee-details-table tbody');
+                const newRow = document.createElement('tr');
+
+                newRow.innerHTML = `
+                    <td style="padding:5px;" align="center">
+                        <label>${nomineeName}</label>
+                        <input type="hidden" name="nominee_name[]" value="${nomineeName}">
+                    </td>
+                    <td style="padding:5px;" align="center">
+                        <label>${nomineeAge}</label>
+                        <input type="hidden" name="nominee_age[]" value="${nomineeAge}">
+                    </td>
+                    <td style="padding:5px;" align="center">
+                        <label>${nomineeRelation}</label>
+                        <input type="hidden" name="nominee_relation[]" value="${nomineeRelation}">
+                    </td>
+                    <td style="padding:5px;" align="center">
+                        <label>${nomineeDOB}</label>
+                        <input type="hidden" name="nominee_dob[]" value="${nomineeDOB}">
+                    </td>
+                    <td style="padding:5px;" align="center">
+                        <label>${nomineeAadhar}</label>
+                        <input type="hidden" name="nominee_aadhar[]" value="${nomineeAadhar}">
+                    </td>
+                    <td style="padding:5px;" align="center">
+                        <label>${nomineePAN}</label>
+                        <input type="hidden" name="nominee_pan[]" value="${nomineePAN}">
+                    </td>
+                    <td style="text-align:center; color:#FF0000">
+                        <button type="button" class="delete-nominee-btn_pre" >
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </td>
+                `;
+
+                tableBody.appendChild(newRow);
+
+                // Clear input fields after adding the row
+                document.getElementById('nominee-name').value = '';
+                document.getElementById('nominee-age').value = '';
+                document.getElementById('nominee-relation').value = '';
+                document.getElementById('nominee-dob').value = '';
+                document.getElementById('nominee-aadhar').value = '';
+                document.getElementById('nominee-pan').value = '';
+            }
+        });
+
+        // Handle deleting nominee details from the table
+        document.querySelector('#nominee-details-table').addEventListener('click', function (e) {
+            if (e.target && (e.target.matches('.delete-nominee-btn') || e.target.matches('.delete-nominee-btn i'))) {
+                const row = e.target.closest('tr');
+                row.parentNode.removeChild(row);
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.delete-nominee-btn_pre').click(function() {
+            const nomineeId = $(this).data('id');
+            const row = $(this).closest('tr');
+
+            if (confirm('Are you sure you want to delete this nominee?')) {
+                $.ajax({
+                    url: '{{ route("delete.nominee", ":id") }}'.replace(':id', nomineeId),
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            row.remove();
+                            alert('Nominee deleted successfully.');
+                        } else {
+                            alert('Failed to delete nominee. ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred while deleting the nominee. Please try again.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('.delete-client-btn_pre').click(function() {
+            const clientId = $(this).data('id');
+            const row = $(this).closest('tr');
+
+            if (confirm('Are you sure you want to delete this client?')) {
+                $.ajax({
+                    url: '{{ route("delete.client", ":id") }}'.replace(':id', clientId),
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            row.remove();
+                            alert('Client deleted successfully.');
+                        } else {
+                            alert('Failed to delete client. ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred while deleting the client. Please try again.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+{{-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('add-client-btn').addEventListener('click', function () {
+        const clientSelect = document.getElementById('client-select');
+        const selectedOption = clientSelect.options[clientSelect.selectedIndex];
+
+        if (selectedOption.value !== '') {
+            const clientData = {
+                title: selectedOption.getAttribute('data-title'),
+                name: selectedOption.getAttribute('data-client-name'),
+                occupation_id: selectedOption.getAttribute('data-occupation-id'),
+                occupation: selectedOption.getAttribute('data-occupation'),
+                email: selectedOption.getAttribute('data-email'),
+                phone: selectedOption.getAttribute('data-client-phone'),
+                city: selectedOption.getAttribute('data-city'),
+                pinCode: selectedOption.getAttribute('data-pin-code'),
+                address: selectedOption.getAttribute('data-client-address'),
+                age: selectedOption.getAttribute('data-age'),
+                dob: selectedOption.getAttribute('data-dob'),
+                maritalStatus: selectedOption.getAttribute('data-marital-status'),
+                marriageDate: selectedOption.getAttribute('data-marriage-date'),
+                branch: selectedOption.getAttribute('data-branch'),
+                branch_id: selectedOption.getAttribute('data-branch-id'),
+                aadhar: selectedOption.getAttribute('data-aadhar'),
+                aadharNo: selectedOption.getAttribute('data-aadhar-no'),
+                pan: selectedOption.getAttribute('data-pan'),
+                panNo: selectedOption.getAttribute('data-pan-no'),
+                id: selectedOption.getAttribute('data-client-id')
+            };
+
+            const tableBody = document.getElementById('customerTableBody');
+            const newRow = document.createElement('tr');
+
+            // Define base URL for file access
+            const baseUrl = 'http://localhost/laravelwebmedia/nile-properties/public/customer_reg/';
+
+            newRow.innerHTML = `
+            <td style="padding:5px;" align="center">
+                <label>${clientData.title}</label>
+                <input type="hidden" name="title_existing[]" value="${clientData.title}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.name}</label>
+                <input type="hidden" name="name_existing[]" value="${clientData.name}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.occupation}</label>
+                <input type="hidden" name="occupation_id_existing[]" value="${clientData.occupation_id}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.email}</label>
+                <input type="hidden" name="email_existing[]" value="${clientData.email}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.phone}</label>
+                <input type="hidden" name="contact_existing[]" value="${clientData.phone}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.city}</label>
+                <input type="hidden" name="city_existing[]" value="${clientData.city}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.pinCode}</label>
+                <input type="hidden" name="pin_code_existing[]" value="${clientData.pinCode}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.address}</label>
+                <input type="hidden" name="address_existing[]" value="${clientData.address}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.age}</label>
+                <input type="hidden" name="age_existing[]" value="${clientData.age}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.dob}</label>
+                <input type="hidden" name="dob_existing[]" value="${clientData.dob}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.maritalStatus}</label>
+                <input type="hidden" name="marital_status_existing[]" value="${clientData.maritalStatus}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.marriageDate}</label>
+                <input type="hidden" name="marriage_date_existing[]" value="${clientData.marriageDate}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.branch}</label>
+                <input type="hidden" name="branch_id_existing[]" value="${clientData.branch_id}">
+            </td>
+            <td style="padding:5px;" align="center">
+                ${clientData.aadhar ? `<a href="${baseUrl}${clientData.aadhar}" target="_blank" download="aadhar">
+                    <i class="fa fa-file-pdf-o" style="background-color:red;" aria-hidden="true"></i> AADHAR
+                </a>` : 'N/A'}
+                <input type="hidden" name="aadhar_existing[]" value="${clientData.aadhar}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.aadharNo}</label>
+                <input type="hidden" name="aadhar_no_existing[]" value="${clientData.aadharNo}">
+            </td>
+            <td style="padding:5px;" align="center">
+                ${clientData.pan ? `<a href="${baseUrl}${clientData.pan}" target="_blank" download="pan">
+                    <i class="fa fa-file-pdf-o" style="background-color:blue;" aria-hidden="true"></i> PAN
+                </a>` : 'N/A'}
+                <input type="hidden" name="pan_existing[]" value="${clientData.pan}">
+            </td>
+            <td style="padding:5px;" align="center">
+                <label>${clientData.panNo}</label>
+                <input type="hidden" name="pan_no_existing[]" value="${clientData.panNo}">
+                <input type="hidden" name="existing_client_id[]" value="${clientData.id}">
+            </td>
+            <td style="text-align:center; color:#FF0000">
+                <button type="button" class="remove-row-btn"><i class="fa fa-trash-o"></i></button>
+            </td>
+            `;
+
+            tableBody.appendChild(newRow);
+        }
+    });
+
+    // Handle deleting client details from the table
+    document.querySelector('#customerTableBody').addEventListener('click', function (e) {
+        if (e.target && (e.target.matches('.remove-row-btn') || e.target.matches('.remove-row-btn i'))) {
+            const row = e.target.closest('tr');
+            row.parentNode.removeChild(row);
+        }
+    });
+});
+</script> --}}
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 document.getElementById('add-client-btn').addEventListener('click', function () {
@@ -1667,77 +1961,5 @@ row.parentNode.removeChild(row);
 }
 });
 });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Initialize datepicker
-        $('.datepicker').datepicker({
-            format: 'DD/MM/YYYY'
-        });
-
-        // Handle adding nominee details to the table
-        document.getElementById('add-nominee-btn').addEventListener('click', function () {
-            const nomineeName = document.getElementById('nominee-name').value;
-            const nomineeAge = document.getElementById('nominee-age').value;
-            const nomineeRelation = document.getElementById('nominee-relation').value;
-            const nomineeDOB = document.getElementById('nominee-dob').value;
-            const nomineeAadhar = document.getElementById('nominee-aadhar').value;
-            const nomineePAN = document.getElementById('nominee-pan').value;
-
-            if (nomineeName && nomineeAge && nomineeRelation && nomineeDOB && nomineeAadhar && nomineePAN) {
-                const tableBody = document.querySelector('#nominee-details-table tbody');
-                const newRow = document.createElement('tr');
-
-                newRow.innerHTML = `
-                    <td style="padding:5px;" align="center">
-                        <label>${nomineeName}</label>
-                        <input type="hidden" name="nominee_name[]" value="${nomineeName}">
-                    </td>
-                    <td style="padding:5px;" align="center">
-                        <label>${nomineeAge}</label>
-                        <input type="hidden" name="nominee_age[]" value="${nomineeAge}">
-                    </td>
-                    <td style="padding:5px;" align="center">
-                        <label>${nomineeRelation}</label>
-                        <input type="hidden" name="nominee_relation[]" value="${nomineeRelation}">
-                    </td>
-                    <td style="padding:5px;" align="center">
-                        <label>${nomineeDOB}</label>
-                        <input type="hidden" name="nominee_dob[]" value="${nomineeDOB}">
-                    </td>
-                    <td style="padding:5px;" align="center">
-                        <label>${nomineeAadhar}</label>
-                        <input type="hidden" name="nominee_aadhar[]" value="${nomineeAadhar}">
-                    </td>
-                    <td style="padding:5px;" align="center">
-                        <label>${nomineePAN}</label>
-                        <input type="hidden" name="nominee_pan[]" value="${nomineePAN}">
-                    </td>
-                    <td style="text-align:center; color:#FF0000">
-                        <button class="delete-nominee-btn"><i class="fa fa-trash-o"></i></button>
-                    </td>
-
-                `;
-
-                tableBody.appendChild(newRow);
-
-                // Clear input fields after adding the row
-                document.getElementById('nominee-name').value = '';
-                document.getElementById('nominee-age').value = '';
-                document.getElementById('nominee-relation').value = '';
-                document.getElementById('nominee-dob').value = '';
-                document.getElementById('nominee-aadhar').value = '';
-                document.getElementById('nominee-pan').value = '';
-            }
-        });
-
-        // Handle deleting nominee details from the table
-        document.querySelector('#nominee-details-table').addEventListener('click', function (e) {
-            if (e.target && (e.target.matches('.delete-nominee-btn') || e.target.matches('.delete-nominee-btn i'))) {
-                const row = e.target.closest('tr');
-                row.parentNode.removeChild(row);
-            }
-        });
-    });
 </script>
 @stop

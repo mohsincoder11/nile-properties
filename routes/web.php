@@ -192,6 +192,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user-model-registration-completed', [UserModelController::class, 'userregistrationcompleted'])->name('user_model.registrationcompleted');
     Route::get('/user-model-saledeed-scan', [UserModelController::class, 'usersaledeedscan'])->name('user_model.saledeedscan');
     Route::get('/user-model-handover', [UserModelController::class, 'userhandover'])->name('user_model.handover');
+    Route::get('/user-model-initiate-sale-edit', [UserModelController::class, 'userinitiatesaleedit'])->name('user_model.userinitiatesaleedit');
 
     Route::get('/enquiry-follow-up', [FollowupLeads::class, 'getEnquiryFollowUp'])->name('enquiry.follow-up');
 
