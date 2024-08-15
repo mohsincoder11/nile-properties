@@ -210,7 +210,7 @@
                             <th>Plot Cost</th>
                             <th>Customer Name</th>
                             <th>Nominee</th>
-                            <th>Upload Registration Receipt</th>
+                            <th>Upload Handover Document</th>
                             <th>Action</th>
                         </tr>
                     </thead>
