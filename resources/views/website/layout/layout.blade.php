@@ -14,7 +14,7 @@
     <title>Nile Properties</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{asset('panel/logo/logo.png')}}" type="image/x-icon" /> <!-- Style CSS -->
+    <link rel="icon" href="{{asset('panel/logo/favicon.png')}}" type="image/x-icon" /> <!-- Style CSS -->
     <link rel="stylesheet" href="{{asset('website/css/stylesheet.css')}}">
     <link rel="stylesheet" href="{{asset('website/css/mmenu.css')}}">
     <link rel="stylesheet" href="{{asset('website/css/style.css')}}" id="colors">

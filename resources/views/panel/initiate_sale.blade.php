@@ -1409,130 +1409,131 @@ $('input[name="south"]').val('');
 <!-- new for exsting client -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('add-client-btn').addEventListener('click', function () {
-        const clientSelect = document.getElementById('client-select');
-        const selectedOption = clientSelect.options[clientSelect.selectedIndex];
+document.getElementById('add-client-btn').addEventListener('click', function () {
+const clientSelect = document.getElementById('client-select');
+const selectedOption = clientSelect.options[clientSelect.selectedIndex];
 
-        if (selectedOption.value !== '') {
-            const clientData = {
-                title: selectedOption.getAttribute('data-title'),
-                name: selectedOption.getAttribute('data-client-name'),
-                occupation_id: selectedOption.getAttribute('data-occupation-id'),
-                occupation: selectedOption.getAttribute('data-occupation'),
-                email: selectedOption.getAttribute('data-email'),
-                phone: selectedOption.getAttribute('data-client-phone'),
-                city: selectedOption.getAttribute('data-city'),
-                pinCode: selectedOption.getAttribute('data-pin-code'),
-                address: selectedOption.getAttribute('data-client-address'),
-                age: selectedOption.getAttribute('data-age'),
-                dob: selectedOption.getAttribute('data-dob'),
-                maritalStatus: selectedOption.getAttribute('data-marital-status'),
-                marriageDate: selectedOption.getAttribute('data-marriage-date'),
-                branch: selectedOption.getAttribute('data-branch'),
-                branch_id: selectedOption.getAttribute('data-branch-id'),
-                aadhar: selectedOption.getAttribute('data-aadhar'),
-                aadharNo: selectedOption.getAttribute('data-aadhar-no'),
-                pan: selectedOption.getAttribute('data-pan'),
-                panNo: selectedOption.getAttribute('data-pan-no'),
-                id: selectedOption.getAttribute('data-client-id')
-            };
+if (selectedOption.value !== '') {
+const clientData = {
+title: selectedOption.getAttribute('data-title'),
+name: selectedOption.getAttribute('data-client-name'),
+occupation_id: selectedOption.getAttribute('data-occupation-id'),
+occupation: selectedOption.getAttribute('data-occupation'),
+email: selectedOption.getAttribute('data-email'),
+phone: selectedOption.getAttribute('data-client-phone'),
+city: selectedOption.getAttribute('data-city'),
+pinCode: selectedOption.getAttribute('data-pin-code'),
+address: selectedOption.getAttribute('data-client-address'),
+age: selectedOption.getAttribute('data-age'),
+dob: selectedOption.getAttribute('data-dob'),
+maritalStatus: selectedOption.getAttribute('data-marital-status'),
+marriageDate: selectedOption.getAttribute('data-marriage-date'),
+branch: selectedOption.getAttribute('data-branch'),
+branch_id: selectedOption.getAttribute('data-branch-id'),
+aadhar: selectedOption.getAttribute('data-aadhar'),
+aadharNo: selectedOption.getAttribute('data-aadhar-no'),
+pan: selectedOption.getAttribute('data-pan'),
+panNo: selectedOption.getAttribute('data-pan-no'),
+id: selectedOption.getAttribute('data-client-id')
+};
 
-            const tableBody = document.getElementById('customerTableBody');
-            const newRow = document.createElement('tr');
+const tableBody = document.getElementById('customerTableBody');
+const newRow = document.createElement('tr');
 
-            // Define base URL for file access
-            const baseUrl = 'http://localhost/laravelwebmedia/nile-properties/public/customer_reg/';
+// Use Laravel's asset helper for document URLs
+const aadharUrl = clientData.aadhar ? `{{ asset('customer_reg/${clientData.aadhar}') }}` : null;
+const panUrl = clientData.pan ? `{{ asset('customer_reg/${clientData.pan}') }}` : null;
 
-            newRow.innerHTML = `
-            <td style="padding:5px;" align="center">
-                <label>${clientData.title}</label>
-                <input type="hidden" name="title_existing[]" value="${clientData.title}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.name}</label>
-                <input type="hidden" name="name_existing[]" value="${clientData.name}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.occupation}</label>
-                <input type="hidden" name="occupation_id_existing[]" value="${clientData.occupation_id}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.email}</label>
-                <input type="hidden" name="email_existing[]" value="${clientData.email}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.phone}</label>
-                <input type="hidden" name="contact_existing[]" value="${clientData.phone}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.city}</label>
-                <input type="hidden" name="city_existing[]" value="${clientData.city}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.pinCode}</label>
-                <input type="hidden" name="pin_code_existing[]" value="${clientData.pinCode}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.address}</label>
-                <input type="hidden" name="address_existing[]" value="${clientData.address}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.age}</label>
-                <input type="hidden" name="age_existing[]" value="${clientData.age}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.dob}</label>
-                <input type="hidden" name="dob_existing[]" value="${clientData.dob}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.maritalStatus}</label>
-                <input type="hidden" name="marital_status_existing[]" value="${clientData.maritalStatus}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.marriageDate}</label>
-                <input type="hidden" name="marriage_date_existing[]" value="${clientData.marriageDate}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.branch}</label>
-                <input type="hidden" name="branch_id_existing[]" value="${clientData.branch_id}">
-            </td>
-            <td style="padding:5px;" align="center">
-                ${clientData.aadhar ? `<a href="${baseUrl}${clientData.aadhar}" target="_blank" download="aadhar">
-                    <i class="fa fa-file-pdf-o" style="background-color:red;" aria-hidden="true"></i> AADHAR
-                </a>` : 'N/A'}
-                <input type="hidden" name="aadhar_existing[]" value="${clientData.aadhar}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.aadharNo}</label>
-                <input type="hidden" name="aadhar_no_existing[]" value="${clientData.aadharNo}">
-            </td>
-            <td style="padding:5px;" align="center">
-                ${clientData.pan ? `<a href="${baseUrl}${clientData.pan}" target="_blank" download="pan">
-                    <i class="fa fa-file-pdf-o" style="background-color:blue;" aria-hidden="true"></i> PAN
-                </a>` : 'N/A'}
-                <input type="hidden" name="pan_existing[]" value="${clientData.pan}">
-            </td>
-            <td style="padding:5px;" align="center">
-                <label>${clientData.panNo}</label>
-                <input type="hidden" name="pan_no_existing[]" value="${clientData.panNo}">
-                <input type="hidden" name="existing_client_id[]" value="${clientData.id}">
-            </td>
-            <td style="text-align:center; color:#FF0000">
-                <button type="button" class="remove-row-btn"><i class="fa fa-trash-o"></i></button>
-            </td>
-            `;
+newRow.innerHTML = `
+<td style="padding:5px;" align="center">
+    <label>${clientData.title}</label>
+    <input type="hidden" name="title_existing[]" value="${clientData.title}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.name}</label>
+    <input type="hidden" name="name_existing[]" value="${clientData.name}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.occupation}</label>
+    <input type="hidden" name="occupation_id_existing[]" value="${clientData.occupation_id}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.email}</label>
+    <input type="hidden" name="email_existing[]" value="${clientData.email}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.phone}</label>
+    <input type="hidden" name="contact_existing[]" value="${clientData.phone}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.city}</label>
+    <input type="hidden" name="city_existing[]" value="${clientData.city}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.pinCode}</label>
+    <input type="hidden" name="pin_code_existing[]" value="${clientData.pinCode}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.address}</label>
+    <input type="hidden" name="address_existing[]" value="${clientData.address}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.age}</label>
+    <input type="hidden" name="age_existing[]" value="${clientData.age}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.dob}</label>
+    <input type="hidden" name="dob_existing[]" value="${clientData.dob}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.maritalStatus}</label>
+    <input type="hidden" name="marital_status_existing[]" value="${clientData.maritalStatus}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.marriageDate}</label>
+    <input type="hidden" name="marriage_date_existing[]" value="${clientData.marriageDate}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.branch}</label>
+    <input type="hidden" name="branch_id_existing[]" value="${clientData.branch_id}">
+</td>
+<td style="padding:5px;" align="center">
+    ${aadharUrl ? `<a href="${aadharUrl}" target="_blank" download="aadhar">
+        <i class="fa fa-file-pdf-o" style="background-color:red;" aria-hidden="true"></i> AADHAR
+    </a>` : 'N/A'}
+    <input type="hidden" name="aadhar_existing[]" value="${clientData.aadhar}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.aadharNo}</label>
+    <input type="hidden" name="aadhar_no_existing[]" value="${clientData.aadharNo}">
+</td>
+<td style="padding:5px;" align="center">
+    ${panUrl ? `<a href="${panUrl}" target="_blank" download="pan">
+        <i class="fa fa-file-pdf-o" style="background-color:blue;" aria-hidden="true"></i> PAN
+    </a>` : 'N/A'}
+    <input type="hidden" name="pan_existing[]" value="${clientData.pan}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.panNo}</label>
+    <input type="hidden" name="pan_no_existing[]" value="${clientData.panNo}">
+    <input type="hidden" name="existing_client_id[]" value="${clientData.id}">
+</td>
+<td style="text-align:center; color:#FF0000">
+    <button type="button" class="remove-row-btn"><i class="fa fa-trash-o"></i></button>
+</td>
+`;
 
-            tableBody.appendChild(newRow);
-        }
-    });
+tableBody.appendChild(newRow);
+}
+});
 
-    // Handle deleting client details from the table
-    document.querySelector('#customerTableBody').addEventListener('click', function (e) {
-        if (e.target && (e.target.matches('.remove-row-btn') || e.target.matches('.remove-row-btn i'))) {
-            const row = e.target.closest('tr');
-            row.parentNode.removeChild(row);
-        }
-    });
+// Handle deleting client details from the table
+document.querySelector('#customerTableBody').addEventListener('click', function (e) {
+if (e.target && (e.target.matches('.remove-row-btn') || e.target.matches('.remove-row-btn i'))) {
+const row = e.target.closest('tr');
+row.parentNode.removeChild(row);
+}
+});
 });
 </script>
 <script>

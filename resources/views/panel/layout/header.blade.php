@@ -274,7 +274,8 @@
                         <li><a href="{{ route('registration')}}"><span class="fa fa-plus"></span>Request For
                                 Registration</a>
                         </li>
-                        <li><a href="{{ route('account')}}"><span class="fa fa-plus"></span>Accounts Clearance</a></li>
+                        {{-- <li><a href="{{ route('account')}}"><span class="fa fa-plus"></span>Accounts Clearance</a>
+                        </li> --}}
                         <li><a href="{{ route('legalclearance')}}"><span class="fa fa-plus"></span>Legal Clearance</a>
                         </li>
                         <li><a href="{{ route('registrationcompleted')}}"><span class="fa fa-plus"></span>Registration

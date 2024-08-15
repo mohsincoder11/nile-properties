@@ -37,13 +37,9 @@
                         <tr>
                             <th>Sr. No.</th>
                             <th>Customer Name</th>
-                            <th>Mobile Number</th>
-
-                            <th>Project Name</th>
-                            <th>Sale Value</th>
-                            <th>Received</th>
-                            <th>Due Amount</th>
-
+                            <th>Nominee</th>
+                            <th>Upload Handover Document</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,4 +74,77 @@
 
 
 
+<<<<<<< HEAD
+=======
+                            // Set today's date for each datepicker input
+                            // $('.datepicker').each(function () {
+                            //     const today = new Date();
+                            //     const day = String(today.getDate()).padStart(2, '0');
+                            //     const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+                            //     const year = today.getFullYear();
+                            //     const formattedDate = `${day}/${month}/${year}`;
+                            //     $(this).val(formattedDate);
+                            // });
+
+                            // Handle view details button click
+                            $(document).on('click', '.view-details-btn', function () {
+                                $("#popup3").modal({
+                                    backdrop: "static",
+                                    keyboard: false,
+                                });
+                                var inquiryId = $(this).data('id'); // Get the data-id value
+                                $("#appendbody").empty();
+                                $.ajax({
+                                    url: '{{ route('inquiry.docs.details') }}',
+                                    type: 'get',
+                                    data: {
+                                        id: inquiryId
+                                    },
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        if (data.html) {
+                                            $("#appendbody").html(data.html);
+                                        } else if (data.error) {
+                                            $("#appendbody").html('<p>' + data.error + '</p>');
+                                        }
+                                    },
+                                    error: function () {
+                                        $("#appendbody").html('<p>An error occurred while fetching the details.</p>');
+                                    }
+                                });
+                            });
+
+                            // Handle check status button click
+                            $(document).on('click', '.check-status-btn', function () {
+                                const enquiryId = $(this).data('id');
+                                if (enquiryId) {
+                                    checkConditionsAndSubmitForm(enquiryId, this);
+                                }
+                            });
+
+                            function checkConditionsAndSubmitForm(enquiryId, buttonElement) {
+                                const url = checkStatusUrl.replace(':id', enquiryId);
+
+                                fetch(url, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                    }
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.status === 'success') {
+                                            document.getElementById('form-' + enquiryId).submit();
+                                        } else {
+                                            alert(data.message);
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
+                            }
+                        });
+</script>
+>>>>>>> e18dce094f2b413cee37a33214f2161c4401ac04
 @stop
