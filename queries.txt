@@ -3,9 +3,6 @@ queries:
 
 2)what to do with emi of old customer.
 
-<<<<<<< HEAD
-3)already sold plot validation while adding entry or transfer.
-=======
 3)already sold plot validation while adding entry or transfer.
 
 4)if both agent on same positino will there be any commision to parent?
@@ -13,4 +10,7 @@ queries:
 5)in expense entry do we need to change the income category like emi,other charges.
 
 6)in expense entry do we need to show only sold plots for input.
->>>>>>> 5eb4c98ccc500e044650ee92b8f18c931608fe41
+
+if plot transfer minus old amount plus new.
+if emi commision is paid save that data for new and old data.
+

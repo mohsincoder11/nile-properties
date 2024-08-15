@@ -9,7 +9,6 @@ class InitialEnquiry extends Model
 {
     use HasFactory;
     protected $table = "initial_enquiries_clients";
-    protected $primarykey = 'id';
     protected $fillable = [
         'firm_id',
 
@@ -47,21 +46,7 @@ class InitialEnquiry extends Model
         'employee_id',
         'direct_sourse',
         'agent_id',
-        'plot_stage_status',
-        'is_transfer_plot',
-        'is_request_registration_completed',
-        'is_legal_clearance',
-        'legal_clearance_date',
-        'is_registration_completed',
-        'registration_complete_date',
-        'registration_receipt',
-        'is_saleded_completed',
-        'saleded_receipt',
-        'saleded_completed_date',
-        'is_handover_completed',
-        'handover_receipt',
-        'handover_completed_date',
-
+        'is_transfer_plot'
     ];
 
     public function clientsigle()
@@ -103,11 +88,6 @@ class InitialEnquiry extends Model
         return $this->hasOne(TokenStatus::class, 'id', 'status_token');
     }
     public function plotnumber()
-    {
-        return $this->hasOne(ProjectEntryAppendData::class, 'id', 'plot_no');
-    }
-
-    public function plotname()
     {
         return $this->hasOne(ProjectEntryAppendData::class, 'id', 'plot_no');
     }

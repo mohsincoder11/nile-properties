@@ -14,7 +14,7 @@
 
                 <div class="col-md-12" align="center" style="margin-top: 1vh;">
                     <div class="col-md-12" align="center">
-                        <div class="icon-box-container" style="margin-left: 16%;">
+                        <div class="icon-box-container" style="margin-left: 12%;">
 
                             <div class="icon-box box-3" style="padding: 1vh;">
                                 <a href="{{ route('user_model.initiatesale')}}">
@@ -149,7 +149,7 @@
                                     <!-- Plot options will be appended dynamically -->
                                 </select>
                             </div>
-                            <div class="col-md-2" style="margin-top:3.1rem; " align="center">
+                            <div class="col-md-2" style="margin-top:3.1rem;" align="center">
 
                                 <div class="input-group" style="margin-top:-5px; margin-bottom:15px;">
 
