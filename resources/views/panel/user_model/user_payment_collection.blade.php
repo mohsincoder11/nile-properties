@@ -18,7 +18,7 @@
 
                     <!-- START DEFAULT DATATABLE -->
                     <div class="col-md-12" align="center">
-                        <div class="icon-box-container" style="margin-left: 16%;">
+                        <div class="icon-box-container" style="margin-left: 12%;">
 
                             <div class="icon-box box-3" style="padding: 1vh;">
                                 <a href="{{ route('user_model.initiatesale') }}">

@@ -102,7 +102,7 @@
                     Agreement Master
                 </h5>
             </div>
-            {{-- <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 2px; "> @php
+            <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 2px; "> @php
                 $files = [
                 'Agreement' => 'Agreement.html',
                 'Receipt' => 'Receipt.html',
@@ -133,7 +133,7 @@
                 @endif
                 <br><br>
                 @endforeach
-            </div> --}}
+            </div>
             <div class="col-md-12">
                 <div class="form-group" style="margin-top: 10px;">
                     <div class="col-md-4" style="margin-top: 15px;"></div>

@@ -10,6 +10,6 @@
     <td align="left">Total Amount : {{ $data['total_amount'] }}</td>
     <td align="left">Down Payment : {{ $data['down_payment'] }}</td>
     <td align="left">Remaining Payment : {{ $data['remaining_payment'] }}</td>
-    <td align="left">Total Installments (in months) : {{ $data['total_installments'] }}</td>
+    <td align="left">Total Installments (in months) : {{ $data['total_installments'] / 30 }}</td>
     <td align="left">Installment Type : {{ $data['installment_type'] }}</td>
 </tr>

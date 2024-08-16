@@ -515,7 +515,7 @@
                                             <option>Father</option>
                                             <option>Wife</option>
                                             <option>Mother</option>
-                                            <option>Son</option>
+                                            <option>Sun</option>
                                         </select>
                                     </td>
                                     <td style="padding: 2px;" width="2%">
@@ -591,7 +591,7 @@
                                         </td>
                                         <td style="text-align:center; color:#FF0000">
                                             <button type="button" data-id="{{ $nominee->id ?? '' }}"
-                                                class="delete-nominee-btn_pre">
+                                                class="delete-client-btn_pre">
                                                 <i class="fa fa-trash-o"></i>
                                             </button>
                                         </td>
@@ -656,10 +656,9 @@
                                         <select id="plot-select" name="plot_no" class="form-control select"
                                             data-live-search="true">
                                             <option value="">Select Option</option>
-                                            @foreach($plot as $enquiry)
-                                            <option value="{{ $enquiry->id ?? '' }}" @if(isset($inquiry) && $inquiry->
-                                                plot_no == $enquiry->id) selected
-                                                @endif>
+                                            @foreach($enquiries as $enquiry)
+                                            <option value="{{ $enquiry->plot_no ?? '' }}" @if($inquiry->plot_no ?? '' ==
+                                                $enquiry->plot_no ?? '') selected @endif>
                                                 {{ $enquiry->plot_no ?? '' }}
                                             </option>
                                             @endforeach
@@ -787,10 +786,10 @@
                                         </div>
                                     </td>
                                     <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" name="status_token" data-live-search="true">
+                                        <select class="form-control select" name="staus_token" data-live-search="true">
                                             <option value="">Select Option</option>
                                             @foreach($tokenStatuses as $tokenStatus)
-                                            <option value="{{ $tokenStatus->id }}" @if($inquiry->status_token ==
+                                            <option value="{{ $tokenStatus->token }}" @if($inquiry->status_token ==
                                                 $tokenStatus->id) selected @endif>
                                                 {{ $tokenStatus->token }}
                                             </option>
@@ -832,8 +831,8 @@
                                             id="plot_sale_status" name="plot_sale_status">
                                             <option value="">Select Option</option>
                                             @foreach($statuses as $status)
-                                            <option value="{{ $status->id }}" @if(isset($inquiry) && $inquiry->
-                                                plot_sale_status == $status->id) selected
+                                            <option value="{{ $status->plot_sale_status }}" @if($inquiry->
+                                                plot_sale_status == $status->plot_sale_status) selected
                                                 @endif>
                                                 {{ $status->plot_sale_status }}
                                             </option>
