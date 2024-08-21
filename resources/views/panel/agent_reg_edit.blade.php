@@ -75,8 +75,8 @@
             <div class="col-md-12" style="margin-top: 2vh;">
                 <table width="100%">
                     <tr style="height:30px;">
-                                              <th width="5%">Referal</th>
-                                                <th width="3%">Name</th>
+                        <th width="5%">Referal</th>
+                        <th width="3%">Name</th>
                         <th width="3%">Email</th>
                         <th width="3%">Mobile No.</th>
                         <th width="3%">City/Village</th>
@@ -93,13 +93,14 @@
                             <select class="form-select select" name="parent_id">
                                 <option disabled selected>Select Option</option>
                                 @foreach ($agentAll as $a)
-                                <option value="{{ $a->id }}" @if($agentEdit->parent_id==$a->id){{ 'selected' }}@endif> {{ $a->name }}</option>
-                                    
+                                <option value="{{ $a->id }}" @if($agentEdit->parent_id==$a->id){{ 'selected' }}@endif>
+                                    {{ $a->name }}</option>
+
                                 @endforeach
 
                             </select>
                         </td>
-                         <td style="padding: 2px;" width="5%">
+                        <td style="padding: 2px;" width="5%">
                             <input type="text" class="form-control" name="name" placeholder=""
                                 value="{{$agentEdit->name}}" />
                         </td>

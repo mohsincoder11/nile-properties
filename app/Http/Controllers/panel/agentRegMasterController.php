@@ -14,7 +14,7 @@ class agentRegMasterController extends Controller
     public function index()
     {
 
-        $agent = AgentRegistrationMaster::with('bankDetails')->orderby('id','desc')->get();
+        $agent = AgentRegistrationMaster::with('bankDetails')->get();
         // $bankDetail = AgentBankDetailsRegistrationMaster::all();
         // return view('panel.agent_reg', ['agent'=>$agent, 'bankDetail'=>$bankDetail]);
         return view('panel.agent_reg', ['agent' => $agent]);
@@ -43,7 +43,8 @@ class agentRegMasterController extends Controller
             // 'password' => 'required|string|max:20',
         ]);
 
-        $agentNumber = 'AG-'.time().mt_rand(1000, 9999);;
+        $number = mt_rand(1000, 9999);
+        $agentNumber = 'AG' . $number;
         $aadhar = null;
         $pan = null;
 
@@ -65,8 +66,6 @@ class agentRegMasterController extends Controller
             // Save agent registration details
             $agentRegistration = new AgentRegistrationMaster([
                 'agent_number' => $agentNumber,
-                'profile'=>get_agent_profile(1),
-                'parent_id'=>$request->parent_id ?? Null,
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'contact_number' => $request->input('contact_number'),
@@ -196,8 +195,6 @@ class agentRegMasterController extends Controller
         $agentRegistration->city = $request->city;
         $agentRegistration->address = $request->address;
         $agentRegistration->pincode = $request->pincode;
-        $agentRegistration->parent_id = $request->parent_id ?? NULL;
-
 
         // Update images only if new files are provided
         if ($request->hasFile('pan')) {

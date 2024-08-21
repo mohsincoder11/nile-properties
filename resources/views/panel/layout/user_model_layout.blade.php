@@ -242,8 +242,8 @@
                         <li><a href="{{ route('user_model.registration')}}"><span class="fa fa-plus"></span>Request For
                                 Registration</a>
                         </li>
-                        <li><a href="{{ route('user_model.account')}}"><span class="fa fa-plus"></span>Accounts
-                                Clearance</a></li>
+                        {{-- <li><a href="{{ route('user_model.account')}}"><span class="fa fa-plus"></span>Accounts
+                                Clearance</a></li> --}}
                         <li><a href="{{ route('user_model.legalclearance')}}"><span class="fa fa-plus"></span>Legal
                                 Clearance</a>
                         </li>
@@ -263,7 +263,7 @@
                 <!-- MESSAGES -->
                 <li class="xn-icon-button pull-right"
                     style="margin-right:25px; min-width:100px; color:#FFFFFF; padding-top:20px;">
-                    Welcome, Admin
+                    Welcome, {{ Auth::user()->name ?? '' }}
                 </li>
 
             </ul>

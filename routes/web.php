@@ -139,7 +139,7 @@ Route::middleware(['auth'])->group(function () {
     //MASTER BRANCH END
 
     // Master Agent / Broker Registration
-    Route::get('agent-registration', [agentRegMasterController::class, 'index'])->name('agent_reg');
+    Route::get('agent_reg', [agentRegMasterController::class, 'index'])->name('agent_reg');
     Route::post('agent_reg_store', [agentRegMasterController::class, 'agent_reg_store'])->name('agent_reg_store');
     Route::get('agent_destroy/{id}', [agentRegMasterController::class, 'agent_destroy'])->name('agent_destroy');
     Route::get('agent_list_destroy/{id}', [agentRegMasterController::class, 'agent_list_destroy'])->name('agent_list_destroy');
@@ -180,25 +180,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/expense-entry', [AccountController::class, 'exepence_entry'])->name('expense.entry');
     Route::get('/expense-master', [AccountController::class, 'exepence_master'])->name('expense.master');
     Route::get('/expense-income', [AccountController::class, 'income'])->name('expense.income');
-    Route::post('/expense_store', [AccountController::class, 'expense_store'])->name('expense.store');
-    Route::get('/get-sold-plot-details', [AccountController::class, 'get_sold_plot_details'])->name('get-sold-plot-details');
-    Route::get('/get-sold-plot-other_charges', [AccountController::class, 'get_sold_plot_other_charges'])->name('get-sold-plot-other_charges');
-
-    
-    
     //FollowUp leads controller
-//usermodel controller
-    Route::get('/user-model-dashboard', [UserModelController::class, 'userdashboard'])->name('user_model.dashboard');
-    Route::get('/user-model-payment-collection', [UserModelController::class, 'paymentcollection'])->name('user_model.paymentcollection');
-    Route::get('/user-model-initiate-sale', [UserModelController::class, 'userinitiatesale'])->name('user_model.initiatesale');
-    Route::get('/user-model-new-sale', [UserModelController::class, 'usernewsale'])->name('user_model.newsale');
-    Route::get('/user-model-registration', [UserModelController::class, 'userregistration'])->name('user_model.registration');
-    Route::get('/user-model-account', [UserModelController::class, 'useraccount'])->name('user_model.account');
-    Route::get('/user-model-legal-clearance', [UserModelController::class, 'userlegalclearance'])->name('user_model.legalclearance');
-    Route::get('/user-model-registration-completed', [UserModelController::class, 'userregistrationcompleted'])->name('user_model.registrationcompleted');
-    Route::get('/user-model-saledeed-scan', [UserModelController::class, 'usersaledeedscan'])->name('user_model.saledeedscan');
-    Route::get('/user-model-handover', [UserModelController::class, 'userhandover'])->name('user_model.handover');
-    Route::get('/user-model-initiate-sale-edit', [UserModelController::class, 'userinitiatesaleedit'])->name('user_model.userinitiatesaleedit');
+
 
     Route::get('/enquiry-follow-up', [FollowupLeads::class, 'getEnquiryFollowUp'])->name('enquiry.follow-up');
 
@@ -259,14 +242,18 @@ Route::middleware(['auth'])->group(function () {
 
     // MASTER END
 
+    //expense entry
 
+    Route::post('/expense_store', [AccountController::class, 'expense_store'])->name('expense.store');
+    Route::get('/get-sold-plot-details', [AccountController::class, 'get_sold_plot_details'])->name('get-sold-plot-details');
+    Route::get('/get-sold-plot-other_charges', [AccountController::class, 'get_sold_plot_other_charges'])->name('get-sold-plot-other_charges');
 
     // CRM
 
     //Enquiry
 
     Route::get('/enquiry', [EnquiryController::class, 'index'])->name('enquiry');
-    Route::post('client-store', [EnquiryController::class, 'client_store'])->name('client_store');
+    Route::post('client-stores', [EnquiryController::class, 'client_store'])->name('client_store');
     Route::post('enquiry-store', [EnquiryController::class, 'enquiry_store'])->name('enquiry_store');
     Route::get('get-projects/{statusId}', [EnquiryController::class, 'getProjects'])->name('getProjects');
     Route::get('getplots/{statusId?}/{projectId?}', [EnquiryController::class, 'getPlots'])->name('getplots');
@@ -280,7 +267,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/projects-by-firm/{firm_id}', [ProjectEntryController::class, 'getProjectsByFirm'])->name('projects.by.firm');
     Route::get('/fetch-plots-details', [ProjectEntryController::class, 'fetchPlotDetails'])->name('fetchPlotDetails');
     Route::get('/fetch-project-detailsextra', [ProjectEntryController::class, 'fetchProjectDetailsextra'])->name('fetchProjectDetailsextra');
-    
+
 
 
 
@@ -356,8 +343,22 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/initiate-sale', [InitiatesellController::class, 'initiatesale'])->name('initiatesale');
     Route::get('/fetch-plots', [InitiatesellController::class, 'fetchPlots'])->name('fetchPlots');
+    Route::get('/fetchPlotspaymentsection', [InitiatesellController::class, 'fetchPlotspaymentsection'])->name('fetchPlotspaymentsection');
+
     Route::post('/initiatesale/store', [InitiatesellController::class, 'store'])->name('initiatesale_store');
+
+    Route::get('/check-status/{id}', [CustomeStagesController::class, 'checkStatus'])->name('checkstatusforregistrationcomplete_legalclrarance');
+    Route::post('/registration-complete-approve', [InitiatesellController::class, 'registrationcompleteapprove'])->name('registrationcompleteapprove_legalclrarance');
+    Route::post('/registration-complete-approve-with-date', [InitiatesellController::class, 'registrationcompleteapprove_legalclrarance_with_date'])->name('registrationcompleteapprove_legalclrarance_with_date');
+    Route::post('/registrationcomplete-with-date-file', [InitiatesellController::class, 'registrationcomplete_with_date_file'])->name('registrationcomplete_with_date_file');
+
+    Route::post('/handover-with-date-file', [InitiatesellController::class, 'handover_with_date_file'])->name('handover_with_date_file');
+
+    Route::post('/saleded-with-date-file', [InitiatesellController::class, 'saleded_with_date_file'])->name('saleded_with_date_file');
+
     Route::get('/inquiry-details', [InitiatesellController::class, 'showDetails'])->name('inquiry.details');
+    Route::get('/inquiry-docs-details', [CustomeStagesController::class, 'showDetails'])->name('inquiry.docs.details');
+
     Route::put('panel/initiate-sell/{id}', [InitiatesellController::class, 'update'])->name('panel.initiate-sell.update');
 
     Route::get('/getClientProjectPlotDatatwo', [PaymentCollectionController::class, 'getClientProjectPlotDatatwo'])->name('getClientProjectPlotDatatwo');
@@ -365,6 +366,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-documents', [PaymentCollectionController::class, 'documentindex'])->name('get.documents');
     Route::get('/fetchDocuments', [PaymentCollectionController::class, 'fetchDocuments'])->name('document.fetch');
 
+    Route::get('/getClientIdByPlot', [PaymentCollectionController::class, 'getClientIdByPlot'])->name('getClientIdByPlot');
 
     Route::get('/get-client-project-plot-data', [PaymentCollectionController::class, 'getClientProjectPlotData'])->name('getClientProjectPlotData');
     Route::get('/search_payment_collection_agains_client', [PaymentCollectionController::class, 'search_payment_collection_agains_client'])->name('search_payment_collection_agains_client');
@@ -451,5 +453,48 @@ Route::middleware(['auth'])->group(function () {
     //landowner
     Route::get('/landowner-index', [LandownerController::class, 'index'])->name('landowner_index');
     Route::get('/landowner-account', [LandownerController::class, 'account'])->name('landowner_account');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //usermodel controller
+    Route::get('/user-model-dashboard', [UserModelController::class, 'userdashboard'])->name('user_model.dashboard');
+    Route::get('/user-model-payment-collection', [UserModelController::class, 'paymentcollection'])->name('user_model.paymentcollection');
+    Route::get('/user-model-initiate-sale', [UserModelController::class, 'userinitiatesale'])->name('user_model.initiatesale');
+    Route::get('/user-model-new-sale', [UserModelController::class, 'usernewsale'])->name('user_model.newsale');
+    Route::get('/user-model-registration', [UserModelController::class, 'userregistration'])->name('user_model.registration');
+    Route::get('/user-model-account', [UserModelController::class, 'useraccount'])->name('user_model.account');
+    Route::get('/user-model-legal-clearance', [UserModelController::class, 'userlegalclearance'])->name('user_model.legalclearance');
+    Route::get('/user-model-registration-completed', [UserModelController::class, 'userregistrationcompleted'])->name('user_model.registrationcompleted');
+    Route::get('/user-model-saledeed-scan', [UserModelController::class, 'usersaledeedscan'])->name('user_model.saledeedscan');
+    Route::get('/user-model-handover', [UserModelController::class, 'userhandover'])->name('user_model.handover');
+    Route::get('/user-model-initiate-sale-edit', [UserModelController::class, 'userinitiatesaleedit'])->name('user_model.userinitiatesaleedit');
+
+    Route::post('/user-model-userinitiatesalestore', [UserModelController::class, 'userinitiatesalestore'])->name('user_model.userinitiatesalestore');
+    Route::put('/user-model-userinitiatesaleupdate/{id}', [UserModelController::class, 'userinitiatesaleupdate'])->name('user_model.userinitiatesaleupdate');
+
+    Route::delete('/user-model-userinitiatesaledelete/{id}', [UserModelController::class, 'userinitiatesaledelete'])->name('user_model.initiatesaledelete');
+    Route::get('/user-model-userinitiatesaleedit/{id}', [UserModelController::class, 'userinitiatesaleedit'])->name('user_model.initiatesaleedit');
+
+    Route::post('/razorpay/callback', [UserModelController::class, 'handleRazorpayCallback'])->name('razorpay.callback');
+
+    Route::post('/get-razorpay-getway', [UserModelController::class, 'getrazorpaygetway'])->name('getrazorpaygetway');
+    Route::post('/get-razorpay-payment-complete', [UserModelController::class, 'payment_complete'])->name('payment_complete');
+    Route::post('/store_installment_of_user', [UserModelController::class, 'store_installment_of_user'])->name('store_installment_of_user');
+
+
+    Route::post('/user-create-razorpay-order', [UserModelController::class, 'usercreateRazorpayOrder'])->name('user.create.razorpay.order');
+    Route::post('/user-razorpay-callback', [UserModelController::class, 'userhandleRazorpayCallback'])->name('user.razorpay.callback');
 
 });

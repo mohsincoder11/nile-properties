@@ -18,7 +18,7 @@
 
                     <!-- START DEFAULT DATATABLE -->
                     <div class="col-md-12" align="center">
-                        <div class="icon-box-container" style="margin-left: 12%;">
+                        <div class="icon-box-container" style="margin-left: 16%;">
 
                             <div class="icon-box box-3" style="padding: 1vh;">
                                 <a href="{{ route('user_model.initiatesale') }}">
@@ -270,6 +270,7 @@
                             <th style="text-align:center">Type of Payment</th>
                             <th style="text-align:center">Date</th>
                             <th style="text-align:center">Amount</th>
+                            <th style="text-align:center">Status</th>
                             <th style="text-align:center">Plot No</th>
                             <th style="text-align:center">Project Name</th>
                             <th style="text-align:center">Firm Name</th>
@@ -281,6 +282,17 @@
                 </table>
             </div>
         </div>
+        <form id="user-razorpay-form" method="POST" action="{{ route('user.razorpay.callback') }}">
+            @csrf
+            <input type="text" name="user_razorpay_order_id" id="user_razorpay_order_id">
+            <input type="text" name="user_razorpay_payment_id" id="user_razorpay_payment_id">
+            <input type="text" name="project_id" id="user_project_id">
+            <input type="text" name="plot_id" id="user_plot_id">
+            <input type="text" name="client_id" id="user_client_id">
+            <input type="text" name="amount" id="user_razorpay_amount">
+            <button type="button"> Save</button>
+            <!-- Add other necessary form fields here -->
+        </form>
         <div class="col-md-12" style="margin-top:5vh;">
             <div class="panel panel-default">
                 <h5 class="panel-title"
@@ -323,7 +335,28 @@
                 </table>
             </div>
         </div>
-
+        <form id="razorpay-form" action="{{ route('razorpay.callback') }}" method="POST" style="display: none;">
+            @csrf
+            <input type="text" id="initial_enquiry_iduser" name="initial_enquiry_id" value="">
+            <input type="text" id="installmentuser" name="installment" value="">
+            <input type="text" name="date" id="razorpay_date" value="">
+            <input type="text" name="payment_type" id="razorpay_payment_type" value="">
+            <input type="text" name="paid_amount" id="razorpay_paid_amount" value="">
+            <input type="text" name="bank_name" id="razorpay_bank_name" value="">
+            <input type="text" name="account_no" id="razorpay_account_no" value="">
+            <input type="text" name="cheque_no" id="razorpay_cheque_no" value="">
+            <input type="text" name="ifsc" id="razorpay_ifsc" value="">
+            <input type="text" name="remark" id="razorpay_remark" value="">
+            <label> razorpay_order_id</label>
+            <input type="text" name="razorpay_order_id" id="razorpay_order_id" value="">
+            <label> razorpay_payment_id</label>
+            <input type="text" name="razorpay_payment_id" id="razorpay_payment_id" value="">
+            <label> razorpay_signature</label>
+            <input type="text" name="razorpay_signature" id="razorpay_signature" value="">
+            <button id="rzp-paymentresponse" type="button" class="btn btn-primary">
+                <i class="fa fa-credit-card"></i> Pay Now
+            </button>
+        </form>
         <div class="col-md-12" style="margin-top:1vh;">
             <div class="panel panel-default">
                 <h5 class="panel-title"
@@ -388,8 +421,13 @@
             </div>
         </div>
     </div>
+
     <!-- payment store model  start -->
     <!-- Store Installment Modal -->
+
+    <!-- model here rezor pay or install ment store-->
+
+
     <div class="modal fade" id="storeInstallmentModal" tabindex="-1" role="dialog"
         aria-labelledby="storeInstallmentModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -469,10 +507,18 @@
                             </div>
                         </div>
                     </form>
+                    <!-- Razorpay Form -->
+
+
+                    <!-- Razorpay Script -->
+
+
                 </div>
             </div>
         </div>
     </div>
+
+
     <!-- payment store model  end -->
 
     <!-- payment edit model  start -->
@@ -488,6 +534,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
+
                     <form id="editInstallmentForm" autocomplete="off" role="form"
                         action="{{ route('update_installment') }}" method="POST">
                         @csrf
@@ -552,6 +600,28 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="paymentSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Payment Successful</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Your payment has been successfully processed. Thank you!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="window.location.reload();">Reload
+                        Page</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- payment edit model  end -->
     <div style="position: fixed; bottom: 0; width: 100%;">
         <div class="col-md-12" style="width: 100%;">
@@ -586,7 +656,19 @@
 @stop
 
 @section('js')
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById('razorpay_date').value = document.getElementById('date2').value;
+    document.getElementById('razorpay_payment_type').value = document.getElementById('payment_type2').value;
+    document.getElementById('razorpay_paid_amount').value = document.getElementById('paid_amount2').value;
+    document.getElementById('razorpay_bank_name').value = document.getElementById('bank_name2').value;
+    document.getElementById('razorpay_account_no').value = document.getElementById('account_no2').value;
+    document.getElementById('razorpay_cheque_no').value = document.getElementById('cheque_no2').value;
+    document.getElementById('razorpay_ifsc').value = document.getElementById('ifsc2').value;
+    document.getElementById('razorpay_remark').value = document.getElementById('remark2').value;
+</script>
 
 <script>
     $(document).ready(function() {
@@ -652,6 +734,8 @@ console.error(error);
     var enquiryId = $(button).data('id');
     $('#installment').val(instNo);
     $('#initial_enquiry_id').val(enquiryId);
+    $('#installmentuser').val(instNo);
+    $('#initial_enquiry_iduser').val(enquiryId);
     }
 
     function setModalDataone(button) {
@@ -777,17 +861,23 @@ console.error(error);
     var formData = $('#storeInstallmentForm').serialize();
 
     $.ajax({
-    url: '{{ route('store_payment_installment') }}',
+    url: '{{ route('store_installment_of_user') }}',
     method: 'POST',
     data: formData,
     success: function(response) {
     if (response.success) {
-    alert(response.success);
+    // alert(response.success);
     // Optionally close the modal
-    $('#storeInstallmentModal').modal('hide');
+
+    // console.log(response);
+    document.getElementById('razorpay_order_id').value = response.response.orderId;
+$('#storeInstallmentModal').find('input[type="text"], input[type="date"], input[type="number"],select').val('').trigger('change');
+$('#storeInstallmentModal').modal('hide');
+    initRazorpay(response);
     get_client_project();
     get_table_data();
      clearModalData();
+
     // Optionally update the page content dynamically
     } else {
     alert(response.error || 'An error occurred');
@@ -821,16 +911,84 @@ console.error(error);
     $('#ifsc').val('');
     $('#remark').val('');
     }
+    function initRazorpay(response) {
+    var options = {
+    "key": "{{ env('RAZORPAY_KEY_ID') }}",
+    "amount": document.getElementById('razorpay_paid_amount').value * 100,
+    "name": "Nile Properties",
+    "description": document.getElementById('installment').value + " Installment transaction",
+    "image": "{{ asset('panel/logo/favicon.png') }}",
+    "order_id": response.orderId,
+    "handler": function(response) {
+    console.log("Razorpay Payment Successful:", response);
+
+    // Populate hidden fields with Razorpay response data
+    document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+    document.getElementById('razorpay_signature').value = response.razorpay_signature || '';
+
+    // Submit the form via AJAX
+    $.ajax({
+    url: '{{ route('razorpay.callback') }}',
+    method: 'POST',
+    data: $('#razorpay-form').serialize(),
+    timeout: 30000, // 30 seconds timeout
+    success: function(response) {
+    if (response.success) {
+    get_client_project();
+    get_table_data();
+    clearModalData();
+    alert('Payment completed successfully!');
+    } else {
+    alert('Error: ' + (response.error || 'An error occurred'));
+    }
+    },
+    error: function(xhr) {
+    var response = xhr.responseJSON;
+    if (response && response.error) {
+    alert('Error: ' + response.error);
+    } else {
+    alert('An error occurred while processing the payment.');
+    }
+    }
+    });
+    },
+    "prefill": {
+    "name": "{{ auth()->user()->name }}",
+    "email": "{{ auth()->user()->email }}"
+    },
+    "theme": {
+    "color": "#3399cc"
+    }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();
+    }
+
+    // Show modal
+    function showModal() {
+    $('#myModal').modal('show');
+    }
+
+    // Handle form submission
+    $('#storeInstallmentForm').on('submit', function(e) {
+    e.preventDefault();
+    showModal();
+    });
+
+
     });
 </script>
 <script>
     $(document).ready(function() {
         const routeUrl = "{{ route('get.other.charges') }}";
+        const createOrderUrl = "{{ route('user.create.razorpay.order') }}";
 
+        // Handle view button click to fetch charges data
         $('#view-button').on('click', function() {
             const projectId = $('#project-select').val();
             const plotId = $('#plot-select').val();
-            const clientId = $('#client-select').val(); // Get client_id value
+            const clientId = $('#client-select').val();
 
             const url = `${routeUrl}?project_id=${projectId}&plot_id=${plotId}&client_id=${clientId}`;
 
@@ -846,7 +1004,14 @@ console.error(error);
                             <tr>
                                 <td style="padding:5px;" align="center"><label>${item.payment_type}</label></td>
                                 <td style="padding:5px;" align="center"><label>${item.date}</label></td>
-                                <td style="padding:5px;" align="center"><label>${item.amount}</label></td>
+                                <td style="padding:5px;" align="center" class="amount-cell">
+                                    <a href="#" class="btn btn-link"
+                                        data-amount="${item.amount}"
+                                        data-project-id="${projectId}"
+                                        data-plot-id="${plotId}"
+                                        data-client-id="${clientId}">${item.amount}</a>
+                                </td>
+                                <td style="padding:5px;" align="center"><label>${item.status}</label></td>
                                 <td style="padding:5px;" align="center"><label>${item.plot_no}</label></td>
                                 <td style="padding:5px;" align="center"><label>${item.project_name}</label></td>
                                 <td style="padding:5px;" align="center"><label>${item.firm_name}</label></td>
@@ -861,6 +1026,87 @@ console.error(error);
             });
         });
 
+        // Handle amount cell click to trigger Razorpay order creation
+     $('#charges-table-body').on('click', '.amount-cell a', function(event) {
+    event.preventDefault();
+
+    const amount = $(this).data('amount');
+    const projectId = $(this).data('project-id');
+    const plotId = $(this).data('plot-id');
+    const clientId = $(this).data('client-id');
+
+    // Set the values to the form fields before making the AJAX call
+    $('#user_razorpay_amount').val(amount);
+    $('#user_project_id').val(projectId);
+    $('#user_plot_id').val(plotId);
+    $('#user_client_id').val(clientId);
+
+    $.ajax({
+    url: createOrderUrl,
+    method: 'POST',
+    data: {
+    amount: amount,
+    project_id: projectId,
+    plot_id: plotId,
+    client_id: clientId,
+    _token: '{{ csrf_token() }}'
+    },
+    success: function(response) {
+    // Set the returned order_id in the hidden field
+    $('#user_razorpay_order_id').val(response.order_id);
+
+    // Now you can trigger the Razorpay payment modal here
+  const options = {
+    "key": "{{ env('RAZORPAY_KEY') }}", // Your Razorpay Key
+    "amount": amount * 100, // Amount is in paise
+    "currency": "INR",
+    "name": "Nile Properties",
+    "description": "Other Charges",
+    "image": "{{ asset('panel/logo/favicon.png') }}",
+    "order_id": response.order_id, // This is a Razorpay order_id
+    "handler": function (response) {
+    // Set the payment_id and order_id in the hidden fields
+    $('#user_razorpay_order_id').val(response.razorpay_order_id);
+    $('#user_razorpay_payment_id').val(response.razorpay_payment_id);
+
+    // Submit the form via AJAX
+    $.ajax({
+    url: $('#user-razorpay-form').attr('action'),
+    method: 'POST',
+    data: $('#user-razorpay-form').serialize(),
+    success: function(response) {
+    // Show success or failure alert based on the response
+    if (response.success) {
+    alert(response.message); // Success alert
+    $('#view-button').trigger('click');
+    } else {
+    alert(response.message); // Failure alert
+    }
+    },
+    error: function(xhr, status, error) {
+    alert('An error occurred. Please try again later.'); // Error alert
+    }
+    });
+    },
+    "prefill": {
+    "name": "{{ auth()->user()->name }}",
+    "email": "{{ auth()->user()->email }}"
+    },
+    "theme": {
+    "color": "#3399cc"
+    }
+    };
+
+    // Create and open Razorpay instance
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+
+    },
+    error: function(xhr, status, error) {
+    console.error('Error generating order ID:', error);
+    }
+    });
+    });
         // Optional: Update hidden fields on change of select boxes
         $('#project-select').on('change', function() {
             $('#other_project_id').val($(this).val());
@@ -929,59 +1175,7 @@ console.error(error);
     });
     });
 </script>
-{{-- <script>
-    $(document).ready(function() {
-$('#submit-documents').on('click', function() {
-var form = $('#upload-documents-form')[0];
-var formData = new FormData(form);
 
-$.ajax({
-type: "POST",
-url: $(form).attr('action'),
-data: formData,
-contentType: false,
-processData: false,
-success: function(response) {
-if (Array.isArray(response) && response.length > 0) {
-var documentsTableBody = $('#documents-table-body');
-
-// Clear existing content
-// documentsTableBody.empty();
-
-// Append new documents to the table
-response.forEach(function(document) {
-// Update path to include base URL
-var documentPath =
-`http://localhost/laravelwebmedia/nile-properties/public/documents/${document.document_name}`;
-var row = `
-<tr>
-    <td style="padding:5px;" align="center"><label>${document.document_name}</label></td>
-    <td style="padding:5px;" align="center"><label>${document.updated_by}</label></td>
-    <td style="padding:5px;" align="center"><label>${document.updated_date}</label></td>
-    <td style="padding:5px;" align="center">
-        <a style="color:blue;" href="${documentPath}" target="_blank">Download</a>
-    </td>
-    <td style="padding:5px;" align="center"><label>${document.plot_no}</label></td>
-    <td style="padding:5px;" align="center"><label>${document.project_name}</label></td>
-    <td style="padding:5px;" align="center"><label>${document.firm_name}</label></td>
-</tr>
-`;
-documentsTableBody.append(row);
-});
-
-// Optionally, clear the form fields after submission
-form.reset();
-} else {
-alert('Failed to upload documents.');
-}
-},
-error: function(xhr, status, error) {
-console.error('There was a problem with the AJAX request:', error);
-}
-});
-});
-});
-</script> --}}
 <script>
     $(document).ready(function() {
         $('#submit-documents').on('click', function() {
@@ -1118,4 +1312,121 @@ console.error('There was a problem with the AJAX request:', error);
     });
 });
 </script>
+
+<script>
+    // Function to sync form fields between storeInstallmentForm and razorpay-form
+    function syncField(sourceId, targetId) {
+    document.getElementById(targetId).value = document.getElementById(sourceId).value;
+    }
+
+    // Attach event listeners to all input fields in the storeInstallmentForm
+    document.getElementById('initial_enquiry_id').addEventListener('input', function() {
+    syncField('initial_enquiry_id', 'razorpay_initial_enquiry_id');
+    });
+
+    document.getElementById('installment').addEventListener('input', function() {
+    syncField('installment', 'razorpay_installment');
+    });
+
+    document.getElementById('date2').addEventListener('input', function() {
+    syncField('date2', 'razorpay_date');
+    });
+
+  // Sync dropdown (select) field between storeInstallmentForm and razorpay-form
+document.getElementById('payment_type2').addEventListener('change', function() {
+document.getElementById('razorpay_payment_type').value = this.value;
+});
+    document.getElementById('paid_amount2').addEventListener('input', function() {
+    syncField('paid_amount2', 'razorpay_paid_amount');
+    });
+
+    document.getElementById('bank_name2').addEventListener('input', function() {
+    syncField('bank_name2', 'razorpay_bank_name');
+    });
+
+    document.getElementById('account_no2').addEventListener('input', function() {
+    syncField('account_no2', 'razorpay_account_no');
+    });
+
+    document.getElementById('cheque_no2').addEventListener('input', function() {
+    syncField('cheque_no2', 'razorpay_cheque_no');
+    });
+
+    document.getElementById('ifsc2').addEventListener('input', function() {
+    syncField('ifsc2', 'razorpay_ifsc');
+    });
+
+    document.getElementById('remark2').addEventListener('input', function() {
+    syncField('remark2', 'razorpay_remark');
+    });
+</script>
+{{-- <script>
+    function initRazorpay(response) {
+        var options = {
+            "key": "{{ env('RAZORPAY_KEY_ID') }}",
+            "amount": document.getElementById('razorpay_paid_amount').value * 100,
+            "name": "Nile Properties",
+            "description": document.getElementById('installment').value + " Installment transaction",
+            "image": "{{ asset('panel/logo/favicon.png') }}",
+            "order_id": response.orderId,
+            "handler": function(response) {
+                console.log("Razorpay Payment Successful:", response);
+
+                // Populate hidden fields with Razorpay response data
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature || '';
+
+                // Submit the form via AJAX
+                $.ajax({
+                    url: '{{ route('razorpay.callback') }}',
+                    method: 'POST',
+                    data: $('#razorpay-form').serialize(),
+                    timeout: 30000, // 30 seconds timeout
+                    success: function(response) {
+                        if (response.success) {
+                            // Delay the execution of subsequent functions by 5 seconds
+                            //  setTimeout(function() {
+                                get_client_project();
+                                get_table_data();
+                                clearModalData();
+                                alert('Payment completed successfully!');
+                            // }, 5000); // 5000 milliseconds = 5 seconds
+                        } else {
+                            alert('Error: ' + (response.error || 'An error occurred'));
+                        }
+                    },
+                    error: function(xhr) {
+                        var response = xhr.responseJSON;
+                        if (response && response.error) {
+                            alert('Error: ' + response.error);
+                        } else {
+                            alert('An error occurred while processing the payment.');
+                        }
+                    }
+                });
+            },
+            "prefill": {
+                "name": "{{ auth()->user()->name }}",
+                "email": "{{ auth()->user()->email }}"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.open();
+    }
+
+    function showModal() {
+        $('#myModal').modal('show');
+    }
+
+    $(document).ready(function() {
+        $('#storeInstallmentForm').on('submit', function(e) {
+            e.preventDefault();
+            showModal();
+        });
+    });
+</script> --}}
 @endsection

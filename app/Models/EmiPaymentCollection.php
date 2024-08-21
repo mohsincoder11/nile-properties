@@ -35,4 +35,9 @@ class EmiPaymentCollection extends Model
         'paid_amt' => 'decimal:2',
         'rem_amt' => 'decimal:2',
     ];
+
+    public function Intial()
+    {
+        return $this->hasOne(InitialEnquiry::class, 'id', 'initial_enquiry_id');
+    }
 }

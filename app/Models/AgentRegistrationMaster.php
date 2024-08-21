@@ -24,6 +24,7 @@ class AgentRegistrationMaster extends Model
         'username',
         'password',
         'agent_number',
+        'role',
         'profile',
         'total_sales',
         'parent_id'
@@ -57,13 +58,14 @@ class AgentRegistrationMaster extends Model
     public function updateProfileBasedOnSales()
     {
         $slab = CommisionSlab::where('min_sales', '<=', $this->total_sales)
-                              ->where('max_sales', '>=', $this->total_sales)
-                              ->first();
+            ->where('max_sales', '>=', $this->total_sales)
+            ->first();
 
         if ($slab) {
             $this->profile = $slab->profile;
             $this->save();
         }
     }
+
 
 }
