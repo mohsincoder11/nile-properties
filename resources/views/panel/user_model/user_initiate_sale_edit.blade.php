@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-12" style="margin-top:5px;">
             <div class="panel panel-default">
-                <form action="{{ route('panel.initiate-sell.update', $inquiry->id) }}" method="post"
+                <form action="{{ route('user_model.userinitiatesaleupdate', $inquiry->id) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

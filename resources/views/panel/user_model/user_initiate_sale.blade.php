@@ -27,7 +27,8 @@
     <div class="row">
         <div class="col-md-12" style="margin-top:5px;">
             <div class="panel panel-default">
-                <form action="{{ route('initiatesale_store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('user_model.userinitiatesalestore') }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
 
 

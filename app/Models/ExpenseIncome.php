@@ -16,7 +16,7 @@ class ExpenseIncome extends Model
         'project_id',
         'income_category',
         'client_id',
-        'plot_no',        
+        'plot_no',
         'bank_name',
         'amount',
         'remarks',

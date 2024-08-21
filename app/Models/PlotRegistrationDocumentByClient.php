@@ -18,13 +18,20 @@ class PlotRegistrationDocumentByClient extends Model
 
         'project_id',
         'client_id',
-        'status'
+        'status',
+        'initial_enquiry_id'
 
     ];
 
     public function projectname()
     {
         return $this->belongsTo(ProjectEntry::class, 'project_id');
+    }
+
+
+    public function plotname()
+    {
+        return $this->hasOne(ProjectEntryAppendData::class, 'id', 'plot_id');
     }
     public function firmname()
     {

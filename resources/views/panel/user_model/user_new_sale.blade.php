@@ -301,7 +301,7 @@
                                     data-placement="top" title="View" data-id="{{ $inquiry->id }}">
                                     <i class="fa fa-eye" style="margin-left:5px;"></i>
                                 </button>
-                                <a href="{{ route('user_model.userinitiatesaleedit', $inquiry->id) }}">
+                                <a href="{{ route('user_model.initiatesaleedit', $inquiry->id) }}">
                                     <button
                                         style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
                                         type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
@@ -309,7 +309,7 @@
                                         <i class="fa fa-edit" style="margin-left:5px;"></i>
                                     </button>
                                 </a>
-                                <form action="{{ route('newsale_delete', $inquiry->id) }}" method="POST"
+                                <form action="{{ route('user_model.initiatesaledelete', $inquiry->id) }}" method="POST"
                                     onsubmit="return confirm('Are you sure you want to delete this enquiry?');"
                                     style="display:inline;">
                                     @csrf
