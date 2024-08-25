@@ -6,7 +6,7 @@
         $backgroundColor = 'green'; // Default color
 
         if ($enquiry) {
-        $statusId = $enquiry->status_name->plot_sale_status;
+        $statusId = $enquiry->status_name->plot_sale_status ?? '';
 
         if ($statusId == 'Booked') {
         $backgroundColor = 'purple';

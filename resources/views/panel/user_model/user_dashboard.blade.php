@@ -47,7 +47,7 @@
         <div class="col-md-12" style="text-align: center;margin-top: 5px;">
             <h6 class="panel-title"
                 style="color:#FFFFFF; background-color:#1681b6; width:100%;height: 50%; font-size:16px;" align="center">
-                <i class="fa fa-file-text"> &nbsp;<label style="margin: 7px;">Customer Enquiry Details</label> </i>
+                <i class="fa fa-file-text"> &nbsp;<label style="margin: 7px;">Customer Details</label> </i>
             </h6>
 
         </div>
@@ -55,52 +55,37 @@
         <div style="margin-top: 50px"></div>
 
         <div class="panel-body" style="margin-top:5px; margin-bottom:15px;">
+            @auth
             <table class="table datatable">
                 <thead>
                     <tr>
                         <th>Sr. No.</th>
-                        <th>Project Name</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Mobile Number</th>
-                        <th>Message</th>
-                        <th>Action</th>
-                        {{-- <th width="10%">Action</th> --}}
+                        <th>Role</th>
                     </tr>
                 </thead>
                 <tbody>
-
                     <tr>
-                        <td>1</td>
-                        <td>Nile
-                            {{--
-                            <pre>{{ print_r($enquiries, true) }}</pre> --}}
 
-
-                        </td>
-                        <td>Yash Dhokane</td>
-                        <td>yashdhokane@gmail.com</td>
-                        <td>8600316026</td>
-                        <td>Done</td>
-                        {{-- <td>read_client_registrations, read_layout, read_plot</td> --}}
-                        <td>
-                            {{-- <a href="#"><button
-                                    style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
-                                    type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
-                                    title="Edit Data"><i class="fa fa-pencil" style="margin-left:5px;"></i></button></a>
-                            --}}
-
-                            {{-- <a onclick="openDeleteModal('{{route('destroy-dash', $enquiries->id)}}')">
-                                <button onclick="a(2);"
-                                    style="background-color:#ff0000; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
-                                    type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
-                                    title="Remove"><i class="fa fa-trash-o" style="margin-left:5px;"></i></button>
-                            </a> --}}
-                        </td>
+                        @php
+                        $index=0;
+                        @endphp
+                        <td>{{ $index + 1 }}</td> {{-- Ensure that these attributes exist on the authenticated user
+                        object --}}
+                        <td>{{ auth()->user()->name ?? '' }}</td>
+                        <td>{{ auth()->user()->email ?? '' }}</td>
+                        <td>{{ auth()->user()->contact ?? '' }}</td> <!-- Handle optional attributes -->
+                        <td>{{ auth()->user()->role ?? '' }}</td> <!-- Handle optional attributes -->
                     </tr>
-
                 </tbody>
             </table>
+            @else
+            <div class="alert alert-warning text-center">
+                <strong>Please log in to view the data.</strong>
+            </div>
+            @endauth
         </div>
 
         <!-- END DEFAULT DATATABLE -->

@@ -49,7 +49,9 @@ class EnquiryFormController extends Controller
                 // Save the user
                 $newUser->save();
 
-
+                $customer = new CustomerRegistrationMaster;
+                $customer->user_id = $request->$newUser->id;
+                $customer->save();
 
                 // Now, you can send the password to the user's email
                 // You may use Laravel's Mail functionality or any email service of your choice

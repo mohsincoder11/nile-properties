@@ -904,7 +904,7 @@ $("#selectProject").on('change', function() {
     <table width="100%" border="1">
         <tr style="background-color:#f0f0f0; height:30%; padding:5px;">
             <th style="padding: 5px;"><label style=" font-size:14px;">Name</label></th>
-            <th style="padding: 5px;"><label style=" font-size:14px;">Occupation</label></th>
+            {{--  <th style="padding: 5px;"><label style=" font-size:14px;">Occupation</label></th>  --}}
             <th style="padding: 5px;"><label style=" font-size:14px;">Mobile No</label></th>
             <th style="padding: 5px;"><label style=" font-size:14px;">Email</label></th>
             <th style="padding: 5px;"><label style=" font-size:14px;">DOB</label></th>
@@ -917,7 +917,7 @@ $("#selectProject").on('change', function() {
         </tr>
         <tr>
             <td style="padding: 5px;" width="5%">${data.name}</td>
-            <td style="padding: 5px;" width="5%">${data.occupation_id}</td>
+            {{--  <td style="padding: 5px;" width="5%">${data.occupation_name->occupation}</td>  --}}
             <td style="padding: 5px;" width="5%">${data.contact}</td>
             <td style="padding: 5px;" width="5%">${data.email}</td>
             <td style="padding: 5px;" width="5%">${data.dob}</td>

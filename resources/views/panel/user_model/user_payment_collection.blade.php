@@ -282,7 +282,8 @@
                 </table>
             </div>
         </div>
-        <form id="user-razorpay-form" method="POST" action="{{ route('user.razorpay.callback') }}">
+        <form id="user-razorpay-form" method="POST" action="{{ route('user.razorpay.callback') }}"
+            style="display: none;">
             @csrf
             <input type="text" name="user_razorpay_order_id" id="user_razorpay_order_id">
             <input type="text" name="user_razorpay_payment_id" id="user_razorpay_payment_id">

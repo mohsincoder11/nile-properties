@@ -35,7 +35,7 @@
                     $emi->ifsc ?? '' }}</td>
                 <td>{{ $emi->remark ?? '' }}</td>
                 <td>
-                    @if($isPreviousPaid && $emi->status == 'Pending')
+                    @if($isPreviousPaid && $emi->status == 'pending')
 
                     <button data-toggle="modal" data-target="#storeInstallmentModal"
                         style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"

@@ -183,7 +183,7 @@ class ApiController extends Controller
 
     public function get_client()
     {
-        $client = Client::all();
+        $client = CustomerRegistrationMaster::all();
         return response()->json([
             'status' => true,
             'data' => $client,
@@ -211,7 +211,7 @@ class ApiController extends Controller
         //  $marriage_datei = Carbon::createFromFormat('d-m-Y', $request->marriage_date)->format('Y-m-d');
 
         // Create a new Client instance and save the data
-        $client = new Client;
+        $client = new CustomerRegistrationMaster;
         $client->name = $request->name;
         $client->email = $request->email;
         $client->contact = $request->contact;

@@ -34,6 +34,25 @@ class AppServiceProvider extends ServiceProvider
                 }
             };
         });
+
+        $this->app->singleton('agentProfile', function () {
+            return function($level) {
+                $profiles = [
+                    '1' => 'Assistant Sales Executive',
+                    '2' => 'Sales Executive',
+                    '3' => 'Senior Sales Executive',
+                    '4' => 'Sales Representative',
+                    '5' => 'Assistant Sale Representative',
+                    '6' => 'Senior Sale Representative',
+                    '7' => 'Assistant Manager',
+                    '8' => 'Manager',
+                    '9' => 'Senior Manager',
+                    '10' => 'Director',
+                    '11' => 'King'
+                ];
+                return $profiles[$level] ?? '';
+            };
+        });
         //
     }
 

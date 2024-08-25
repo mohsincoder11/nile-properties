@@ -273,7 +273,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($inquery as $index => $enquiry)
+                        @foreach($clientDetails as $index => $enquiry)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $enquiry->firm->name ?? 'N/A' }}</td>

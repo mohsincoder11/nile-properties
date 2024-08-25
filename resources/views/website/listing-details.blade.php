@@ -115,6 +115,12 @@
                                 data-id="{{ $plot->id }}">
                                 {{ $plot->area_sqrft }} <br> Sq. Ft. <br>
                             </button>
+                            <div class="text-center">
+                                <a href="{{ route('user_model.dashboard') }}" class="btn btn-link" style="color: blue;">
+                                    <u>Book Plot</u>
+                                </a>
+
+                            </div>
                         </div>
                         @endforeach
 
