@@ -513,9 +513,12 @@
                                             id="nominee-relation">
                                             <option value="">Select Option</option>
                                             <option>Father</option>
-                                            <option>Wife</option>
                                             <option>Mother</option>
                                             <option>Son</option>
+
+                                            <option>Husband</option>
+                                            <option>Wife</option>
+
                                         </select>
                                     </td>
                                     <td style="padding: 2px;" width="2%">

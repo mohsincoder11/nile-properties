@@ -60,6 +60,7 @@
                     <tr>
                         <th>Sr. No.</th>
                         <th>Project Name</th>
+                        <th>Plot No</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Mobile Number</th>
@@ -84,6 +85,7 @@
 
                             {{$enquiries->project_id}}
                         </td>
+                        <td>{{$enquiries->plot_id}}</td>
                         <td>{{$enquiries->name}}</td>
                         <td>{{$enquiries->email}}</td>
                         <td>{{$enquiries->contact}}</td>

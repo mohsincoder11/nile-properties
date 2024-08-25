@@ -185,7 +185,7 @@
                             <th>Sr. No.</th>
                             <th>Document Name</th>
                             <th>Language</th>
-                            <th>Description</th>
+                            {{-- <th>Description</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -195,9 +195,10 @@
                             <td>{{ $loop->index + 1 }}</td>
                             <td>{{ $agreement->document_name ?? '' }}</td>
                             <td>{{ $agreement->language ?? '' }}</td>
-                            <td>{!! \Illuminate\Support\Str::limit(($agreement->description ?? ''), 5) !!}
-                                {{--
-                            <td>{!! $agreement->description ?? '' !!}</td> --}}
+                            {{-- <td>{!! \Illuminate\Support\Str::limit(($agreement->description ?? ''), 5) !!} --}}
+
+                            <td data-id="{{ $agreement->id ?? '' }}" style="display:none;">{!! $agreement->description
+                                ?? '' !!}</td>
                             </td>
                             <td>
                                 <div style="display: flex;">
@@ -224,6 +225,15 @@
                                             type="button" class="btn btn-info delete-btn" data-toggle="tooltip"
                                             data-placement="top" title="Delete">
                                             <i class="fa fa-trash-o" style="margin-left: 5px;"></i>
+                                        </button>
+                                    </div>
+                                    <div style="margin-left:5px;">
+                                        <button data-id="{{ $agreement->id ?? '' }}"
+                                            style="background-color: #3b28a7; border: none; max-height: 25px; margin-top: -5px; margin-bottom: -5px;"
+                                            type="button" class="btn btn-info print-btn" data-toggle="tooltip"
+                                            data-placement="top" title="Print"
+                                            onclick="printAgreement({{ $agreement->id }})">
+                                            <i class="fa fa-print" style="margin-left: 5px;"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -288,7 +298,25 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function printAgreement(agreementId) {
+    // Get the content of the specific <td>
+    var content = document.querySelector('td[data-id="' + agreementId + '"]').innerHTML;
 
+    // Open a new window and write the content
+    var printWindow = window.open('', '', 'height=600,width=800');
+    {{--  printWindow.document.write('<html><head><title>Agreement Details</title>');  --}}
+    printWindow.document.write('<style>body { font-family: Arial, sans-serif; margin: 20px; }</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<h2>Agreement Details</h2>');
+    printWindow.document.write(content);
+    printWindow.document.write('</body></html>');
+
+    // Close the document and trigger the print dialog
+    printWindow.document.close();
+    printWindow.print();
+}
+</script>
 
 <script>
     $(document).on('click', '.view-details-btn', function() {

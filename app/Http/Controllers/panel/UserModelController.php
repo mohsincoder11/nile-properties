@@ -359,6 +359,7 @@ class UserModelController extends Controller
         $initialEnquiry->is_plot_booked_by_user_model = 1;
 
         $initialEnquiry->firm_id = $request->firm_id;
+$initialEnquiry->client_id = auth()->id();
 
         $initialEnquiry->measurement = $request->Measurement;
         $initialEnquiry->square_meter = $request->square_meter;
@@ -373,10 +374,10 @@ class UserModelController extends Controller
         $initialEnquiry->balance_amount = $request->balence_amount;
         $initialEnquiry->tenure = $request->tenure;
         $initialEnquiry->emi_amount = $request->emi_ammount;
-        $initialEnquiry->booking_date = Carbon::createFromFormat('d/m/Y', $request->booking_date)->toDateString();
-        $initialEnquiry->agreement_date = Carbon::createFromFormat('d/m/Y', $request->aggriment_date)->toDateString();
+        $initialEnquiry->booking_date =  $request->booking_date;
+        $initialEnquiry->agreement_date =  $request->aggriment_date;
         $initialEnquiry->status_token = $request->staus_token;
-        $initialEnquiry->emi_start_date = Carbon::createFromFormat('d/m/Y', $request->emi_start_date)->toDateString();
+        $initialEnquiry->emi_start_date =  $request->emi_start_date;
         $initialEnquiry->plot_sale_status = $request->plot_sale_status;
         $initialEnquiry->a_rate = $request->a_rate;
         $initialEnquiry->source_type = $request->source_type;
@@ -405,7 +406,7 @@ class UserModelController extends Controller
             'firm_id' => null,
             'project_id' => null,
             'client_id' => null,
-            'status' => null,
+            'status' => 'unpaid',
             'initial_enquiry_id' => $initialEnquiry->id,
         ]);
 
@@ -419,7 +420,7 @@ class UserModelController extends Controller
             'plot_id' => null,
             'firm_id' => null,
             'project_id' => null,
-            'status' => null,
+            'status' => 'unpaid',
             'initial_enquiry_id' => $initialEnquiry->id,
         ]);
 
@@ -444,7 +445,7 @@ class UserModelController extends Controller
         }
 
         // Generate EMI Payments
-        $emiStartDate = Carbon::createFromFormat('d/m/Y', $request->emi_start_date);
+        $emiStartDate =$request->emi_start_date;
         for ($i = 0; $i < $request->tenure; $i++) {
             $emiPayment = new EmiPaymentCollection();
             $emiPayment->initial_enquiry_id = $initialEnquiry->id;
@@ -694,9 +695,9 @@ class UserModelController extends Controller
                     'pin_code' => $request->pin_code[$index],
                     'address' => $request->address[$index],
                     'age' => $request->age[$index],
-                    'dob' => Carbon::createFromFormat('d/m/Y', $request->dob[$index])->toDateString(),
+                    'dob' =>$request->dob[$index],
                     'marital_status' => $request->marital_status[$index],
-                    'marriage_date' => $request->marriage_date[$index] ? Carbon::createFromFormat('d/m/Y', $request->marriage_date[$index])->toDateString() : null,
+                    'marriage_date' => $request->marriage_date[$index],
                     'branch_id' => $request->branch_id[$index],
                     'aadhar' => $aadharImages,
                     'aadhar_no' => $request->aadhar_no[$index],
@@ -775,6 +776,9 @@ class UserModelController extends Controller
 
     public function userinitiatesaledelete($id)
     {
+
+
+
         // Find the initial enquiry by its ID
         $initialEnquiry = InitialEnquiry::find($id);
 
@@ -797,21 +801,48 @@ class UserModelController extends Controller
     }
     public function usernewsale()
     {
-
+         $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
-        $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-        return view('panel.user_model.user_new_sale', compact('nominee', 'client', 'inquery'));
+
+
+    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+
+    if ($customerRegistration) {
+        $clientId = $customerRegistration->user_id;
+
+
+         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+
+    } else {
+        $clientDetails = collect();
+    }
+
+        return view('panel.user_model.user_new_sale', compact('nominee', 'client', 'clientDetails'));
     }
 
 
     public function userregistration()
     {
 
+       $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
-        $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-        return view('panel.user_model.user_registration', compact('nominee', 'client', 'inquery'));
+
+
+    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+
+    if ($customerRegistration) {
+        $clientId = $customerRegistration->user_id;
+
+
+         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+
+    } else {
+        $clientDetails = collect();
+    }
+
+        return view('panel.user_model.user_registration', compact('nominee', 'client', 'clientDetails'));
     }
     public function useraccount()
     {
@@ -822,35 +853,86 @@ class UserModelController extends Controller
     public function userlegalclearance()
     {
 
+      $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
-        $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-        return view('panel.user_model.user_legal_clearance', compact('nominee', 'client', 'inquery'));
+
+
+    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+
+    if ($customerRegistration) {
+        $clientId = $customerRegistration->user_id;
+
+
+         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+
+    } else {
+        $clientDetails = collect();
+    }
+        return view('panel.user_model.user_legal_clearance', compact('nominee', 'client', 'clientDetails'));
 
     }
     public function userregistrationcompleted()
     {
+        $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
-        $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-        return view('panel.user_model.user_registration_completed', compact('nominee', 'client', 'inquery'));
+
+
+    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+
+    if ($customerRegistration) {
+        $clientId = $customerRegistration->user_id;
+
+
+         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+
+    } else {
+        $clientDetails = collect();
+    }
+        return view('panel.user_model.user_registration_completed', compact('nominee', 'client', 'clientDetails'));
 
     }
 
     public function usersaledeedscan()
     {
+        $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
-        $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-        return view('panel.user_model.user_saledeed_scan', compact('nominee', 'client', 'inquery'));
+
+
+    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+
+    if ($customerRegistration) {
+        $clientId = $customerRegistration->user_id;
+
+
+         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+
+    } else {
+        $clientDetails = collect();
+    }
+        return view('panel.user_model.user_saledeed_scan', compact('nominee', 'client', 'clientDetails'));
 
     }
     public function userhandover()
-    {
+    { $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
-        $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-        return view('panel.user_model.user_handover', compact('nominee', 'client', 'inquery'));
+
+
+    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+
+    if ($customerRegistration) {
+        $clientId = $customerRegistration->user_id;
+
+
+         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+
+    } else {
+        $clientDetails = collect();
+    }
+        return view('panel.user_model.user_handover', compact('nominee', 'client', 'clientDetails'));
 
     }
 
@@ -928,6 +1010,18 @@ class UserModelController extends Controller
             // Record not found, handle as payment failure
             return response()->json(['success' => false, 'message' => 'Payment failed: Order not found.']);
         }
+    }
+ private function handleFileUploads($files, $directory)
+    {
+        $image_name_array = [];
+        foreach ($files as $key => $image) {
+            $extension = explode('/', mime_content_type($image))[1];
+            $data = base64_decode(substr($image, strpos($image, ',') + 1));
+            $imgname = 'e' . rand(000, 999) . $key . time() . '.' . $extension;
+            file_put_contents(public_path($directory) . '/' . $imgname, $data);
+            $image_name_array[] = $imgname;
+        }
+        return implode(',', $image_name_array);
     }
 
 }

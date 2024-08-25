@@ -149,9 +149,9 @@
                     <h5 class="panel-title"
                         style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
                         align="center">
-                        <i class="fa fa-user"></i> &nbsp;Select Existing Customer Or New Customer
+                        <i class="fa fa-user"></i> &nbsp; New Customer
                     </h5>
-
+                    {{--
                     <div class="row">
                         <div class="col-md-12" style="margin-top: 2vh;">
 
@@ -160,7 +160,7 @@
                                 <label class="control-label" style="margin-left: 5px;">Select
                                     Existing
                                     Customer<font color="#000099">
-                                    </font></label>
+                                    </font></label> --}}
                                 {{-- <select id="client-select" class="form-control select" data-live-search="true">
                                     <option value="">Select a client</option>
                                     @foreach($enquiries as $enquiry)
@@ -173,7 +173,7 @@
                                     </option>
                                     @endforeach
                                 </select> --}}
-                                <select id="client-select" class="form-control select" data-live-search="true">
+                                {{-- <select id="client-select" class="form-control select" data-live-search="true">
                                     <option value="">Select a client</option>
                                     @foreach($clients as $client)
                                     <option value="{{ $client->id ?? ''}}" data-client-name="{{ $client->name ?? ''}}"
@@ -212,12 +212,12 @@
                             <div class="col-md-2"></div>
                         </div>
 
-                    </div>
-                    <div class="col-md-12" style="margin-top: 3vh;">
+                    </div> --}}
+                    {{-- <div class="col-md-12" style="margin-top: 3vh;">
                         <label class="control-label" style="text-align: center; display: block;">
                             Fill New Customer Details<font color="#000099"></font>
                         </label>
-                    </div>
+                    </div> --}}
                     <div class="row">
                         <div class="col-md-12" style="margin-top: 2vh;">
                             <table width="100%">
@@ -570,8 +570,8 @@
                                     <th width="1%">Square Ft</th>
                                     <th width="1%">Rate(per Sq Ft)</th>
                                     <th width="1%">Total Cost</th>
-                                    <th width="1%">Discount Amount</th>
-                                    <th width="1%">Discount Type</th>
+                                    {{-- <th width="1%">Discount Amount</th>
+                                    <th width="1%">Discount Type</th> --}}
                                 </tr>
 
 
@@ -625,7 +625,7 @@
                                             <font id="total_cost_display" id="total_cost" color="#ff0000"></font>
                                         </label>
                                     </td>
-                                    <td style="padding: 2px;" width="1%">
+                                    <td style="padding: 2px;" width="1%" style="display:none;">
                                         <input type="text" class="form-control" name="discount_amount" placeholder=""
                                             oninput="calculateAmounts()" required />
                                     </td>
@@ -1329,43 +1329,18 @@ let totalCost = squareFt * rate;
 document.getElementById('total_cost_display').textContent = totalCost.toFixed(2);
 document.getElementById('total_cost_input').value = totalCost.toFixed(2);
 
-// Get the discount amount and type
-let discountAmount = parseFloat(document.getElementsByName('discount_amount')[0].value) || 0;
-let discountType = document.getElementById('discount_type').value;
-
-// Calculate the final amount after applying the discount
-let finalAmount = totalCost;
-
-if (discountType === '%') {
-finalAmount -= totalCost * (discountAmount / 100);
-} else if (discountType === '₹') {
-finalAmount -= discountAmount;
-}
-
-// Ensure the final amount doesn't go negative
-finalAmount = Math.max(finalAmount, 0);
-
-// Update the final amount input box
-document.getElementById('final_amount').value = finalAmount.toFixed(2);
-
 // Get the down payment
 let downPayment = parseFloat(document.getElementsByName('down_payment')[0].value) || 0;
 
 // Calculate the balance amount
-let balanceAmount = finalAmount - downPayment;
+let balanceAmount = totalCost - downPayment;
 balanceAmount = Math.max(balanceAmount, 0);
 
 // Update the balance amount display and hidden input
 document.getElementById('balence_amount_display').textContent = balanceAmount.toFixed(2);
 document.getElementById('balence_amount_input').value = balanceAmount.toFixed(2);
 
-// // Get the tenure in days and calculate EMI
-// let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
-// let tenureMonths = Math.ceil(tenureDays / 30); // Convert days to months
-
-// // Calculate EMI amount
-// let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
-
+// Get the tenure in days and calculate EMI
 let tenureMonths = parseInt(document.getElementsByName('tenure')[0].value) || 0;
 
 // Calculate EMI amount

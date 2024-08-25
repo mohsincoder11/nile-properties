@@ -216,7 +216,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($inquery as $key => $inquiry)
+
+
+                        @foreach ($clientDetails as $key => $inquiry)
                         <tr>
                             <td>{{ $loop->index + 1 }}</td>
                             <td>

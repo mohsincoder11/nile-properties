@@ -257,9 +257,10 @@
                     </ul>
                 </li>
 
-                {{-- <li class="xn-icon-button pull-right">
-                    <a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
-                </li> --}}
+                <li class="xn-icon-button pull-right">
+                    <a href="{{ route('logout') }}" class="mb-control" data-box="#mb-signout"><span
+                            class="fa fa-sign-out"></span></a>
+                </li>
                 <!-- MESSAGES -->
                 <li class="xn-icon-button pull-right"
                     style="margin-right:25px; min-width:100px; color:#FFFFFF; padding-top:20px;">
@@ -387,7 +388,7 @@
                             </div>
                             <div class="mb-footer">
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-success btn-lg">Yes</a>
+                                    <a href="{{ route('logout') }}" class="btn btn-success btn-lg">Yes</a>
                                     <button class="btn btn-default btn-lg mb-control-close">No</button>
                                 </div>
                             </div>

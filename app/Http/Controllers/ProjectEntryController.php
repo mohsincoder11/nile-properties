@@ -29,53 +29,51 @@ class ProjectEntryController extends Controller
 {
 
 
-    public function bulkploatappendatrow(Request $request)
-    {
-        try {
-            // Decode base64 data to binary
-            $base64Data = $request->input('fileData');
-            $binaryData = base64_decode(preg_replace('#^data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#i', '', $base64Data));
+   public function bulkploatappendatrow(Request $request)
+{
+    try {
+        // Decode base64 data to binary
+        $base64Data = $request->input('fileData');
+        $binaryData = base64_decode(preg_replace('#^data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#i', '', $base64Data));
 
-            // Define the file name
-            $fileName = 'imported_file.xlsx';
+        // Define the file name
+        $fileName = 'imported_file.xlsx';
 
-            // Save binary data as a file in the public path
-            Storage::disk('public')->put('temp/' . $fileName, $binaryData);
+        // Save binary data as a file in the public path
+        Storage::disk('public')->put('temp/' . $fileName, $binaryData);
 
-            // Read data from the file
-            $data = Excel::toArray([], Storage::disk('public')->path('temp/' . $fileName));
-            $rows = array_slice($data[0], 1);
-            // dd($rows);
+        // Read data from the file
+        $data = Excel::toArray([], Storage::disk('public')->path('temp/' . $fileName));
+        $rows = array_slice($data[0], 1);
 
-            $response = [];
-            foreach ($rows as $index => $row) {
-                // Process your data here
-                if ($row[0] !== null && $row[1] !== null && $row[2] !== null) {
-                    $response[] = [
-                        'plot_no' => $row[0],
-                        'plot_width' => $row[1],
-                        'plot_length' => $row[2],
-                        'area_sqrft' => $row[3],
-                        'area_sqrmt' => $row[4],
-                        'east' => $row[5],
-                        'west' => $row[6],
-                        'south' => $row[7],
-                        'north' => $row[8],
-                        'rate' => $row[9],
-                        'amount' => $row[10],
-
-                    ];
-                }
+        $response = [];
+        foreach ($rows as $index => $row) {
+            // Process your data here
+            if (isset($row[0], $row[1], $row[2])) {
+                $response[] = [
+                    'plot_no' => $row[0],
+                    'plot_width' => $row[1],
+                    'plot_length' => $row[2],
+                    'area_sqrft' => $row[3] ?? null,
+                    'area_sqrmt' => $row[4] ?? null,
+                    'east' => $row[5] ?? null,
+                    'west' => $row[6] ?? null,
+                    'south' => $row[7] ?? null,
+                    'north' => $row[8] ?? null,
+                    'rate' => $row[9] ?? null,
+                    'amount' => $row[10] ?? null,
+                ];
             }
-
-            // Remove the file
-            Storage::disk('public')->delete('temp/' . $fileName);
-
-            return response()->json(['success' => true, 'data' => $response]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Error importing data. ' . $e->getMessage()]);
         }
+
+        // Remove the file
+        Storage::disk('public')->delete('temp/' . $fileName);
+
+        return response()->json(['success' => true, 'data' => $response]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Error importing data. ' . $e->getMessage()]);
     }
+}
 
 
 

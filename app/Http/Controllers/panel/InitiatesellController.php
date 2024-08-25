@@ -38,8 +38,13 @@ class InitiatesellController extends Controller
         $projects = ProjectEntry::all();
         $statuses = PlotSaleStatus::all();
         $employees = EmployeeRegistrationMaster::all();
-        $agent = AgentRegistrationMaster::whereIn('profile', [get_agent_profile(1), get_agent_profile(2), get_agent_profile(3)])
-            ->get();
+ $profiles = [
+            app('agentProfile')(1),
+            app('agentProfile')(2),
+            app('agentProfile')(3),
+        ];
+
+        $agent = AgentRegistrationMaster::whereIn('profile', $profiles)->get();
         $clients = CustomerRegistrationMaster::all();
         $occupation = Occupation::all();
         $branch = BranchMaster::all();
@@ -522,10 +527,10 @@ class InitiatesellController extends Controller
             'balance_amount' => $request->balance_amount,
             'tenure' => $request->tenure,
             'emi_amount' => $request->emi_ammount,
-            'booking_date' => Carbon::createFromFormat('d/m/Y', $request->booking_date)->toDateString(),
-            'agreement_date' => Carbon::createFromFormat('d/m/Y', $request->aggriment_date)->toDateString(),
+            'booking_date' =>  $request->booking_date,
+            'agreement_date' =>  $request->aggriment_date,
             'status_token' => $request->status_token,
-            'emi_start_date' => Carbon::createFromFormat('d/m/Y', $request->emi_start_date)->toDateString(),
+            'emi_start_date' =>  $request->emi_start_date,
             'plot_sale_status' => $request->plot_sale_status,
             'a_rate' => $request->a_rate,
             'source_type' => $request->source_type,
@@ -602,9 +607,9 @@ class InitiatesellController extends Controller
                     'pin_code' => $request->pin_code[$index],
                     'address' => $request->address[$index],
                     'age' => $request->age[$index],
-                    'dob' => Carbon::createFromFormat('d/m/Y', $request->dob[$index])->toDateString(),
+                    'dob' =>$request->dob[$index] ?  $request->dob[$index] : null,
                     'marital_status' => $request->marital_status[$index],
-                    'marriage_date' => $request->marriage_date[$index] ? Carbon::createFromFormat('d/m/Y', $request->marriage_date[$index])->toDateString() : null,
+                    'marriage_date' => $request->marriage_date[$index] ?  $request->marriage_date[$index] : null,
                     'branch_id' => $request->branch_id[$index],
                     'aadhar' => $aadharImages,
                     'aadhar_no' => $request->aadhar_no[$index],

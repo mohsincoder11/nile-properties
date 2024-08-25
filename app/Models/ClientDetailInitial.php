@@ -15,6 +15,10 @@ class ClientDetailInitial extends Model
     {
         return $this->belongsTo(InitialEnquiry::class);
     }
+   public function initialEnquiryUserMany()
+    {
+        return $this->hasMany(InitialEnquiry::class, 'id', 'initial_enquiry_id');
+    }
 
     public function agent()
     {

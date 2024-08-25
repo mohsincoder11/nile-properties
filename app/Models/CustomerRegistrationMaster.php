@@ -29,7 +29,9 @@ class CustomerRegistrationMaster extends Model
         'pan',
         'pan_no',
         'marital_status',
+        'user_id',
     ];
+
 
     public function occupation_name()
     {

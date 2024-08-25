@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\panel;
 
-use App\Models\Client;
+use App\Models\CustomerRegistrationMaster;
 use App\Models\Master;
 use App\Models\Enquiry;
 use App\Models\Occupation;
@@ -29,7 +29,7 @@ class EnquiryController extends Controller
         $status = PlotSaleStatus::all();
         $project = ProjectEntry::all();
         $plot = ProjectEntryAppendData::all();
-        $client = Client::all();
+        $client = CustomerRegistrationMaster::all();
         $enquiry = Enquiry::get();
         $allPlots = ProjectEntryAppendData::all(['id', 'plot_no']);
         $occupations = Occupation::all();
@@ -53,18 +53,18 @@ class EnquiryController extends Controller
     {
         // dd($request->all());
 
-        $enquiry = new Client;
+        $enquiry = new CustomerRegistrationMaster;
         $enquiry->name = $request->name;
         $enquiry->email = $request->email;
         $enquiry->contact = $request->contact;
         $enquiry->occupation_id = $request->occupation_id;
         $enquiry->city = $request->city;
         $enquiry->address = $request->address;
-        $enquiry->pincode = $request->pincode;
+        $enquiry->pin_code = $request->pincode;
         $enquiry->dob = $request->dob;
         $enquiry->age = $request->age;
         $enquiry->marriage_date = $request->marriage_date;
-        $enquiry->branch = $request->branch;
+        $enquiry->branch_id = $request->branch;
         $enquiry->save();
         return redirect()->route('enquiry')->with('success', 'Client Added successfully.');
 
@@ -185,7 +185,7 @@ class EnquiryController extends Controller
     // to show client info after selecting client
     public function getClientDetails($clientId)
     {
-        $client = Client::find($clientId);
+    $client = CustomerRegistrationMaster::find($clientId);
 
         return response()->json($client);
     }

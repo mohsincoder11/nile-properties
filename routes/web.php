@@ -45,6 +45,44 @@ use App\Models\CommissionPlan;
 */
 
 
+
+
+// website routes
+
+
+    //Register
+    Route::post('store-registration', [RegistrationController::class, 'storeRegistration'])->name('storeRegistration');
+    Route::post('/login', [RegistrationController::class, 'login'])->name('login');
+    //to send otp for forget password
+    Route::post('send-mobile-verify-otp', [RegistrationController::class, 'send_mobile_verify_otp'])->name('send_otp');
+
+    Route::post('/check_mobile_existence', [RegistrationController::class, 'checkMobileExistence'])->name('check_mobile_existence');
+
+    //to varify otp
+    Route::post('verify_otp', [RegistrationController::class, 'verify_otp'])->name('verify_otp');
+    //update password
+    Route::post('/update-password', [RegistrationController::class, 'update_password'])->name('update_password');
+    // Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
+    Route::match(['get', 'post'], '/logout', [RegistrationController::class, 'logout'])->name('logout');
+
+
+ Route::post('enquiry-form/{id}', [EnquiryFormController::class, 'enquiry_form'])->name('enquiry-form');
+ //index
+    Route::get('/index', [IndexController::class, 'index'])->name('index');
+    Route::get('listing-details/{id}', [IndexController::class, 'listing_details'])->name('listing-details');
+    Route::get('show-features/{projectId}', [IndexController::class, 'showFeatures'])->name('show-features');
+    Route::post('store-review', [IndexController::class, 'storeReview'])->name('storeReview');
+
+
+    Route::post('/fetchPlotDetailing', [IndexController::class, 'fetchPlotDetailing'])->name('fetchPlotDetailing');
+
+
+
+
+    // web.php
+    Route::get('/download-map/{id}', [IndexController::class, 'downloadMap'])->name('download.map');
+    Route::get('/download-brochure/{id}', [IndexController::class, 'downloadBrochure'])->name('download.brochure');
+    Route::get('/open-youtube/{id}', [IndexController::class, 'openYoutube'])->name('open.youtube');
 //Section A
 //demo common for logs users
 // Route::get('/test-logger', function () {
@@ -65,7 +103,8 @@ Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
 
 // DASHBOARD
 Route::post('/user_check', [DashboardController::class, 'userCheck'])->name('user_check');
-
+    // Enquiry Form
+    Route::post('enquiry-form/{id}', [EnquiryFormController::class, 'enquiry_form'])->name('enquiry-form');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
@@ -248,7 +287,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-sold-plot-details', [AccountController::class, 'get_sold_plot_details'])->name('get-sold-plot-details');
     Route::get('/get-sold-plot-other_charges', [AccountController::class, 'get_sold_plot_other_charges'])->name('get-sold-plot-other_charges');
 
-    // CRM
+    // CRMF
 
     //Enquiry
 
@@ -298,30 +337,16 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    // //section B
-// Route::get('/project-entry', [ProjectEntryController::class, 'index'])->name('project.index');
-// Route::get('/addedproject-entry', [ProjectEntryController::class, 'addedProjectEntry'])->name('project.addedProjectEntry');
-// Route::post('/project-store', [ProjectEntryController::class, 'store'])->name('project.store');
+         // //section B
+       // Route::get('/project-entry', [ProjectEntryController::class, 'index'])->name('project.index');
+      // Route::get('/addedproject-entry', [ProjectEntryController::class, 'addedProjectEntry'])->name('project.addedProjectEntry');
+       // Route::post('/project-store', [ProjectEntryController::class, 'store'])->name('project.store');
 
 
     // -----------------------------------------------------------------------------------------------------------
 
     // WEBSITE
 
-    //Register
-    Route::post('store-registration', [RegistrationController::class, 'storeRegistration'])->name('storeRegistration');
-    Route::post('/login', [RegistrationController::class, 'login'])->name('login');
-    //to send otp for forget password
-    Route::post('send-mobile-verify-otp', [RegistrationController::class, 'send_mobile_verify_otp'])->name('send_otp');
-
-    Route::post('/check_mobile_existence', [RegistrationController::class, 'checkMobileExistence'])->name('check_mobile_existence');
-
-    //to varify otp
-    Route::post('verify_otp', [RegistrationController::class, 'verify_otp'])->name('verify_otp');
-    //update password
-    Route::post('/update-password', [RegistrationController::class, 'update_password'])->name('update_password');
-    // Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
-    Route::match(['get', 'post'], '/logout', [RegistrationController::class, 'logout'])->name('logout');
 
     //follow up
 
@@ -395,22 +420,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    //index
-    Route::get('/index', [IndexController::class, 'index'])->name('index');
-    Route::get('listing-details/{id}', [IndexController::class, 'listing_details'])->name('listing-details');
-    Route::get('show-features/{projectId}', [IndexController::class, 'showFeatures'])->name('show-features');
-    Route::post('store-review', [IndexController::class, 'storeReview'])->name('storeReview');
 
-
-    // Enquiry Form
-    Route::post('enquiry-form/{id}', [EnquiryFormController::class, 'enquiry_form'])->name('enquiry-form');
-
-
-
-    // web.php
-    Route::get('/download-map/{id}', [IndexController::class, 'downloadMap'])->name('download.map');
-    Route::get('/download-brochure/{id}', [IndexController::class, 'downloadBrochure'])->name('download.brochure');
-    Route::get('/open-youtube/{id}', [IndexController::class, 'openYoutube'])->name('open.youtube');
 
 
 
@@ -441,7 +451,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/fetch-entry-level-lead-details', [LeadassignToEmployeeController::class, 'fetchentrylevelformleadStore'])->name('fetchentrylevelformleadStore');
 
 
-    Route::post('/fetchPlotDetailing', [IndexController::class, 'fetchPlotDetailing'])->name('fetchPlotDetailing');
 
 
 
