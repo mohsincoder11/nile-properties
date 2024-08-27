@@ -9,7 +9,7 @@ class CustomerRegistrationMaster extends Model
 {
     use HasFactory;
 
-    protected $table = "customer_registration_master";
+    protected $table = 'customer_registration_master';
 
     protected $fillable = [
         'title',
@@ -32,7 +32,6 @@ class CustomerRegistrationMaster extends Model
         'user_id',
     ];
 
-
     public function occupation_name()
     {
         return $this->hasOne(Occupation::class, 'id', 'occupation_id');
@@ -42,7 +41,4 @@ class CustomerRegistrationMaster extends Model
     {
         return $this->hasOne(BranchMaster::class, 'id', 'branch_id');
     }
-
-
-
 }
