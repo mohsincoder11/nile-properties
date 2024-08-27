@@ -106,10 +106,10 @@
                         <td>{{ $index + 1 }}</td>
                         <td>
                             <div class="popup-container">
-                                <span class="popup-btn">{{ $enquiry->client_name->name }}</span>
+                                <span class="popup-btn">{{ $enquiry->client_name->name ?? '' }}</span>
                                 <div class="popup-content">
-                                    <p>Mobile Number: {{ $enquiry->client_name->contact }} <br>Address: {{
-                                        $enquiry->client_name->address }}<br>
+                                    <p>Mobile Number: {{ $enquiry->client_name->contact ?? ''}} <br>Address: {{
+                                        $enquiry->client_name->address ?? ''}}<br>
                                     </p>
                                 </div>
                             </div>

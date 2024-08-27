@@ -63,6 +63,11 @@ class Enquiry extends Model
         return $this->hasOne(Client::class, 'id', 'client_id');
     }
 
+    public function clients_name()
+    {
+        return $this->hasOne(User::class, 'id', 'client_id');
+    }
+
 
     // public function projectEntryAppendData()
     // {

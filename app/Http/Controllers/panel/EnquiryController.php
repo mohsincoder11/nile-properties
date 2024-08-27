@@ -11,6 +11,11 @@ use App\Models\ProjectEntry;
 use Illuminate\Http\Request;
 use App\Models\PlotSaleStatus;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Mail;
+
 use App\Http\Controllers\Controller;
 use App\Models\ProjectEntryAppendData;
 use App\Models\AgentRegistrationMaster;
@@ -29,7 +34,7 @@ class EnquiryController extends Controller
         $status = PlotSaleStatus::all();
         $project = ProjectEntry::all();
         $plot = ProjectEntryAppendData::all();
-        $client = CustomerRegistrationMaster::all();
+        $client = User::where('role', 'user')->get();
         $enquiry = Enquiry::get();
         $allPlots = ProjectEntryAppendData::all(['id', 'plot_no']);
         $occupations = Occupation::all();
@@ -53,20 +58,45 @@ class EnquiryController extends Controller
     {
         // dd($request->all());
 
-        $enquiry = new CustomerRegistrationMaster;
-        $enquiry->name = $request->name;
-        $enquiry->email = $request->email;
-        $enquiry->contact = $request->contact;
-        $enquiry->occupation_id = $request->occupation_id;
-        $enquiry->city = $request->city;
-        $enquiry->address = $request->address;
-        $enquiry->pin_code = $request->pincode;
-        $enquiry->dob = $request->dob;
-        $enquiry->age = $request->age;
-        $enquiry->marriage_date = $request->marriage_date;
-        $enquiry->branch_id = $request->branch;
-        $enquiry->save();
+        // $enquiry = new CustomerRegistrationMaster;
+        // $enquiry->name = $request->name;
+        // $enquiry->email = $request->email;
+        // $enquiry->contact = $request->contact;
+        // $enquiry->occupation_id = $request->occupation_id;
+        // $enquiry->city = $request->city;
+        // $enquiry->address = $request->address;
+        // $enquiry->pin_code = $request->pincode;
+        // $enquiry->dob = $request->dob;
+        // $enquiry->age = $request->age;
+        // $enquiry->marriage_date = $request->marriage_date;
+        // $enquiry->branch_id = $request->branch;
+        // $enquiry->save();
+
+        $validateData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'contact' => 'required',
+        ]);
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->contact = $request->contact;
+        // Generate a random password
+        $password = Str::random(8); // You can adjust the length of the password as needed
+
+        // Set the user's password
+        $user->password = Hash::make($password);
+
+        $user->save();
+
+          // Send email to the user
+    Mail::send('website.welcome_email', ['validateData' => $validateData, 'password' => $password], function ($message) use ($validateData) {
+        $message->to($validateData['email'], 'user')->subject('Welcome to Nile Properties');
+        $message->from('yashdhokane890@gmail.com', 'Nile Properties');
+    });
         return redirect()->route('enquiry')->with('success', 'Client Added successfully.');
+
+
 
     }
 
@@ -185,7 +215,7 @@ class EnquiryController extends Controller
     // to show client info after selecting client
     public function getClientDetails($clientId)
     {
-    $client = CustomerRegistrationMaster::find($clientId);
+    $client = User::find($clientId);
 
         return response()->json($client);
     }
@@ -238,9 +268,9 @@ class EnquiryController extends Controller
             ->get()
             ->map(function ($enquiry) {
                 return [
-                    'client_name' => $enquiry->client_name->name,
+                    'client_name' => $enquiry->clients_name->name,
                     'plot_no' => $enquiry->plot_no,
-                    'contact' => $enquiry->client_name->contact,
+                    'contact' => $enquiry->clients_name->contact,
                     'date' => $enquiry->created_at->format('d-m-Y'),
                 ];
             });

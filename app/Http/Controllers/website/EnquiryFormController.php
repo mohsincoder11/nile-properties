@@ -4,7 +4,7 @@ namespace App\Http\Controllers\website;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\EnquiryForm;
+use App\Models\{EnquiryForm, CustomerRegistrationMaster};
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
