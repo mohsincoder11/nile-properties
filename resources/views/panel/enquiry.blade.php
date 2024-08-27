@@ -432,6 +432,19 @@
                         <form action="{{route('client_store')}}" method="post">
                             @csrf
                             <div class="col-md-3">
+                                <label class="control-label">Title<font color="#FF0000">*</font></label>
+                                <select class="form-control select" data-live-search="true" name="title">
+                                    <option {{ old('title')=='Mr.' ? 'selected' : '' }}>Mr.</option>
+                                    <option {{ old('title')=='Mrs.' ? 'selected' : '' }}>Mrs.</option>
+                                    <option {{ old('title')=='Ku.' ? 'selected' : '' }}>Ku.</option>
+                                    <option {{ old('title')=='Shri.' ? 'selected' : '' }}>Shri.</option>
+                                    <option {{ old('title')=='Miss' ? 'selected' : '' }}>Miss</option>
+                                    <option {{ old('title')=='Mast.' ? 'selected' : '' }}>Mast.</option>
+                                    <option {{ old('title')=='Smt.' ? 'selected' : '' }}>Smt.</option>
+
+                                </select>
+                            </div>
+                            <div class="col-md-3">
                                 <label class="control-label">Name<font color="#FF0000">*</font></label>
                                 <input type="text" class="form-control" name="name" placeholder="" />
                             </div>
@@ -462,7 +475,7 @@
                             </div>
                             <div class="col-md-3" style="margin-top: 5px;">
                                 <label class="control-label">Pincode<font color="#FF0000">*</font></label>
-                                <input type="number" class="form-control" name="pincode" placeholder="" />
+                                <input type="number" class="form-control" name="pin_code" placeholder="" />
                             </div>
                             <div class="col-md-3" style="margin-top: 5px;">
                                 <label class="control-label">DOB<font color="#FF0000">*</font></label>
@@ -473,18 +486,59 @@
                                 <input type="number" class="form-control" name="age" placeholder="" />
                             </div>
                             <div class="col-md-3" style="margin-top: 5px;">
+                                <label class="control-label">Marital Status<font color="#FF0000">*</font></label>
+                                <select id="marital_status" name="marital_status" class="form-control"
+                                    onchange="toggleMarriageDate()">
+                                    <option value="single">Single</option>
+                                    <option value="married">Married</option>
+                                    <option value="divorced">Divorced</option>
+                                    <option value="widowed">Widowed</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3" style="margin-top: 5px;">
                                 <label class="control-label">Marriage Date<font color="#FF0000">*</font></label>
-                                <input type="date" class="form-control" name="marriage_date" placeholder="" />
+                                <input type="date" id="marriage_date" class="form-control" name="marriage_date"
+                                    placeholder="" />
                             </div>
                             <div class="col-md-3" style="margin-top: 5px;">
                                 <label class="control-label">Branch<font color="#FF0000">*</font></label>
-                                <input type="text" class="form-control" name="branch" placeholder="" />
+                                <select style="width:100%;" class="form-control select" data-live-search="true"
+                                    name="branch_id">
+                                    <option value="">--Select--</option>
+                                    @foreach ($branch as $branch_name)
+                                    <option value="{{$branch_name->id}}" {{ old('branch_id')==$branch_name->id ?
+                                        'selected'
+                                        : ''
+                                        }}>{{$branch_name->branch}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-3" style="margin-top: 5px;">
+                                <label class="control-label">AADHAR<font color="#FF0000">*</font></label>
+                                <input type="file" class="form-control" name="aadhar" value="{{ old('aadhar') }}"
+                                    required />
+                            </div>
+                            <div class="col-md-3" style="margin-top: 5px;">
+                                <label class="control-label">AADHAR No<font color="#FF0000">*</font></label>
+                                <input type="text" class="form-control" name="aadhar_no" value="{{ old('aadhar_no') }}"
+                                    required />
+                            </div>
+                            <div class="col-md-3" style="margin-top: 5px;">
+                                <label class="control-label">PAN<font color="#FF0000">*</font></label>
+                                <input type="file" class="form-control" name="pan" value="{{ old('pan') }}" required />
+                            </div>
+                            <div class="col-md-3" style="margin-top: 5px;">
+                                <label class="control-label">PAN No<font color="#FF0000">*</font></label>
+                                <input type="text" class="form-control" name="pan_no" value="{{ old('pan_no') }}"
+                                    required />
                             </div>
                             <div class="col-md-2" style="margin-top:4vh;">
                                 <button id="on" type="submit" class="btn mjks"
-                                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"> <i
-                                        class="fa fa-file"></i>SUBMIT</button>
-
+                                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;">
+                                    <i class="fa fa-file"></i> SUBMIT
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -918,14 +972,13 @@ $("#selectProject").on('change', function() {
         <tr>
             <td style="padding: 5px;" width="5%">${data.name}</td>
             {{--  <td style="padding: 5px;" width="5%">${data.occupation_name->occupation}</td>  --}}
-            <td style="padding: 5px;" width="5%">${data.contact}</td>
-            <td style="padding: 5px;" width="5%">${data.email}</td>
-            <td style="padding: 5px;" width="5%">${data.dob}</td>
-            <td style="padding: 5px;" width="2%">${data.age} </td>
-            <td style="padding: 5px;" width="5%">${data.city}</td>
-            <td style="padding: 5px;" width="15%">${data.address}${data.pincode}</td>
-
-            <td style="padding: 5px;" width="5%">${data.marriage_date}</td>
+          <td style="padding: 5px;" width="5%">${data.contact ? data.contact : '-'}</td>
+        <td style="padding: 5px;" width="5%">${data.email ? data.email : '-'}</td>
+        <td style="padding: 5px;" width="5%">${data.dob ? data.dob : '-'}</td>
+        <td style="padding: 5px;" width="2%">${data.age ? data.age : '-'}</td>
+        <td style="padding: 5px;" width="5%">${data.city ? data.city : '-'}</td>
+        <td style="padding: 5px;" width="15%">${data.address ? data.address : '-'} ${data.pin_code ? data.pin_code : '-'}</td>
+        <td style="padding: 5px;" width="5%">${data.marriage_date ? data.marriage_date : '-'}</td>
 
         </tr>
     </table>
