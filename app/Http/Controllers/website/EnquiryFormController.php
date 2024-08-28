@@ -4,7 +4,7 @@ namespace App\Http\Controllers\website;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\EnquiryForm;
+use App\Models\{EnquiryForm, CustomerRegistrationMaster};
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -50,7 +50,7 @@ class EnquiryFormController extends Controller
                 $newUser->save();
 
                 $customer = new CustomerRegistrationMaster;
-                $customer->user_id = $request->$newUser->id;
+                $customer->user_id = $newUser->id;
                 $customer->save();
 
                 // Now, you can send the password to the user's email
