@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\panel;
 
-use App\Models\Occupation;
-use App\Models\BranchMaster;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
+use App\Models\BranchMaster;
 use App\Models\CustomerRegistrationMaster;
+use App\Models\Occupation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class customerRegMasterController extends Controller
 {
@@ -23,7 +23,6 @@ class customerRegMasterController extends Controller
 
     public function cust_Store(Request $request)
     {
-
 
         $request->validate([
             // 'title' => 'required',
@@ -49,17 +48,16 @@ class customerRegMasterController extends Controller
         $aadhar = null;
         if ($request->hasFile('aadhar')) {
             $file = $request->file('aadhar');
-            $aadhar = rand(0000, 8888) . time() . '.' . $file->getClientOriginalExtension();
+            $aadhar = rand(0000, 8888).time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('customer_reg/'), $aadhar);
         }
 
         $pan = null;
         if ($request->hasFile('pan')) {
             $file = $request->file('pan');
-            $pan = rand(0000, 8888) . time() . '.' . $file->getClientOriginalExtension();
+            $pan = rand(0000, 8888).time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('customer_reg/'), $pan);
         }
-
 
         $reg = new customerRegistrationMaster;
         $reg->title = $request->title;
@@ -98,12 +96,12 @@ class customerRegMasterController extends Controller
 
         if ($customer) {
             $customer->delete();
+
             return redirect(route('customerReg'))->with('success', 'Registration Deleted Successfully');
         } else {
             return redirect(route('customerReg'))->with('error', 'Registration not found');
         }
     }
-
 
     public function edit($id)
     {
@@ -111,6 +109,7 @@ class customerRegMasterController extends Controller
         $customerAll = CustomerRegistrationMaster::all();
         $occupation = Occupation::all();
         $branch = BranchMaster::all();
+
         return view('panel.customer_reg_edit', ['customerEdit' => $customerEdit, 'customerAll' => $customerAll, 'occupation' => $occupation, 'branch' => $branch]);
     }
 
@@ -125,7 +124,7 @@ class customerRegMasterController extends Controller
         $aadhar = null;
         if ($request->hasFile('aadhar')) {
             $file = $request->file('aadhar');
-            $aadhar = rand(0000, 8888) . time() . '.' . $file->getClientOriginalExtension();
+            $aadhar = rand(0000, 8888).time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('customer_reg/'), $aadhar);
         }
 
@@ -133,7 +132,7 @@ class customerRegMasterController extends Controller
         $pan = null;
         if ($request->hasFile('pan')) {
             $file = $request->file('pan');
-            $pan = rand(0000, 8888) . time() . '.' . $file->getClientOriginalExtension();
+            $pan = rand(0000, 8888).time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('customer_reg/'), $pan);
         }
 
@@ -155,8 +154,6 @@ class customerRegMasterController extends Controller
             'aadhar_no' => $request->aadhar_no,
             'pan_no' => $request->pan_no,
             'marital_status' => $request->marital_status,
-
-
 
         ]);
 
