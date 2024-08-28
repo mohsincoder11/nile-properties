@@ -106,7 +106,7 @@
                         <div style="margin-top: 20px"></div>
 
 
-
+{{--
                         @foreach ($plots as $plot)
                         <div class="col-md-2 plot-button-container mb-3"
                             style="margin-bottom: 20px; margin-left: 10px; margin-right: 10px;">
@@ -122,7 +122,37 @@
 
                             </div>
                         </div>
-                        @endforeach
+                        @endforeach --}}
+
+                        @foreach ($plots as $plot)
+                        @php
+                            $enquiry = $plot->enquiries;
+                            $backgroundColor = 'green'; // Default color
+
+                            // Check the conditions to set the background color
+                            if ($enquiry && $enquiry->is_handover_completed == 1) {
+                                $backgroundColor = 'red';
+                            } elseif ($enquiry && $enquiry->is_request_registration_completed == 1) {
+                                $backgroundColor = 'orange';
+                            }
+                        @endphp
+
+                        <div class="col-md-2 plot-button-container mb-3"
+                            style="margin-bottom: 20px; margin-left: 10px; margin-right: 10px;">
+                            <button type="button" class="btn mjks plot-button"
+                                style="color:#ffffff; height:50px; width:100px; font-weight: bold; background-color: {{ $backgroundColor }};"
+                                data-id="{{ $plot->id }}">
+                                {{ $plot->area_sqrft }} <br> Sq. Ft. <br>
+                            </button>
+                            <div class="text-center">
+                                <a href="{{ route('user_model.dashboard') }}" class="btn btn-link" style="color: blue;">
+                                    <u>Book Plot</u>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+
+
 
                     </div>
                 </div>

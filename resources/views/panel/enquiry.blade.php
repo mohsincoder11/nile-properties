@@ -249,9 +249,9 @@
                             <select class="form-control" name="plot_no" id="selectPlot">
                                 <option value="">--Select--</option>
 
-                                @foreach ($plot as $plot_name)
+                                {{-- @foreach ($plot as $plot_name)
                                 <option value="{{$plot_name->plot_no}}">{{$plot_name->plot_no}}</option>
-                                @endforeach
+                                @endforeach --}}
 
                             </select>
                         </td>
@@ -784,6 +784,8 @@ console.error(error);
 
     // Handle status dropdown change event
     $('#selectProject').change(function () {
+        var projectId = $(this).val();
+
         var statusId = $(this).val();
 
         // Make an AJAX request to fetch projects based on the selected status

@@ -50,7 +50,7 @@ class EnquiryFormController extends Controller
                 $newUser->save();
 
                 $customer = new CustomerRegistrationMaster;
-                $customer->user_id = $request->$newUser->id;
+                $customer->user_id = $newUser->id;
                 $customer->save();
 
                 // Now, you can send the password to the user's email
