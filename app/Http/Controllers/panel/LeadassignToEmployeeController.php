@@ -48,6 +48,8 @@ class LeadassignToEmployeeController extends Controller
                 'erm.city',
                 'erm.address'
             )
+            ->orderBy('date', 'desc') // Sort by date in descending order
+
             ->get();
 
         //   dd($employeesWithCounts);

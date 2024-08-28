@@ -437,10 +437,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/user-create-razorpay-order', [UserModelController::class, 'usercreateRazorpayOrder'])->name('user.create.razorpay.order');
     Route::post('/user-razorpay-callback', [UserModelController::class, 'userhandleRazorpayCallback'])->name('user.razorpay.callback');
+<<<<<<< HEAD
     Route::post('/uplodqueriesbyclient', [UserModelController::class, 'uploadQueriesByClient'])->name('uplodqueriesbyclient');
 
 
     Route::get('/fetchqueries/{id}', [UserModelController::class, 'fetchQueries'])->name('fetchqueries');
     Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse'); //adminresponse to queries
+=======
+>>>>>>> 51448b2273e11e0ae694f74524264ee6ce5ce313
 
 });
