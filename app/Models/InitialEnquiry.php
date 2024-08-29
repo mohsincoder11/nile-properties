@@ -114,4 +114,12 @@ class InitialEnquiry extends Model
         return $this->hasOne(ProjectEntryAppendData::class, 'id', 'plot_no');
     }
 
+<<<<<<< refs/remotes/origin/shiba
 }
+=======
+    public function plottrasferhistory()
+    {
+        return $this->hasOne(PlotTransferHistory::class, 'previous_enquiry_id', 'id');
+    }
+}
+>>>>>>> local

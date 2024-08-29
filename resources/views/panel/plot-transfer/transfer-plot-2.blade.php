@@ -63,7 +63,7 @@
                             <table width="100%">
                                 <tr style="height:30px;">
                                     {{-- <th width="4%">User Type</th> --}}
-                                    <th width="1%">Title</th>
+                                    <th width="1%">Title  </th>
                                     <th width="3%">Name</th>
                                     <th width="2%">Occupation</th>
                                     <th width="3%">Email</th>
@@ -247,12 +247,12 @@
                                 <select id="client-select" class="form-control select" data-live-search="true">
                                     <option value="">Select a client</option>
                                     @foreach($enquiries as $enquiry)
-                                    <option value="{{ $enquiry->client_name->id }}"
-                                        data-client-name="{{ $enquiry->client_name->name }}"
-                                        data-client-phone="{{ $enquiry->client_name->contact }}"
-                                        data-client-address="{{ $enquiry->client_name->address }}"
+                                    <option value="{{ $enquiry->client_name->id ?? ''}}"
+                                        data-client-name="{{ $enquiry->client_name->name ?? '' }}"
+                                        data-client-phone="{{ $enquiry->client_name->contact ?? '' }}"
+                                        data-client-address="{{ $enquiry->client_name->address ?? '' }}"
                                         data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
-                                        {{ $enquiry->client_name->name }}
+                                        {{ $enquiry->client_name->name  ?? ''}}
                                     </option>
                                     @endforeach
                                 </select>
@@ -395,12 +395,13 @@
                     </select>
                 </td>
                 <td style="padding: 2px;" width="2%">
-                    <select id="plot-select" name="plot_no" class="form-control select no_click_readonly" data-live-search="true">
-                        @foreach($enquiries as $enquiry)
+                    {{-- <select id="plot-select" name="plot_no" class="form-control select no_click_readonly" data-live-search="true"> --}}
+                        {{-- @foreach($enquiries as $enquiry)
                         <option value="{{ $enquiry->plot_no ?? '' }}" @if($inquiry->plot_no ?? '' == $enquiry->plot_no ?? '') selected @endif>
                             {{ $enquiry->plot_no ?? '' }}
                         </option>
-                        @endforeach
+                        @endforeach --}}
+                        <input type="text" class="form-control" value="{{ $inquiry->plot_no ?? '' }}" name="plot_no" placeholder="" required readonly />
                         <!-- Plot options will be appended dynamically -->
                     </select>
                 </td>

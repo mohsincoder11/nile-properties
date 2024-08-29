@@ -35,6 +35,7 @@ class InitiatesellController extends Controller
         $enquiries = Enquiry::with('client_name')
             ->where('client_status', 'initiate_sale')
             ->get(['client_id', 'broker_id']);
+            
         $projects = ProjectEntry::all();
         $statuses = PlotSaleStatus::all();
         $employees = EmployeeRegistrationMaster::all();
@@ -857,13 +858,16 @@ class InitiatesellController extends Controller
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
         $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        // echo json_encode($inquery);
+        // exit();
         return view('panel.new_sale', compact('nominee', 'client', 'inquery'));
     }
 
     public function showDetails(Request $request)
     {
+        // echo json_encode($request->input('id'));
         $inquiryId = $request->input('id');
-        $inquiry = InitialEnquiry::with('clientsigle.agent', 'plotname', 'clients', 'nominees', 'statustoken')->where('id', $inquiryId)->first();
+        $inquiry = InitialEnquiry::with('clientsigle.agent', 'plotname', 'clients', 'nominees', 'statustoken','plottrasferhistory')->where('id', $inquiryId)->first();
 
         if (!$inquiry) {
             return response()->json(['error' => 'Inquiry not found'], 404);
