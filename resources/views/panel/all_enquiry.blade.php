@@ -31,7 +31,7 @@
         <div class="col-md-12" align="center">
 
             <!-- START DEFAULT DATATABLE -->
-            <div class="col-md-4" align="center"></div>
+            <div class="col-md-3" align="center"></div>
             <div class="col-md-8" align="center">
                 <div class="icon-box-container">
                     <div class="icon-box box-2">
@@ -71,6 +71,17 @@
                             <p class="classic">Proposal</p>
                         </a>
                     </div>
+
+                    <div style="margin-top: 10vh; font-size: large">
+                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="icon-box box-1">
+                        <a href="{{ route('allenquiry') }}">
+                            <img src="{{ asset('panel/assets/images/cards/8.png')}}" alt="" class="classic-1" />
+                            <p class="classic">All Enquiries</p>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,10 +117,10 @@
                         <td>{{ $index + 1 }}</td>
                         <td>
                             <div class="popup-container">
-                                <span class="popup-btn">{{ $enquiry->client_name->name }}</span>
+                                <span class="popup-btn">{{ $enquiry->client_name->name ?? '' }}</span>
                                 <div class="popup-content">
-                                    <p>Mobile Number: {{ $enquiry->client_name->contact }} <br>Address: {{
-                                        $enquiry->client_name->address }}<br>
+                                    <p>Mobile Number: {{ $enquiry->client_name->contact ?? ''}} <br>Address: {{
+                                        $enquiry->client_name->address ?? ''}}<br>
                                     </p>
                                 </div>
                             </div>

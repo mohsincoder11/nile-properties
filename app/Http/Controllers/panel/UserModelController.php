@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\panel;
 
+use Log;
 use Razorpay\Api\Api;
 use App\Models\Enquiry;
 use App\Models\Occupation;
@@ -16,8 +17,8 @@ use Illuminate\Http\Request;
 use App\Models\InitialEnquiry;
 use App\Models\PlotSaleStatus;
 use Illuminate\Support\Carbon;
+use App\Models\UserModelPlotQuery;
 use App\Models\ClientDetailInitial;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
 use App\Models\NomineeDetailInitial;
@@ -39,11 +40,80 @@ class UserModelController extends Controller
 
     public function userdashboard()
     {
-        return view('panel.user_model.user_dashboard');
+        $queries = UserModelPlotQuery::with('firm', 'project', 'client', 'plot')->get();
+
+        $firm = FirmRegistrationMaster::all();
+
+        $userId = auth()->id();
+        $nominee = NomineeDetailInitial::all();
+        $client = ClientDetailInitial::all();
+
+
+        $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+
+        if ($customerRegistration) {
+            $clientId = $customerRegistration->user_id;
+
+
+            $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        } else {
+            $clientDetails = collect();
+        }
+        return view('panel.user_model.user_dashboard', compact('nominee', 'client', 'clientDetails', 'firm', 'queries'));
+    }
+
+
+
+    public function getProjectsByFirmbyuser($firm_id)
+    {
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+
+        // Retrieve distinct project IDs from InitialEnquiry for the authenticated user
+        $initialEnquiries = InitialEnquiry::where('client_id', $userId)
+            ->where('firm_id', $firm_id)
+            ->distinct()
+            ->pluck('project_id');
+
+        // Retrieve projects by firm_id where the project_id is in the initialEnquiries
+        $projects = ProjectEntry::where('firm_id', $firm_id)
+            ->whereIn('id', $initialEnquiries)
+            ->get();
+
+        // Return the projects as a JSON response
+        return response()->json($projects);
+    }
+
+
+    public function fetchPlotspaymentsectionbyuser(Request $request)
+    {
+        // Retrieve the project ID from the request
+        $projectId = $request->input('projectId');
+
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+
+        // Retrieve distinct plot numbers from InitialEnquiry for the given user and project
+        $initialEnquiries = InitialEnquiry::where('client_id', $userId)
+            ->where('project_id', $projectId)
+            ->distinct()
+            ->pluck('plot_no');
+
+        // Retrieve plots where the plot_no is in the initialEnquiries
+        $plots = ProjectEntryAppendData::where('project_entry_id', $projectId)
+            ->whereIn('plot_no', $initialEnquiries)
+            ->get();
+
+        // Return the filtered plots as a JSON response
+        return response()->json($plots);
     }
 
     public function paymentcollection(Request $request)
     {
+        $userId = auth()->id();
+
+
+
         $client = ClientDetailInitial::all();
         $projects = InitialEnquiry::with('project')->distinct()->get(['project_id']);
         $firm = FirmRegistrationMaster::all();
@@ -51,7 +121,6 @@ class UserModelController extends Controller
         $charges = OtherCharges::all();
 
         return view('panel.user_model.user_payment_collection', compact('client', 'projects', 'firm', 'charges'));
-
     }
     public function getrazorpaygetway(Request $request)
     {
@@ -166,6 +235,9 @@ class UserModelController extends Controller
             $initialEnquiryId = $request->input('initial_enquiry_id');
             $installment = $request->input('installment');
 
+            // Log the request data for debugging purposes
+            \Log::info('Razorpay Callback Received', $request->all());
+
             // Find the installment record
             $installmentRecord = EmiPaymentCollection::where('initial_enquiry_id', $initialEnquiryId)
                 ->where('inst_no', $installment)
@@ -174,6 +246,10 @@ class UserModelController extends Controller
             if ($installmentRecord) {
                 $installmentRecord->update(['status' => 'Paid']);
             } else {
+                \Log::error('Installment not found.', [
+                    'initial_enquiry_id' => $initialEnquiryId,
+                    'installment' => $installment,
+                ]);
                 return response()->json(['error' => 'Installment not found.'], 404);
             }
 
@@ -191,7 +267,7 @@ class UserModelController extends Controller
                     'is_approved_by_admin' => 0,
                 ]);
 
-                $user = CustomerRegistrationMaster::find($payment->user_id);
+                $user = CustomerRegistrationMaster::where('user_id', $payment->user_id)->first();
 
                 if ($user) {
                     // Direct email sending based on payment status
@@ -221,7 +297,6 @@ class UserModelController extends Controller
                         });
                     }
 
-                    // $user->payment_status = $payment->payment_status;
                     $user->save();
 
                     // Sending OTP and other operations
@@ -244,16 +319,29 @@ class UserModelController extends Controller
 
                     return response()->json(['success' => 'Payment completed successfully.']);
                 } else {
+                    \Log::error('User associated with payment not found.', [
+                        'payment_id' => $paymentId,
+                        'order_id' => $orderId,
+                        'user_id' => $payment->user_id,
+                    ]);
                     return response()->json(['error' => 'User associated with payment not found.'], 404);
                 }
             } else {
+                \Log::error('Payment record not found.', [
+                    'order_id' => $orderId,
+                    'payment_id' => $paymentId,
+                ]);
                 return response()->json(['error' => 'Payment record not found.'], 404);
             }
         } catch (\Exception $e) {
-            \Log::error('Razorpay Callback Error: ' . $e->getMessage());
+            \Log::error('Razorpay Callback Error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all(),
+            ]);
             return response()->json(['error' => 'An error occurred while processing the payment.'], 500);
         }
     }
+
 
 
 
@@ -289,14 +377,12 @@ class UserModelController extends Controller
                 'clients',
             )
         );
-
-
     }
 
 
     public function userinitiatesalestore(Request $request)
     {
-
+        // dd($request->all());
 
 
         $existingEnquiry = InitialEnquiry::where('project_id', $request->project_id)
@@ -359,7 +445,7 @@ class UserModelController extends Controller
         $initialEnquiry->is_plot_booked_by_user_model = 1;
 
         $initialEnquiry->firm_id = $request->firm_id;
-$initialEnquiry->client_id = auth()->id();
+        $initialEnquiry->client_id = auth()->id();
 
         $initialEnquiry->measurement = $request->Measurement;
         $initialEnquiry->square_meter = $request->square_meter;
@@ -445,7 +531,7 @@ $initialEnquiry->client_id = auth()->id();
         }
 
         // Generate EMI Payments
-        $emiStartDate =$request->emi_start_date;
+        $emiStartDate = Carbon::parse($request->emi_start_date);
         for ($i = 0; $i < $request->tenure; $i++) {
             $emiPayment = new EmiPaymentCollection();
             $emiPayment->initial_enquiry_id = $initialEnquiry->id;
@@ -695,7 +781,7 @@ $initialEnquiry->client_id = auth()->id();
                     'pin_code' => $request->pin_code[$index],
                     'address' => $request->address[$index],
                     'age' => $request->age[$index],
-                    'dob' =>$request->dob[$index],
+                    'dob' => $request->dob[$index],
                     'marital_status' => $request->marital_status[$index],
                     'marriage_date' => $request->marriage_date[$index],
                     'branch_id' => $request->branch_id[$index],
@@ -801,22 +887,21 @@ $initialEnquiry->client_id = auth()->id();
     }
     public function usernewsale()
     {
-         $userId = auth()->id();
+        $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
 
 
-    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+        $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
 
-    if ($customerRegistration) {
-        $clientId = $customerRegistration->user_id;
+        if ($customerRegistration) {
+            $clientId = $customerRegistration->user_id;
 
 
-         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-
-    } else {
-        $clientDetails = collect();
-    }
+            $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        } else {
+            $clientDetails = collect();
+        }
 
         return view('panel.user_model.user_new_sale', compact('nominee', 'client', 'clientDetails'));
     }
@@ -825,22 +910,21 @@ $initialEnquiry->client_id = auth()->id();
     public function userregistration()
     {
 
-       $userId = auth()->id();
+        $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
 
 
-    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+        $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
 
-    if ($customerRegistration) {
-        $clientId = $customerRegistration->user_id;
+        if ($customerRegistration) {
+            $clientId = $customerRegistration->user_id;
 
 
-         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-
-    } else {
-        $clientDetails = collect();
-    }
+            $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        } else {
+            $clientDetails = collect();
+        }
 
         return view('panel.user_model.user_registration', compact('nominee', 'client', 'clientDetails'));
     }
@@ -853,24 +937,22 @@ $initialEnquiry->client_id = auth()->id();
     public function userlegalclearance()
     {
 
-      $userId = auth()->id();
+        $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
 
 
-    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+        $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
 
-    if ($customerRegistration) {
-        $clientId = $customerRegistration->user_id;
+        if ($customerRegistration) {
+            $clientId = $customerRegistration->user_id;
 
 
-         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-
-    } else {
-        $clientDetails = collect();
-    }
+            $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        } else {
+            $clientDetails = collect();
+        }
         return view('panel.user_model.user_legal_clearance', compact('nominee', 'client', 'clientDetails'));
-
     }
     public function userregistrationcompleted()
     {
@@ -879,19 +961,17 @@ $initialEnquiry->client_id = auth()->id();
         $client = ClientDetailInitial::all();
 
 
-    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+        $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
 
-    if ($customerRegistration) {
-        $clientId = $customerRegistration->user_id;
+        if ($customerRegistration) {
+            $clientId = $customerRegistration->user_id;
 
 
-         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-
-    } else {
-        $clientDetails = collect();
-    }
+            $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        } else {
+            $clientDetails = collect();
+        }
         return view('panel.user_model.user_registration_completed', compact('nominee', 'client', 'clientDetails'));
-
     }
 
     public function usersaledeedscan()
@@ -901,39 +981,36 @@ $initialEnquiry->client_id = auth()->id();
         $client = ClientDetailInitial::all();
 
 
-    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+        $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
 
-    if ($customerRegistration) {
-        $clientId = $customerRegistration->user_id;
+        if ($customerRegistration) {
+            $clientId = $customerRegistration->user_id;
 
 
-         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-
-    } else {
-        $clientDetails = collect();
-    }
+            $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        } else {
+            $clientDetails = collect();
+        }
         return view('panel.user_model.user_saledeed_scan', compact('nominee', 'client', 'clientDetails'));
-
     }
     public function userhandover()
-    { $userId = auth()->id();
+    {
+        $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
 
 
-    $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
+        $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
 
-    if ($customerRegistration) {
-        $clientId = $customerRegistration->user_id;
+        if ($customerRegistration) {
+            $clientId = $customerRegistration->user_id;
 
 
-         $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-
-    } else {
-        $clientDetails = collect();
-    }
+            $clientDetails = InitialEnquiry::where('client_id', $clientId)->with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
+        } else {
+            $clientDetails = collect();
+        }
         return view('panel.user_model.user_handover', compact('nominee', 'client', 'clientDetails'));
-
     }
 
     public function usercreateRazorpayOrder(Request $request)
@@ -973,13 +1050,11 @@ $initialEnquiry->client_id = auth()->id();
                 'order_id' => $order['id'],
                 'razorpay_key_id' => env('RAZORPAY_KEY_ID'), // Include Razorpay Key ID
             ], 200);
-
         } catch (BadRequestError $e) {
             // Razorpay API specific error handling
             return response()->json([
                 'error' => 'Razorpay API error: ' . $e->getMessage(),
             ], 400);
-
         } catch (\Exception $e) {
             // General error handling
             return response()->json([
@@ -1011,7 +1086,7 @@ $initialEnquiry->client_id = auth()->id();
             return response()->json(['success' => false, 'message' => 'Payment failed: Order not found.']);
         }
     }
- private function handleFileUploads($files, $directory)
+    private function handleFileUploads($files, $directory)
     {
         $image_name_array = [];
         foreach ($files as $key => $image) {
@@ -1024,4 +1099,103 @@ $initialEnquiry->client_id = auth()->id();
         return implode(',', $image_name_array);
     }
 
+    public function uploadQueriesByClient(Request $request)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'firm_id' => 'required|integer',
+            'project_id' => 'required|integer',
+            'plot_no' => 'required|integer',
+            'client_id' => 'required|integer',
+            'query' => 'required|string',
+        ]);
+
+        // Check and handle missing fields
+        if ($request->has(['firm_id', 'project_id', 'plot_no', 'client_id', 'query'])) {
+            // Fetch the matching InitialEnquiry record
+            $initialEnquiry = InitialEnquiry::where([
+                ['firm_id', $request->input('firm_id')],
+                ['project_id', $request->input('project_id')],
+                ['plot_no', $request->input('plot_no')],
+            ])->first();
+            // dd($initialEnquiry);
+
+            if ($initialEnquiry) {
+                // Create a new record in the UserModelPlotQuery table with initial_enquiry_id
+                UserModelPlotQuery::create([
+                    'firm_id' => $request->input('firm_id'),
+                    'project_id' => $request->input('project_id'),
+                    'plot_no' => $request->input('plot_no'),
+                    'client_id' => $request->input('client_id'),
+                    'query' => $request->input('query'),
+                    'initial_enquiry_id' => $initialEnquiry->id, // Store the matched InitialEnquiry ID
+                ]);
+
+                // Redirect back with a success message
+                return redirect()->back()->with('success', 'Query uploaded successfully!');
+            } else {
+                // Redirect back with an error message if InitialEnquiry record is not found
+                return redirect()->back()->with('error', 'No matching InitialEnquiry record found.');
+            }
+        } else {
+            // Redirect back with an error message if fields are missing
+            return redirect()->back()->with('error', 'Some required fields are missing.');
+        }
+    }
+
+    public function fetchQueries($id)
+    {
+        $query = UserModelPlotQuery::where('initial_enquiry_id', $id)->get();
+
+        if ($query) {
+            return response()->json($query);
+        }
+
+        return response()->json(['error' => 'No data found'], 404);
+    }
+
+    // Update admin response
+    public function updateAdminResponse(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:user_model_plots_related_queries,id',
+            'admin_response' => 'required|string',
+        ]);
+
+        $query = UserModelPlotQuery::find($request->id);
+
+        if ($query) {
+            $query->admin_response = $request->admin_response;
+            $query->save();
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false], 500);
+    }
+
+    public function updateAdminResponseBulk(Request $request)
+    {
+        $request->validate([
+            'responses' => 'required|array',
+            'responses.*.id' => 'required|exists:user_model_plots_related_queries,id',
+            'responses.*.admin_response' => 'required|string',
+        ]);
+
+        $responses = $request->responses;
+        $success = true;
+
+        foreach ($responses as $response) {
+            $query = UserModelPlotQuery::find($response['id']);
+            if ($query) {
+                $query->admin_response = $response['admin_response'];
+                $query->save();
+            } else {
+                $success = false;
+                break;
+            }
+        }
+
+        return response()->json(['success' => $success]);
+    }
 }

@@ -676,8 +676,8 @@
                                     <th width="1%">Square Ft</th>
                                     <th width="1%">Rate(per Sq Ft)</th>
                                     <th width="1%">Total Cost</th>
-                                    <th width="1%">Discount Amount</th>
-                                    <th width="1%">Discount Type</th>
+                                    {{-- <th width="1%">Discount Amount</th>
+                                    <th width="1%">Discount Type</th> --}}
                                 </tr>
 
 
@@ -749,7 +749,7 @@
                                                 }}</font>
                                         </label>
                                     </td>
-                                    <td style="padding: 2px;" width="1%">
+                                    {{-- <td style="padding: 2px;" width="1%">
                                         <input type="text" class="form-control" name="discount_amount"
                                             value="{{ $inquiry->discount_amount ?? '' }}" placeholder=""
                                             oninput="calculateAmounts()" required />
@@ -763,7 +763,7 @@
                                             <option value="₹" @if(isset($inquiry->discount_type) &&
                                                 $inquiry->discount_type == '₹') selected @endif>₹</option>
                                         </select>
-                                    </td>
+                                    </td> --}}
 
                                 </tr>
 
@@ -871,18 +871,24 @@
 
                             <table width="100%">
                                 <tr style="height:30px;">
-                                    <th width="1%">Plot Status</th>
-                                    <th width="1%">A. Rate</th>
+                                    {{-- <th width="1%">Plot Status</th>
+                                    <th width="1%">A. Rate</th> --}}
                                     <th width="2%">Refered By</th>
-                                    <th width="1" id="agent-label-container">Agent Name</th>
-                                    <th width="1" id="employee-label-container">Executive Name</th>
+                                    {{-- <th width="1" id="agent-label-container">Agent Name</th>
+                                    <th width="1" id="employee-label-container">Executive Name</th> --}}
                                     <th width="2%">Remarks</th>
+                                    <th width="2%">Mauja</th>
+                                    <th width="2%">Kh No.</th>
+                                    <th width="2%">P.H.N.</th>
+                                    <th width="2%">Taluka</th>
+
+                                    <th width="2%">District</th>
 
                                 </tr>
 
 
                                 <tr>
-                                    <td style="padding: 2px;" width="1%">
+                                    {{-- <td style="padding: 2px;" width="1%">
                                         <select class="form-control select" data-live-search="true"
                                             id="plot_sale_status" name="plot_sale_status">
                                             <option value="">Select Option</option>
@@ -894,20 +900,20 @@
                                             </option>
                                             @endforeach
                                         </select>
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
+                                    </td> --}}
+                                    {{-- <td style="padding: 2px;" width="1%">
                                         <input type="text" class="form-control" name="a_rate"
                                             value="{{ $inquiry->a_rate }}" placeholder="" />
-                                    </td>
+                                    </td> --}}
                                     <td style="padding: 2px;" width="2%">
-                                        <input type="radio" id="agent_name" name="source_type" value="agent"
+                                        {{-- <input type="radio" id="agent_name" name="source_type" value="agent"
                                             onclick="toggleEmployeeSelect()" {{ $inquiry->agent_id ? 'checked' : '' }}>
                                         <label for="agent_name">Agent Name</label>
 
                                         <input type="radio" id="executive_name" name="source_type" value="executive"
                                             onclick="toggleEmployeeSelect()" {{ $inquiry->employee_id &&
                                         !$inquiry->direct_sourse ? 'checked' : '' }}>
-                                        <label for="executive_name">Executive Name</label>
+                                        <label for="executive_name">Executive Name</label> --}}
 
                                         <input type="radio" id="direct_sourse" name="source_type" value="direct"
                                             onclick="toggleEmployeeSelect()" {{ $inquiry->direct_sourse ? 'checked' : ''
@@ -915,7 +921,7 @@
                                         <label for="direct_sourse">Direct Source</label>
                                     </td>
 
-                                    <td id="agent-select-container" style="padding: 2px; width: 1%;">
+                                    {{-- <td id="agent-select-container" style="padding: 2px; width: 1%;">
                                         <select class="form-control select" data-live-search="true" id="agent-select"
                                             name="agent_id" {{ $inquiry->agent_id
                                             ? '' : 'disabled' }}>
@@ -941,47 +947,13 @@
                                             </option>
                                             @endforeach
                                         </select>
-                                    </td>
+                                    </td> --}}
 
                                     <td style="padding: 2px;" width="1%">
                                         <textarea type="text" class="form-control" name="remark" placeholder="" rows="2"
                                             cols="5">{{ $inquiry->remark ?? '' }}</textarea>
                                     </td>
-
-                                </tr>
-
-                            </table>
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        {{-- <h5 class="panel-title"
-                            style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
-                            align="center">
-                            <i class="fa fa-area-chart"></i> &nbsp;Plot/Unit Transaction
-                        </h5> --}}
-
-                        <div class="col-md-12" style="margin-top: 2vh;">
-                            <table width="100%">
-                                <tr style="height:30px;">
-
-                                    <th width="2%">Mauja</th>
-                                    <th width="2%">Kh No.</th>
-                                    <th width="2%">P.H.N.</th>
-                                    <th width="2%">Taluka</th>
-
-                                    <th width="2%">District</th>
-                                    <th width="2%">East</th>
-                                    <th width="2%">West</th>
-                                    <th width="2%">North</th>
-                                    <th width="2%">South</th>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td style="padding: 2px;" width="2%">
+ <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" name="mauja" placeholder=""
                                             value="{{ $inquiry->mauja ?? '' }}" />
                                     </td>
@@ -1002,6 +974,35 @@
                                         <input type="text" class="form-control" name="district" placeholder=""
                                             value="{{ $inquiry->district ?? '' }}" />
                                     </td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        {{-- <h5 class="panel-title"
+                            style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
+                            align="center">
+                            <i class="fa fa-area-chart"></i> &nbsp;Plot/Unit Transaction
+                        </h5> --}}
+
+                        <div class="col-md-12" style="margin-top: 2vh;">
+                            <table width="100%">
+                                <tr style="height:30px;">
+
+
+                                    <th width="2%">East</th>
+                                    <th width="2%">West</th>
+                                    <th width="2%">North</th>
+                                    <th width="2%">South</th>
+
+                                </tr>
+
+
+                                <tr>
+
+
                                     <td style="padding: 2px;" width="2%">
                                         <input type="text" class="form-control" name="east" placeholder="" value="{{
                                                                                 $inquiry->east ?? '' }}" />
@@ -1316,6 +1317,7 @@ let totalCost = squareFt * rate;
 // Update the total cost display
 document.getElementById('total_cost_display').textContent = totalCost.toFixed(2);
 document.getElementById('total_cost_input').value = totalCost.toFixed(2);
+document.getElementById('final_amount').textContent = totalCost.toFixed(2);
 
 // Get the discount amount and type
 let discountAmount = parseFloat(document.getElementsByName('discount_amount')[0].value) || 0;

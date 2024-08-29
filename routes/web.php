@@ -1,37 +1,35 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\panel\MyDownline;
-use App\Http\Controllers\panel\FollowupLeads;
-use App\Http\Controllers\panel\FirmController;
-use App\Http\Controllers\panel\MasterController;
-use App\Http\Controllers\ProjectEntryController;
 use App\Http\Controllers\panel\AccountController;
-use App\Http\Controllers\panel\EnquiryController;
-use App\Http\Controllers\panel\ReportsController;
-// use App\Http\Controllers\panel\EnquiryController;
-use App\Http\Controllers\website\IndexController;
-use App\Http\Controllers\panel\FollowUpController;
-use App\Http\Controllers\panel\AgreementMasterController;
-use App\Http\Controllers\panel\CommissionPlanController;
-// WEBSITE
-use App\Http\Controllers\panel\DashboardController;
-use App\Http\Controllers\panel\LandownerController;
-use App\Http\Controllers\panel\UserModelController;
-use App\Http\Controllers\panel\cityMasterController;
-use App\Http\Controllers\panel\branchMasterController;
-use App\Http\Controllers\panel\empRegMasterController;
-use App\Http\Controllers\panel\InitiatesellController;
-use App\Http\Controllers\panel\PlotTransfercontroller;
-use App\Http\Controllers\panel\CustomeStagesController;
-use App\Http\Controllers\website\EnquiryFormController;
 use App\Http\Controllers\panel\agentRegMasterController;
-use App\Http\Controllers\website\RegistrationController;
+use App\Http\Controllers\panel\AgreementMasterController;
+use App\Http\Controllers\panel\branchMasterController;
+use App\Http\Controllers\panel\CommissionPlanController;
 use App\Http\Controllers\panel\customerRegMasterController;
-use App\Http\Controllers\panel\PaymentCollectionController;
+use App\Http\Controllers\panel\CustomeStagesController;
+use App\Http\Controllers\panel\DashboardController;
+use App\Http\Controllers\panel\empRegMasterController;
+use App\Http\Controllers\panel\EnquiryController;
+// use App\Http\Controllers\panel\EnquiryController;
+use App\Http\Controllers\panel\FirmController;
+use App\Http\Controllers\panel\FollowUpController;
+use App\Http\Controllers\panel\FollowupLeads;
+use App\Http\Controllers\panel\InitiatesellController;
+// WEBSITE
+use App\Http\Controllers\panel\LandownerController;
 use App\Http\Controllers\panel\LeadassignToEmployeeController;
-use App\Models\CommissionPlan;
+use App\Http\Controllers\panel\MasterController;
+use App\Http\Controllers\panel\MyDownline;
+use App\Http\Controllers\panel\PaymentCollectionController;
+use App\Http\Controllers\panel\PlotTransfercontroller;
+use App\Http\Controllers\panel\ReportsController;
+use App\Http\Controllers\panel\UserModelController;
+use App\Http\Controllers\ProjectEntryController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\website\EnquiryFormController;
+use App\Http\Controllers\website\IndexController;
+use App\Http\Controllers\website\RegistrationController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,45 +42,36 @@ use App\Models\CommissionPlan;
 |
 */
 
-
-
-
 // website routes
 
+//Register
+Route::post('store-registration', [RegistrationController::class, 'storeRegistration'])->name('storeRegistration');
+Route::post('/login', [RegistrationController::class, 'login'])->name('login');
+//to send otp for forget password
+Route::post('send-mobile-verify-otp', [RegistrationController::class, 'send_mobile_verify_otp'])->name('send_otp');
 
-    //Register
-    Route::post('store-registration', [RegistrationController::class, 'storeRegistration'])->name('storeRegistration');
-    Route::post('/login', [RegistrationController::class, 'login'])->name('login');
-    //to send otp for forget password
-    Route::post('send-mobile-verify-otp', [RegistrationController::class, 'send_mobile_verify_otp'])->name('send_otp');
+Route::post('/check_mobile_existence', [RegistrationController::class, 'checkMobileExistence'])->name('check_mobile_existence');
 
-    Route::post('/check_mobile_existence', [RegistrationController::class, 'checkMobileExistence'])->name('check_mobile_existence');
+//to varify otp
+Route::post('verify_otp', [RegistrationController::class, 'verify_otp'])->name('verify_otp');
+//update password
+Route::post('/update-password', [RegistrationController::class, 'update_password'])->name('update_password');
+// Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
+Route::match(['get', 'post'], '/logout', [RegistrationController::class, 'logout'])->name('logout');
 
-    //to varify otp
-    Route::post('verify_otp', [RegistrationController::class, 'verify_otp'])->name('verify_otp');
-    //update password
-    Route::post('/update-password', [RegistrationController::class, 'update_password'])->name('update_password');
-    // Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
-    Route::match(['get', 'post'], '/logout', [RegistrationController::class, 'logout'])->name('logout');
+Route::post('enquiry-form/{id}', [EnquiryFormController::class, 'enquiry_form'])->name('enquiry-form');
+//index
+Route::get('/index', [IndexController::class, 'index'])->name('index');
+Route::get('listing-details/{id}', [IndexController::class, 'listing_details'])->name('listing-details');
+Route::get('show-features/{projectId}', [IndexController::class, 'showFeatures'])->name('show-features');
+Route::post('store-review', [IndexController::class, 'storeReview'])->name('storeReview');
 
+Route::post('/fetchPlotDetailing', [IndexController::class, 'fetchPlotDetailing'])->name('fetchPlotDetailing');
 
- Route::post('enquiry-form/{id}', [EnquiryFormController::class, 'enquiry_form'])->name('enquiry-form');
- //index
-    Route::get('/index', [IndexController::class, 'index'])->name('index');
-    Route::get('listing-details/{id}', [IndexController::class, 'listing_details'])->name('listing-details');
-    Route::get('show-features/{projectId}', [IndexController::class, 'showFeatures'])->name('show-features');
-    Route::post('store-review', [IndexController::class, 'storeReview'])->name('storeReview');
-
-
-    Route::post('/fetchPlotDetailing', [IndexController::class, 'fetchPlotDetailing'])->name('fetchPlotDetailing');
-
-
-
-
-    // web.php
-    Route::get('/download-map/{id}', [IndexController::class, 'downloadMap'])->name('download.map');
-    Route::get('/download-brochure/{id}', [IndexController::class, 'downloadBrochure'])->name('download.brochure');
-    Route::get('/open-youtube/{id}', [IndexController::class, 'openYoutube'])->name('open.youtube');
+// web.php
+Route::get('/download-map/{id}', [IndexController::class, 'downloadMap'])->name('download.map');
+Route::get('/download-brochure/{id}', [IndexController::class, 'downloadBrochure'])->name('download.brochure');
+Route::get('/open-youtube/{id}', [IndexController::class, 'openYoutube'])->name('open.youtube');
 //Section A
 //demo common for logs users
 // Route::get('/test-logger', function () {
@@ -99,12 +88,10 @@ Route::get('/login', function () {
 
 Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
 
-
-
 // DASHBOARD
 Route::post('/user_check', [DashboardController::class, 'userCheck'])->name('user_check');
-    // Enquiry Form
-    Route::post('enquiry-form/{id}', [EnquiryFormController::class, 'enquiry_form'])->name('enquiry-form');
+// Enquiry Form
+Route::post('enquiry-form/{id}', [EnquiryFormController::class, 'enquiry_form'])->name('enquiry-form');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
@@ -115,12 +102,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('destroy-dash/{id}', [DashboardController::class, 'destroyDash'])->name('destroy-dash');
     Route::get('/home', [DashboardController::class, 'home'])->name('home');
 
-
-
     // MASTER
 
     //CITY / OCCUPATION / ----
-
 
     Route::get('/city_master', [MasterController::class, 'index'])->name('city_master');
     //city
@@ -166,7 +150,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/edit_transaction/{id}', [MasterController::class, 'edit_transaction']);
     Route::post('/update_transaction', [MasterController::class, 'update_transaction'])->name('update_transaction');
 
-
     // CITY OCCUPATION ETC END
 
     // MASTER BRANCH
@@ -196,7 +179,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('firm_reg_edit/edit/{id}', [FirmController::class, 'firm_edit'])->name('firm_reg_edit');
     Route::post('firm_reg_update', [FirmController::class, 'firm_update'])->name('firm_reg_update');
 
-
     //land owner controller
     Route::post('/land-payment/', [LandownerController::class, 'storepayment'])->name('storepayment');
 
@@ -221,16 +203,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/expense-income', [AccountController::class, 'income'])->name('expense.income');
     //FollowUp leads controller
 
-
     Route::get('/enquiry-follow-up', [FollowupLeads::class, 'getEnquiryFollowUp'])->name('enquiry.follow-up');
-
 
     Route::post('/folloupstore', [FollowupLeads::class, 'folloupstore'])->name('folloupstore');
 
     Route::post('/changeplot/update', [FollowupLeads::class, 'changeplot'])->name('changeplot.update');
 
     Route::get('/enquiry/data', [FollowupLeads::class, 'getEnquiryData'])->name('get.enquiry.data');
-
 
     Route::post('/update-client-status', [FollowupLeads::class, 'updateClientStatus'])->name('update_client_status');
 
@@ -246,21 +225,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('negotiationindex', [FollowupLeads::class, 'negotiationindex'])->name('negotiationindex');
     Route::get('allenquiry', [FollowupLeads::class, 'allenquiry'])->name('allenquiry');
 
-
-
     //my downline controller
 
     Route::get('downlineindex', [MyDownline::class, 'downlineindex'])->name('downlineindex');
     Route::get('positionindex', [MyDownline::class, 'positionindex'])->name('positionindex');
     Route::get('downlinebuisnessindex', [MyDownline::class, 'downlinebuisnessindex'])->name('downlinebuisnessindex');
 
-
     Route::get('/commission-plans', [CommissionPlanController::class, 'index'])->name('commission-plans.index');
     Route::post('/commission-plans', [CommissionPlanController::class, 'store'])->name('commission-plans.store');
     Route::get('/commission-plans/{commissionPlan}/edit', [CommissionPlanController::class, 'edit'])->name('commission-plans.edit');
     Route::put('/commission-plans/{commissionPlan}', [CommissionPlanController::class, 'update'])->name('commission-plans.update');
     Route::delete('/commission-plans/{commissionPlan}', [CommissionPlanController::class, 'destroy'])->name('commission-plans.destroy');
-
 
     // Master Employ Registration
     Route::get('emp_reg', [empRegMasterController::class, 'index'])->name('emp_reg');
@@ -270,7 +245,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('emp_reg_edit/edit/{id}', [empRegMasterController::class, 'emp_reg_edit'])->name('emp_reg_edit');
     Route::post('emp_reg_update', [empRegMasterController::class, 'emp_reg_update'])->name('emp_reg_update');
     Route::get('get_bank_details', [empRegMasterController::class, 'getBankDetails'])->name('getBankDetails');
-
 
     // Master Customer Registration
     Route::get('customerReg', [customerRegMasterController::class, 'index'])->name('customerReg');
@@ -303,13 +277,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('getEnquiryData', [EnquiryController::class, 'getEnquiryData'])->name('getEnquiryData');
 
     // In your routes file (web.php)
+
     Route::get('/projects-by-firm/{firm_id}', [ProjectEntryController::class, 'getProjectsByFirm'])->name('projects.by.firm');
     Route::get('/fetch-plots-details', [ProjectEntryController::class, 'fetchPlotDetails'])->name('fetchPlotDetails');
     Route::get('/fetch-project-detailsextra', [ProjectEntryController::class, 'fetchProjectDetailsextra'])->name('fetchProjectDetailsextra');
-
-
-
-
 
     //plot transfer
     Route::get('/plot-transfer/{id}/{type}', [PlotTransfercontroller::class, 'plottransfer'])->name('plot.transfer');
@@ -324,29 +295,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/personal-details/edit/{id}', [PlotTransferController::class, 'personal_details_edit'])->name('personal-details.edit');
     Route::post('/personal-details/update/{id}', [PlotTransferController::class, 'personal_details_update'])->name('personal-details.update');
 
-
     Route::get('/plot-shifting', [PlotTransfercontroller::class, 'plotShifting'])->name('plot.shifting');
 
     Route::get('/plot-edit-sale', [PlotTransfercontroller::class, 'plotedit_Sale'])->name('plot.edit.sale');
 
     Route::get('/plot-edit-bank-loan-details', [PlotTransfercontroller::class, 'plotedit_bank_loan_details'])->name('plot.edit.bank.details');
 
-
-
-
-
-
-
-         // //section B
-       // Route::get('/project-entry', [ProjectEntryController::class, 'index'])->name('project.index');
-      // Route::get('/addedproject-entry', [ProjectEntryController::class, 'addedProjectEntry'])->name('project.addedProjectEntry');
-       // Route::post('/project-store', [ProjectEntryController::class, 'store'])->name('project.store');
-
+    // //section B
+    // Route::get('/project-entry', [ProjectEntryController::class, 'index'])->name('project.index');
+    // Route::get('/addedproject-entry', [ProjectEntryController::class, 'addedProjectEntry'])->name('project.addedProjectEntry');
+    // Route::post('/project-store', [ProjectEntryController::class, 'store'])->name('project.store');
 
     // -----------------------------------------------------------------------------------------------------------
 
     // WEBSITE
-
 
     //follow up
 
@@ -400,7 +362,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/othercharge_store', [PaymentCollectionController::class, 'othercharge_store'])->name('othercharge_store');
     Route::get('/get-other-charges', [PaymentCollectionController::class, 'getOtherCharges'])->name('get.other.charges');
 
-
     Route::get('/newsale-sale', [InitiatesellController::class, 'newsale'])->name('newsale');
     Route::delete('/newsale-sale-delete/{id}', [InitiatesellController::class, 'delete'])->name('newsale_delete');
     Route::get('/newsale-sale-edit/{id}', [InitiatesellController::class, 'edit'])->name('newsale_edit');
@@ -414,15 +375,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/registration-completed', [CustomeStagesController::class, 'registrationcompleted'])->name('registrationcompleted');
     Route::get('/handover', [CustomeStagesController::class, 'handover'])->name('handover');
     Route::get('/saledeed-scan', [CustomeStagesController::class, 'saledeedscan'])->name('saledeedscan');
-
-
-
-
-
-
-
-
-
 
     //section B
     Route::get('/project-entry', [ProjectEntryController::class, 'index'])->name('project.index');
@@ -439,8 +391,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/project-bulkploat', [ProjectEntryController::class, 'bulkploat'])->name('bulkploat');
     Route::post('/project-bulkploatappendatrow', [ProjectEntryController::class, 'bulkploatappendatrow'])->name('bulkploatappendatrow');
 
-
-
     Route::post('/update_entry_level_lead', [LeadassignToEmployeeController::class, 'update_entry_level_lead'])->name('update_entry_level_lead');
 
     Route::get('/crm_lead_management', [LeadassignToEmployeeController::class, 'index'])->name('crm_lead_management');
@@ -450,34 +400,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/fetch-entry-level-lead-details', [LeadassignToEmployeeController::class, 'fetchentrylevelformleadStore'])->name('fetchentrylevelformleadStore');
 
-
-
-
-
-
     Route::post('/update_whatsapp', [MasterController::class, 'update_whatsapp'])->name('update_whatsapp');
-
-
 
     //landowner
     Route::get('/landowner-index', [LandownerController::class, 'index'])->name('landowner_index');
     Route::get('/landowner-account', [LandownerController::class, 'account'])->name('landowner_account');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //usermodel controller
+
+    Route::get('/fetchPlotspaymentsectionbyuser', [UserModelController::class, 'fetchPlotspaymentsectionbyuser'])->name('fetchPlotspaymentsectionbyuser');
+
+    Route::get('/getProjectsByFirmbyuser/{firm_id}', [UserModelController::class, 'getProjectsByFirmbyuser'])->name('getProjectsByFirmbyuser.firm');
     Route::get('/user-model-dashboard', [UserModelController::class, 'userdashboard'])->name('user_model.dashboard');
     Route::get('/user-model-payment-collection', [UserModelController::class, 'paymentcollection'])->name('user_model.paymentcollection');
     Route::get('/user-model-initiate-sale', [UserModelController::class, 'userinitiatesale'])->name('user_model.initiatesale');
@@ -502,8 +435,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/get-razorpay-payment-complete', [UserModelController::class, 'payment_complete'])->name('payment_complete');
     Route::post('/store_installment_of_user', [UserModelController::class, 'store_installment_of_user'])->name('store_installment_of_user');
 
-
     Route::post('/user-create-razorpay-order', [UserModelController::class, 'usercreateRazorpayOrder'])->name('user.create.razorpay.order');
     Route::post('/user-razorpay-callback', [UserModelController::class, 'userhandleRazorpayCallback'])->name('user.razorpay.callback');
+
+    Route::post('/uplodqueriesbyclient', [UserModelController::class, 'uploadQueriesByClient'])->name('uplodqueriesbyclient');
+
+
+    Route::get('/fetchqueries/{id}', [UserModelController::class, 'fetchQueries'])->name('fetchqueries');
+    Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse'); //adminresponse to queries
+
+
 
 });

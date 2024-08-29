@@ -39,7 +39,7 @@ class InitiatesellController extends Controller
         $projects = ProjectEntry::all();
         $statuses = PlotSaleStatus::all();
         $employees = EmployeeRegistrationMaster::all();
- $profiles = [
+        $profiles = [
             app('agentProfile')(1),
             app('agentProfile')(2),
             app('agentProfile')(3),
@@ -128,14 +128,8 @@ class InitiatesellController extends Controller
     public function fetchPlotspaymentsection(Request $request)
     {
         $projectId = $request->input('projectId');
-        // dd($projectId); // Uncomment for debugging
         $plots = ProjectEntryAppendData::where('project_entry_id', $projectId)->get();
-        // $plots = InitialEnquiry::where('project_id', $projectId)->pluck('plot_no');
 
-        // // Step 2: Fetch plots from ProjectEntryAppendData that are not in the used plot IDs
-        // $plots = ProjectEntryAppendData::where('project_entry_id', $projectId)
-        //     ->whereNotIn('id', $usedPlotIds)
-        //     ->get();
 
         return response()->json($plots);
     }
@@ -608,7 +602,7 @@ class InitiatesellController extends Controller
                     'pin_code' => $request->pin_code[$index],
                     'address' => $request->address[$index],
                     'age' => $request->age[$index],
-                    'dob' =>$request->dob[$index] ?  $request->dob[$index] : null,
+                    'dob' => $request->dob[$index] ?  $request->dob[$index] : null,
                     'marital_status' => $request->marital_status[$index],
                     'marriage_date' => $request->marriage_date[$index] ?  $request->marriage_date[$index] : null,
                     'branch_id' => $request->branch_id[$index],
@@ -898,7 +892,6 @@ class InitiatesellController extends Controller
 
             // Return a success response
             return redirect()->back()->with('success', 'Registration completed and approved.');
-
         }
 
         // Return a failure response if the record is not found
@@ -1067,5 +1060,4 @@ class InitiatesellController extends Controller
         // Return a failure response if the record is not found
         return redirect()->back()->with('error', 'Data not found.');
     }
-
 }

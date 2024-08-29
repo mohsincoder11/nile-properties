@@ -14,9 +14,7 @@
                 </h5>
 
 
-
             </div>
-
 
 
 
@@ -31,11 +29,10 @@
 </div>
 <div class="row">
 
-
     <div class="col-md-12" align="center">
 
         <!-- START DEFAULT DATATABLE -->
-        <div class="col-md-4" align="center"></div>
+        <div class="col-md-3" align="center"></div>
         <div class="col-md-8" align="center">
             <div class="icon-box-container">
                 <div class="icon-box box-2">
@@ -81,6 +78,17 @@
                     <a href="{{ route('proposalindex') }}">
                         <img src="{{ asset('panel/assets/images/cards/proposal.png')}}" alt="" class="classic-1" />
                         <p class="classic">Proposal</p>
+                    </a>
+                </div>
+
+                <div style="margin-top: 10vh; font-size: large">
+                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                </div>
+
+                <div class="icon-box box-1">
+                    <a href="{{ route('allenquiry') }}">
+                        <img src="{{ asset('panel/assets/images/cards/8.png')}}" alt="" class="classic-1" />
+                        <p class="classic">All Enquiries</p>
                     </a>
                 </div>
                 {{-- <div style="margin-top: 10vh; font-size: large">
@@ -167,7 +175,6 @@
 
 </div>
 
-
 <div class="row">
 
     <div class="col-md-12" style="margin-top: 2vh;">
@@ -197,7 +204,6 @@
                                 <option value="">--Select--</option>
                                 <option value="Employee">Employee</option>
                                 <option value="Agent">Agent</option>
-
 
 
                             </select>
@@ -254,9 +260,9 @@
                             <select class="form-control" name="plot_no" id="selectPlot">
                                 <option value="">--Select--</option>
 
-                                @foreach ($plot as $plot_name)
+                                {{-- @foreach ($plot as $plot_name)
                                 <option value="{{$plot_name->plot_no}}">{{$plot_name->plot_no}}</option>
-                                @endforeach
+                                @endforeach --}}
 
                             </select>
                         </td>
@@ -283,7 +289,6 @@
                                 Submit</button>
                         </td>
 
-
                     </tr>
 
                 </table>
@@ -307,7 +312,7 @@
             <table width="100%" style=" margin-top:2vh;">
                 <tr style="padding:5px;">
                     <td style="padding: 2px; width: 1%;">
-                        <div style="width: 100%;" id="clientDetailsContainer"></div>
+                        <div style="width: 80%; margin-left:170px" id="clientDetailsContainer"></div>
                     </td>
                 </tr>
             </table>
@@ -322,7 +327,6 @@
                 </td>
             </table>
         </div>
-
 
         {{-- <div class="col-md-8" style="margin-top: 2vh;" id="plot_button">
             <div class="row">
@@ -364,7 +368,6 @@
 
 
 
-
         <div style="position: fixed; bottom: 0; width: 100%;">
             <div class="col-md-12" style="width: 100%;">
                 <div class="col-md-6" style="float: left; width: 50%;">
@@ -391,7 +394,6 @@
         </div>
     </div>
 
-
 </div>
 
 </div>
@@ -399,19 +401,15 @@
 </div>
 
 </div>
-
 
 <!-- START DEFAULT DATATABLE -->
 
-
 </div>
-
 
 
 </div>
 
 <!-- PAGE CONTENT WRAPPER -->
-
 
 </div>
 <!-- END PAGE CONTENT -->
@@ -420,7 +418,7 @@
 <!-- ----Model---- -->
 <div class="modal" id="popup1" tabindex="-1" role="dialog" aria-labelledby="largeModalHead" aria-hidden="true">
     <div class="modal-dialog modal-basic">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 125%">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span></button>
@@ -443,7 +441,7 @@
                                 <label class="control-label">Mobile No.<font color="#FF0000">*</font></label>
                                 <input type="text" class="form-control" name="contact" placeholder="" />
                             </div>
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 <label class="control-label">Occupation<font color="#FF0000">*</font></label>
                                 <select class="form-control select" data-live-search="true" name="occupation_id">
                                     @foreach($occupations as $occupation)
@@ -479,8 +477,8 @@
                             <div class="col-md-3" style="margin-top: 5px;">
                                 <label class="control-label">Branch<font color="#FF0000">*</font></label>
                                 <input type="text" class="form-control" name="branch" placeholder="" />
-                            </div>
-                            <div class="col-md-2" style="margin-top:4vh;">
+                            </div> --}}
+                            <div class="col-md-2" style="margin-top:16px;">
                                 <button id="on" type="submit" class="btn mjks"
                                     style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"> <i
                                         class="fa fa-file"></i>SUBMIT</button>
@@ -521,7 +519,6 @@
 
                             </tr>
 
-
                             <tr>
                                 <td style="padding:5px;" align="center">
                                     <label>1</label>
@@ -553,7 +550,6 @@
                                 <th width="10%" style="text-align:center">Emp ID/Name</th>
 
                             </tr>
-
 
                             <tr>
                                 <td style="padding:5px;" align="center">
@@ -656,7 +652,6 @@
     </div>
 </div>
 @endsection
-
 
 
 {{-- @section('js')
@@ -798,9 +793,10 @@ console.error(error);
     $(document).ready(function () {
 
 
-
     // Handle status dropdown change event
     $('#selectProject').change(function () {
+        var projectId = $(this).val();
+
         var statusId = $(this).val();
 
         // Make an AJAX request to fetch projects based on the selected status
@@ -833,7 +829,6 @@ console.error(error);
 </script>
 
 
-
 {{-- To show correspong plot button --}}
 {{-- <script>
     $(document).ready(function() {
@@ -853,7 +848,6 @@ console.error(error);
     })
 })
 </script> --}}
-
 
 {{-- to make ajax request to show only that plot-buttons which are corresponding to the selected project --}}
 <script>
@@ -881,7 +875,6 @@ $("#selectProject").on('change', function() {
 
 
 
-
 <!-- Script to show client details when client name is selected-->
 <script>
     $(document).ready(function () {
@@ -898,7 +891,6 @@ $("#selectProject").on('change', function() {
                     // Update the HTML content to display client details
 
 
-
                     $('#clientDetailsContainer').html(`
 <div class="col-md-12" style="margin-top:5px;">
     <table width="100%" border="1">
@@ -907,12 +899,12 @@ $("#selectProject").on('change', function() {
             {{--  <th style="padding: 5px;"><label style=" font-size:14px;">Occupation</label></th>  --}}
             <th style="padding: 5px;"><label style=" font-size:14px;">Mobile No</label></th>
             <th style="padding: 5px;"><label style=" font-size:14px;">Email</label></th>
-            <th style="padding: 5px;"><label style=" font-size:14px;">DOB</label></th>
+         {{--     <th style="padding: 5px;"><label style=" font-size:14px;">DOB</label></th>
             <th style="padding: 5px;"><label style=" font-size:14px;">Age</label></th>
             <th style="padding: 5px;"><label style=" font-size:14px;">City</label></th>
             <th style="padding: 5px;"><label style=" font-size:14px;">Address</label></th>
 
-            <th style="padding: 5px;"><label style=" font-size:14px;">Marriage Date</label></th>
+            <th style="padding: 5px;"><label style=" font-size:14px;">Marriage Date</label></th> --}}
 
         </tr>
         <tr>
@@ -920,17 +912,16 @@ $("#selectProject").on('change', function() {
             {{--  <td style="padding: 5px;" width="5%">${data.occupation_name->occupation}</td>  --}}
             <td style="padding: 5px;" width="5%">${data.contact}</td>
             <td style="padding: 5px;" width="5%">${data.email}</td>
-            <td style="padding: 5px;" width="5%">${data.dob}</td>
+           {{--   <td style="padding: 5px;" width="5%">${data.dob}</td>
             <td style="padding: 5px;" width="2%">${data.age} </td>
             <td style="padding: 5px;" width="5%">${data.city}</td>
             <td style="padding: 5px;" width="15%">${data.address}${data.pincode}</td>
 
-            <td style="padding: 5px;" width="5%">${data.marriage_date}</td>
+            <td style="padding: 5px;" width="5%">${data.marriage_date}</td> --}}
 
         </tr>
     </table>
 </div>
-
 
 
 
@@ -949,5 +940,6 @@ $("#selectProject").on('change', function() {
 
 
 
-
 @endsection
+
+
