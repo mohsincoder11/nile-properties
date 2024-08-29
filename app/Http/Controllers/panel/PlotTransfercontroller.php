@@ -243,7 +243,7 @@ class PlotTransferController extends Controller
 
     public function user_transfer_plot_store(Request $request, $inquiry_id)
     {
-        dd($request->all());
+        // dd($request->all());
         DB::beginTransaction();
         try {
             // Step 1: Mark the old record as transferred
