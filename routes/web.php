@@ -442,7 +442,9 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/fetchqueries/{id}', [UserModelController::class, 'fetchQueries'])->name('fetchqueries');
-    Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse'); //adminresponse to queries
+    // Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse'); //adminresponse to queries
+    Route::post('/updateAdminResponse', [UserModelController::class, 'updateAdminResponse'])->name('updateAdminResponse');
+    Route::post('/submit-all-responses', [UserModelController::class, 'submitAllResponses'])->name('submitAllResponses');
 
 
 
