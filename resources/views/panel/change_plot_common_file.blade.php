@@ -18,11 +18,11 @@
                 <label for="Plot name">Plot Name</label>
                 <select class="form-control" name="plot_no" id="selectPlot">
                     <option value="">--Select--</option>
-                    {{-- @foreach ($plots as $plot)
+                    @foreach ($plots as $plot)
                     <option value="{{ $plot->plot_no }}" {{ $enquiry->plot_no == $plot->plot_no ? 'selected' : '' }}>
                         {{ $plot->plot_no }}
                     </option>
-                    @endforeach --}}
+                    @endforeach
                 </select>
             </div>
             <div class="col-md-2" style="margin-top: 2%;">
@@ -31,44 +31,3 @@
         </div>
     </div>
 </form>
-
-
-<script>
-    $(document).ready(function () {
-
-
-    // Handle status dropdown change event
-    $('#selectProject').change(function () {
-        var projectId = $(this).val();
-
-        var statusId = $(this).val();
-
-        // Make an AJAX request to fetch projects based on the selected status
-        $.ajax({
-            url: "{{ url('getplots') }}/" + statusId,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-
-                // console.log('AJAX Success:', data);
-                // Update the options of the project dropdown
-                var selectPlot = $('#selectPlot');
-                selectPlot.empty();
-
-                // Add a default option
-                selectPlot.append('<option value="">--Select--</option>');
-
-                // Add fetched projects to the dropdown
-                $.each(data, function (key, value) {
-                    selectPlot.append('<option value="' + value.plot_no + '">' + value.plot_no + '</option>');
-                });
-            },
-
-            error: function (xhr, status, error) {
-                console.error(error);
-            }
-        });
-    });
-});
-</script>
-

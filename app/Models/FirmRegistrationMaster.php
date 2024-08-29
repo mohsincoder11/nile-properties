@@ -9,7 +9,7 @@ class FirmRegistrationMaster extends Model
 {
     use HasFactory;
     protected $table = "firm_registration_master";
-    protected $primaryKey = 'id';
+
     protected $fillable = [
         'name',
         'email',
@@ -32,4 +32,5 @@ class FirmRegistrationMaster extends Model
     {
         return $this->hasMany(FirmBankDetailsRegistrationMaster::class, 'firm_id', 'id');
     }
+
 }

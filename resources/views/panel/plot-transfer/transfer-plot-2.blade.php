@@ -489,9 +489,9 @@
                     </div>
                 </td>
                 <td style="padding: 2px;" width="1%">
-                    <select class="form-control select no_click_readonly" name="staus_token" data-live-search="true">
+                    <select class="form-control select no_click_readonly" name="status_token" data-live-search="true">
                         @foreach($tokenStatuses as $tokenStatus)
-                        <option value="{{ $tokenStatus->token }}" @if($inquiry->status_token == $tokenStatus->id) selected @endif>
+                        <option value="{{ $tokenStatus->id }}" @if($inquiry->status_token == $tokenStatus->id) selected @endif>
                             {{ $tokenStatus->token }}
                         </option>
                         @endforeach

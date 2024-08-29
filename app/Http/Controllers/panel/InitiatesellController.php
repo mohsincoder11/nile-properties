@@ -276,7 +276,7 @@ class InitiatesellController extends Controller
             'plot_id' => null,
             'firm_id' => null,
             'project_id' => null,
-            'status' => null,
+            'status' => 'pending',
             'initial_enquiry_id' => $initialEnquiry->id,
         ]);
 
@@ -416,7 +416,7 @@ class InitiatesellController extends Controller
 
 
         $agent = AgentRegistrationMaster::find($request->agent_id);
-        $parentAgent = $agent->parent;
+        $parentAgent = $agent->parent_id;
 
         // Update the agent's total_sales
         $agent->total_sales += $request->total_cost;
