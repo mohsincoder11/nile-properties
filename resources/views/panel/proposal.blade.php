@@ -113,6 +113,66 @@
 
                     <!-- Add more boxes as needed -->
                 </div>
+<<<<<<< refs/remotes/origin/shiba
+=======
+
+                <div class="col-md-1" align="center"></div>
+                <!-- <div class="col-md-12">
+                <div class="col-md-2" align="center">
+                    <div class="card">
+                        <h5><span style="color: #FFF;" class="fa fa-home"><b style="color: #FFF;">
+                                    Sharique</b></span></h5>
+                        <p style="color: #FFF;font-size: x-small;">Gadge Nagar/2,Amravati
+                            <br>Folloup Date :2021-03-21
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-2" align="center">
+                    <div class="card">
+                        <h5><span style="color: #FFF;" class="fa fa-home"><b style="color: #FFF;">
+                                    Lorem</b></span></h5>
+                        <p style="color: #FFF;font-size: x-small;">Gadge Nagar/2,Amravati
+                            <br>Folloup Date :2021-03-21
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-2" align="center">
+                    <div class="card">
+                        <h5><span style="color: #FFF;" class="fa fa-home"><b style="color: #FFF;">
+                                    Yash</b></span></h5>
+                        <p style="color: #FFF;font-size: x-small;">Gadge Nagar/2,Amravati
+                            <br>Folloup Date :2021-03-21
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-2" align="center">
+                    <div class="card">
+                        <h5><span style="color: #FFF;" class="fa fa-home"><b style="color: #FFF;">
+                                    Tarique</b></span></h5>
+                        <p style="color: #FFF;font-size: x-small;">Gadge Nagar/2,Amravati
+                            <br>Folloup Date :2021-03-21
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-2" align="center">
+                    <div class="card">
+                        <h5><span style="color: #FFF;" class="fa fa-home"><b style="color: #FFF;">
+                                    Lorem</b></span></h5>
+                        <p style="color: #FFF;font-size: x-small;">Gadge Nagar/2,Amravati
+                            <br>Folloup Date :2021-03-21
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-2" align="center">
+                    <div class="card">
+                        <h5><span style="color: #FFF;" class="fa fa-home"><b style="color: #FFF;">
+                                    Yash</b></span></h5>
+                        <p style="color: #FFF;font-size: x-small;">Gadge Nagar/2,Amravati
+                            <br>Folloup Date :2021-03-21
+                        </p>
+                    </div>
+                </div> -->
+>>>>>>> local
             </div>
 
             <div class="col-md-1" align="center"></div>
@@ -332,6 +392,84 @@
                 </div>
             </div>
         </div>
+<<<<<<< refs/remotes/origin/shiba
+=======
+        <!-- <div class="col-md-12" style="margin-top:5px;">
+
+
+
+                                <div class="panel-body" style="margin-bottom:15px;">
+                                   <table class="table datatable">
+                                       <thead>
+                                           <tr>
+                                               <th>Sr. No.</th>
+                                               <th>Customer Details</th>
+                                               <th>Property Details</th>
+                                               <th>Agent</th>
+
+                                               <th>Action</th>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           <tr>
+                                               <td>1</td>
+
+                                               <td ><div class="popover__wrapper">
+                                                <a href="#">
+                                                  <h2 class="popover__title">Sharique Sheikh</h2>
+                                                </a>
+                                                <div class="popover__content">
+                                                  <div class="modal-area">
+                                                    <p>Address: Amravati<br>
+                                                        Mobile No. : 9579915551<br>
+                                                      </p>
+                                                  </div>
+                                                </div>
+                                              </div></td>
+
+                                             <td ><div class="popover__wrapper">
+                                                <a href="#">
+                                                  <h2 class="popover__title">1239 sq ft</h2>
+                                                </a>
+                                                <div class="popover__content">
+                                                  <div class="modal-area">
+                                                    <p>Open space<br>
+
+                                                      </p>
+                                                  </div>
+                                                </div>
+                                              </div></td>
+                                              <td ><div class="popover__wrapper">
+                                                <a href="#">
+                                                  <h2 class="popover__title">Kapil Sharma</h2>
+                                                </a>
+                                                <div class="popover__content">
+                                                  <div class="modal-area">
+                                                    <p>Address: Amravati<br>
+                                                        Mobile No. : 9579915551<br>
+                                                      </p>
+                                                  </div>
+                                                </div>
+                                              </div></td>
+
+                                               <td>
+
+                                                <button data-toggle="modal" data-target="#popup3" style="background-color:#1abc3d; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye" style="margin-left:5px;"></i></button>
+                                                <button style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit" style="margin-left:5px;"></i></button>
+                                                <button style="background-color:#ff0000; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-o" style="margin-left:5px;"></i></button>
+                                            </td>
+                                           </tr>
+
+
+                                       </tbody>
+                                   </table>
+                               </div>
+
+
+
+                       </div> -->
+
+>>>>>>> local
     </div>
     <!-- <div class="col-md-12" style="margin-top:5px;">
 
@@ -518,6 +656,7 @@
             </div>
         </div>
     </div>
+<<<<<<< refs/remotes/origin/shiba
 </div>
 <!-- PAGE CONTENT WRAPPER -->
 <div class="modal" id="popup3" tabindex="-1" role="dialog" aria-labelledby="largeModalHead" aria-hidden="true">
@@ -729,6 +868,222 @@
 
                         </tr>
                     </table>
+=======
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="modal" id="popup3" tabindex="-1" role="dialog" aria-labelledby="largeModalHead"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="H4">Initiated Sale</h4>
+                </div>
+                <div class="modal-body" style="height:30%;padding: 10px;">
+
+                    <div class="col-md-12">
+                        <table width="100%">
+
+                            <tr style="height:30px;">
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Client Name: <font color="#000099">Shrikant Lohiya</font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Mobile No: <font color="#000099">95799 15551</font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Address: <font color="#000099">Nagpur</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Sponser ID: <font color="#000099">8888 888888</font>
+                                    </label>
+                                </td>
+
+                            </tr>
+                            <tr style="height:30px;font-weight: bold;font-size: 14px;color: #3399ff;">
+                                <th>Nominee Details</th>
+                            </tr>
+                            <tr style="height:30px;">
+
+                                <td style="padding: 2px;" width="4%">
+                                    <label class="control-label">Nominee's Name: <font color="#000099">Kapil Sharma</font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="3%">
+                                    <label class="control-label">DOB/Age : <font color="#000099">12-12-1982/55</font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label">Relation : <font color="#000099">Father</font></label>
+                                </td>
+
+                                <td style="padding: 2px;" width="3%">
+                                    <label class="control-label">AADHAR No : <font color="#000099">1234 5678 9876</font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="3%">
+                                    <label class="control-label">PAN No : <font color="#000099">BHKPT 7029P</font></label>
+                                </td>
+                            </tr>
+                            <tr style="height:30px;font-weight: bold;font-size: 14px;color: #3399ff;">
+                                <th>Project Details</th>
+                            </tr>
+                            <tr style="height:30px;">
+
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Project : <font color="#000099">Nile Park</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Plot No. : <font color="#000099">45</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Square Meter : <font color="#000099">1500</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Square Ft : <font color="#000099">75</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Rate : <font color="#000099">Current</font></label>
+                                </td>
+                            </tr>
+                            <tr style="height:30px;">
+
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Total Cost : <font color="#000099">6577</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Discount(%) : <font color="#000099">Yes</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Discount Amt : <font color="#000099">Yes</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Financial Amt : <font color="#000099">5000</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Down Payment: <font color="#000099">2000</font></label>
+                                </td>
+                            </tr>
+                            <tr style="height:30px;">
+
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Balance Amt : <font color="#000099">5,00,0000</font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Tenure : <font color="#000099">50,000</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">EMI Amt : <font color="#000099">NA</font></label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Booking Dt : <font color="#000099">14-02-2024</font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Agreement Dt : <font color="#000099">16-02-2024</font>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr style="height:30px;">
+
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Status: <font color="#000099">Token 1</font> </label>
+                                </td>
+
+                                <!-- <td style="padding: 2px;" width="2%" colspan="2">
+                                                <table width="100%" border="1" style="margin-top: 5px;">
+                                                    <tr style="background-color:#f0f0f0; height:30px;">
+                                                        <th width="3%" style="text-align:center">Sr.No</th>
+                                                        <th width="10%" style="text-align:center">Added Layout Image</th>
+
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td style="padding:5px;" align="center">
+                                                            <label>1</label>
+                                                        </td>
+                                                        <td style="padding:5px;" align="center">
+                                                            <img src="{{ asset('panel/img/png.png') }}" width="20" height="20"/>
+                                                        </td>
+
+                                                    </tr>
+
+                                                </table>
+                                            </td> -->
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">EMI Start Date : <font color="#000099">14-04-2024</font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">Plot Status : <font color="#000099">Booked</font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <label class="control-label">A. Rate : <font color="#000099">2000 </font> </label>
+                                </td>
+                            </tr>
+                            <tr style="height:30px;">
+
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label">Refered By : <font color="#000099">Direct Source</font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="4%">
+                                    <label class="control-label">Executive Name : <font color="#000099">Pratik Mohod
+                                        </font>
+                                    </label>
+                                </td>
+                                <td style="padding: 2px;" width="3%" colspan="2">
+                                    <label class="control-label">Remarks : <font color="#000099">-------</font> </label>
+                                </td>
+                            </tr>
+
+                            <tr style="height:30px;font-weight: bold;font-size: 14px;color: #3399ff;">
+                                <th>Plot/Unit Transaction</th>
+                            </tr>
+                            <tr style="height:30px;">
+
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label"> Mauja : <font color="#000099">NA</font> </label>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label">Kh No. : <font color="#000099">NA</font> </label>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label">P.H.N : <font color="#000099">NA</font> </label>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label">Taluka : <font color="#000099">Amravati</font> </label>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label">District : <font color="#000099">Amravati</font> </label>
+                                </td>
+                            </tr>
+                            <tr style="height:30px;font-weight: bold;font-size: 14px;color: #3399ff;">
+                                <th>Direction</th>
+                            </tr>
+                            <tr style="height:30px;">
+
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label"> East : <font color="#000099">NA</font> </label>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label">West : <font color="#000099">NA</font> </label>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label">North : <font color="#000099">NA</font> </label>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <label class="control-label">South : <font color="#000099">NA</font> </label>
+                                </td>
+
+                            </tr>
+                        </table>
+>>>>>>> local
 
 
                 </div>
