@@ -90,7 +90,7 @@ class PlotTransferController extends Controller
                 'emi_amount' => $request->emi_ammount,
                 'booking_date' => Carbon::createFromFormat('d/m/Y', $request->booking_date)->toDateString(),
                 'agreement_date' => Carbon::createFromFormat('d/m/Y', $request->aggriment_date)->toDateString(),
-                'status_token' => $request->staus_token,
+                'status_token' => $request->status_token,
                 'emi_start_date' => Carbon::createFromFormat('d/m/Y', $request->emi_start_date)->toDateString(),
                 'plot_sale_status' => $request->plot_sale_status,
                 'a_rate' => $request->a_rate,
@@ -243,7 +243,7 @@ class PlotTransferController extends Controller
 
     public function user_transfer_plot_store(Request $request, $inquiry_id)
     {
-        // dd($request->all());
+        dd($request->all());
         DB::beginTransaction();
         try {
             // Step 1: Mark the old record as transferred
@@ -268,7 +268,7 @@ class PlotTransferController extends Controller
                 'emi_amount' => $request->emi_ammount,
                 'booking_date' => Carbon::createFromFormat('d/m/Y', $request->booking_date)->toDateString(),
                 'agreement_date' => Carbon::createFromFormat('d/m/Y', $request->aggriment_date)->toDateString(),
-                'status_token' => $request->staus_token,
+                'status_token' => $request->status_token,
                 'emi_start_date' => Carbon::createFromFormat('d/m/Y', $request->emi_start_date)->toDateString(),
                 'plot_sale_status' => $request->plot_sale_status,
                 'a_rate' => $request->a_rate,
@@ -419,5 +419,5 @@ class PlotTransferController extends Controller
     }
     
 
-//    Hello
+   
 }

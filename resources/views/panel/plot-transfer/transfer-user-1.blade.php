@@ -640,11 +640,11 @@
                                             </div>
                                         </td>
                                         <td style="padding: 2px;" width="1%">
-                                            <select class="form-control select" name="staus_token"
+                                            <select class="form-control select" name="status_token"
                                                 data-live-search="true">
                                                 <option value="" selected>Select Status</option>
                                                 @foreach ($tokenStatuses as $tokenStatus)
-                                                    <option value="{{ $tokenStatus->token }}">{{ $tokenStatus->token }}
+                                                    <option value="{{ $tokenStatus->id }}">{{ $tokenStatus->token }}
                                                     </option>
                                                 @endforeach
                                             </select>

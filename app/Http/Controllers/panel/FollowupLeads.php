@@ -120,9 +120,7 @@ class FollowupLeads extends Controller
     {
         $statuses = PlotSaleStatus::all();
 
-        $enquery = Enquiry::with('status_name', 'project_name', 'plot_name', 'client_name')
-        ->orderByDesc('created_at')
-        ->get();
+        $enquery = Enquiry::with('status_name', 'project_name', 'plot_name', 'client_name')->get();
 
         return view('panel.all_enquiry', compact('enquery', 'statuses'));
     }
