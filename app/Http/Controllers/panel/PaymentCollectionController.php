@@ -32,7 +32,6 @@ class PaymentCollectionController extends Controller
 
     public function getClientProjectPlotData(Request $request)
     {
-        // dd($request->all());
         $client_id = $request->input('client_id');
         $project_id = $request->input('project_id');
         $plot_no = $request->input('plot_no');
@@ -41,10 +40,8 @@ class PaymentCollectionController extends Controller
             ->first();
 
         $client = CustomerRegistrationMaster::where('id', $client_id)->first();
-
         $initialEnquiry = InitialEnquiry::with('emi')->where('project_id', $project_id)->where('plot_no', $plotNoFetch->id)->first();
         // dd($initialEnquiry);
-
         if ($client && $initialEnquiry) {
             $data = [
                 'client_name' => $client->name,
@@ -476,7 +473,6 @@ class PaymentCollectionController extends Controller
 
     public function getClientIdByPlot(Request $request)
     {
-
         $project_id = $request->input('project_id');
         $plotNo = $request->input('plot_no'); // Get plot number from request
 

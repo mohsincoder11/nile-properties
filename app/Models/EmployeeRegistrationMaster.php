@@ -25,7 +25,6 @@ class EmployeeRegistrationMaster extends Model
         'pan_number',
         'username',
         'password',
-        'user_id',
 
     ];
 
@@ -40,4 +39,3 @@ class EmployeeRegistrationMaster extends Model
 
 
 }
-

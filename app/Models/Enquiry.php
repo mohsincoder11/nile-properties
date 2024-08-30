@@ -60,13 +60,13 @@ class Enquiry extends Model
 
     public function client_name()
     {
-        return $this->hasOne(Client::class, 'id', 'client_id');
+        return $this->hasOne(User::class, 'id', 'client_id');
     }
 
-    // public function client_name()
-    // {
-    //     return $this->hasOne(CustomerRegistrationMaster::class, 'id', 'client_id');
-    // }
+    public function clients_name()
+    {
+        return $this->hasOne(User::class, 'id', 'client_id');
+    }
 
 
     // public function projectEntryAppendData()

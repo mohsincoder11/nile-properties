@@ -33,7 +33,6 @@ class AccountController extends Controller
 
     public function expense_store(Request $request)
     {
-        // dd($request->all());
         // Validate the incoming request data
         $rules = [
             'bill_no' => 'required|string|max:255',
@@ -41,13 +40,13 @@ class AccountController extends Controller
             'project_id' => 'required|integer',
             'plot_no' => 'required|integer',
             'income_category' => 'required|string|max:255',
-            // 'client_id' => 'required|integer', 
+            'client_id' => 'required|integer',
             'bank_name' => 'required|string|max:255',
             'amount' => 'required|numeric',
             'remarks' => 'required|string|max:255',
             'amount' => 'required|numeric',
             'mode_of_payment' => 'required|string|max:255',
-            'attach_proof' => 'required|file|mimes:jpg,png,pdf|max:2048', //
+            'attach_proof' => 'required|file|mimes:jpg,png,pdf|max:2048',
             'narration' => 'required|string|max:1000',
         ];
 
