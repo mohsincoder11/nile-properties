@@ -34,8 +34,8 @@ class CustomeStagesController extends Controller
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
         $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')
-        ->orderByDesc('updated_at')
-        ->get();
+            ->orderByDesc('updated_at')
+            ->get();
         return view('panel.registration', compact('nominee', 'client', 'inquery'));
     }
     public function checkStatus($id)

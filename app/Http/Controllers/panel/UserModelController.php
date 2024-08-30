@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\panel;
 
-use Log;
 use Razorpay\Api\Api;
 use App\Models\Enquiry;
 use App\Models\Occupation;
@@ -19,6 +18,7 @@ use App\Models\PlotSaleStatus;
 use Illuminate\Support\Carbon;
 use App\Models\UserModelPlotQuery;
 use App\Models\ClientDetailInitial;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
 use App\Models\NomineeDetailInitial;
@@ -273,7 +273,7 @@ class UserModelController extends Controller
             $installment = $request->input('installment');
 
             // Log the request data for debugging purposes
-            \Log::info('Razorpay Callback Received', $request->all());
+            Log::info('Razorpay Callback Received', $request->all());
 
             // Find the installment record
             $installmentRecord = EmiPaymentCollection::where('initial_enquiry_id', $initialEnquiryId)
@@ -283,7 +283,7 @@ class UserModelController extends Controller
             if ($installmentRecord) {
                 $installmentRecord->update(['status' => 'Paid']);
             } else {
-                \Log::error('Installment not found.', [
+                Log::error('Installment not found.', [
                     'initial_enquiry_id' => $initialEnquiryId,
                     'installment' => $installment,
                 ]);
@@ -356,7 +356,7 @@ class UserModelController extends Controller
 
                     return response()->json(['success' => 'Payment completed successfully.']);
                 } else {
-                    \Log::error('User associated with payment not found.', [
+                    Log::error('User associated with payment not found.', [
                         'payment_id' => $paymentId,
                         'order_id' => $orderId,
                         'user_id' => $payment->user_id,
@@ -364,14 +364,14 @@ class UserModelController extends Controller
                     return response()->json(['error' => 'User associated with payment not found.'], 404);
                 }
             } else {
-                \Log::error('Payment record not found.', [
+                Log::error('Payment record not found.', [
                     'order_id' => $orderId,
                     'payment_id' => $paymentId,
                 ]);
                 return response()->json(['error' => 'Payment record not found.'], 404);
             }
         } catch (\Exception $e) {
-            \Log::error('Razorpay Callback Error: ' . $e->getMessage(), [
+            Log::error('Razorpay Callback Error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
                 'request_data' => $request->all(),
             ]);

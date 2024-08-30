@@ -22,6 +22,12 @@
             object-fit: contain;
             /* Ensures the image scales proportionally and fits within its container */
         }
+
+        html,
+        body {
+
+            font-size: 12px;
+        }
     </style>
     <div class="page-content-wrap">
         <div class="row">
@@ -1667,8 +1673,8 @@
 </td>
 <td style="padding:5px;" align="center">
     ${aadharUrl ? `<a href="${aadharUrl}" target="_blank" download="aadhar">
-                                                                                                                                                                                                                                                                        <i class="fa fa-file-pdf-o" style="background-color:red;" aria-hidden="true"></i> AADHAR
-                                                                                                                                                                                                                                                                    </a>` : 'N/A'}
+                                                                                                                                                                                                                                                                                                <i class="fa fa-file-pdf-o" style="background-color:red;" aria-hidden="true"></i> AADHAR
+                                                                                                                                                                                                                                                                                            </a>` : 'N/A'}
     <input type="hidden" name="aadhar_existing[]" value="${clientData.aadhar}">
 </td>
 <td style="padding:5px;" align="center">
@@ -1677,8 +1683,8 @@
 </td>
 <td style="padding:5px;" align="center">
     ${panUrl ? `<a href="${panUrl}" target="_blank" download="pan">
-                                                                                                                                                                                                                                                                        <i class="fa fa-file-pdf-o" style="background-color:blue;" aria-hidden="true"></i> PAN
-                                                                                                                                                                                                                                                                    </a>` : 'N/A'}
+                                                                                                                                                                                                                                                                                                <i class="fa fa-file-pdf-o" style="background-color:blue;" aria-hidden="true"></i> PAN
+                                                                                                                                                                                                                                                                                            </a>` : 'N/A'}
     <input type="hidden" name="pan_existing[]" value="${clientData.pan}">
 </td>
 <td style="padding:5px;" align="center">

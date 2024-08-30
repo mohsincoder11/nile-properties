@@ -49,7 +49,7 @@
             transition-property: transform;
         }
 
-        .popover__wrapper:hover .popover__content {
+        .popover_wrapper:hover .popover_content {
             z-index: 100;
             opacity: 1;
             visibility: visible;
@@ -387,7 +387,7 @@
                     const initialEnquiryId = event.target.getAttribute('data-id');
 
                     // Fetch data based on initialEnquiryId
-                    fetch(`{{ route('fetchqueries', ['id' => ':id']) }}`.replace(':id', initialEnquiryId))
+                    fetch({{ route('fetchqueries', ['id' => ':id']) }}.replace(':id', initialEnquiryId))
                         .then(response => response.json())
                         .then(data => {
                             if (data.error) {
@@ -430,7 +430,7 @@
 
                 if (event.target.classList.contains('submit-response')) {
                     const queryId = event.target.getAttribute('data-id');
-                    const responseText = document.querySelector(`textarea[data-id="${queryId}"]`).value;
+                    const responseText = document.querySelector(textarea[data - id = "${queryId}"]).value;
 
                     if (!responseText.trim()) {
                         alert('Please enter a response.');
@@ -438,7 +438,7 @@
                     }
 
                     // Send the admin response to the server
-                    fetch(`{{ route('updateAdminResponse') }}`, {
+                    fetch({{ route('updateAdminResponse') }}, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -482,7 +482,7 @@
                     }
 
                     // Send all responses to the server
-                    fetch(`{{ route('submitAllResponses') }}`, {
+                    fetch({{ route('submitAllResponses') }}, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
