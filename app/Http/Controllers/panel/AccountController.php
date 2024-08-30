@@ -41,7 +41,7 @@ class AccountController extends Controller
             'project_id' => 'required|integer',
             'plot_no' => 'required|integer',
             'income_category' => 'required|string|max:255',
-            'client_id' => 'required|integer', //
+            // 'client_id' => 'required|integer', 
             'bank_name' => 'required|string|max:255',
             'amount' => 'required|numeric',
             'remarks' => 'required|string|max:255',
