@@ -305,6 +305,8 @@ Route::middleware(['auth'])->group(function () {
     // User Role
     Route::get('/user-roles', [UserRolesController::class, 'userRoles'])->name('user-roles');
     Route::post('/user-roles-store', [UserRolesController::class, 'userRolesStore'])->name('user-roles-store');
+    Route::get('user-roles-edit/{id}', [UserRolesController::class, 'UserRolesEdit'])->name('user-roles-edit');
+    Route::post('user-roles-update', [UserRolesController::class, 'userRolesUpdate'])->name('user-roles-update');
 
 
     // //section B
