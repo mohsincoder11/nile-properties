@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Days;
 use App\Models\Faqs;
-use App\Models\FirmRegistrationMaster;
 use App\Models\TimeSlot;
 use Illuminate\Support\Str;
 use App\Models\ProjectEntry;
@@ -13,12 +12,15 @@ use Illuminate\Http\Request;
 use App\Models\LayoutFeature;
 use App\Models\PlotSaleStatus;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Models\EmiPaymentCollection;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\FirmRegistrationMaster;
+
+
 use App\Models\ProductEntryAppendData;
 use App\Models\ProjectEntryAppendData;
-
-
 use Illuminate\Support\Facades\Storage;
 use App\Models\ProductEntryLayoutImages;
 use App\Models\ProjectEntryLayoutImages;
@@ -29,51 +31,53 @@ class ProjectEntryController extends Controller
 {
 
 
-   public function bulkploatappendatrow(Request $request)
-{
-    try {
-        // Decode base64 data to binary
-        $base64Data = $request->input('fileData');
-        $binaryData = base64_decode(preg_replace('#^data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#i', '', $base64Data));
+    public function bulkploatappendatrow(Request $request)
+    {
+        try {
+            // Decode base64 data to binary
+            $base64Data = $request->input('fileData');
+            $binaryData = base64_decode(preg_replace('#^data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#i', '', $base64Data));
 
-        // Define the file name
-        $fileName = 'imported_file.xlsx';
+            // Define the file name
+            $fileName = 'imported_file.xlsx';
 
-        // Save binary data as a file in the public path
-        Storage::disk('public')->put('temp/' . $fileName, $binaryData);
+            // Save binary data as a file in the public path
+            Storage::disk('public')->put('temp/' . $fileName, $binaryData);
 
-        // Read data from the file
-        $data = Excel::toArray([], Storage::disk('public')->path('temp/' . $fileName));
-        $rows = array_slice($data[0], 1);
+            // Read data from the file
+            $data = Excel::toArray([], Storage::disk('public')->path('temp/' . $fileName));
+            $rows = array_slice($data[0], 1);
 
-        $response = [];
-        foreach ($rows as $index => $row) {
-            // Process your data here
-            if (isset($row[0], $row[1], $row[2])) {
-                $response[] = [
-                    'plot_no' => $row[0],
-                    'plot_width' => $row[1],
-                    'plot_length' => $row[2],
-                    'area_sqrft' => $row[3] ?? null,
-                    'area_sqrmt' => $row[4] ?? null,
-                    'east' => $row[5] ?? null,
-                    'west' => $row[6] ?? null,
-                    'south' => $row[7] ?? null,
-                    'north' => $row[8] ?? null,
-                    'rate' => $row[9] ?? null,
-                    'amount' => $row[10] ?? null,
-                ];
+            $response = [];
+            foreach ($rows as $index => $row) {
+                // Process your data here
+                if (isset($row[0], $row[1], $row[2])) {
+                    $response[] = [
+                        'plot_no' => $row[0],
+                        'plot_width' => $row[1],
+                        'plot_length' => $row[2],
+                        'area_sqrft' => $row[3] ?? null,
+                        'area_sqrmt' => $row[4] ?? null,
+                        'east' => $row[5] ?? null,
+                        'west' => $row[6] ?? null,
+                        'south' => $row[7] ?? null,
+                        'north' => $row[8] ?? null,
+                        'rate' => $row[9] ?? null,
+                        'amount' => $row[10] ?? null,
+                        'minimum_down_payment' => $row[11] ?? null,
+                        'tenure' => $row[12] ?? null,
+                    ];
+                }
             }
+
+            // Remove the file
+            Storage::disk('public')->delete('temp/' . $fileName);
+
+            return response()->json(['success' => true, 'data' => $response]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error importing data. ' . $e->getMessage()]);
         }
-
-        // Remove the file
-        Storage::disk('public')->delete('temp/' . $fileName);
-
-        return response()->json(['success' => true, 'data' => $response]);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => 'Error importing data. ' . $e->getMessage()]);
     }
-}
 
 
 
@@ -137,12 +141,15 @@ class ProjectEntryController extends Controller
             'facebook' => $request->input('facebook'),
             'twitter' => $request->input('twitter'),
 
+
+
             'schedule_payment' => $request->input('schedule_payment'),
             'linkedin' => $request->input('linkedin'),
             'instagram' => $request->input('instagram'),
             'layout_description' => $request->input('layout_description'),
             'layout_feature' => is_array($request->input('layout_feature')) ? implode(', ', $request->input('layout_feature')) : '',
         ];
+
 
         // Store 'site_map' image in public path
         if ($request->hasFile('site_map')) {
@@ -257,6 +264,8 @@ class ProjectEntryController extends Controller
                 'north' => $request->input('north'),
                 'rate' => $request->input('rate'),
                 'amount' => $request->input('amount'),
+                'minimum_down_payment' => $request->input('minimum_down_payment'),
+                'tenure' => $request->input('tenure'),
             ];
 
             foreach ($plotData['plot_no'] as $key => $value) {
@@ -273,6 +282,8 @@ class ProjectEntryController extends Controller
                     'north' => $plotData['north'][$key],
                     'rate' => $plotData['rate'][$key],
                     'amount' => $plotData['amount'][$key],
+                    'minimum_down_payment' => $plotData['minimum_down_payment'][$key],
+                    'tenure' => $plotData['tenure'][$key],
 
                 ]);
             }
@@ -323,6 +334,8 @@ class ProjectEntryController extends Controller
             'twitter' => $request->input('twitter'),
             'linkedin' => $request->input('linkedin'),
             'instagram' => $request->input('instagram'),
+
+
         ];
 
         if ($request->hasFile('profile_picture')) {
@@ -446,6 +459,8 @@ class ProjectEntryController extends Controller
             'north' => $request->input('north'),
             'rate' => $request->input('rate'),
             'amount' => $request->input('amount'),
+            'minimum_down_payment' => $request->input('minimum_down_payment'),
+            'tenure' => $request->input('tenure'),
 
         ];
 
@@ -465,6 +480,8 @@ class ProjectEntryController extends Controller
                         'north' => $plotData['north'][$key],
                         'rate' => $plotData['rate'][$key],
                         'amount' => $plotData['amount'][$key],
+                        'minimum_down_payment' => $plotData['minimum_down_payment'][$key],
+                        'tenure' => $plotData['tenure'][$key],
 
                     ]
                 );
@@ -606,29 +623,37 @@ class ProjectEntryController extends Controller
             $file = $request->file('file');
             $data = Excel::toArray([], $file);
             $rows = array_slice($data[0], 1);
-            //dd($data);
 
             DB::beginTransaction();
 
             foreach ($rows as $index => $row) {
-                if ($row[0] !== null && $row[1] !== null && $row[2] !== null) {
+                // Check if row has enough columns and is not empty
+                if (isset($row[0]) && isset($row[1]) && isset($row[2])) {
+                    // Optional: Log to check the row
+                    // Log::info("Processing row: " . json_encode($row));
+
                     $projectEntryId = $request->input('project_entry_id');
 
+                    // Ensure that all necessary fields are set
                     ProjectEntryAppendData::create([
                         'project_entry_id' => $projectEntryId,
-                        'plot_no' => $row[0],
-                        'plot_width' => $row[1],
-                        'plot_length' => $row[2],
-                        'area_sqrft' => $row[3],
-                        'area_sqrmt' => $row[4],
-                        'east' => $row[5],
-                        'west' => $row[6],
-                        'south' => $row[7],
-                        'north' => $row[8],
-                        'rate' => $row[9],
-                        'amount' => $row[10],
-
+                        'plot_no' => $row[0] ?? null,
+                        'plot_width' => $row[1] ?? null,
+                        'plot_length' => $row[2] ?? null,
+                        'area_sqrft' => $row[3] ?? null,
+                        'area_sqrmt' => $row[4] ?? null,
+                        'east' => $row[5] ?? null,
+                        'west' => $row[6] ?? null,
+                        'south' => $row[7] ?? null,
+                        'north' => $row[8] ?? null,
+                        'rate' => $row[9] ?? null,
+                        'amount' => $row[10] ?? null,
+                        'minimum_down_payment' => $row[11] ?? null,
+                        'tenure' => $row[12] ?? null,
                     ]);
+                } else {
+                    // Optional: Log skipped row
+                    Log::warning("Skipped row: " . json_encode($row));
                 }
             }
 

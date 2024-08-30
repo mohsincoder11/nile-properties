@@ -415,6 +415,7 @@ Route::middleware(['auth'])->group(function () {
     //usermodel controller
 
     Route::get('/fetchPlotspaymentsectionbyuser', [UserModelController::class, 'fetchPlotspaymentsectionbyuser'])->name('fetchPlotspaymentsectionbyuser');
+    Route::get('/user-fetch-plots-details', [UserModelController::class, 'userfetchPlotDetails'])->name('userfetchPlotDetails');
 
     Route::get('/getProjectsByFirmbyuser/{firm_id}', [UserModelController::class, 'getProjectsByFirmbyuser'])->name('getProjectsByFirmbyuser.firm');
     Route::get('/user-model-dashboard', [UserModelController::class, 'userdashboard'])->name('user_model.dashboard');
@@ -449,9 +450,11 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/fetchqueries/{id}', [UserModelController::class, 'fetchQueries'])->name('fetchqueries');
+
     // Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse'); //adminresponse to queries
     Route::post('/updateAdminResponse', [UserModelController::class, 'updateAdminResponse'])->name('updateAdminResponse');
     Route::post('/submit-all-responses', [UserModelController::class, 'submitAllResponses'])->name('submitAllResponses');
+
 
 
 

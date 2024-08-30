@@ -37,6 +37,45 @@ use Razorpay\Api\Errors\SignatureVerificationError;
 class UserModelController extends Controller
 {
 
+
+
+
+    public function userfetchPlotDetails(Request $request)
+    {
+        $plotId = $request->get('plotId');
+
+        // Assuming `ProjectEntryAppendData` is your model and it has plot details
+        $plotDetails = ProjectEntryAppendData::where('id', $plotId)->first();
+
+        if ($plotDetails) {
+            // Extract values from plotDetails
+            $amount = (float) $plotDetails->amount;
+            $minimumDownPayment = (float) $plotDetails->minimum_down_payment;
+            $tenureMonths = (int) $plotDetails->tenure;
+
+            // Calculate balance amount
+            $balanceAmount = $amount - $minimumDownPayment;
+            $balanceAmount = max($balanceAmount, 0); // Ensure balance amount is not negative
+
+            // Calculate EMI per month
+            $emiPerMonth = $tenureMonths > 0 ? $balanceAmount / $tenureMonths : 0;
+
+            // Calculate daily EMI based on 360 days (assuming 12 months = 360 days)
+            $emiPerDay = $tenureMonths > 0 ? $emiPerMonth / 30 : 0; // Dividing by 30 to get per day amount
+
+            // Prepare the data to send back
+            $data = [
+                'plotDetails' => $plotDetails,
+                'balanceAmount' => $balanceAmount,
+                'emiPerMonth' => $emiPerMonth,
+                'emiPerDay' => $emiPerDay,
+            ];
+
+            return response()->json($data);
+        }
+
+        return response()->json(['error' => 'Plot not found'], 404);
+    }
     public function userdashboard()
     {
 
@@ -98,7 +137,7 @@ class UserModelController extends Controller
 
         // Retrieve plots where the plot_no is in the initialEnquiries
         $plots = ProjectEntryAppendData::where('project_entry_id', $projectId)
-            ->whereIn('plot_no', $initialEnquiries)
+            ->whereIn('id', $initialEnquiries)
             ->get();
 
         // Return the filtered plots as a JSON response
@@ -457,9 +496,9 @@ class UserModelController extends Controller
         $initialEnquiry->balance_amount = $request->balence_amount;
         $initialEnquiry->tenure = $request->tenure;
         $initialEnquiry->emi_amount = $request->emi_ammount;
-        $initialEnquiry->booking_date =  $request->booking_date;
+        $initialEnquiry->booking_date = now();
         $initialEnquiry->agreement_date =  $request->aggriment_date;
-        $initialEnquiry->status_token = $request->staus_token;
+        // $initialEnquiry->status_token = $request->staus_token;
         $initialEnquiry->emi_start_date =  $request->emi_start_date;
         $initialEnquiry->plot_sale_status = $request->plot_sale_status;
         $initialEnquiry->a_rate = $request->a_rate;

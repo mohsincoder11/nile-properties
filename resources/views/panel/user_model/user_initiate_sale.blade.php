@@ -576,7 +576,7 @@
                             <div class="col-md-12" style="margin-top: 2vh;">
                                 <table width="100%">
                                     <tr style="height:30px;">
-                                        <th width="2%">Firm</th>
+                                        <th width="2%">Entity</th>
                                         <th width="2%">Project</th>
                                         <th width="2%">Plot No.</th>
                                         <th width="1%">Measurement (ft x ft)</th>
@@ -618,22 +618,22 @@
                                         </td>
                                         <td style="padding: 2px;" width="1%">
                                             <input type="text" class="form-control" id="Measurement"
-                                                name="Measurement" placeholder="" required />
+                                                name="Measurement" placeholder="" required readonly />
                                         </td>
                                         <td style="padding: 2px;" width="1%">
                                             <input type="text" class="form-control" id="square_meter"
                                                 name="square_meter" placeholder="" oninput="convertSquareUnits(); "
-                                                required />
+                                                required readonly />
                                         </td>
 
                                         <td style="padding: 2px;" width="1%">
                                             <input type="text" class="form-control" id="square_ft" name="square_ft"
-                                                placeholder="" oninput="convertSquareUnits(); calculateAmounts()"
-                                                required />
+                                                placeholder="" oninput="convertSquareUnits(); calculateAmounts()" required
+                                                readonly />
                                         </td>
                                         <td style="padding: 2px;" width="1%">
                                             <input type="text" class="form-control" id="rate" name="rate"
-                                                placeholder="" oninput="calculateAmounts()" required />
+                                                placeholder="" oninput="calculateAmounts()" required readonly />
                                         </td>
                                         <td style="padding: 2px;" width="1%">
                                             <label id="total_cost" class="control-label">
@@ -661,46 +661,55 @@
 
                                 <table width="100%">
                                     <tr style="height:30px;">
-                                        <th width="1%">Final Amount</th>
-                                        <th width="1%">Down Payment</th>
+                                        {{-- <th width="1%">Final Amount</th> --}}
+                                        <th width="1%"> Token Amount</th>
                                         <th width="1%">Balance Amount</th>
                                         <th width="1">Tenure</th>
                                         <th width="1%">EMI Amount</th>
-                                        <th width="1%">Booking Date</th>
+                                        {{-- <th width="1%">Booking Date</th> --}}
                                         <th width="1%">Agreement Date</th>
 
-                                        <th width="1%">Status</th>
+                                        {{-- <th width="1%">Status</th> --}}
                                         <th width="1%">EMI Start Date</th>
 
                                     </tr>
 
 
                                     <tr>
-                                        <td style="padding: 2px;" width="1%">
+                                        {{-- <td style="padding: 2px;" width="1%">
                                             <input type="text" class="form-control" id="final_amount"
                                                 name="final_amount" placeholder="" readonly />
-                                        </td>
+                                        </td> --}}
                                         <td style="padding: 2px;" width="1%">
                                             <input type="text" class="form-control" name="down_payment"
-                                                placeholder="" oninput="calculateAmounts()" required />
+                                                id="down_payment" placeholder="" oninput="calculateAmounts()" required
+                                                readonly />
                                         </td>
-                                        <td id="balence_amount" style="padding: 2px;" width="1%">
+                                        <td style="padding: 2px;" width="1%">
+                                            <input type="text" class="form-control"name="balence_amount"
+                                                id="balence_amount_input" placeholder="" readonly />
+                                        </td>
+                                        {{-- <td id="balence_amount" style="padding: 2px;" width="1%">
                                             <input type="hidden" name="balence_amount" id="balence_amount_input">
                                             <label id="balence_amount_label" class="control-label">
                                                 <font id="balence_amount_display" color="#ff0000"></font>
                                             </label>
-                                        </td>
+                                        </td> --}}
                                         <td style="padding: 2px;" width="1%">
                                             <input type="text" class="form-control" name="tenure" placeholder=""
-                                                oninput="calculateAmounts()" required />
+                                                id="tenure" oninput="calculateAmounts()" required readonly />
                                         </td>
-                                        <td id="emi_ammount" style="padding: 2px;" width="1%">
+                                        <td style="padding: 2px;" width="1%">
+                                            <input type="text" class="form-control" name="emi_ammount" placeholder=""
+                                                id="emi_ammount_input" oninput="calculateAmounts()" readonly />
+                                        </td>
+                                        {{-- <td id="emi_ammount" style="padding: 2px;" width="1%">
                                             <input type="hidden" name="emi_ammount" id="emi_ammount_input">
                                             <label id="emi_ammount_label" class="control-label">
                                                 <font id="emi_ammount_display" color="#ff0000"></font>
                                             </label>
-                                        </td>
-                                        <td style="padding: 2px;" width="1%">
+                                        </td> --}}
+                                        {{-- <td style="padding: 2px;" width="1%">
                                             <div class="input-group" style="display: flex;">
                                                 <input type="text" id="booking_date" name="booking_date"
                                                     class="form-control datepicker" placeholder="DD/MM/YYYY" required />
@@ -711,7 +720,8 @@
                                             </div>
 
 
-                                        </td>
+                                        </td> --}}
+
                                         <td style="padding: 2px;" width="1%">
                                             <div class="input-group" style="display: flex;">
                                                 <input type="text" id="aggriment_date" name="aggriment_date"
@@ -722,7 +732,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="padding: 2px;" width="1%">
+                                        {{-- <td style="padding: 2px;" width="1%">
                                             <select class="form-control select" name="staus_token"
                                                 data-live-search="true">
                                                 @foreach ($tokenStatuses as $tokenStatus)
@@ -730,7 +740,7 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                        </td>
+                                        </td> --}}
                                         <td style="padding: 2px;" width="1%">
                                             <div class="input-group" style="display: flex;">
                                                 <input type="text" id="emi_start_date" name="emi_start_date"
@@ -749,10 +759,10 @@
                                     <tr style="height:30px;">
                                         {{-- <th width="1%">Plot Status</th> --}}
                                         {{-- <th width="1%">A. Rate</th> --}}
-                                        <th width="1%">Refered By</th>
+                                        {{-- <th width="1%">Refered By</th> --}}
                                         {{--  <th width="1" id="agent-label-container">Agent Name</th> --}}
                                         {{-- <th width="1" id="employee-label-container">Executive Name</th> --}}
-                                        <th width="2%">Remarks</th>
+                                        {{-- <th width="2%">Remarks</th> --}}
                                         <th width="2%">Mauja</th>
                                         <th width="2%">Kh No.</th>
                                         <th width="2%">P.H.N.</th>
@@ -777,17 +787,17 @@
                                         {{-- <td style="padding: 2px;" width="1%">
                                         <input type="text" class="form-control" name="a_rate" placeholder="" />
                                     </td> --}}
-                                        <td style="padding: 1px;" width="1%">
-                                            {{-- <input type="radio" id="agent_name" name="source_type" value="agent"
+                                        {{-- <td style="padding: 1px;" width="1%"> --}}
+                                        {{-- <input type="radio" id="agent_name" name="source_type" value="agent"
                                             onclick="toggleEmployeeSelect()"> --}}
-                                            {{-- <label for="agent_name">Agent Name</label>
+                                        {{-- <label for="agent_name">Agent Name</label>
                                         <input type="radio" id="executive_name" name="source_type" value="executive"
                                             onclick="toggleEmployeeSelect()"> --}}
-                                            {{-- <label for="executive_name">Executive Name</label> --}}
-                                            <input type="radio" id="direct_sourse" name="source_type" value="direct"
+                                        {{-- <label for="executive_name">Executive Name</label> --}}
+                                        {{-- <input type="radio" id="direct_sourse" name="source_type" value="direct"
                                                 onclick="toggleEmployeeSelect()">
-                                            <label for="direct_sourse">Direct Source</label>
-                                        </td>
+                                            <label for="direct_sourse">Direct Source</label> --}}
+                                        {{-- </td> --}}
                                         {{-- <td id="agent-select-container" style="padding: 2px; width: 1%;">
                                         <select class="form-control select" data-live-search="true" id="agent-select"
                                             name="agent_id">
@@ -807,29 +817,31 @@
                                         </select>
                                     </td> --}}
 
-                                        <td style="padding: 2px;" width="1%">
+                                        {{-- <td style="padding: 2px;" width="1%">
                                             <textarea type="text" class="form-control" name="remark" placeholder="" rows="2" cols="5"></textarea>
-                                        </td>
+                                        </td> --}}
                                         <td style="padding: 2px;" width="2%">
                                             <input type="text" class="form-control" id="mauja" name="mauja"
-                                                placeholder="" required />
+                                                placeholder="" required readonly />
+                                            <input type="hidden" class="form-control" id="direct_sourse"
+                                                name="direct_sourse" value="Yes" />
                                         </td>
                                         <td style="padding: 2px;" width="2%">
                                             <input type="text" class="form-control" id="kh_no" name="kh_no"
-                                                placeholder="" required />
+                                                placeholder="" required readonly />
                                         </td>
                                         <td style="padding: 2px;" width="2%">
                                             <input type="text" class="form-control" id="phn" name="phn"
-                                                placeholder="" required />
+                                                placeholder="" required readonly />
                                         </td>
 
                                         <td style="padding: 2px;" width="2%">
                                             <input type="text" class="form-control" id="taluka" name="taluka"
-                                                placeholder="" required />
+                                                placeholder="" required readonly />
                                         </td>
                                         <td style="padding: 2px;" width="2%">
                                             <input type="text" class="form-control" id="district" name="district"
-                                                placeholder="" required />
+                                                placeholder="" required readonly />
                                         </td>
 
                                     </tr>
@@ -1345,34 +1357,33 @@
             // Calculate the total cost
             let totalCost = squareFt * rate;
 
-            // Update the total cost display
+            // Update the total cost display and input
             document.getElementById('total_cost_display').textContent = totalCost.toFixed(2);
             document.getElementById('total_cost_input').value = totalCost.toFixed(2);
-            document.getElementById('final_amount').textContent = totalCost.toFixed(2);
-
 
             // Get the down payment
             let downPayment = parseFloat(document.getElementsByName('down_payment')[0].value) || 0;
 
             // Calculate the balance amount
             let balanceAmount = totalCost - downPayment;
-            balanceAmount = Math.max(balanceAmount, 0);
+            balanceAmount = Math.max(balanceAmount, 0); // Ensure balance amount is not negative
 
             // Update the balance amount display and hidden input
-            document.getElementById('balence_amount_display').textContent = balanceAmount.toFixed(2);
-            document.getElementById('balence_amount_input').value = balanceAmount.toFixed(2);
+            // document.getElementById('balence_amount_display').textContent = balanceAmount.toFixed(2);
+            // document.getElementById('balence_amount_input').value = balanceAmount.toFixed(2);
 
-            // Get the tenure in days and calculate EMI
+            // Get the tenure in months
             let tenureMonths = parseInt(document.getElementsByName('tenure')[0].value) || 0;
 
             // Calculate EMI amount
             let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
 
             // Update the EMI amount display and hidden input
-            document.getElementById('emi_ammount_display').textContent = emiAmount.toFixed(2);
-            document.getElementById('emi_ammount_input').value = emiAmount.toFixed(2);
+            // document.getElementById('emi_ammount_display').textContent = emiAmount.toFixed(2);
+            // document.getElementById('emi_ammount_input').value = emiAmount.toFixed(2);
         }
     </script>
+
     <script>
         $(document).ready(function() {
             $('#firm-select').on('change', function() {
@@ -1478,7 +1489,7 @@
                 if (plotId) {
                     $.ajax({
                         type: "GET",
-                        url: "{{ route('fetchPlotDetails') }}", // Assuming this route is correctly defined in Laravel
+                        url: "{{ route('userfetchPlotDetails') }}", // Assuming this route is correctly defined in Laravel
                         data: {
                             plotId: plotId
                         },
@@ -1486,9 +1497,9 @@
                             console.log(response);
 
                             // Assuming the response contains plot details as an array
-                            if (response && response.length > 0) {
-                                var plotDetails = response[
-                                0]; // Access the first element of the array
+                            if (response && response.plotDetails) {
+                                var plotDetails = response
+                                    .plotDetails; // Access plot details object
 
                                 // Log the values of plot_length and plot_width to check for issues
                                 console.log('Plot Length:', plotDetails.plot_length);
@@ -1517,6 +1528,18 @@
                                 $('input[name="west"]').val(plotDetails.west);
                                 $('input[name="north"]').val(plotDetails.north);
                                 $('input[name="south"]').val(plotDetails.south);
+                                $('input[name="down_payment"]').val(plotDetails
+                                    .minimum_down_payment);
+                                $('input[name="tenure"]').val(plotDetails.tenure);
+
+                                // Set values for balanceAmount and EMI
+                                $('#balence_amount_input').val(response.balanceAmount);
+                                $('#balence_amount_display').val(response.balanceAmount);
+
+                                console.log(response.balanceAmount);
+                                $('#emi_amount_display').text(response.emiPerMonth.toFixed(
+                                    2)); // Format to two decimal places
+                                $('#emi_ammount_input').val(response.emiPerMonth.toFixed(2));
                             }
                         },
                         error: function(xhr, status, error) {
@@ -1536,7 +1559,16 @@
                     $('input[name="west"]').val('');
                     $('input[name="north"]').val('');
                     $('input[name="south"]').val('');
+                    $('input[name="down_payment"]').val('');
+                    $('input[name="tenure"]').val('');
+
+                    // Clear values for balanceAmount and EMI
+                    $('#balance_amount').val('');
+                    $('#emi_amount_display').text('');
+                    $('#emi_amount_input').val('');
                 }
+
+
             });
 
         });
@@ -1635,8 +1667,8 @@
 </td>
 <td style="padding:5px;" align="center">
     ${aadharUrl ? `<a href="${aadharUrl}" target="_blank" download="aadhar">
-            <i class="fa fa-file-pdf-o" style="background-color:red;" aria-hidden="true"></i> AADHAR
-        </a>` : 'N/A'}
+                                                                                                                                                                                                                                                                        <i class="fa fa-file-pdf-o" style="background-color:red;" aria-hidden="true"></i> AADHAR
+                                                                                                                                                                                                                                                                    </a>` : 'N/A'}
     <input type="hidden" name="aadhar_existing[]" value="${clientData.aadhar}">
 </td>
 <td style="padding:5px;" align="center">
@@ -1645,8 +1677,8 @@
 </td>
 <td style="padding:5px;" align="center">
     ${panUrl ? `<a href="${panUrl}" target="_blank" download="pan">
-            <i class="fa fa-file-pdf-o" style="background-color:blue;" aria-hidden="true"></i> PAN
-        </a>` : 'N/A'}
+                                                                                                                                                                                                                                                                        <i class="fa fa-file-pdf-o" style="background-color:blue;" aria-hidden="true"></i> PAN
+                                                                                                                                                                                                                                                                    </a>` : 'N/A'}
     <input type="hidden" name="pan_existing[]" value="${clientData.pan}">
 </td>
 <td style="padding:5px;" align="center">
@@ -1747,5 +1779,18 @@
             });
         });
     </script>
+
+    <script>
+        $(function() {
+            $("#aggriment_date").datepicker({
+                dateFormat: 'dd/mm/yy', // Date format
+                beforeShowDay: function(date) {
+                    var day = date.getDay();
+                    return [(day != 0)]; // Disable Sunday (day 0)
+                }
+            });
+        });
+    </script>
+
 @stop
 top
