@@ -418,18 +418,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($role->sortByDesc('created_at') as $role)
+                                    @foreach ($role->sortByDesc('created_at') as $role)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $role->role ?? 'N/A' }}</td>
 
                                         <td>
-
-
+                                            <a href="{{route('user-roles-edit', $role->id)}}">
+                                                <button
+                                                    style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                                    type="button" class="btn btn-info" data-toggle="tooltip"
+                                                    data-placement="top" title="Edit"><i class="fa fa-edit"
+                                                        style="margin-left:5px;"></i></button>
+                                            </a>
                                         </td>
                                     </tr>
 
-                                    @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
