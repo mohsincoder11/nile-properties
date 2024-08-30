@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\panel;
 
+use Log;
 use Razorpay\Api\Api;
 use App\Models\Enquiry;
 use App\Models\Occupation;
@@ -16,9 +17,7 @@ use Illuminate\Http\Request;
 use App\Models\InitialEnquiry;
 use App\Models\PlotSaleStatus;
 use Illuminate\Support\Carbon;
-use App\Models\UserModelPlotQuery;
 use App\Models\ClientDetailInitial;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
 use App\Models\NomineeDetailInitial;
@@ -32,7 +31,7 @@ use Razorpay\Api\Errors\BadRequestError;
 use App\Models\CustomerRegistrationMaster;
 use App\Models\EmployeeRegistrationMaster;
 use App\Models\RazorpayPaymentOfUserModel;
-use App\Models\PlotRegistrationDocumentByClient;
+use App\Models\{PlotRegistrationDocumentByClient, UserModelPlotQuery};
 use Razorpay\Api\Errors\SignatureVerificationError;
 
 class UserModelController extends Controller
@@ -79,13 +78,13 @@ class UserModelController extends Controller
     }
     public function userdashboard()
     {
-        $firm  = FirmRegistrationMaster::all();
+
 
         $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
 
-        $queries = UserModelPlotQuery::all();
+
         $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
 
         if ($customerRegistration) {
@@ -96,7 +95,7 @@ class UserModelController extends Controller
         } else {
             $clientDetails = collect();
         }
-        return view('panel.user_model.user_dashboard', compact('nominee', 'client', 'clientDetails', 'firm', 'queries'));
+        return view('panel.user_model.user_dashboard', compact('nominee', 'client', 'clientDetails'));
     }
 
 
@@ -273,7 +272,7 @@ class UserModelController extends Controller
             $installment = $request->input('installment');
 
             // Log the request data for debugging purposes
-            Log::info('Razorpay Callback Received', $request->all());
+            \Log::info('Razorpay Callback Received', $request->all());
 
             // Find the installment record
             $installmentRecord = EmiPaymentCollection::where('initial_enquiry_id', $initialEnquiryId)
@@ -283,7 +282,7 @@ class UserModelController extends Controller
             if ($installmentRecord) {
                 $installmentRecord->update(['status' => 'Paid']);
             } else {
-                Log::error('Installment not found.', [
+                \Log::error('Installment not found.', [
                     'initial_enquiry_id' => $initialEnquiryId,
                     'installment' => $installment,
                 ]);
@@ -356,7 +355,7 @@ class UserModelController extends Controller
 
                     return response()->json(['success' => 'Payment completed successfully.']);
                 } else {
-                    Log::error('User associated with payment not found.', [
+                    \Log::error('User associated with payment not found.', [
                         'payment_id' => $paymentId,
                         'order_id' => $orderId,
                         'user_id' => $payment->user_id,
@@ -364,14 +363,14 @@ class UserModelController extends Controller
                     return response()->json(['error' => 'User associated with payment not found.'], 404);
                 }
             } else {
-                Log::error('Payment record not found.', [
+                \Log::error('Payment record not found.', [
                     'order_id' => $orderId,
                     'payment_id' => $paymentId,
                 ]);
                 return response()->json(['error' => 'Payment record not found.'], 404);
             }
         } catch (\Exception $e) {
-            Log::error('Razorpay Callback Error: ' . $e->getMessage(), [
+            \Log::error('Razorpay Callback Error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
                 'request_data' => $request->all(),
             ]);
@@ -1141,56 +1140,52 @@ class UserModelController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'firm_id' => 'required',
-            'project_id' => 'required',
-            'plot_no' => 'required',
-            'client_id' => 'required',
-            'query' => 'required',
+            'firm_id' => 'required|integer',
+            'project_id' => 'required|integer',
+            'plot_no' => 'required|integer',
+            'client_id' => 'required|integer',
+            'query' => 'required|string',
         ]);
 
-        // Fetch the matching ProjectEntryAppendData record
-        $fetchplot = ProjectEntryAppendData::where('project_entry_id', $request->input('project_id'))
-            ->where('plot_no', $request->input('plot_no'))
-            ->first();
+        // Check and handle missing fields
+        if ($request->has(['firm_id', 'project_id', 'plot_no', 'client_id', 'query'])) {
+            // Fetch the matching InitialEnquiry record
+            $initialEnquiry = InitialEnquiry::where([
+                ['firm_id', $request->input('firm_id')],
+                ['project_id', $request->input('project_id')],
+                ['plot_no', $request->input('plot_no')],
+            ])->first();
+            // dd($initialEnquiry);
 
-        if (!$fetchplot) {
-            // Redirect back with an error message if the plot is not found
-            return redirect()->back()->with('error', 'Plot not found.');
-        }
+            if ($initialEnquiry) {
+                // Create a new record in the UserModelPlotQuery table with initial_enquiry_id
+                UserModelPlotQuery::create([
+                    'firm_id' => $request->input('firm_id'),
+                    'project_id' => $request->input('project_id'),
+                    'plot_no' => $request->input('plot_no'),
+                    'client_id' => $request->input('client_id'),
+                    'query' => $request->input('query'),
+                    'initial_enquiry_id' => $initialEnquiry->id, // Store the matched InitialEnquiry ID
+                ]);
 
-        // Fetch the matching InitialEnquiry record
-        $initialEnquiry = InitialEnquiry::where('firm_id', $request->input('firm_id'))
-            ->where('project_id', $request->input('project_id'))
-            ->where('plot_no', $fetchplot->id)
-            ->first();
-
-        if ($initialEnquiry) {
-            // Create a new record in the UserModelPlotQuery table with initial_enquiry_id
-            UserModelPlotQuery::create([
-                'firm_id' => $request->input('firm_id'),
-                'project_id' => $request->input('project_id'),
-                'plot_no' => $fetchplot->id,
-                'client_id' => $request->input('client_id'),
-                'query' => $request->input('query'),
-                'initial_enquiry_id' => $initialEnquiry->id, // Store the matched InitialEnquiry ID
-            ]);
-
-            // Redirect back with a success message
-            return redirect()->back()->with('success', 'Query uploaded successfully!');
+                // Redirect back with a success message
+                return redirect()->back()->with('success', 'Query uploaded successfully!');
+            } else {
+                // Redirect back with an error message if InitialEnquiry record is not found
+                return redirect()->back()->with('error', 'No matching InitialEnquiry record found.');
+            }
         } else {
-            // Redirect back with an error message if InitialEnquiry record is not found
-            return redirect()->back()->with('error', 'No matching InitialEnquiry record found.');
+            // Redirect back with an error message if fields are missing
+            return redirect()->back()->with('error', 'Some required fields are missing.');
         }
     }
-
-
 
     public function fetchQueries($id)
     {
         $query = UserModelPlotQuery::where('initial_enquiry_id', $id)
-            // ->whereNull('admin_response')
-            ->orderByDesc('created_at')
-            ->get();
+        // ->whereNull('admin_response')
+        ->orderByDesc('created_at')
+        ->get();
 
         if ($query) {
             return response()->json($query);
@@ -1242,28 +1237,28 @@ class UserModelController extends Controller
     }
 
 
-    public function submitAllResponses(Request $request)
-    {
-        // Validate the incoming request
-        $request->validate([
-            'responses' => 'required|array',
-            'responses.*.query_id' => 'required|integer',
-            'responses.*.admin_response' => 'required|string',
-        ]);
+public function submitAllResponses(Request $request)
+{
+    // Validate the incoming request
+    $request->validate([
+        'responses' => 'required|array',
+        'responses.*.query_id' => 'required|integer',
+        'responses.*.admin_response' => 'required|string',
+    ]);
 
-        foreach ($request->responses as $response) {
-            // Find the query by ID
-            $query = UserModelPlotQuery::find($response['query_id']);
+    foreach ($request->responses as $response) {
+        // Find the query by ID
+        $query = UserModelPlotQuery::find($response['query_id']);
 
-            if ($query) {
-                // Update the admin response
-                $query->admin_response = $response['admin_response'];
-                $query->save();
-            }
+        if ($query) {
+            // Update the admin response
+            $query->admin_response = $response['admin_response'];
+            $query->save();
         }
-
-        return response()->json(['success' => true, 'message' => 'All responses updated successfully']);
     }
+
+    return response()->json(['success' => true, 'message' => 'All responses updated successfully']);
+}
 
     public function updateAdminResponseBulk(Request $request)
     {
@@ -1289,4 +1284,5 @@ class UserModelController extends Controller
 
         return response()->json(['success' => $success]);
     }
+
 }
