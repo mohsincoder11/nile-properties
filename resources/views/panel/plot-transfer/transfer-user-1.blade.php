@@ -363,12 +363,12 @@
                                     <select id="client-select" class="form-control select" data-live-search="true">
                                         <option value="">Select a client</option>
                                         @foreach ($enquiries as $enquiry)
-                                            <option value="{{ $enquiry->client_name->id }}"
-                                                data-client-name="{{ $enquiry->client_name->name }}"
-                                                data-client-phone="{{ $enquiry->client_name->contact }}"
-                                                data-client-address="{{ $enquiry->client_name->address }}"
+                                            <option value="{{ $enquiry->client_name->id ?? '' }}"
+                                                data-client-name="{{ $enquiry->client_name->name ?? '' }}"
+                                                data-client-phone="{{ $enquiry->client_name->contact ?? '' }}"
+                                                data-client-address="{{ $enquiry->client_name->address ?? ''}}"
                                                 data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
-                                                {{ $enquiry->client_name->name }}
+                                                {{ $enquiry->client_name->name ?? ''}}
                                             </option>
                                         @endforeach
                                     </select>
@@ -545,7 +545,7 @@
                                         </td>
                                         <td style="padding: 2px;" width="1%">
                                             <input type="text" class="form-control" value=""
-                                                name="square_meter" placeholder="" required />
+                                            id="square_meter" name="square_meter" placeholder="" required />
                                         </td>
                                         <td style="padding: 2px;" width="1%">
                                             <input type="text" id="square_ft" class="form-control" value=""
@@ -640,11 +640,11 @@
                                             </div>
                                         </td>
                                         <td style="padding: 2px;" width="1%">
-                                            <select class="form-control select" name="staus_token"
+                                            <select class="form-control select" name="status_token"
                                                 data-live-search="true">
                                                 <option value="" selected>Select Status</option>
                                                 @foreach ($tokenStatuses as $tokenStatus)
-                                                    <option value="{{ $tokenStatus->token }}">{{ $tokenStatus->token }}
+                                                    <option value="{{ $tokenStatus->id }}">{{ $tokenStatus->token }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -1263,7 +1263,7 @@
             toggleEmployeeSelect();
         };
     </script>
-    <script>
+    {{-- <script>
         function calculateAmounts() {
             // Get the values of square feet and rate inputs
             let squareFt = parseFloat(document.getElementsByName('square_ft')[0].value) || 0;
@@ -1317,6 +1317,67 @@
             document.getElementById('emi_ammount_display').textContent = emiAmount.toFixed(2);
             document.getElementById('emi_ammount_input').value = emiAmount.toFixed(2);
         }
+    </script> --}}
+
+    <script>
+        function calculateAmounts() {
+    // Get the values of square feet and rate inputs
+    let squareFt = parseFloat(document.getElementsByName('square_ft')[0].value) || 0;
+    let rate = parseFloat(document.getElementsByName('rate')[0].value) || 0;
+    
+    // Calculate the total cost
+    let totalCost = squareFt * rate;
+    
+    // Update the total cost display
+    document.getElementById('total_cost_display').textContent = totalCost.toFixed(2);
+    document.getElementById('total_cost_input').value = totalCost.toFixed(2);
+    
+    // Get the discount amount and type
+    let discountAmount = parseFloat(document.getElementsByName('discount_amount')[0].value) || 0;
+    let discountType = document.getElementById('discount_type').value;
+    
+    // Calculate the final amount after applying the discount
+    let finalAmount = totalCost;
+    
+    if (discountType === '%') {
+    finalAmount -= totalCost * (discountAmount / 100);
+    } else if (discountType === '₹') {
+    finalAmount -= discountAmount;
+    }
+    
+    // Ensure the final amount doesn't go negative
+    finalAmount = Math.max(finalAmount, 0);
+    
+    // Update the final amount input box
+    document.getElementById('final_amount').value = finalAmount.toFixed(2);
+    
+    // Get the down payment
+    let downPayment = parseFloat(document.getElementsByName('down_payment')[0].value) || 0;
+    
+    // Calculate the balance amount
+    let balanceAmount = finalAmount - downPayment;
+    balanceAmount = Math.max(balanceAmount, 0);
+    
+    // Update the balance amount display and hidden input
+    document.getElementById('balence_amount_display').textContent = balanceAmount.toFixed(2);
+    document.getElementById('balence_amount_input').value = balanceAmount.toFixed(2);
+    
+    // // Get the tenure in days and calculate EMI
+    // let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
+    // let tenureMonths = Math.ceil(tenureDays / 30); // Convert days to months
+    
+    // // Calculate EMI amount
+    // let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
+    
+    let tenureMonths = parseInt(document.getElementsByName('tenure')[0].value) || 0;
+    
+    // Calculate EMI amount
+    let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
+    
+    // Update the EMI amount display and hidden input
+    document.getElementById('emi_ammount_display').textContent = emiAmount.toFixed(2);
+    document.getElementById('emi_ammount_input').value = emiAmount.toFixed(2);
+    }
     </script>
     <script>
         $(document).ready(function() {

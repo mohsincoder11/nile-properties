@@ -17,7 +17,6 @@ use Illuminate\Http\Request;
 use App\Models\InitialEnquiry;
 use App\Models\PlotSaleStatus;
 use Illuminate\Support\Carbon;
-use App\Models\UserModelPlotQuery;
 use App\Models\ClientDetailInitial;
 use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
@@ -40,9 +39,7 @@ class UserModelController extends Controller
 
     public function userdashboard()
     {
-        $queries = UserModelPlotQuery::with('firm', 'project', 'client', 'plot')->get();
 
-        $firm = FirmRegistrationMaster::all();
 
         $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
@@ -59,7 +56,7 @@ class UserModelController extends Controller
         } else {
             $clientDetails = collect();
         }
-        return view('panel.user_model.user_dashboard', compact('nominee', 'client', 'clientDetails', 'firm', 'queries'));
+        return view('panel.user_model.user_dashboard', compact('nominee', 'client', 'clientDetails'));
     }
 
 
@@ -1099,6 +1096,7 @@ class UserModelController extends Controller
         return implode(',', $image_name_array);
     }
 
+
     public function uploadQueriesByClient(Request $request)
     {
         // Validate the incoming request data
@@ -1247,4 +1245,5 @@ public function submitAllResponses(Request $request)
 
         return response()->json(['success' => $success]);
     }
+
 }

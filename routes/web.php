@@ -444,6 +444,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user-create-razorpay-order', [UserModelController::class, 'usercreateRazorpayOrder'])->name('user.create.razorpay.order');
     Route::post('/user-razorpay-callback', [UserModelController::class, 'userhandleRazorpayCallback'])->name('user.razorpay.callback');
 
+
     Route::post('/uplodqueriesbyclient', [UserModelController::class, 'uploadQueriesByClient'])->name('uplodqueriesbyclient');
 
 
@@ -451,6 +452,7 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse'); //adminresponse to queries
     Route::post('/updateAdminResponse', [UserModelController::class, 'updateAdminResponse'])->name('updateAdminResponse');
     Route::post('/submit-all-responses', [UserModelController::class, 'submitAllResponses'])->name('submitAllResponses');
+
 
 
 
