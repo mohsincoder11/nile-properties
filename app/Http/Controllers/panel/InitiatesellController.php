@@ -46,6 +46,8 @@ class InitiatesellController extends Controller
         ];
 
         $agent = AgentRegistrationMaster::whereIn('profile', $profiles)->get();
+//         echo json_encode($agent);
+// exit();
         $clients = CustomerRegistrationMaster::all();
         $occupation = Occupation::all();
         $branch = BranchMaster::all();
@@ -158,7 +160,7 @@ class InitiatesellController extends Controller
     public function store(Request $request)
     {
 
-        dd($request->all());
+        // dd($request->all());
         $existingEnquiry = InitialEnquiry::where('project_id', $request->project_id)
             ->where('firm_id', $request->firm_id)
             ->where('plot_no', $request->plot_no)
@@ -863,7 +865,8 @@ class InitiatesellController extends Controller
         // echo json_encode($request->input('id'));
         $inquiryId = $request->input('id');
         $inquiry = InitialEnquiry::with('clientsigle.agent', 'plotname', 'clients', 'nominees', 'statustoken','plottrasferhistory')->where('id', $inquiryId)->first();
-
+// echo json_encode($inquiry);
+// exit();
         if (!$inquiry) {
             return response()->json(['error' => 'Inquiry not found'], 404);
         }

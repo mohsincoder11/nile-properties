@@ -50,13 +50,13 @@
                             </h5>
 
                         </div>
-
+{{-- 
                         <div class="row">
                             <div class="col-md-12" style="margin-top: 2vh;">
                                 <table width="100%">
                                     <tr style="height:30px;">
                                         {{-- <th width="4%">User Type</th> --}}
-                                        <th width="1%">Title</th>
+                                        {{-- <th width="1%">Title</th>
                                         <th width="3%">Name</th>
                                         <th width="2%">Occupation</th>
                                         <th width="3%">Email</th>
@@ -64,13 +64,13 @@
                                         <th width="2%">City/Village</th>
                                         <th width="1%">Pincode</th>
                                         <th width="3%">Address</th>
-                                        <th width="1%">Age</th>
+                                        <th width="1%">Age</th> --}}
 
 
-                                    </tr>
+                                    {{-- </tr>
 
 
-                                    <tr>
+                                    <tr> --}}
                                         {{-- <td style="padding: 2px;" width="2%">
                                         <input type="radio" id="existing_user" name="user_type" value="agent"
                                             >
@@ -80,7 +80,7 @@
                                         <label for="new_user">New User</label>
                                         
                                     </td> --}}
-                                        <td style="padding: 2px;" width="1%">
+                                        {{-- <td style="padding: 2px;" width="1%">
                                             <select class="form-control select" data-live-search="true" id="title"
                                                 name="title">
                                                 <option>Mr.</option>
@@ -98,9 +98,9 @@
                                         </td>
                                         <td style="padding: 2px;" width="1%">
                                             <select class="form-control select" data-live-search="true" id="occupation_id">
-                                                {{-- <option>Govt</option>
-                                            <option>Business</option>
-                                            <option>Other</option> --}}
+                                                {{-- <option>Govt</option> --}}
+                                            {{-- <option>Business</option>
+                                            <option>Other</option> 
                                                 <option value="">--Select--</option>
                                                 @foreach ($occupation as $occupation_name)
                                                     <option value="{{ $occupation_name->occupation }}">
@@ -196,9 +196,9 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </div>
+                            </div> --}}
 
-                        </div>
+                        {{-- </div>  --}}
 
                         <h5 class="panel-title"
                             style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
@@ -225,6 +225,7 @@
                                     <th>AADHAR No.</th>
                                     <th>PAN</th>
                                     <th>PAN No.</th>
+                                    {{-- <th>Action</th> --}}
                                 </tr>
                             </thead>
                             @if ($inquiry->clients->isNotEmpty())
@@ -335,12 +336,12 @@
                                                     <input type="hidden" name="pan_no[]"
                                                         value="{{ $customer->pan_no ?? '' }}">
                                                 </td>
-                                                <td style="text-align:center; color:#FF0000">
+                                                {{-- <td style="text-align:center; color:#FF0000">
                                                     <button type="button" class="delete-client-btn_pre"
                                                         style="border:none; background:none;">
                                                         <i class="fa fa-trash-o"></i>
                                                     </button>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @endforeach
                                     @endforeach
@@ -391,7 +392,7 @@
                                             <th style="text-align:center">Client Name</th>
                                             <th style="text-align:center">Mobile No</th>
                                             <th style="text-align:center">Address</th>
-                                            <th style="text-align:center">Sponsor ID</th>
+                                            {{-- <th style="text-align:center">Sponsor ID</th> --}}
                                             <th style="text-align:center">Action</th>
                                         </tr>
                                     </thead>
@@ -408,7 +409,7 @@
                                 <i class="fa fa-user"></i> &nbsp;Nominee Details
                             </h5>
 
-                            <div class="col-md-12" style="margin-top: 2vh;">
+                            {{-- <div class="col-md-12" style="margin-top: 2vh;">
                                 <table width="100%">
                                     <tr style="height:30px;">
                                         <th width="2%">Nominee's Name</th>
@@ -422,7 +423,7 @@
                                     <tr>
                                         <td style="padding: 2px;" width="2%">
                                             <input type="text" class="form-control" id="nominee-name"
-                                                placeholder="" />
+                                                placeholder=""  />
                                         </td>
                                         <td style="padding: 2px;" width="2%">
                                             <input type="number" class="form-control" id="nominee-age"
@@ -463,7 +464,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </div>
+                            </div> --}}
                             <div class="col-md-12" style="margin-top: 1vh;">
                                 <table id="nominee-details-table" width="100%" border="1">
                                     <thead>
@@ -475,11 +476,54 @@
                                             <th style="text-align:center"> Nominee's DOB</th>
                                             <th style="text-align:center">AADHAR No.</th>
                                             <th style="text-align:center">PAN No.</th>
-                                            <th style="text-align:center">Action</th>
+                                            {{-- <th style="text-align:center">Action</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Nominee details will be appended here -->
+                                        @if (!empty($inquiry->nominees) && $inquiry->nominees->count())
+                                            @foreach ($inquiry->nominees as $nominee)
+                                                <tr>
+                                                    <td style="padding:5px;" align="center">
+                                                        <label>{{ $nominee->name }}</label>
+                                                        <input type="hidden" name="nominee_name_pre[]"
+                                                            value="{{ $nominee->name }}">
+                                                    </td>
+                                                    <td style="padding:5px;" align="center">
+                                                        <label>{{ $nominee->age }}</label>
+                                                        <input type="hidden" name="nominee_age_pre[]"
+                                                            value="{{ $nominee->age }}">
+                                                    </td>
+                                                    <td style="padding:5px;" align="center">
+                                                        <label>{{ $nominee->relation }}</label>
+                                                        <input type="hidden" name="nominee_relation_pre[]"
+                                                            value="{{ $nominee->relation }}">
+                                                    </td>
+                                                    <td style="padding:5px;" align="center">
+                                                        <label>{{ \Carbon\Carbon::parse($nominee->dob)->format('d/m/y') }}
+                                                        </label>
+                                                        <input type="hidden" name="nominee_dob_pre[]"
+                                                            value="{{ $nominee->dob ? \Carbon\Carbon::parse($nominee->dob)->format('d/m/y') : '' }}
+                                                                  ">
+                                                    </td>
+                                                    <td style="padding:5px;" align="center">
+                                                        <label>{{ $nominee->aadhar }}</label>
+                                                        <input type="hidden" name="nominee_aadhar_pre[]"
+                                                            value="{{ $nominee->aadhar }}">
+                                                    </td>
+                                                    <td style="padding:5px;" align="center">
+                                                        <label>{{ $nominee->pan }}</label>
+                                                        <input type="hidden" name="nominee_pan_pre[]"
+                                                            value="{{ $nominee->pan }}">
+                                                    </td>
+                                                    {{-- <td style="text-align:center; color:#FF0000">
+                                                        <button type="button" data-id="{{ $nominee->id ?? '' }}"
+                                                            class="delete-nominee-btn_pre">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </td> --}}
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -765,11 +809,11 @@
                                                 value="" />
                                         </td>
                                         <td style="padding: 2px;" width="2%">
-                                            <input type="number" class="form-control" name="west" placeholder=""
+                                            <input type="text" class="form-control" name="west" placeholder=""
                                                 value="" />
                                         </td>
                                         <td style="padding: 2px;" width="2%">
-                                            <input type="number" class="form-control" name="north" placeholder=""
+                                            <input type="text" class="form-control" name="north" placeholder=""
                                                 value="" />
                                         </td>
                                         <td style="padding: 2px;" width="2%">

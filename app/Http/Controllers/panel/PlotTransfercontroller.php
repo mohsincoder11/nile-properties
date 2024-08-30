@@ -42,8 +42,12 @@ class PlotTransferController extends Controller
         $occupation = Occupation::all();
         $branch = BranchMaster::all();
         $firm = FirmRegistrationMaster::all();
+        $clients = CustomerRegistrationMaster::all();
+        
         $inquiry = InitialEnquiry::with('clientsigle', 'clientsigle.agent', 'clients.clientn', 'nominees')
         ->find($id);
+        
+
         $view='panel.plot-transfer.transfer-user-1';
         if($type == '2') {
         $view='panel.plot-transfer.transfer-plot-2';
@@ -59,7 +63,8 @@ class PlotTransferController extends Controller
                 'occupation',
                 'branch',
                 'agent',
-                'inquiry'
+                'inquiry',
+                'clients',
             )
         );
     }
@@ -69,7 +74,7 @@ class PlotTransferController extends Controller
     {
         // dd($request->all());
         DB::beginTransaction();
-    
+        
         try {
             // Step 1: Store initial enquiry details
             $initialEnquiry = InitialEnquiry::create([
@@ -252,6 +257,7 @@ class PlotTransferController extends Controller
             // Step 2: Create a new InitialEnquiry record with new plot details
             $newInitialEnquiry = InitialEnquiry::create([
                 'project_id' => $request->project_id,
+                'previous_initial_id' => $inquiry_id,
                 'firm_id' => $request->firm_id,
                 'measurement' => $request->Measurement,
                 'square_meter' => $request->square_meter,

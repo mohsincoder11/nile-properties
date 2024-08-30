@@ -58,312 +58,414 @@
 
                     </div>
                    
-                    <div class="row">
-                        <div class="col-md-12" style="margin-top: 2vh;">
-                            <table width="100%">
-                                <tr style="height:30px;">
-                                    {{-- <th width="4%">User Type</th> --}}
-                                    <th width="1%">Title  </th>
-                                    <th width="3%">Name</th>
-                                    <th width="2%">Occupation</th>
-                                    <th width="3%">Email</th>
-                                    <th width="2%">Mobile No.</th>
-                                    <th width="2%">City/Village</th>
-                                    <th width="1%">Pincode</th>
-                                    <th width="3%">Address</th>
-                                    <th width="1%">Age</th>
-
-
-                                </tr>
-
-
-                                <tr>
-                                    {{-- <td style="padding: 2px;" width="2%">
-                                        <input type="radio" id="existing_user" name="user_type" value="agent"
-                                            >
-                                        <label for="existing_user">Existing User</label>
-                                        <input type="radio" id="new_user" name="user_type" value="executive"
-                                            >
-                                        <label for="new_user">New User</label>
-                                        
-                                    </td> --}}
-                                    <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" data-live-search="true" id="title"
-                                            name="title">
-                                            <option>Mr.</option>
-                                            <option>Mrs.</option>
-                                            <option>Ku.</option>
-                                            <option>Shri.</option>
-                                            <option>Miss</option>
-                                            <option>Mast.</option>
-                                            <option>Smt.</option>
-
-                                        </select>
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="name" value="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" data-live-search="true" id="occupation_id">
-                                            {{-- <option>Govt</option>
-                                            <option>Business</option>
-                                            <option>Other</option> --}}
-                                            <option value="">--Select--</option>
-                                            @foreach ($occupation as $occupation_name)
-                                            <option value="{{$occupation_name->occupation}}">
-                                                {{$occupation_name->occupation}}</option>
-
-                                            @endforeach
-
-
-                                        </select>
-                                    </td>
-                                    <td style="padding: 2px;" width="3%">
-                                        <input type="text" class="form-control" id="email" value="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" maxlength="10" id="contact" value="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="3%">
-                                        <input type="text" class="form-control" id="city" value="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="pin_code" value="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="3%">
-                                        <input type="text" class="form-control" id="address" value="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="age" value="" />
-                                    </td>
-                                </tr>
-
-                            </table>
-                            <table style="width:100%;border-collapse:collapse;">
-                                <tr style="height:30px;">
-                                    <th style="padding:5px;text-align:left;">DOB</th>
-                                    <th style="padding:5px;text-align:left;">Select Marital Status</th>
-                                    <th style="padding:5px;text-align:left;">Marriage Date</th>
-                                    <th style="padding:5px;text-align:left;">Branch</th>
-                                    <th style="padding:5px;text-align:left;">AADHAR</th>
-                                    <th style="padding:5px;text-align:left;">AADHAR No.</th>
-                                    <th style="padding:5px;text-align:left;">PAN</th>
-                                    <th style="padding:5px;text-align:left;">PAN No.</th>
-                                    <th style="padding:5px;text-align:left;"></th>
-                                </tr>
-                                <tr>
-                                    <td style="padding:2px;">
-                                        <div style="width:100%;" class="input-group">
-                                            <input type="date" class="form-control" id="dob" value="" />
-                                        </div>
-                                    </td>
-                                    <td style="padding:2px;">
-                                        <select id="marital_status" name="marital_status" id="marital_status"
-                                            class="form-control" onchange="toggleMarriageDate()">
-                                            <option value="single">Single</option>
-                                            <option value="married">Married</option>
-                                            <option value="divorced">Divorced</option>
-                                            <option value="widowed">Widowed</option>
-                                        </select>
-                                    </td>
-                                    <td style="padding:2px;">
-                                        <div style="width:100%;" class="input-group">
-                                            <input type="date" id="marriage_date" class="form-control"
-                                                name="marriage_date" value="" />
-                                        </div>
-                                    </td>
-                                    <td style="padding:2px;">
-                                        <select style="width:100%;" class="form-control select" data-live-search="true"
-                                            name="branch_id" id="branch_id">
-                                            <option value="">--Select--</option>
-                                            @foreach ($branch as $branch_name)
-                                            <option value="{{$branch_name->branch}}">{{$branch_name->branch}}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td style="padding:2px;">
-                                        <input type="file" class="form-control" id="aadhar" value="" />
-                                    </td>
-                                    <td style="padding:2px;">
-                                        <input type="text" class="form-control" id="aadhar_no" value="" />
-                                    </td>
-                                    <td style="padding:2px;">
-                                        <input type="file" class="form-control" id="pan" value="" />
-                                    </td>
-                                    <td style="padding:2px;">
-                                        <input type="text" class="form-control" id="pan_no" value="" />
-                                    </td>
-                                    <td style="padding:2px;">
-                                        <button id="submitbuttonappend" type="button" class="btn"
-                                            style="color:#FFFFFF;height:30px;width:auto;background-color:#006699;">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> ADD
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                    </div>
-                    
                     <h5 class="panel-title"
-                        style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
-                        align="center">
-                        <i class="fa fa-user"></i> &nbsp;Customer Details
-                    </h5>
-                    <table class="table table-bordered mt-3" width="100%" border="1">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Name</th>
-                                <th>Occupation</th>
-                                <th>Email</th>
-                                <th>Mobile No.</th>
-                                <th>City/Village</th>
-                                <th>Pincode</th>
-                                <th>Address</th>
-                                <th>Age</th>
-                                <th>DOB</th>
-                                <th>Marital Status</th>
-                                <th>Marriage Date</th>
-                                <th>Branch</th>
-                                <th>AADHAR</th>
-                                <th>AADHAR No.</th>
-                                <th>PAN</th>
-                                <th>PAN No.</th>
+                    style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
+                    align="center">
+                    <i class="fa fa-user"></i> &nbsp;Select Existing Customer Or New Customer
+                </h5>
+
+                <div class="row">
+                    <div class="col-md-12" style="margin-top: 2vh;">
+
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2">
+                            <label class="control-label" style="margin-left: 5px;">Select
+                                Existing
+                                Customer<font color="#000099">
+                                </font></label>
+                            {{-- <select id="client-select" class="form-control select" data-live-search="true">
+                                <option value="">Select a client</option>
+                                @foreach($enquiries as $enquiry)
+                                <option value="{{ $enquiry->client_name->id }}"
+                                    data-client-name="{{ $enquiry->client_name->name }}"
+                                    data-client-phone="{{ $enquiry->client_name->contact }}"
+                                    data-client-address="{{ $enquiry->client_name->address }}"
+                                    data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
+                                    {{ $enquiry->client_name->name }}
+                                </option>
+                                @endforeach
+                            </select> --}}
+                            <select id="client-select" class="form-control select" data-live-search="true">
+                                <option value="">Select a client</option>
+                                @foreach($clients as $client)
+                                <option value="{{ $client->id ?? ''}}" data-client-name="{{ $client->name ?? ''}}"
+                                    data-client-phone="{{ $client->contact ?? ''}}"
+                                    data-client-address="{{ $client->address ?? ''}}"
+                                    data-client-sponsor="{{ $client->sponsor_id ?? '' ?? ''}}"
+                                    data-title="{{ $client->title ?? ''}}"
+                                    data-occupation="{{ $client->occupation_name->occupation ?? ''}}"
+                                    data-occupation-id="{{ $client->occupation_name->id ?? ''}}"
+                                    data-email="{{ $client->email ?? ''}}" data-city="{{ $client->city ?? ''}}"
+                                    data-pin-code="{{ $client->pin_code ?? ''}}" data-age="{{ $client->age ?? ''}}"
+                                    data-dob="{{ $client->dob ?? ''}}"
+                                    data-marriage-date="{{ $client->marriage_date ?? ''}}"
+                                    data-branch-id="{{ $client->branch_name->id ?? ''}}"
+                                    data-branch="{{ $client->branch_name->branch ?? ''}}"
+                                    data-aadhar="{{ $client->aadhar ?? ''}}"
+                                    data-aadhar-no="{{ $client->aadhar_no ?? ''}}"
+                                    data-pan="{{ $client->pan ?? ''}}" data-pan-no="{{ $client->pan_no ?? ''}}"
+                                    data-client-id="{{ $client->id ?? ''}}"
+                                    data-marital-status="{{ $client->marital_status ?? ''}}">
+                                    {{ $client->name ?? '' }}
+                                </option>
+                                @endforeach
+                            </select>
+
+
+
+
+                        </div>
+                        <div class="col-md-3">
+                            <button id="add-client-btn" type="button" class="btn mjks"
+                                style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+
+                </div>
+                <div class="col-md-12" style="margin-top: 3vh;">
+                    <label class="control-label" style="text-align: center; display: block;">
+                        Fill New Customer Details<font color="#000099"></font>
+                    </label>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="margin-top: 2vh;">
+                        <table width="100%">
+                            <tr style="height:30px;">
+                                <th width="1%">Title</th>
+                                <th width="3%">Name</th>
+                                <th width="2%">Occupation</th>
+                                <th width="3%">Email</th>
+                                <th width="2%">Mobile No.</th>
+                                <th width="2%">City/Village</th>
+                                <th width="1%">Pincode</th>
+                                <th width="3%">Address</th>
+                                <th width="1%">Age</th>
+
+
                             </tr>
-                        </thead>
-                        <tbody id="customerTableBody">
-                            <!-- Rows will be added here -->
-                        </tbody>
-                    </table>
-                    <div class="row" style="display: none;">
-                        <div class="col-md-12" style="margin-top: 2vh;">
 
-                            <div class="col-md-5"></div>
-                            <div class="col-md-2">
-                                <label class="control-label">Select Existing Customer<font color="#000099">
-                                    </font></label>
-                                <select id="client-select" class="form-control select" data-live-search="true">
-                                    <option value="">Select a client</option>
-                                    @foreach($enquiries as $enquiry)
-                                    <option value="{{ $enquiry->client_name->id ?? ''}}"
-                                        data-client-name="{{ $enquiry->client_name->name ?? '' }}"
-                                        data-client-phone="{{ $enquiry->client_name->contact ?? '' }}"
-                                        data-client-address="{{ $enquiry->client_name->address ?? '' }}"
-                                        data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
-                                        {{ $enquiry->client_name->name  ?? ''}}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <button id="add-client-btn" type="button" class="btn mjks"
-                                    style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;margin-top: 3vh;">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="col-md-2"></div>
-                        </div>
 
-                    </div>
-                    <div class="row" style="display: none;" style="margin-top: 2vh;">
-                        <div class="col-md-12">
-                            <table id="client-details-table" width="100%" border="1">
-                                <thead>
-                                    <tr style="background-color:#f0f0f0; height:30px;">
-                                        <th style="text-align:center">Client Name</th>
-                                        <th style="text-align:center">Mobile No</th>
-                                        <th style="text-align:center">Address</th>
-                                        <th style="text-align:center">Sponsor ID</th>
-                                        <th style="text-align:center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Client details will be appended here -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 1vh;">
-                        <h5 class="panel-title"
-                            style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
-                            align="center">
-                            <i class="fa fa-user"></i> &nbsp;Nominee Details
-                        </h5>
+                            <tr>
+                                <td style="padding: 2px;" width="1%">
+                                    <select class="form-control select" data-live-search="true" id="title"
+                                        name="title">
+                                        <option value="">Select Option</option>
+                                        <option>Mr.</option>
+                                        <option>Mrs.</option>
+                                        <option>Ku.</option>
+                                        <option>Shri.</option>
+                                        <option>Miss</option>
+                                        <option>Mast.</option>
+                                        <option>Smt.</option>
 
-                        <div class="col-md-12" style="margin-top: 2vh;">
-                            <table width="100%">
-                                <tr style="height:30px;">
-                                    <th width="2%">Nominee's Name</th>
-                                    <th width="1%">Nominee's Age</th>
-                                    <th width="3%">Nominee's Relation</th>
-                                    <th width="2%">Nominee's DOB</th>
-                                    <th width="2%">AADHAR No.</th>
-                                    <th width="1%">PAN No.</th>
-                                    <th width="1%"></th>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="nominee-name" placeholder="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="number" class="form-control" id="nominee-age" placeholder="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <select class="form-control select" data-live-search="true"
-                                            id="nominee-relation">
-                                            <option>Father</option>
-                                            <option>Wife</option>
-                                            <option>Mother</option>
-                                            <option>Sun</option>
-                                        </select>
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <div class="input-group" style="display: flex;">
-                                            <input type="text" id="nominee-dob" class="form-control datepicker"
-                                                placeholder="DD-MM-YYYY" />
-                                            <div class="input-group-append" style="padding: 5px;">
-                                                <span class="input-group-text" style="font-size: 20px;  "><i
-                                                        class="glyphicon glyphicon-calendar"></i></span>
-                                            </div>
+                                    </select>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <input type="text" class="form-control" id="name" value="" />
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <select class="form-control select" data-live-search="true" id="occupation_id">
+                                        {{-- <option>Govt</option>
+                                        <option>Business</option>
+                                        <option>Other</option> --}}
+                                        <option value="">Select Option</option>
+                                        @foreach ($occupation as $occupation_name)
+                                        <option value="{{$occupation_name->id}}">
+                                            {{$occupation_name->occupation}}</option>
+
+                                        @endforeach
+
+
+                                    </select>
+                                </td>
+                                <td style="padding: 2px;" width="3%">
+                                    <input type="text" class="form-control" id="email" value="" />
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <input type="text" class="form-control" maxlength="10" id="contact" value="" />
+                                </td>
+                                <td style="padding: 2px;" width="3%">
+                                    <input type="text" class="form-control" id="city" value="" />
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <input type="text" class="form-control" id="pin_code" value="" />
+                                </td>
+                                <td style="padding: 2px;" width="3%">
+                                    <input type="text" class="form-control" id="address" value="" />
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <input type="text" class="form-control" id="age" value="" />
+                                </td>
+                            </tr>
+
+                        </table>
+                        <table style="width:100%;border-collapse:collapse;">
+                            <tr style="height:30px;">
+                                <th style="padding:5px;text-align:left;">DOB</th>
+                                <th style="padding:5px;text-align:left;">Select Marital Status</th>
+                                <th style="padding:5px;text-align:left;">Marriage Date</th>
+                                <th style="padding:5px;text-align:left;">Branch</th>
+                                <th style="padding:5px;text-align:left;">AADHAR</th>
+                                <th style="padding:5px;text-align:left;">AADHAR No.</th>
+                                <th style="padding:5px;text-align:left;">PAN</th>
+                                <th style="padding:5px;text-align:left;">PAN No.</th>
+                                <th style="padding:5px;text-align:left;"></th>
+                            </tr>
+                            <tr>
+                                {{-- <td style="padding:2px;">
+                                    <div style="width:100%;" class="input-group">
+                                        <input type="date" class="form-control" id="dob" value="" />
+                                    </div>
+                                </td> --}}
+                                <td style="padding: 2px;">
+                                    <div class="input-group" style="width:100%;">
+                                        <input type="text" id="dob" value="{{ old('dob') }}" name="dob"
+                                            class="form-control datepicker" placeholder="DD/MM/YYYY" />
+                                        <div class="" style="padding: 5px;">
+                                            <span class="input-group-text" style="font-size: 20px;  "></span>
                                         </div>
-                                    </td>
-                                    <td style="padding: 2px;" width="2%">
-                                        <input type="text" class="form-control" id="nominee-aadhar" placeholder="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <input type="text" class="form-control" id="nominee-pan" placeholder="" />
-                                    </td>
-                                    <td style="padding: 2px;" width="1%">
-                                        <button id="add-nominee-btn" type="button" class="btn mjks"
-                                            style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;">
-                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-12" style="margin-top: 1vh;">
-                            <table id="nominee-details-table" width="100%" border="1">
-                                <thead>
-                                    <tr style="background-color:#f0f0f0; height:30px;">
-                                        <th style="text-align:center">
-                                            Nominee's Name</th>
-                                        <th style="text-align:center">Nominee's Age</th>
-                                        <th style="text-align:center">Nominee's Relation</th>
-                                        <th style="text-align:center"> Nominee's DOB</th>
-                                        <th style="text-align:center">AADHAR No.</th>
-                                        <th style="text-align:center">PAN No.</th>
-                                        <th style="text-align:center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Nominee details will be appended here -->
-                                </tbody>
-                            </table>
-                        </div>
+                                    </div>
+
+
+                                </td>
+                                <td style="padding:2px;">
+                                    <select id="marital_status" name="marital_status" id="marital_status"
+                                        class="form-control" onchange="toggleMarriageDate()">
+                                        <option value="">Select Option</option>
+                                        <option value="single">Single</option>
+                                        <option value="married">Married</option>
+                                        <option value="divorced">Divorced</option>
+                                        <option value="widowed">Widowed</option>
+                                    </select>
+                                </td>
+                                {{-- <td style="padding:2px;">
+                                    <div style="width:100%;" class="input-group">
+                                        <input type="date" id="marriage_date" class="form-control"
+                                            name="marriage_date" value="{{ old('marriage_date') }}" />
+                                    </div>
+                                </td> --}}
+                                <td style="padding: 2px;">
+                                    <div class="input-group" style="width:100%;">
+                                        <input type="text" id="marriage_date" value="{{ old('marriage_date') }}"
+                                            name="marriage_date" class="form-control datepicker"
+                                            placeholder="DD/MM/YYYY" />
+                                        <div class="" style="padding: 5px;">
+                                            <span class="input-group-text" style="font-size: 20px;  "></span>
+                                        </div>
+                                    </div>
+
+
+                                </td>
+                                <td style="padding:2px;">
+                                    <select style="width:100%;" class="form-control select" data-live-search="true"
+                                        name="branch_id" id="branch_id">
+                                        <option value="">Select Option</option>
+                                        @foreach ($branch as $branch_name)
+                                        <option value="{{$branch_name->id}}">{{$branch_name->branch}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td style="padding:2px;">
+                                    <input type="file" class="form-control" id="aadhar" value="" />
+                                </td>
+                                <td style="padding:2px;">
+                                    <input type="text" class="form-control" id="aadhar_no" value="" />
+                                </td>
+                                <td style="padding:2px;">
+                                    <input type="file" class="form-control" id="pan" value="" />
+                                </td>
+                                <td style="padding:2px;">
+                                    <input type="text" class="form-control" id="pan_no" value="" />
+                                </td>
+                                <td style="padding:2px;">
+                                    <button id="submitbuttonappend" type="button" class="btn"
+                                        style="color:#FFFFFF;height:30px;width:auto;background-color:#006699;">
+                                        <i class="fa fa-floppy-o" aria-hidden="true"></i> ADD
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
+
+                </div>
+                <h5 class="panel-title"
+                    style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
+                    align="center">
+                    <i class="fa fa-user"></i> &nbsp;Customer Details
+                </h5>
+                <table class="table table-bordered mt-3" width="100%" border="1">
+                    <thead>
+                        <tr style="background-color:#f0f0f0 ; height:30px !important;" border="2">
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Title</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Name</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Occupation</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Email</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Mobile No.</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                City/Village</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Pincode</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Address</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Age
+                            </th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                DOB
+                            </th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Marital Status</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Marriage Date</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Branch</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                AADHAR</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                AADHAR No.</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                PAN
+                            </th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                PAN
+                                No.</th>
+                            <th
+                                style="background-color:#f0f0f0; color:black!important; border-block: 1px; height:30px;">
+                                Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerTableBody">
+                        <!-- Rows will be added here -->
+                    </tbody>
+                </table>
+
+                <div class="row" style="display: none;" style="margin-top: 2vh;">
+                    <div class="col-md-12">
+                        <table id="client-details-table" width="100%" border="1">
+                            <thead>
+                                <tr style="background-color:#f0f0f0; height:30px;">
+                                    <th style="text-align:center">Client Name</th>
+                                    <th style="text-align:center">Mobile No</th>
+                                    <th style="text-align:center">Address</th>
+                                    <th style="text-align:center">Sponsor ID</th>
+                                    <th style="text-align:center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Client details will be appended here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 1vh;">
+                    <h5 class="panel-title"
+                        style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 1vh;"
+                        align="center">
+                        <i class="fa fa-user"></i> &nbsp;Nominee Details
+                    </h5>
+
+                    <div class="col-md-12" style="margin-top: 2vh;">
+                        <table width="100%">
+                            <tr style="height:30px;">
+                                <th width="2%">Nominee's Name</th>
+                                <th width="1%">Nominee's Age</th>
+                                <th width="3%">Nominee's Relation</th>
+                                <th width="2%">Nominee's DOB</th>
+                                <th width="2%">AADHAR No.</th>
+                                <th width="1%">PAN No.</th>
+                                <th width="1%"></th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px;" width="2%">
+                                    <input type="text" class="form-control" id="nominee-name" placeholder="" />
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <input type="number" class="form-control" id="nominee-age" placeholder="" />
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <select class="form-control select" data-live-search="true"
+                                        id="nominee-relation">
+                                        <option value="">Select Option</option>
+                                        <option>Father</option>
+                                        <option>Mother</option>
+                                        <option>Son</option>
+
+                                        <option>Husband</option>
+                                        <option>Wife</option>
+
+                                    </select>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <div class="input-group" style="display: flex;">
+                                        <input type="text" id="nominee-dob" class="form-control datepicker"
+                                            placeholder="DD/MM/YYYY" />
+                                        <div class="input-group-append" style="padding: 5px;">
+                                            <span class="input-group-text" style="font-size: 20px;  "><i
+                                                    class="glyphicon glyphicon-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 2px;" width="2%">
+                                    <input type="text" class="form-control" id="nominee-aadhar" placeholder="" />
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <input type="text" class="form-control" id="nominee-pan" placeholder="" />
+                                </td>
+                                <td style="padding: 2px;" width="1%">
+                                    <button id="add-nominee-btn" type="button" class="btn mjks"
+                                        style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 1vh;">
+                        <table id="nominee-details-table" width="100%" border="1">
+                            <thead>
+                                <tr style="background-color:#f0f0f0; height:30px;">
+                                    <th style="text-align:center">
+                                        Nominee's Name</th>
+                                    <th style="text-align:center">Nominee's Age</th>
+                                    <th style="text-align:center">Nominee's Relation</th>
+                                    <th style="text-align:center"> Nominee's DOB</th>
+                                    <th style="text-align:center">AADHAR No.</th>
+                                    <th style="text-align:center">PAN No.</th>
+                                    <th style="text-align:center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Nominee details will be appended here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                     
                     <div class="row">
     <h5 class="panel-title" style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh;" align="center">
@@ -597,10 +699,10 @@
                     <input type="text" class="form-control" name="east" placeholder="" value="{{ $inquiry->east ?? '' }}" readonly />
                 </td>
                 <td style="padding: 2px;" width="2%">
-                    <input type="number" class="form-control" name="west" placeholder="" value="{{ $inquiry->west ?? '' }}" readonly />
+                    <input type="text" class="form-control" name="west" placeholder="" value="{{ $inquiry->west ?? '' }}" readonly />
                 </td>
                 <td style="padding: 2px;" width="2%">
-                    <input type="number" class="form-control" name="north" placeholder="" value="{{ $inquiry->north ?? '' }}" readonly />
+                    <input type="text" class="form-control" name="north" placeholder="" value="{{ $inquiry->north ?? '' }}" readonly />
                 </td>
                 <td style="padding: 2px;" width="2%">
                     <input type="text" class="form-control" name="south" placeholder="" value="{{ $inquiry->south ?? '' }}" readonly />
@@ -1371,5 +1473,134 @@ row.parentNode.removeChild(row);
             }
         });
     });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+document.getElementById('add-client-btn').addEventListener('click', function () {
+const clientSelect = document.getElementById('client-select');
+const selectedOption = clientSelect.options[clientSelect.selectedIndex];
+
+if (selectedOption.value !== '') {
+const clientData = {
+title: selectedOption.getAttribute('data-title'),
+name: selectedOption.getAttribute('data-client-name'),
+occupation_id: selectedOption.getAttribute('data-occupation-id'),
+occupation: selectedOption.getAttribute('data-occupation'),
+email: selectedOption.getAttribute('data-email'),
+phone: selectedOption.getAttribute('data-client-phone'),
+city: selectedOption.getAttribute('data-city'),
+pinCode: selectedOption.getAttribute('data-pin-code'),
+address: selectedOption.getAttribute('data-client-address'),
+age: selectedOption.getAttribute('data-age'),
+dob: selectedOption.getAttribute('data-dob'),
+maritalStatus: selectedOption.getAttribute('data-marital-status'),
+marriageDate: selectedOption.getAttribute('data-marriage-date'),
+branch: selectedOption.getAttribute('data-branch'),
+branch_id: selectedOption.getAttribute('data-branch-id'),
+aadhar: selectedOption.getAttribute('data-aadhar'),
+aadharNo: selectedOption.getAttribute('data-aadhar-no'),
+pan: selectedOption.getAttribute('data-pan'),
+panNo: selectedOption.getAttribute('data-pan-no'),
+id: selectedOption.getAttribute('data-client-id')
+};
+
+const tableBody = document.getElementById('customerTableBody');
+const newRow = document.createElement('tr');
+
+// Use Laravel's asset helper for document URLs
+const aadharUrl = clientData.aadhar ? `{{ asset('customer_reg/${clientData.aadhar}') }}` : null;
+const panUrl = clientData.pan ? `{{ asset('customer_reg/${clientData.pan}') }}` : null;
+
+newRow.innerHTML = `
+<td style="padding:5px;" align="center">
+    <label>${clientData.title}</label>
+    <input type="hidden" name="title_existing[]" value="${clientData.title}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.name}</label>
+    <input type="hidden" name="name_existing[]" value="${clientData.name}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.occupation}</label>
+    <input type="hidden" name="occupation_id_existing[]" value="${clientData.occupation_id}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.email}</label>
+    <input type="hidden" name="email_existing[]" value="${clientData.email}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.phone}</label>
+    <input type="hidden" name="contact_existing[]" value="${clientData.phone}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.city}</label>
+    <input type="hidden" name="city_existing[]" value="${clientData.city}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.pinCode}</label>
+    <input type="hidden" name="pin_code_existing[]" value="${clientData.pinCode}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.address}</label>
+    <input type="hidden" name="address_existing[]" value="${clientData.address}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.age}</label>
+    <input type="hidden" name="age_existing[]" value="${clientData.age}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.dob}</label>
+    <input type="hidden" name="dob_existing[]" value="${clientData.dob}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.maritalStatus}</label>
+    <input type="hidden" name="marital_status_existing[]" value="${clientData.maritalStatus}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.marriageDate}</label>
+    <input type="hidden" name="marriage_date_existing[]" value="${clientData.marriageDate}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.branch}</label>
+    <input type="hidden" name="branch_id_existing[]" value="${clientData.branch_id}">
+</td>
+<td style="padding:5px;" align="center">
+    ${aadharUrl ? `<a href="${aadharUrl}" target="_blank" download="aadhar">
+        <i class="fa fa-file-pdf-o" style="background-color:red;" aria-hidden="true"></i> AADHAR
+    </a>` : 'N/A'}
+    <input type="hidden" name="aadhar_existing[]" value="${clientData.aadhar}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.aadharNo}</label>
+    <input type="hidden" name="aadhar_no_existing[]" value="${clientData.aadharNo}">
+</td>
+<td style="padding:5px;" align="center">
+    ${panUrl ? `<a href="${panUrl}" target="_blank" download="pan">
+        <i class="fa fa-file-pdf-o" style="background-color:blue;" aria-hidden="true"></i> PAN
+    </a>` : 'N/A'}
+    <input type="hidden" name="pan_existing[]" value="${clientData.pan}">
+</td>
+<td style="padding:5px;" align="center">
+    <label>${clientData.panNo}</label>
+    <input type="hidden" name="pan_no_existing[]" value="${clientData.panNo}">
+    <input type="hidden" name="existing_client_id[]" value="${clientData.id}">
+</td>
+<td style="text-align:center; color:#FF0000">
+    <button type="button" class="remove-row-btn"><i class="fa fa-trash-o"></i></button>
+</td>
+`;
+
+tableBody.appendChild(newRow);
+}
+});
+
+// Handle deleting client details from the table
+document.querySelector('#customerTableBody').addEventListener('click', function (e) {
+if (e.target && (e.target.matches('.remove-row-btn') || e.target.matches('.remove-row-btn i'))) {
+const row = e.target.closest('tr');
+row.parentNode.removeChild(row);
+}
+});
+});
 </script>
 @stop
