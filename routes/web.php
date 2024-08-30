@@ -14,7 +14,7 @@ use App\Http\Controllers\panel\EnquiryController;
 use App\Http\Controllers\panel\FirmController;
 use App\Http\Controllers\panel\FollowUpController;
 use App\Http\Controllers\panel\FollowupLeads;
-use App\Http\Controllers\panel\InitiatesellController;
+use App\Http\Controllers\panel\{InitiatesellController, UserRolesController};
 // WEBSITE
 use App\Http\Controllers\panel\LandownerController;
 use App\Http\Controllers\panel\LeadassignToEmployeeController;
@@ -300,6 +300,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/plot-edit-sale', [PlotTransfercontroller::class, 'plotedit_Sale'])->name('plot.edit.sale');
 
     Route::get('/plot-edit-bank-loan-details', [PlotTransfercontroller::class, 'plotedit_bank_loan_details'])->name('plot.edit.bank.details');
+
+    // More
+    // User Role
+    Route::get('/user-roles', [UserRolesController::class, 'userRoles'])->name('user-roles');
+    Route::post('/user-roles-store', [UserRolesController::class, 'userRolesStore'])->name('user-roles-store');
+
 
     // //section B
     // Route::get('/project-entry', [ProjectEntryController::class, 'index'])->name('project.index');

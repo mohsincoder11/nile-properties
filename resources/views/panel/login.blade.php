@@ -193,6 +193,27 @@
     </div>
     <div class="login-box">
 
+        @if ($errors->any())
+        <div class="alert alert-danger mt-2 alert-temporary">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if(session('success'))
+        <div class="alert alert-success alert-temporary">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-temporary">
+            {{ session('error') }}
+        </div>
+    @endif
         <h2>Login</h2>
 
         <form>
