@@ -158,6 +158,7 @@ class InitiatesellController extends Controller
     public function store(Request $request)
     {
 
+        dd($request->all());
         $existingEnquiry = InitialEnquiry::where('project_id', $request->project_id)
             ->where('firm_id', $request->firm_id)
             ->where('plot_no', $request->plot_no)
@@ -413,8 +414,8 @@ class InitiatesellController extends Controller
             }
         }
 
-
-
+        if(isset($request->agent_id))
+        {
         $agent = AgentRegistrationMaster::find($request->agent_id);
         $parentAgent = $agent->parent_id;
 
@@ -451,7 +452,7 @@ class InitiatesellController extends Controller
             'sale_date' => now(),
         ]);
 
-
+    }
         //dd(1);
         return redirect()->route('newsale')->with('success', 'Data saved successfully.');
     }

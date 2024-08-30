@@ -13,6 +13,7 @@ use App\Models\EmiPaymentCollection;
 use App\Models\OtherChargesForClient;
 use App\Models\FirmRegistrationMaster;
 use App\Models\PlotRegistrationDocumentByClient;
+use App\Models\ProjectEntryAppendData;
 use Razorpay\Api\Api;
 
 class PaymentCollectionController extends Controller
@@ -31,13 +32,17 @@ class PaymentCollectionController extends Controller
 
     public function getClientProjectPlotData(Request $request)
     {
+        // dd($request->all());
         $client_id = $request->input('client_id');
         $project_id = $request->input('project_id');
         $plot_no = $request->input('plot_no');
 
         $client = CustomerRegistrationMaster::where('id', $client_id)->first();
-        $initialEnquiry = InitialEnquiry::with('emi')->where('project_id', $project_id)->where('plot_no', $plot_no)->first();
-        // dd($initialEnquiry);
+
+        $ProjectEntryAppendData = ProjectEntryAppendData::where('plot_no', $plot_no)->first();
+
+        $initialEnquiry = InitialEnquiry::with('emi')->where('project_id', $project_id)->where('plot_no', $$ProjectEntryAppendData->id)->first();
+        dd($initialEnquiry);
         if ($client && $initialEnquiry) {
             $data = [
                 'client_name' => $client->name,
@@ -423,29 +428,43 @@ class PaymentCollectionController extends Controller
 
     public function getClientIdByPlot(Request $request)
     {
+        
+        $project_id = $request->input('project_id');
         $plotNo = $request->input('plot_no'); // Get plot number from request
 
-        // Find the record in the InitialEnquiry model by plot_no
-        $initialEnquiry = InitialEnquiry::where('plot_no', $plotNo)->first();
+        // Find the plot entry
+        $plotNoFetch = ProjectEntryAppendData::where('project_entry_id', $project_id)->where('plot_no', $plotNo)
 
-        if ($initialEnquiry) {
-            // Find the related client details from ClientDetailInitial model
-            $clientDetails = ClientDetailInitial::where('initial_enquiry_id', $initialEnquiry->id)->get();
+            ->first();
 
-            if ($clientDetails->isNotEmpty()) {
-                // Return all client IDs and names
-                $clients = $clientDetails->map(function ($clientDetail) {
-                    return [
-                        'client_id' => $clientDetail->client_id,
-                        'client_name' => $clientDetail->name,
-                    ];
-                });
-                return response()->json(['clients' => $clients]);
+        if ($plotNoFetch) {
+            // Find the record in the InitialEnquiry model by plot_no
+            $initialEnquiry = InitialEnquiry::where('plot_no', $plotNoFetch->id)
+                ->where('project_id', $project_id)
+                ->first();
+
+            if ($initialEnquiry) {
+                // Find the related client details from ClientDetailInitial model
+                $clientDetails = ClientDetailInitial::where('initial_enquiry_id', $initialEnquiry->id)
+                    ->get();
+
+                if ($clientDetails->isNotEmpty()) {
+                    // Return all client IDs and names
+                    $clients = $clientDetails->map(function ($clientDetail) {
+                        return [
+                            'client_id' => $clientDetail->client_id,
+                            'client_name' => $clientDetail->name,
+                        ];
+                    });
+                    return response()->json(['clients' => $clients]);
+                } else {
+                    return response()->json(['error' => 'Client details not found'], 404);
+                }
             } else {
-                return response()->json(['error' => 'Client details not found'], 404);
+                return response()->json(['error' => 'Initial Enquiry not found'], 404);
             }
         } else {
-            return response()->json(['error' => 'Initial Enquiry not found'], 404);
+            return response()->json(['error' => 'Plot not found'], 404);
         }
     }
 
