@@ -49,7 +49,7 @@
             transition-property: transform;
         }
 
-        .popover_wrapper:hover .popover_content {
+        .popover__wrapper:hover .popover__content {
             z-index: 100;
             opacity: 1;
             visibility: visible;
@@ -337,8 +337,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="popup333Label">Admin Response</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                        style="margin-top: -25px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -25px">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -360,14 +359,13 @@
                     </table>
                     {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
                     <div style="text-align: right;">
-                        <button type="button" id="submit-responses" class="btn btn-primary submit-all-responses">Submit
-                            All Responses</button>
+                        <button type="button" id="submit-responses" class="btn btn-primary submit-all-responses">Submit All Responses</button>
                     </div>
 
 
-                </div>
+                                    </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     {{-- <button type="button" id="submit-responses" class="btn btn-primary submit-all-responses">Submit All Responses</button>  --}}
                 </div>
             </div>
@@ -381,29 +379,28 @@
 @stop
 @section('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.body.addEventListener('click', function(event) {
-                if (event.target.classList.contains('open-modal-btn')) {
-                    const initialEnquiryId = event.target.getAttribute('data-id');
+       document.addEventListener('DOMContentLoaded', function() {
+    document.body.addEventListener('click', function(event) {
+        if (event.target.classList.contains('open-modal-btn')) {
+            const initialEnquiryId = event.target.getAttribute('data-id');
 
-                    // Fetch data based on initialEnquiryId
-                    fetch({{ route('fetchqueries', ['id' => ':id']) }}.replace(':id', initialEnquiryId))
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.error) {
-                                alert('No data found');
-                                return;
-                            }
+            // Fetch data based on initialEnquiryId
+            fetch(`{{ route('fetchqueries', ['id' => ':id']) }}`.replace(':id', initialEnquiryId))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('No data found');
+                        return;
+                    }
 
-                            // Populate the modal with data
-                            const queriesList = document.getElementById('queries-list');
-                            queriesList.innerHTML = '';
+                    // Populate the modal with data
+                    const queriesList = document.getElementById('queries-list');
+                    queriesList.innerHTML = '';
 
-                            data.forEach((query, index) => {
-                                const adminResponse = query.admin_response ? query
-                                    .admin_response : '';
+                    data.forEach((query, index) => {
+                        const adminResponse = query.admin_response ? query.admin_response : '';
 
-                                queriesList.innerHTML += `
+                        queriesList.innerHTML += `
                         <tr>
                             <td>${index + 1}</td>
                             <td>${query.client_id}</td>
@@ -417,97 +414,97 @@
                             </td>
                         </tr>
                     `;
-                            });
-
-                            // Show the modal
-                            $('#popup333').modal('show');
-                        })
-                        .catch(error => {
-                            console.error('Error fetching data:', error);
-                            alert('Error fetching data.');
-                        });
-                }
-
-                if (event.target.classList.contains('submit-response')) {
-                    const queryId = event.target.getAttribute('data-id');
-                    const responseText = document.querySelector(textarea[data - id = "${queryId}"]).value;
-
-                    if (!responseText.trim()) {
-                        alert('Please enter a response.');
-                        return;
-                    }
-
-                    // Send the admin response to the server
-                    fetch({{ route('updateAdminResponse') }}, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token for security
-                            },
-                            body: JSON.stringify({
-                                query_id: queryId,
-                                admin_response: responseText
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert('Response submitted successfully.');
-                            } else {
-                                alert('Failed to submit response.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error submitting response:', error);
-                            alert('Error submitting response.');
-                        });
-                }
-                if (event.target.classList.contains('submit-all-responses')) {
-                    const responses = [];
-                    document.querySelectorAll('.admin-response').forEach(function(textarea) {
-                        const queryId = textarea.getAttribute('data-id');
-                        const responseText = textarea.value.trim();
-
-                        if (responseText) {
-                            responses.push({
-                                query_id: queryId,
-                                admin_response: responseText
-                            });
-                        }
                     });
 
-                    if (responses.length === 0) {
-                        alert('No responses to submit.');
-                        return;
-                    }
+                    // Show the modal
+                    $('#popup333').modal('show');
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert('Error fetching data.');
+                });
+        }
 
-                    // Send all responses to the server
-                    fetch({{ route('submitAllResponses') }}, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token for security
-                            },
-                            body: JSON.stringify({
-                                responses: responses
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert('All responses submitted successfully.');
-                                $('#popup333').modal('hide');
-                            } else {
-                                alert('Failed to submit all responses.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error submitting all responses:', error);
-                            alert('Error submitting all responses.');
-                        });
+        if (event.target.classList.contains('submit-response')) {
+            const queryId = event.target.getAttribute('data-id');
+            const responseText = document.querySelector(`textarea[data-id="${queryId}"]`).value;
+
+            if (!responseText.trim()) {
+                alert('Please enter a response.');
+                return;
+            }
+
+            // Send the admin response to the server
+            fetch(`{{ route('updateAdminResponse') }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'  // Add CSRF token for security
+                },
+                body: JSON.stringify({
+                    query_id: queryId,
+                    admin_response: responseText
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Response submitted successfully.');
+                } else {
+                    alert('Failed to submit response.');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting response:', error);
+                alert('Error submitting response.');
+            });
+        }
+        if (event.target.classList.contains('submit-all-responses')) {
+            const responses = [];
+            document.querySelectorAll('.admin-response').forEach(function(textarea) {
+                const queryId = textarea.getAttribute('data-id');
+                const responseText = textarea.value.trim();
+
+                if (responseText) {
+                    responses.push({
+                        query_id: queryId,
+                        admin_response: responseText
+                    });
                 }
             });
-        });
+
+            if (responses.length === 0) {
+                alert('No responses to submit.');
+                return;
+            }
+
+            // Send all responses to the server
+            fetch(`{{ route('submitAllResponses') }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'  // Add CSRF token for security
+                },
+                body: JSON.stringify({
+                    responses: responses
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('All responses submitted successfully.');
+                    $('#popup333').modal('hide');
+                } else {
+                    alert('Failed to submit all responses.');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting all responses:', error);
+                alert('Error submitting all responses.');
+            });
+        }
+    });
+});
     </script>
 
 
