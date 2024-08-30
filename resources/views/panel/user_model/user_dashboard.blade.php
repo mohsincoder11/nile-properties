@@ -1,5 +1,6 @@
 @extends('panel.layout.user_model_layout')
 @section('main_container')
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
     <style>
         a {
             text-decoration: none;
@@ -69,7 +70,36 @@
     </style>
     <!-- END X-NAVIGATION -->
 
+    <!-- <div class="page-content-wrap">
+                                                                     <div class="row">
+                                                                                <div class="col-md-12">
 
+                                                                                       <div class="panel-body" style="padding:1px 5px 2px 5px;">
+
+                                                                                                <div class="col-md-12" style="margin-top:5px;">
+                                                                                    <label style="color:#000; background-color:#FFCC00; width:7%; height:25px; padding-top:5px;margin-top: 1vh;" align="center"><span class="fa fa-desktop"></span> <strong>Dashboard</strong></label>
+
+
+                                                                                                    <a href="project_entry.html"> <button id="on" type="button" class="btn mjks"
+                                                                                                        style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i
+                                                                                                            class="fa fa-plus"></i>Project Entry</button>
+                                                                                                </a>
+                                                                                                <a href="#"> <button id="on" type="button" class="btn mjks"
+                                                                                                    style="color:#FFFFFF; height:30px; width:auto;background-color: #990066;"><i
+                                                                                                        class="fa fa-plus"></i>Enquiry</button>
+                                                                                            </a>
+
+                                                                                                  </div>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    </div>
+
+
+                                                                            </div> -->
+
+
+    {{-- --------------------------------------------------- --}}
 
     <div class="row">
         <!-- <div class="col-md-3"></div> -->
@@ -303,137 +333,6 @@
         </div>
         <div class="col-md-4"></div>
     </div>
-
-    <div class="row">
-        <!-- <div class="col-md-3"></div> -->
-        <div class="col-md-12" style="margin-top:15px;">
-
-            <!-- START DEFAULT DATATABLE -->
-
-            <!-- <h5 class="panel-title" style="color:#FFFFFF; background-color:#754d35; width:100%; font-size:14px;" align="center"> <i class="fa fa-plus"></i> Added Party</h5> -->
-
-            <div class="col-md-12" style="text-align: center;margin-top: 5px;">
-                <h6 class="panel-title"
-                    style="color:#FFFFFF; background-color:#1681b6; width:100%;height: 50%; font-size:16px;" align="center">
-                    <i class="fa fa-file-text"> &nbsp;<label style="margin: 7px;">Uplod Quires</label> </i>
-                </h6>
-
-            </div>
-
-            <div style="margin-top: 50px"></div>
-
-            <div class="panel-body" style="margin-top:5px; margin-bottom:15px;">
-                <div class="card-body">
-
-
-
-                    <div class="form-group">
-                        <form action="{{ route('uplodqueriesbyclient') }}" method="POST">
-                            @csrf
-                            <div class="col-md-12">
-                                <div class="form-group" style="margin-bottom:90px;">
-                                    <div class="col-md-2" style="margin-top:15px;"></div>
-
-                                    <div class="col-md-2" style="margin-top:15px;">
-                                        <label>Select Firm</label>
-                                        <select class="form-control selectpicker" id="firm-select" name="firm_id"
-                                            data-live-search="true">
-                                            <option value="">Select Firm</option>
-                                            @foreach ($firm as $city)
-                                                <option value="{{ $city->id }}">{{ $city->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2" style="margin-top:15px;">
-                                        <label>Select Layout</label>
-                                        <select name="project_id" class="form-control selectpicker" data-live-search="true"
-                                            id="project-select">
-                                            <option value="">Select Option</option>
-                                            <!-- Options to be dynamically added -->
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2" style="margin-top:15px;">
-                                        <label>Select Plot</label>
-                                        <select id="plot-select" name="plot_no" class="form-control selectpicker"
-                                            data-live-search="true">
-                                            <!-- Plot options will be appended dynamically -->
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2" style="margin-top:15px;">
-                                        <label>Select Client</label>
-                                        <select id="client-select" name="client_id" class="form-control selectpicker"
-                                            data-live-search="true">
-                                            <!-- Client options to be dynamically added -->
-                                        </select>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div>
-                                <textarea class="form-control" id="query" name="query" rows="4" placeholder="Enter your query here..."></textarea>
-                            </div>
-
-                            <div class="text-center" style="margin-top:5px;">
-                                <button type="submit" class="btn btn-primary mt-3">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-
-
-                </div>
-            </div>
-            <div class="col-md-12" style="text-align: center;margin-top: 5px;">
-                <h6 class="panel-title"
-                    style="color:#FFFFFF; background-color:#1681b6; width:100%;height: 50%; font-size:16px;"
-                    align="center">
-                    <i class="fa fa-file-text"> &nbsp;<label style="margin: 7px;"> Quires Details</label> </i>
-                </h6>
-
-            </div>
-            <div class="panel-body" style="margin-top:5px; margin-bottom:15px;">
-
-                <table class="table datatable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Firm</th>
-                            <th>Project</th>
-                            <th>Plot Number</th>
-                            <th>Client</th>
-                            <th>Query</th>
-                            <th>Admin Response</th>
-
-                            <th>Created At</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($queries as $query)
-                            <tr>
-                                <td>{{ $query->id }}</td>
-                                <td>{{ $query->firm->name ?? '' }}</td>
-                                <td>{{ $query->project->project_name ?? '' }}</td>
-                                <td>{{ $query->plot->plot_no ?? '' }}</td>
-                                <td>{{ $query->client->name ?? '' }}</td>
-                                <td>{{ $query->query }}</td>
-                                <td>{{ $query->admin_response ?? '' }}</td>
-
-                                <td>{{ $query->created_at->format('Y-m-d H:i:s') }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- END DEFAULT DATATABLE -->
-
-
-        </div>
-
-
-
-        <div class="col-md-4"></div>
-    </div>
     </div>
 
 
@@ -453,106 +352,4 @@
     <!-- END PAGE CONTENT -->
     </div>
     <!-- END PAGE CONTAINER -->
-@endsection
-@section('js')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-
-
-    <script>
-        $(document).ready(function() {
-            $('#firm-select').on('change', function() {
-                var firmId = $(this).val();
-
-                if (firmId) {
-                    $.ajax({
-                        url: '{{ route('getProjectsByFirmbyuser.firm', ['firm_id' => 'FIRM_ID']) }}'
-                            .replace('FIRM_ID', firmId),
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            var $projectSelect = $('#project-select');
-                            $projectSelect.empty(); // Clear the dropdown
-                            $projectSelect.append('<option value="">Select Option</option>');
-
-                            $.each(data, function(key, project) {
-                                $projectSelect.append('<option value="' + project.id +
-                                    '">' + project.project_name + '</option>');
-                            });
-
-                            $projectSelect.selectpicker('refresh'); // Refresh Bootstrap Select
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("Error:", error);
-                            alert("An error occurred while fetching projects.");
-                        }
-                    });
-                } else {
-                    var $projectSelect = $('#project-select');
-                    $projectSelect.empty(); // Clear the dropdown
-                    $projectSelect.append('<option value="">Select Option</option>');
-                    $projectSelect.selectpicker('refresh'); // Refresh Bootstrap Select
-                }
-            });
-
-            $('#project-select').change(function() {
-                var projectId = $(this).val();
-                $.ajax({
-                    type: "GET",
-                    url: "{{ route('fetchPlotspaymentsectionbyuser') }}",
-                    data: {
-                        projectId: projectId
-                    },
-                    success: function(response) {
-                        var plotSelect = $('#plot-select');
-                        plotSelect.empty(); // Clear existing options
-                        plotSelect.append('<option value="">Select plot</option>');
-                        $.each(response, function(index, plot) {
-                            plotSelect.append('<option value="' + plot.plot_no + '">' +
-                                plot.plot_no + '</option>');
-                        });
-                        plotSelect.selectpicker('refresh'); // Refresh Bootstrap Select
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error:", error);
-                    }
-                });
-            });
-
-            $('#plot-select').change(function() {
-                var plotNo = $(this).val(); // Get selected plot number
-
-                $.ajax({
-                    type: "GET",
-                    url: "{{ route('getClientIdByPlot') }}", // Route to be created
-                    data: {
-                        plot_no: plotNo
-                    }, // Send plot number as a parameter
-                    success: function(response) {
-                        var clientSelect = $('#client-select');
-                        clientSelect.empty(); // Clear the dropdown
-
-                        if (response.clients && response.clients.length > 0) {
-                            // Append each client ID and name to the dropdown
-                            clientSelect.append('<option value="">select client</option>');
-                            $.each(response.clients, function(index, client) {
-                                clientSelect.append('<option value="' + client
-                                    .client_id + '">' + client.client_name +
-                                    '</option>');
-                            });
-                        } else {
-                            clientSelect.append('<option value="">No clients found</option>');
-                        }
-                        clientSelect.selectpicker('refresh'); // Refresh Bootstrap Select
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error:", error);
-                        alert("An error occurred while fetching the client information.");
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

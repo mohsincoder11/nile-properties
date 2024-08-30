@@ -67,12 +67,14 @@ class PlotTransferController extends Controller
 
     public function plot_transfer_store(Request $request, $inquiry_id)
     {
+        // dd($request->all());
         DB::beginTransaction();
     
         try {
             // Step 1: Store initial enquiry details
             $initialEnquiry = InitialEnquiry::create([
                 'project_id' => $request->project_id,
+                'firm_id' => $request->firm_id,
                 'measurement' => $request->Measurement,
                 'square_meter' => $request->square_meter,
                 'square_ft' => $request->square_ft,
@@ -88,7 +90,7 @@ class PlotTransferController extends Controller
                 'emi_amount' => $request->emi_ammount,
                 'booking_date' => Carbon::createFromFormat('d/m/Y', $request->booking_date)->toDateString(),
                 'agreement_date' => Carbon::createFromFormat('d/m/Y', $request->aggriment_date)->toDateString(),
-                'status_token' => $request->staus_token,
+                'status_token' => $request->status_token,
                 'emi_start_date' => Carbon::createFromFormat('d/m/Y', $request->emi_start_date)->toDateString(),
                 'plot_sale_status' => $request->plot_sale_status,
                 'a_rate' => $request->a_rate,
@@ -108,7 +110,16 @@ class PlotTransferController extends Controller
                 'south' => $request->south,
             ]);
     
-            // Step 2: Store client details
+            $update_plot_transfer_status = InitialEnquiry::where('id',$inquiry_id)->first();
+
+            if ($update_plot_transfer_status) {
+                $update_plot_transfer_status->plot_transfer_status = '1'; // Use = for assignment
+                // echo json_encode($update_plot_transfer_status);
+                // exit();
+                $update_plot_transfer_status->save(); // Save the changes to the database
+            }
+
+            // Step 3: Store client details for the new plot
             $newOwnerIds = [];
             foreach ($request->title as $index => $title) {
                 // Validate required fields
@@ -124,12 +135,13 @@ class PlotTransferController extends Controller
                     !isset($request->age[$index]) ||
                     !isset($request->dob[$index]) ||
                     !isset($request->branch_id[$index]) ||
-                    !isset($request->aadhar_no[$index]) ||
+                     !isset($request->aadhar_no[$index]) ||
                     !isset($request->pan_no[$index])
                 ) {
                     continue; // Skip this iteration if any required fields are missing
                 }
-    
+
+    if(!isset($request->existing_customer_id[$index])){
                 $image_name_array = [];
                 foreach ($request->aadhar as $key => $image) {
                     $extension = explode('/', mime_content_type($image))[1];
@@ -149,41 +161,50 @@ class PlotTransferController extends Controller
                     $answerKey[] = $imgname;
                 }
                 $panImages = implode(',', $answerKey);
-                    
-                    // Create customer registration
-                    $reg = CustomerRegistrationMaster::create([
-                        'title' => $title,
-                        'name' => $request->name[$index],
-                        'occupation_id' => $request->occupation_id[$index],
-                        'email' => $request->email[$index],
-                        'contact' => $request->contact[$index],
-                        'city' => $request->city[$index],
-                        'pin_code' => $request->pin_code[$index],
-                        'address' => $request->address[$index],
-                        'age' => $request->age[$index],
-                        'dob' => $request->dob[$index],
-                        'marital_status' => $request->marital_status[$index] ?? null,
-                        'marriage_date' => $request->marriage_date[$index] ?? null,
-                        'branch_id' => $request->branch_id[$index],
-                        'aadhar' => $aadharImages,
-                        'aadhar_no' => $request->aadhar_no[$index],
-                        'pan' => $panImages,
-                        'pan_no' => $request->pan_no[$index],
-                    ]);
     
-                    // Associate customer with initial enquiry
-                    ClientDetailInitial::create([
-                        'initial_enquiry_id' => $initialEnquiry->id,
-                        'name' => $request->name[$index],
-                        'phone' => $request->contact[$index],
-                        'address' => $request->address[$index],
-                        'client_id' => $reg->id,
-                    ]);
+                // Create customer registration
+                $reg = CustomerRegistrationMaster::create([
+                    'title' => $title,
+                    'name' => $request->name[$index],
+                    'occupation_id' => $request->occupation_id[$index],
+                    'email' => $request->email[$index],
+                    'contact' => $request->contact[$index],
+                    'city' => $request->city[$index],
+                    'pin_code' => $request->pin_code[$index],
+                    'address' => $request->address[$index],
+                    'age' => $request->age[$index],
+                    'dob' => $request->dob[$index],
+                    'marital_status' => $request->marital_status[$index] ?? null,
+                    'marriage_date' => $request->marriage_date[$index] ?? null,
+                    'branch_id' => $request->branch_id[$index],
+                    'aadhar' => $aadharImages,
+                    'aadhar_no' => $request->aadhar_no[$index],
+                    'pan' => $panImages,
+                    'pan_no' => $request->pan_no[$index],
+                ]);
+                $client_id = $reg->id;
+
+            } else {
+                // Use existing customer ID
+                $client_id = $request->existing_customer_id[$index];
+            }
     
-                    $newOwnerIds[] = $reg->id;
-                }
+                // Associate customer with new initial enquiry
+                ClientDetailInitial::create([
+                    'initial_enquiry_id' => $initialEnquiry->id,
+                    'name' => $request->name[$index],
+                    'phone' => $request->contact[$index],
+                    'address' => $request->address[$index],
+                    'client_id' => $client_id,
+                ]);
     
-          // Update previous owners
+                $newOwnerIds[] = $client_id;
+           
+
+
+            }
+    
+             // Update previous owners
           $previousOwners = ClientDetailInitial::where([
             ['initial_enquiry_id', '=', $inquiry_id],
             ['is_transfer', '=', '0']
@@ -196,11 +217,11 @@ class PlotTransferController extends Controller
             ])->whereIn('client_id', $previousOwners)->update(['is_transfer' => '1']);
         }
 
-        // Record the transfer history
         foreach ($previousOwners as $previousOwner) {
             foreach ($newOwnerIds as $newOwnerId) {
                 PlotTransferHistory::create([
                     'initial_enquiry_id' => $initialEnquiry->id,
+                    'previous_enquiry_id' => $inquiry_id,
                     'previous_owner_id' => $previousOwner,
                     'new_owner_id' => $newOwnerId,
                     'transfer_date' => now(),
@@ -222,6 +243,7 @@ class PlotTransferController extends Controller
 
     public function user_transfer_plot_store(Request $request, $inquiry_id)
     {
+        // dd($request->all());
         DB::beginTransaction();
         try {
             // Step 1: Mark the old record as transferred
@@ -230,6 +252,7 @@ class PlotTransferController extends Controller
             // Step 2: Create a new InitialEnquiry record with new plot details
             $newInitialEnquiry = InitialEnquiry::create([
                 'project_id' => $request->project_id,
+                'firm_id' => $request->firm_id,
                 'measurement' => $request->Measurement,
                 'square_meter' => $request->square_meter,
                 'square_ft' => $request->square_ft,
@@ -245,7 +268,7 @@ class PlotTransferController extends Controller
                 'emi_amount' => $request->emi_ammount,
                 'booking_date' => Carbon::createFromFormat('d/m/Y', $request->booking_date)->toDateString(),
                 'agreement_date' => Carbon::createFromFormat('d/m/Y', $request->aggriment_date)->toDateString(),
-                'status_token' => $request->staus_token,
+                'status_token' => $request->status_token,
                 'emi_start_date' => Carbon::createFromFormat('d/m/Y', $request->emi_start_date)->toDateString(),
                 'plot_sale_status' => $request->plot_sale_status,
                 'a_rate' => $request->a_rate,
@@ -265,6 +288,15 @@ class PlotTransferController extends Controller
                 'south' => $request->south,
             ]);
     
+            $update_plot_transfer_status = InitialEnquiry::where('id',$inquiry_id)->first();
+
+            if ($update_plot_transfer_status) {
+                $update_plot_transfer_status->plot_transfer_status = '1'; // Use = for assignment
+                // echo json_encode($update_plot_transfer_status);
+                // exit();
+                $update_plot_transfer_status->save(); // Save the changes to the database
+            }
+
             // Step 3: Store client details for the new plot
             $newOwnerIds = [];
             foreach ($request->title as $index => $title) {

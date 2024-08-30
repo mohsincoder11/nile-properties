@@ -322,28 +322,15 @@
                             <th style="text-align:center">Collected By</th>
                             <th style="text-align:center">Collected Date</th>
                             <!-- <th  style="text-align:center">Payment Mode</th>
+
                                                                                             <th  style="text-align:center">Reference Number</th>
                                                                                             <th  style="text-align:center">Paid Amount</th>
 
                                                                                             <th  style="text-align:center">Action</th> -->
+
                         </tr>
 
 
-                        <!-- <tr>
-                                                                                            <td style="padding:5px;" align="center">
-                                                                                                <label>Payment made towards</label>
-                                                                                            </td>
-                                                                                            <td style="padding:5px;" align="center">
-                                                                                                <label>22-03-2024</label>
-                                                                                            </td>
-                                                                                            <td style="padding:5px;" align="center">
-                                                                                                <label>650000</label>
-                                                                                            </td>
-                                                                                            <td style="padding:5px;" align="center">
-                                                                                                <label>24-03-2024</label>
-                                                                                            </td>
-
-                                                                                        </tr> -->
 
                     </table>
                 </div>

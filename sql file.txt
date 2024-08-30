@@ -186,3 +186,12 @@ CREATE TABLE IF NOT EXISTS `plot_transactions` (
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 ALTER TABLE `other_charges_for_clients` ADD `status` VARCHAR(10) NOT NULL DEFAULT 'pending' COMMENT 'pending,paid' AFTER `project_id`;
+
+
+//28-08
+
+ALTER TABLE `initial_enquiries_clients` ADD `plot_transfer_status` ENUM('0','1') NOT NULL DEFAULT '0' COMMENT '0 - not transfer\r\n1 - transfer' AFTER `id`;
+
+//29-08
+
+ALTER TABLE `expense_income` CHANGE `amount` `amount` DOUBLE NULL DEFAULT NULL;

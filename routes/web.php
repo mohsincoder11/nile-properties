@@ -14,7 +14,7 @@ use App\Http\Controllers\panel\EnquiryController;
 use App\Http\Controllers\panel\FirmController;
 use App\Http\Controllers\panel\FollowUpController;
 use App\Http\Controllers\panel\FollowupLeads;
-use App\Http\Controllers\panel\InitiatesellController;
+use App\Http\Controllers\panel\{InitiatesellController, UserRolesController};
 // WEBSITE
 use App\Http\Controllers\panel\LandownerController;
 use App\Http\Controllers\panel\LeadassignToEmployeeController;
@@ -301,6 +301,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/plot-edit-bank-loan-details', [PlotTransfercontroller::class, 'plotedit_bank_loan_details'])->name('plot.edit.bank.details');
 
+    // More
+    // User Role
+    Route::get('/user-roles', [UserRolesController::class, 'userRoles'])->name('user-roles');
+    Route::post('/user-roles-store', [UserRolesController::class, 'userRolesStore'])->name('user-roles-store');
+
+
     // //section B
     // Route::get('/project-entry', [ProjectEntryController::class, 'index'])->name('project.index');
     // Route::get('/addedproject-entry', [ProjectEntryController::class, 'addedProjectEntry'])->name('project.addedProjectEntry');
@@ -439,11 +445,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user-create-razorpay-order', [UserModelController::class, 'usercreateRazorpayOrder'])->name('user.create.razorpay.order');
     Route::post('/user-razorpay-callback', [UserModelController::class, 'userhandleRazorpayCallback'])->name('user.razorpay.callback');
 
+
     Route::post('/uplodqueriesbyclient', [UserModelController::class, 'uploadQueriesByClient'])->name('uplodqueriesbyclient');
 
 
     Route::get('/fetchqueries/{id}', [UserModelController::class, 'fetchQueries'])->name('fetchqueries');
-    Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse');     //adminresponse to queries
+
+    // Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse'); //adminresponse to queries
+    Route::post('/updateAdminResponse', [UserModelController::class, 'updateAdminResponse'])->name('updateAdminResponse');
+    Route::post('/submit-all-responses', [UserModelController::class, 'submitAllResponses'])->name('submitAllResponses');
+
+
+
 
 
 });

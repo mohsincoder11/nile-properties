@@ -17,7 +17,6 @@ use Illuminate\Http\Request;
 use App\Models\InitialEnquiry;
 use App\Models\PlotSaleStatus;
 use Illuminate\Support\Carbon;
-use App\Models\UserModelPlotQuery;
 use App\Models\ClientDetailInitial;
 use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
@@ -79,9 +78,7 @@ class UserModelController extends Controller
     }
     public function userdashboard()
     {
-        $queries = UserModelPlotQuery::with('firm', 'project', 'client', 'plot')->get();
 
-        $firm = FirmRegistrationMaster::all();
 
         $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
@@ -98,7 +95,7 @@ class UserModelController extends Controller
         } else {
             $clientDetails = collect();
         }
-        return view('panel.user_model.user_dashboard', compact('nominee', 'client', 'clientDetails', 'firm', 'queries'));
+        return view('panel.user_model.user_dashboard', compact('nominee', 'client', 'clientDetails'));
     }
 
 
@@ -1138,6 +1135,7 @@ class UserModelController extends Controller
         return implode(',', $image_name_array);
     }
 
+
     public function uploadQueriesByClient(Request $request)
     {
         // Validate the incoming request data
@@ -1184,7 +1182,10 @@ class UserModelController extends Controller
 
     public function fetchQueries($id)
     {
-        $query = UserModelPlotQuery::where('initial_enquiry_id', $id)->get();
+        $query = UserModelPlotQuery::where('initial_enquiry_id', $id)
+        // ->whereNull('admin_response')
+        ->orderByDesc('created_at')
+        ->get();
 
         if ($query) {
             return response()->json($query);
@@ -1194,24 +1195,70 @@ class UserModelController extends Controller
     }
 
     // Update admin response
+    // public function updateAdminResponse(Request $request)
+    // {
+    //     $request->validate([
+    //         'id' => 'required|exists:user_model_plots_related_queries,id',
+    //         'admin_response' => 'required|string',
+    //     ]);
+
+    //     $query = UserModelPlotQuery::find($request->id);
+
+    //     if ($query) {
+    //         $query->admin_response = $request->admin_response;
+    //         $query->save();
+
+    //         return response()->json(['success' => true]);
+    //     }
+
+    //     return response()->json(['success' => false], 500);
+    // }
+
     public function updateAdminResponse(Request $request)
     {
+        // Validate the incoming request
         $request->validate([
-            'id' => 'required|exists:user_model_plots_related_queries,id',
+            'query_id' => 'required|integer',
             'admin_response' => 'required|string',
         ]);
 
-        $query = UserModelPlotQuery::find($request->id);
+        // Find the query by ID
+        $query = UserModelPlotQuery::find($request->query_id);
 
-        if ($query) {
-            $query->admin_response = $request->admin_response;
-            $query->save();
-
-            return response()->json(['success' => true]);
+        if (!$query) {
+            return response()->json(['success' => false, 'message' => 'Query not found']);
         }
 
-        return response()->json(['success' => false], 500);
+        // Update the admin response
+        $query->admin_response = $request->admin_response;
+        $query->save();
+
+        return response()->json(['success' => true, 'message' => 'Response updated successfully']);
     }
+
+
+public function submitAllResponses(Request $request)
+{
+    // Validate the incoming request
+    $request->validate([
+        'responses' => 'required|array',
+        'responses.*.query_id' => 'required|integer',
+        'responses.*.admin_response' => 'required|string',
+    ]);
+
+    foreach ($request->responses as $response) {
+        // Find the query by ID
+        $query = UserModelPlotQuery::find($response['query_id']);
+
+        if ($query) {
+            // Update the admin response
+            $query->admin_response = $response['admin_response'];
+            $query->save();
+        }
+    }
+
+    return response()->json(['success' => true, 'message' => 'All responses updated successfully']);
+}
 
     public function updateAdminResponseBulk(Request $request)
     {
@@ -1237,4 +1284,5 @@ class UserModelController extends Controller
 
         return response()->json(['success' => $success]);
     }
+
 }

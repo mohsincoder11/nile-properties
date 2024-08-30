@@ -32,10 +32,7 @@ class IndexController extends Controller
         $layout = ProjectEntryLayoutImages::where('project_entry_id', $id)->get();
         $brochures = ProjectEntry::where('id', $id)->get();
         $brochure = ProjectEntry::where('id', $id)->first();
-        // $plots = ProjectEntryAppendData::where('project_entry_id', $id)->get();
-        $plots = ProjectEntryAppendData::where('project_entry_id', $id)
-        ->with('enquiries') // Eager load the enquiry relationship
-        ->get();
+        $plots = ProjectEntryAppendData::where('project_entry_id', $id)->get();
         $reviews = Review::where('project_entry_id', $id)->orderBy('updated_at', 'desc')->get(); //Order reviews by updated timestamp in descending order
         $faqs = Faqs::where('project_entry_id', $id)->get();
         // to retrive business hours from time_slot table
