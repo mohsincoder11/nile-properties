@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use App\Models\InitialEnquiry;
 use App\Models\PlotSaleStatus;
 use Illuminate\Support\Carbon;
+use App\Models\UserModelPlotQuery;
 use App\Models\ClientDetailInitial;
 use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
@@ -84,7 +85,7 @@ class UserModelController extends Controller
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
 
-        $queries = uploadQueriesByClient::all();
+        $queries = UserModelPlotQuery::all();
         $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
 
         if ($customerRegistration) {
@@ -1140,45 +1141,49 @@ class UserModelController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'firm_id' => 'required|integer',
-            'project_id' => 'required|integer',
-            'plot_no' => 'required|integer',
-            'client_id' => 'required|integer',
-            'query' => 'required|string',
+            'firm_id' => 'required',
+            'project_id' => 'required',
+            'plot_no' => 'required',
+            'client_id' => 'required',
+            'query' => 'required',
         ]);
 
-        // Check and handle missing fields
-        if ($request->has(['firm_id', 'project_id', 'plot_no', 'client_id', 'query'])) {
-            // Fetch the matching InitialEnquiry record
-            $initialEnquiry = InitialEnquiry::where([
-                ['firm_id', $request->input('firm_id')],
-                ['project_id', $request->input('project_id')],
-                ['plot_no', $request->input('plot_no')],
-            ])->first();
-            // dd($initialEnquiry);
+        // Fetch the matching ProjectEntryAppendData record
+        $fetchplot = ProjectEntryAppendData::where('project_entry_id', $request->input('project_id'))
+            ->where('plot_no', $request->input('plot_no'))
+            ->first();
 
-            if ($initialEnquiry) {
-                // Create a new record in the UserModelPlotQuery table with initial_enquiry_id
-                UserModelPlotQuery::create([
-                    'firm_id' => $request->input('firm_id'),
-                    'project_id' => $request->input('project_id'),
-                    'plot_no' => $request->input('plot_no'),
-                    'client_id' => $request->input('client_id'),
-                    'query' => $request->input('query'),
-                    'initial_enquiry_id' => $initialEnquiry->id, // Store the matched InitialEnquiry ID
-                ]);
+        if (!$fetchplot) {
+            // Redirect back with an error message if the plot is not found
+            return redirect()->back()->with('error', 'Plot not found.');
+        }
 
-                // Redirect back with a success message
-                return redirect()->back()->with('success', 'Query uploaded successfully!');
-            } else {
-                // Redirect back with an error message if InitialEnquiry record is not found
-                return redirect()->back()->with('error', 'No matching InitialEnquiry record found.');
-            }
+        // Fetch the matching InitialEnquiry record
+        $initialEnquiry = InitialEnquiry::where('firm_id', $request->input('firm_id'))
+            ->where('project_id', $request->input('project_id'))
+            ->where('plot_no', $fetchplot->id)
+            ->first();
+
+        if ($initialEnquiry) {
+            // Create a new record in the UserModelPlotQuery table with initial_enquiry_id
+            UserModelPlotQuery::create([
+                'firm_id' => $request->input('firm_id'),
+                'project_id' => $request->input('project_id'),
+                'plot_no' => $fetchplot->id,
+                'client_id' => $request->input('client_id'),
+                'query' => $request->input('query'),
+                'initial_enquiry_id' => $initialEnquiry->id, // Store the matched InitialEnquiry ID
+            ]);
+
+            // Redirect back with a success message
+            return redirect()->back()->with('success', 'Query uploaded successfully!');
         } else {
-            // Redirect back with an error message if fields are missing
-            return redirect()->back()->with('error', 'Some required fields are missing.');
+            // Redirect back with an error message if InitialEnquiry record is not found
+            return redirect()->back()->with('error', 'No matching InitialEnquiry record found.');
         }
     }
+
+
 
     public function fetchQueries($id)
     {
