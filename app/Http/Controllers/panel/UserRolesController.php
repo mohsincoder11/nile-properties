@@ -10,7 +10,8 @@ class UserRolesController extends Controller
 {
     public function userRoles()
     {
-        return view('panel.user-roles');
+        $role = UserRoles::all();
+        return view('panel.user-roles', compact('role'));
     }
 
     public function userRolesStore(Request $request)
@@ -24,4 +25,24 @@ class UserRolesController extends Controller
 
         return redirect()->back()->with('success', 'Role Added Successfully');
     }
+
+    public function UserRolesEdit($id)
+    {
+        $roleEdit = UserRoles::find($id);
+        return view('panel.user-roles-edit', compact('roleEdit'));
+    }
+
+    public function UserRolesUpdate(Request $request)
+    {
+
+        $user = UserRoles::find($request->id);
+        $user->role = $request->role;
+        $user->permission = $request->permission;
+
+        $user->save();
+
+
+        return redirect(route('user-roles'))->with('success', 'Successfully Updated !');
+    }
 }
+
