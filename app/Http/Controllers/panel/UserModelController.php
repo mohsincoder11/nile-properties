@@ -1095,4 +1095,155 @@ class UserModelController extends Controller
         }
         return implode(',', $image_name_array);
     }
+
+
+    public function uploadQueriesByClient(Request $request)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'firm_id' => 'required|integer',
+            'project_id' => 'required|integer',
+            'plot_no' => 'required|integer',
+            'client_id' => 'required|integer',
+            'query' => 'required|string',
+        ]);
+
+        // Check and handle missing fields
+        if ($request->has(['firm_id', 'project_id', 'plot_no', 'client_id', 'query'])) {
+            // Fetch the matching InitialEnquiry record
+            $initialEnquiry = InitialEnquiry::where([
+                ['firm_id', $request->input('firm_id')],
+                ['project_id', $request->input('project_id')],
+                ['plot_no', $request->input('plot_no')],
+            ])->first();
+            // dd($initialEnquiry);
+
+            if ($initialEnquiry) {
+                // Create a new record in the UserModelPlotQuery table with initial_enquiry_id
+                UserModelPlotQuery::create([
+                    'firm_id' => $request->input('firm_id'),
+                    'project_id' => $request->input('project_id'),
+                    'plot_no' => $request->input('plot_no'),
+                    'client_id' => $request->input('client_id'),
+                    'query' => $request->input('query'),
+                    'initial_enquiry_id' => $initialEnquiry->id, // Store the matched InitialEnquiry ID
+                ]);
+
+                // Redirect back with a success message
+                return redirect()->back()->with('success', 'Query uploaded successfully!');
+            } else {
+                // Redirect back with an error message if InitialEnquiry record is not found
+                return redirect()->back()->with('error', 'No matching InitialEnquiry record found.');
+            }
+        } else {
+            // Redirect back with an error message if fields are missing
+            return redirect()->back()->with('error', 'Some required fields are missing.');
+        }
+    }
+
+    public function fetchQueries($id)
+    {
+        $query = UserModelPlotQuery::where('initial_enquiry_id', $id)
+        // ->whereNull('admin_response')
+        ->orderByDesc('created_at')
+        ->get();
+
+        if ($query) {
+            return response()->json($query);
+        }
+
+        return response()->json(['error' => 'No data found'], 404);
+    }
+
+    // Update admin response
+    // public function updateAdminResponse(Request $request)
+    // {
+    //     $request->validate([
+    //         'id' => 'required|exists:user_model_plots_related_queries,id',
+    //         'admin_response' => 'required|string',
+    //     ]);
+
+    //     $query = UserModelPlotQuery::find($request->id);
+
+    //     if ($query) {
+    //         $query->admin_response = $request->admin_response;
+    //         $query->save();
+
+    //         return response()->json(['success' => true]);
+    //     }
+
+    //     return response()->json(['success' => false], 500);
+    // }
+
+    public function updateAdminResponse(Request $request)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'query_id' => 'required|integer',
+            'admin_response' => 'required|string',
+        ]);
+
+        // Find the query by ID
+        $query = UserModelPlotQuery::find($request->query_id);
+
+        if (!$query) {
+            return response()->json(['success' => false, 'message' => 'Query not found']);
+        }
+
+        // Update the admin response
+        $query->admin_response = $request->admin_response;
+        $query->save();
+
+        return response()->json(['success' => true, 'message' => 'Response updated successfully']);
+    }
+
+
+public function submitAllResponses(Request $request)
+{
+    // Validate the incoming request
+    $request->validate([
+        'responses' => 'required|array',
+        'responses.*.query_id' => 'required|integer',
+        'responses.*.admin_response' => 'required|string',
+    ]);
+
+    foreach ($request->responses as $response) {
+        // Find the query by ID
+        $query = UserModelPlotQuery::find($response['query_id']);
+
+        if ($query) {
+            // Update the admin response
+            $query->admin_response = $response['admin_response'];
+            $query->save();
+        }
+    }
+
+    return response()->json(['success' => true, 'message' => 'All responses updated successfully']);
+}
+
+    public function updateAdminResponseBulk(Request $request)
+    {
+        $request->validate([
+            'responses' => 'required|array',
+            'responses.*.id' => 'required|exists:user_model_plots_related_queries,id',
+            'responses.*.admin_response' => 'required|string',
+        ]);
+
+        $responses = $request->responses;
+        $success = true;
+
+        foreach ($responses as $response) {
+            $query = UserModelPlotQuery::find($response['id']);
+            if ($query) {
+                $query->admin_response = $response['admin_response'];
+                $query->save();
+            } else {
+                $success = false;
+                break;
+            }
+        }
+
+        return response()->json(['success' => $success]);
+    }
+
 }

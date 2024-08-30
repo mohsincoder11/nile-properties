@@ -57,39 +57,63 @@
             <label style="color:#000; background-color:#FFCC00; width:7%; height:25px; padding-top:5px;margin-top: 1vh;"
                 align="center"><span class="fa fa-desktop"></span> <strong>Masters</strong></label>
 
+                @php
+                $permission = Auth::user()->permission;
+                // echo $permission;
+            @endphp
 
+
+            @if (Auth::user()->role == 'admin' || in_array('city_master', $permission))
             <a href="{{route('city_master')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #993800;"><i
                         class="fa fa-database"></i>City/Occupation/Layout Feature/Plot Sale Status/Transaction Type
                     Masters</button>
             </a>
+            @endif
+
+            @if (Auth::user()->role == 'admin' || in_array('branch', $permission))
+
             <a href="{{route('branch')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i
                         class="fa fa-sitemap"></i>Branch</button>
             </a>
+            @endif
+
+            @if (Auth::user()->role == 'admin' || in_array('firm_reg', $permission))
             <a href="{{route('firm_reg')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #006699;"><i
                         class="fa fa-sitemap"></i>Firm</button>
             </a>
+            @endif
 
+            @if (Auth::user()->role == 'admin' || in_array('agent_reg', $permission))
             <a href="{{route('agent_reg')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #218dbb;"><i
                         class="fa fa-users"></i>Agent/Broker Registration</button>
             </a>
+            @endif
 
+            @if (Auth::user()->role == 'admin' || in_array('emp_reg', $permission))
             <a href="{{route('emp_reg')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #540338; "><i
-                        class="fa fa-user"></i>Employee Registration</button>
+                        class="fa fa-user"></i>Team Registration</button>
             </a>
+            @endif
+
+            @if (Auth::user()->role == 'admin' || in_array('customerReg', $permission))
             <a href="{{route('customerReg')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #8dd510; "><i
                         class="fa fa-user"></i>Customer Registration</button>
             </a>
+            @endif
+
+            @if (Auth::user()->role == 'admin' || in_array('agrrementmaster', $permission))
             <a href="{{route('agrrementmaster')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #d5cb10; "><i
                         class="fa fa-user"></i>Agreement Master
                 </button>
             </a>
+            @endif
 
 
         </div>
