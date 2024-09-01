@@ -46,8 +46,9 @@ class InitiatesellController extends Controller
         ];
 
         $agent = AgentRegistrationMaster::whereIn('profile', $profiles)->get();
-//         echo json_encode($agent);
-// exit();
+
+        // echo json_encode($agent);
+        // exit();
         $clients = CustomerRegistrationMaster::all();
         $occupation = Occupation::all();
         $branch = BranchMaster::all();
@@ -117,13 +118,16 @@ class InitiatesellController extends Controller
         $projectId = $request->input('projectId');
         // dd($projectId); // Uncomment for debugging
         //  $plots = ProjectEntryAppendData::where('project_entry_id', $projectId)->get();
-        $usedPlotIds = InitialEnquiry::where('project_id', $projectId)->pluck('plot_no');
+        $usedPlotIds = InitialEnquiry::where('project_id', $projectId)
+        ->where('plot_transfer_status','1')
+        ->pluck('plot_no');
 
         // Step 2: Fetch plots from ProjectEntryAppendData that are not in the used plot IDs
         $plots = ProjectEntryAppendData::where('project_entry_id', $projectId)
             ->whereNotIn('id', $usedPlotIds)
             ->get();
-
+// echo json_encode($plots);
+// exit();
         return response()->json($plots);
     }
 

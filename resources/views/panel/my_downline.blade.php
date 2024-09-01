@@ -133,7 +133,24 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($first_level as $first_levels)
                         <tr>
+
+                            <td>{{$loop->iteration}}</td>
+
+                            <td>{{$first_levels->name}}</td>
+                            <td>{{$first_levels->profile}}</td>
+                            <td>{{$first_levels->name}}</td>
+
+                            <td>
+                                <button data-toggle="modal" data-target="#popup3"
+                                    style="background-color:#1abc3d; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                    type="button" class="btn btn-info view_downline_list" id="{{$first_levels->id}}" data-toggle="tooltip" data-placement="top"
+                                    title="View"><i class="fa fa-eye" style="margin-left:5px;"></i></button>
+                            </td>
+                        </tr>
+                        @endforeach
+                        {{-- <tr>
 
                             <td>1.</td>
 
@@ -149,7 +166,7 @@
                                 <!-- <button style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit" style="margin-left:5px;"></i></button>
                                             <button style="background-color:#ff0000; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-o" style="margin-left:5px;"></i></button> -->
                             </td>
-                        </tr>
+                        </tr> --}}
 
 
                     </tbody>
@@ -180,8 +197,10 @@
                 <h4 class="modal-title" id="H4">View Downline</h4>
             </div>
             <div class="modal-body" style="height:30%;padding: 10px;">
+                <div class="col-md-12" id="table_append">
 
-                <div class="col-md-12">
+                </div>
+                {{-- <div class="col-md-12">
                     <table width="100%" border="1" style="margin-top: 5px;">
                         <tr style="background-color:#f0f0f0; height:30px;">
                             <th width="3%" style="text-align:center">Sr.No</th>
@@ -208,7 +227,7 @@
 
 
                     </table>
-                </div>
+                </div> --}}
             </div>
             <div class="modal-footer" style="border: none !important; background-color: #FFF !important;">
                 <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
@@ -234,4 +253,26 @@
         </div>
     </div>
 </div>
+@stop
+@section('js')
+    <script>
+        $(document).ready(function() {
+            $(".view_downline_list").on('click', function() {
+                console.log('alart');
+                $.ajax({
+                    type: "get",
+                    url: '{{ route('get_downline_list') }}',
+                    dataType: "json",
+                    data: {
+                        id: $(this).attr('id')
+                    },
+                    success: function(data) {
+                        $("#table_append").html(data);
+
+                    },
+                });
+            })
+        })
+    </script>
+
 @stop

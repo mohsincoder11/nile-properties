@@ -228,6 +228,7 @@ Route::middleware(['auth'])->group(function () {
     //my downline controller
 
     Route::get('downlineindex', [MyDownline::class, 'downlineindex'])->name('downlineindex');
+    Route::get('get_downline_list', [MyDownline::class, 'get_downline_list'])->name('get_downline_list');
     Route::get('positionindex', [MyDownline::class, 'positionindex'])->name('positionindex');
     Route::get('downlinebuisnessindex', [MyDownline::class, 'downlinebuisnessindex'])->name('downlinebuisnessindex');
 

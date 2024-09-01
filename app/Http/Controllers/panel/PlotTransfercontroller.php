@@ -37,8 +37,14 @@ class PlotTransferController extends Controller
         $projects = ProjectEntry::all();
         $statuses = PlotSaleStatus::all();
         $employees = EmployeeRegistrationMaster::all();
-        $agent = AgentRegistrationMaster::all();
+        // $agent = AgentRegistrationMaster::all();
+        $profiles = [
+            app('agentProfile')(1),
+            app('agentProfile')(2),
+            app('agentProfile')(3),
+        ];
 
+        $agent = AgentRegistrationMaster::whereIn('profile', $profiles)->get();
         $occupation = Occupation::all();
         $branch = BranchMaster::all();
         $firm = FirmRegistrationMaster::all();

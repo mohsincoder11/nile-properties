@@ -42,7 +42,7 @@ class PaymentCollectionController extends Controller
         $ProjectEntryAppendData = ProjectEntryAppendData::where('plot_no', $plot_no)->first();
 
         $initialEnquiry = InitialEnquiry::with('emi')->where('project_id', $project_id)->where('plot_no', $$ProjectEntryAppendData->id)->first();
-        dd($initialEnquiry);
+        // dd($initialEnquiry);
         if ($client && $initialEnquiry) {
             $data = [
                 'client_name' => $client->name,
