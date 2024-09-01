@@ -14,9 +14,7 @@
 @foreach ($downline_list as $downline_lists)
 <tr>
     <td style="padding:5px;" align="center">
-        <label>
             {{$loop->iteration}}
-        </label>
     </td>
     <td style="padding:5px;" align="center">{{$downline_lists->name}}</td>
     <td style="padding:5px;" align="center">{{$downline_lists->email}}</td>
