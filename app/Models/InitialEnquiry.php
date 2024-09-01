@@ -12,7 +12,7 @@ class InitialEnquiry extends Model
     protected $primarykey = 'id';
     protected $fillable = [
         'firm_id',
-
+        'previous_initial_id',
         'project_id',
         'measurement',
         'square_meter',

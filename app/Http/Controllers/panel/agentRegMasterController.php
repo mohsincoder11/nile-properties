@@ -67,6 +67,8 @@ class agentRegMasterController extends Controller
             $agentRegistration = new AgentRegistrationMaster([
                 'agent_number' => $agentNumber,
                 'name' => $request->input('name'),
+                'profile'=>$this->get_agent_profile(1),
+                'parent_id'=>$request->parent_id ?? Null,
                 'email' => $request->input('email'),
                 'contact_number' => $request->input('contact_number'),
                 'city' => $request->input('city'),
@@ -122,7 +124,24 @@ class agentRegMasterController extends Controller
         }
     }
 
-
+    function get_agent_profile($level)
+    {
+        $profiles=
+         [
+            '1' => 'Assistant Sales Executive',
+            '2' => 'Sales Executive',
+            '3' => 'Senior Sales Executive',
+            '4' => 'Sales Representative',
+            '5' => 'Assistant Sale Representative',
+            '6' => 'Senior Sale Representative',
+            '7' => 'Assistant Manager',
+            '8'=>'Manager',
+            '9'=>'Senior Manager',
+            '10'=>'Director',
+            '11'=>'King'           
+        ];
+        return $profiles[$level] ?? '';
+    }
 
     public function agent_destroy($id)
     {
@@ -195,6 +214,8 @@ class agentRegMasterController extends Controller
         $agentRegistration->city = $request->city;
         $agentRegistration->address = $request->address;
         $agentRegistration->pincode = $request->pincode;
+        $agentRegistration->parent_id = $request->parent_id ?? NULL;
+
 
         // Update images only if new files are provided
         if ($request->hasFile('pan')) {

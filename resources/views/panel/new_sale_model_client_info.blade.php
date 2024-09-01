@@ -17,11 +17,11 @@
                     <label class="control-label">Address: <font color="#000099">{{ $client->address ?? ''
                             ?? '' }}</font></label>
                 </td>
-                <td style="padding: 2px" width="1%">
+                {{-- <td style="padding: 2px" width="1%">
                     <label class="control-label">Sponser ID:
                         <font color="#000099">{{ $client->sponsor ?? '' }}</font>
                     </label>
-                </td>
+                </td> --}}
             </tr>
             @endforeach
             <tr style="

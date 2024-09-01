@@ -343,12 +343,21 @@
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         <a class="dropdown-item"
                                             href="{{ route('plot.transfer', [$inquiry->id, 1]) }}">Transfer User
-                                            From Plot X to Y</a>
+                                            From Plot</a>
                                         <a class="dropdown-item"
                                             href="{{ route('plot.transfer', [$inquiry->id, 2]) }}">Transfer Plot
-                                            From User X to Y</a>
+                                            From User</a>
                                     </div>
+                                 
                                 </div>
+                                @if(isset($inquiry->previous_initial_id)) 
+                                <button
+                                   style="background-color:#1abc3d; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                   type="button" class="btn btn-info view-details-btn" data-toggle="tooltip"
+                                   data-placement="top" title="View" data-id="{{ $inquiry->previous_initial_id }}">
+                                   <i class="fa fa-info-circle" style="margin-left:5px;"></i>
+                               </button>
+                               @endif
                             </td>
                         </tr>
                               
@@ -393,6 +402,35 @@
 @stop
 
 @section('js')
+<script>
+    $(document).on('click', '.view-details-btn', function() {
+            $("#popup3").modal({
+                backdrop: "static",
+                keyboard: false,
+            });
+            var inquiryId = $(this).data('id'); // Get the data-id value
+            $("#appendbody").empty();
+            $.ajax({
+                url: '{{ route('inquiry.details') }}',
+                type: 'get',
+                data: {
+                    id: inquiryId
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.html) {
+                        $("#appendbody").html(data.html);
+                    } else if (data.error) {
+                        $("#appendbody").html('<p>' + data.error + '</p>');
+                    }
+                },
+                error: function() {
+                    $("#appendbody").html('<p>An error occurred while fetching the details.</p>');
+                }
+            });
+        });
+</script>
+
 <script>
     $(document).on('click', '.view-details-btn', function() {
             $("#popup3").modal({
