@@ -322,28 +322,15 @@
                             <th style="text-align:center">Collected By</th>
                             <th style="text-align:center">Collected Date</th>
                             <!-- <th  style="text-align:center">Payment Mode</th>
-                                                    <th  style="text-align:center">Reference Number</th>
-                                                    <th  style="text-align:center">Paid Amount</th>
 
-                                                    <th  style="text-align:center">Action</th> -->
+                                                                                            <th  style="text-align:center">Reference Number</th>
+                                                                                            <th  style="text-align:center">Paid Amount</th>
+
+                                                                                            <th  style="text-align:center">Action</th> -->
+
                         </tr>
 
 
-                        <!-- <tr>
-                                                    <td style="padding:5px;" align="center">
-                                                        <label>Payment made towards</label>
-                                                    </td>
-                                                    <td style="padding:5px;" align="center">
-                                                        <label>22-03-2024</label>
-                                                    </td>
-                                                    <td style="padding:5px;" align="center">
-                                                        <label>650000</label>
-                                                    </td>
-                                                    <td style="padding:5px;" align="center">
-                                                        <label>24-03-2024</label>
-                                                    </td>
-
-                                                </tr> -->
 
                     </table>
                 </div>
@@ -1329,20 +1316,22 @@
         $(document).ready(function() {
             $('#plot-select').change(function() {
                 var plotNo = $(this).val(); // Get selected plot number
+                var projectId = $('#project-select').val(); // Get selected project ID
 
                 $.ajax({
                     type: "GET",
                     url: "{{ route('getClientIdByPlot') }}", // Route to be created
                     data: {
-                        plot_no: plotNo
-                    }, // Send plot number as a parameter
+                        plot_no: plotNo,
+                        project_id: projectId // Include project ID in the request
+                    },
                     success: function(response) {
                         var clientSelect = $('#client-select');
                         clientSelect.empty(); // Clear the dropdown
 
                         if (response.clients && response.clients.length > 0) {
                             // Append each client ID and name to the dropdown
-                            clientSelect.append('<option value="">select client</option>');
+                            clientSelect.append('<option value="">Select client</option>');
                             $.each(response.clients, function(index, client) {
                                 clientSelect.append('<option value="' + client
                                     .client_id + '">' + client.client_name +

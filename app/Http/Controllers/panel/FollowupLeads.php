@@ -20,7 +20,9 @@ class FollowupLeads extends Controller
         $plot = ProjectEntryAppendData::all();
         $statuses = PlotSaleStatus::all();
         //   dd($statuses);
-        $enquery = Enquiry::where('client_status', 'Added_client')->with('status_name', 'project_name', 'plot_name', 'client_name', 'emoloyee_name', 'agent_name')->get();
+        $enquery = Enquiry::where('client_status', 'Added_client')->with('status_name', 'project_name', 'plot_name', 'client_name', 'emoloyee_name', 'agent_name')
+        ->orderByDesc('updated_at')
+        ->get();
         // dd($enquery);
         return view('panel.new_client', compact('enquery', 'statuses', 'project', 'plot'));
     }
@@ -120,7 +122,11 @@ class FollowupLeads extends Controller
     {
         $statuses = PlotSaleStatus::all();
 
-        $enquery = Enquiry::with('status_name', 'project_name', 'plot_name', 'client_name')->get();
+
+        $enquery = Enquiry::with('status_name', 'project_name', 'plot_name', 'client_name')
+        ->orderByDesc('updated_at')
+        ->get();
+
 
         return view('panel.all_enquiry', compact('enquery', 'statuses'));
     }
@@ -129,13 +135,17 @@ class FollowupLeads extends Controller
     {
         $statuses = PlotSaleStatus::all();
 
-        $enquery = Enquiry::where('client_status', 'Proposal')->with('status_name', 'project_name', 'plot_name', 'client_name')->get();
+        $enquery = Enquiry::where('client_status', 'Proposal')->with('status_name', 'project_name', 'plot_name', 'client_name')
+        ->orderByDesc('updated_at')
+        ->get();
 
         return view('panel.proposal', compact('enquery', 'statuses'));
     }
     public function tokenindex()
     {
-        $enquery = Enquiry::where('client_status', 'Token_BooK')->with('status_name', 'project_name', 'plot_name', 'client_name')->get();
+        $enquery = Enquiry::where('client_status', 'Token_BooK')->with('status_name', 'project_name', 'plot_name', 'client_name')
+
+        ->get();
         return view('panel.token', compact('enquery'));
     }
     public function visitindex()

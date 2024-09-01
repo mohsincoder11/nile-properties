@@ -30,7 +30,7 @@
 
             <a href="{{route('emp_reg')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #540338; "><i
-                        class="fa fa-user"></i>Employee Registration</button>
+                        class="fa fa-user"></i>Team Registration</button>
             </a>
             <a href="{{route('customerReg')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #8dd510; "><i
@@ -61,6 +61,29 @@
         </div>
         @endif
     </div> --}}
+
+
+    @if ($errors->any())
+    <div class="alert alert-danger mt-2 alert-temporary">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+@if(session('success'))
+    <div class="alert alert-success alert-temporary">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger alert-temporary">
+        {{ session('error') }}
+    </div>
+@endif
     <form action="{{route('emp_reg_store')}}" method="post" enctype="multipart/form-data">
         @csrf
 
@@ -84,10 +107,9 @@
                     <tr>
                         <td style="padding: 2px;" width="3%">
                             <select class="form-control select" data-live-search="true" name="role" required>
-                                <option value="" disabled selected>Select Role</option>
-                                <option {{ old('title')=='Admin' ? 'selected' : '' }}>Admin</option>
-                                <option {{ old('title')=='Reception' ? 'selected' : '' }}>Reception</option>
-                                <option {{ old('title')=='Employee' ? 'selected' : '' }}>Employee</option>
+                               @foreach ($user_role as $role)
+                                <option value="{{$role->id}}">{{$role->role}}</option>
+                               @endforeach
                             </select>
                         </td>
                         <td style="padding: 2px;" width="5%">
@@ -264,7 +286,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($emp as $emp)
+                    @foreach ($emp->sortByDesc('created_at') as $emp)
 
 
                     <tr>

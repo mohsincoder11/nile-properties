@@ -291,6 +291,7 @@ class EnquiryController extends Controller
             ->where('project_id', $projectEntryId)
             //  ->with('client') // Assuming you have a relationship set up with the Client model
             ->get()
+
             ->map(function ($enquiryForm) {
                 return [
                     'client_name' => $enquiryForm->name,
@@ -299,6 +300,8 @@ class EnquiryController extends Controller
                     'date' => $enquiryForm->created_at->format('d-m-Y'),
                 ];
             });
+
+
 
         // Combine the data from both models into one variable
         $combinedData = $enquiries->merge($enquiryForms);

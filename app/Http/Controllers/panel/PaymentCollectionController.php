@@ -36,13 +36,15 @@ class PaymentCollectionController extends Controller
         $client_id = $request->input('client_id');
         $project_id = $request->input('project_id');
         $plot_no = $request->input('plot_no');
+        $plotNoFetch = ProjectEntryAppendData::where('project_entry_id', $project_id)->where('plot_no', $plot_no)
+
+            ->first();
 
         $client = CustomerRegistrationMaster::where('id', $client_id)->first();
 
-        $ProjectEntryAppendData = ProjectEntryAppendData::where('plot_no', $plot_no)->first();
-
-        $initialEnquiry = InitialEnquiry::with('emi')->where('project_id', $project_id)->where('plot_no', $$ProjectEntryAppendData->id)->first();
+        $initialEnquiry = InitialEnquiry::with('emi')->where('project_id', $project_id)->where('plot_no', $plotNoFetch->id)->first();
         // dd($initialEnquiry);
+
         if ($client && $initialEnquiry) {
             $data = [
                 'client_name' => $client->name,
@@ -73,18 +75,27 @@ class PaymentCollectionController extends Controller
     {
         // Validate the request data
         $validatedData = $request->validate([
-            'amount' => 'required|numeric',
-            'project_id' => 'required|integer',
-            'plot_id' => 'required|integer',
-            'client_id' => 'required|integer',
-            'firm_id' => 'required|integer',
-            'charges_id' => 'required|integer',
+            'amount' => 'required|',
+            'project_id' => 'required|',
+            'plot_id' => 'required|',
+            'client_id' => 'required|',
+            'firm_id' => 'required|',
+            'charges_id' => 'required|',
         ]);
 
+        // Fetch the plot entry based on project_id and plot_id
+        $plotNoFetch = ProjectEntryAppendData::where('project_entry_id', $validatedData['project_id'])
+            ->where('plot_no', $validatedData['plot_id'])
+            ->first();
+
+        if (!$plotNoFetch) {
+            return response()->json(['success' => false, 'message' => 'Plot not found'], 404);
+        }
+
         // Find the corresponding InitialEnquiry based on the input parameters
-        $initialEnquiry = InitialEnquiry::where('firm_id', $request->input('firm_id'))
-            ->where('project_id', $request->input('project_id'))
-            ->where('plot_no', $request->input('plot_id')) // Ensure the correct field is used for matching
+        $initialEnquiry = InitialEnquiry::where('firm_id', $validatedData['firm_id'])
+            ->where('project_id', $validatedData['project_id'])
+            ->where('plot_no', $plotNoFetch->id) // Use plot_no for matching
             ->first();
 
         $initialEnquiryId = $initialEnquiry ? $initialEnquiry->id : null;
@@ -93,7 +104,7 @@ class PaymentCollectionController extends Controller
         $otherCharge = OtherChargesForClient::create([
             'amount' => $validatedData['amount'],
             'project_id' => $validatedData['project_id'],
-            'plot_id' => $validatedData['plot_id'],
+            'plot_id' => $plotNoFetch->id,
             'client_id' => $validatedData['client_id'],
             'firm_id' => $validatedData['firm_id'],
             'charges_id' => $validatedData['charges_id'],
@@ -104,15 +115,19 @@ class PaymentCollectionController extends Controller
         $chargeData = OtherChargesForClient::with('chargesname', 'projectname', 'firmname', 'clientname')
             ->find($otherCharge->id);
 
+        if (!$chargeData) {
+            return response()->json(['success' => false, 'message' => 'Failed to fetch charge data'], 500);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Other charges for client saved successfully!',
             'data' => [
                 'amount' => $chargeData->amount,
                 'plot_id' => $chargeData->plot_id,
-                'project_name' => $chargeData->projectname->project_name,
-                'firm_name' => $chargeData->firmname->name,
-                'charges_id' => $chargeData->chargesname->other_charges
+                'project_name' => $chargeData->projectname->project_name ?? 'N/A',
+                'firm_name' => $chargeData->firmname->name ?? 'N/A',
+                'charges_id' => $chargeData->chargesname->other_charges ?? 'N/A'
             ]
         ]);
     }
@@ -120,78 +135,110 @@ class PaymentCollectionController extends Controller
 
     public function getOtherCharges(Request $request)
     {
-        $projectId = $request->input('project_id');
-        $plotId = $request->input('plot_id');
-        $clientId = $request->input('client_id'); // Get client_id from request
+        try {
+            $projectId = $request->input('project_id');
+            $plotId = $request->input('plot_id');
+            $clientId = $request->input('client_id'); // Get client_id from request
 
-        $charges = OtherChargesForClient::with('chargesname', 'plotname', 'projectname', 'firmname', 'clientname')
-            ->where('project_id', $projectId)
-            ->where('plot_id', $plotId)
-            ->where('client_id', $clientId) // Filter by client_id
-            // Ensure that only records where the specified fields are not null are retrieved
-            ->whereNotNull('amount')
-            ->whereNotNull('charges_id')
-            ->whereNotNull('client_id')
-            ->whereNotNull('plot_id')
-            ->whereNotNull('firm_id')
-            ->whereNotNull('project_id')
-            ->whereNotNull('status')
-            ->get();
+            // Fetch the plot entry
+            $plotNoFetch = ProjectEntryAppendData::where('project_entry_id', $projectId)
+                ->where('plot_no', $plotId)
+                ->first();
 
-        $result = $charges->map(function ($charge) {
-            return [
-                'payment_type' => $charge->chargesname->other_charges,
-                'date' => $charge->created_at->format('Y-m-d'),
-                'amount' => $charge->amount,
-                'plot_no' => $charge->plotname->plot_no,
-                'project_name' => $charge->projectname->project_name,
-                'firm_name' => $charge->firmname->name,
-                'status' => $charge->status,
+            // Check if plotNoFetch is found
+            if (!$plotNoFetch) {
+                return response()->json(['error' => 'Plot not found.'], 404);
+            }
 
+            // Fetch the charges
+            $charges = OtherChargesForClient::with('chargesname', 'plotname', 'projectname', 'firmname', 'clientname')
+                ->where('project_id', $projectId)
+                ->where('plot_id', $plotNoFetch->id)
+                ->where('client_id', $clientId) // Filter by client_id
+                ->whereNotNull('amount')
+                ->whereNotNull('charges_id')
+                ->whereNotNull('client_id')
+                ->whereNotNull('plot_id')
+                ->whereNotNull('firm_id')
+                ->whereNotNull('project_id')
+                ->whereNotNull('status')
+                ->get();
 
-            ];
-        });
+            $result = $charges->map(function ($charge) {
+                return [
+                    'payment_type' => $charge->chargesname->other_charges ?? 'N/A',
+                    'date' => $charge->created_at ? $charge->created_at->format('Y-m-d') : 'N/A',
+                    'amount' => $charge->amount ?? 'N/A',
+                    'plot_no' => $charge->plotname->plot_no ?? 'N/A',
+                    'project_name' => $charge->projectname->project_name ?? 'N/A',
+                    'firm_name' => $charge->firmname->name ?? 'N/A',
+                    'status' => $charge->status ?? 'N/A',
+                ];
+            });
 
-        return response()->json($result);
-
+            return response()->json($result);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
+        }
     }
+
     // DocumentController.php
     public function fetchDocuments(Request $request)
     {
-        $query = PlotRegistrationDocumentByClient::query();
+        try {
+            // First, fetch the plot_id and project_id from ProjectEntryAppendData
+            $plotNoFetch = ProjectEntryAppendData::where('project_entry_id', $request->input('project_id'))
+                ->where('plot_no', $request->input('plot_id'))
+                ->first();
 
-        // Apply filters based on the request inputs
-        if ($request->has('project_id')) {
-            $query->where('project_id', $request->input('project_id'));
+            // If no record is found, return an empty response or handle it as needed
+            if (!$plotNoFetch) {
+                return response()->json([], 404); // Not found
+            }
+
+            // Extract the plot_id and project_id
+            $plotId = $plotNoFetch->id; // Adjust based on your actual schema
+            $projectId = $plotNoFetch->project_entry_id;
+
+            // Initialize the query for PlotRegistrationDocumentByClient
+            $query = PlotRegistrationDocumentByClient::query();
+
+            // Apply filters based on the request inputs
+            $query->where('project_id', $projectId)
+                ->where('plot_id', $plotId);
+
+            if ($request->has('client_id')) {
+                $query->where('client_id', $request->input('client_id'));
+            }
+
+            // Ensure that only records where the specified fields are not null are retrieved
+            $query->whereNotNull('document_name')
+                ->whereNotNull('plot_id')
+                ->whereNotNull('firm_id')
+                ->whereNotNull('project_id')
+                ->whereNotNull('client_id')
+                ->whereNotNull('status');
+
+            // Eager load the relationships
+            $documents = $query->with('projectname', 'plotname', 'firmname', 'clientname')->get();
+
+            return response()->json($documents);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
-
-        if ($request->has('plot_id')) {
-            $query->where('plot_id', $request->input('plot_id'));
-        }
-
-        if ($request->has('client_id')) {
-            $query->where('client_id', $request->input('client_id'));
-        }
-
-        // Ensure that only records where the specified fields are not null are retrieved
-        $query->whereNotNull('document_name')
-            ->whereNotNull('plot_id')
-            ->whereNotNull('firm_id')
-            ->whereNotNull('project_id')
-            ->whereNotNull('client_id')
-            ->whereNotNull('status');
-
-        // Eager load the relationships
-        $documents = $query->with('projectname', 'plotname', 'firmname', 'clientname')->get();
-
-        return response()->json($documents);
     }
+
 
 
 
     public function documentstore(Request $request)
     {
         $documents = [];
+
+        // Fetch the plot entry based on project_id and plot_id
+        $plotNoFetch = ProjectEntryAppendData::where('project_entry_id', $request->project_id)
+            ->where('plot_no', $request->plot_id)
+            ->first();
 
         if ($request->hasFile('documents')) {
             foreach ($request->file('documents') as $file) {
@@ -204,7 +251,7 @@ class PaymentCollectionController extends Controller
                 // Find the corresponding InitialEnquiry based on the input parameters
                 $initialEnquiry = InitialEnquiry::where('firm_id', $request->input('firm_id'))
                     ->where('project_id', $request->input('project_id'))
-                    ->where('plot_no', $request->input('plot_id')) // Ensure the correct field is used for matching
+                    ->where('plot_no', $plotNoFetch->id) // Ensure the correct field is used for matching
                     ->first();
 
                 $initialEnquiryId = $initialEnquiry ? $initialEnquiry->id : null;
@@ -212,7 +259,7 @@ class PaymentCollectionController extends Controller
                 // Store file information in the database
                 $document = PlotRegistrationDocumentByClient::create([
                     'document_name' => $filename,
-                    'plot_id' => $request->input('plot_id'),
+                    'plot_id' => $plotNoFetch->id,
                     'project_id' => $request->input('project_id'),
                     'client_id' => $request->input('client_id'),
                     'firm_id' => $request->input('firm_id'),
@@ -245,8 +292,12 @@ class PaymentCollectionController extends Controller
     {
         $project_id = $request->input('project_id');
         $plot_no = $request->input('plot_no');
+        $plotNoFetch = ProjectEntryAppendData::where('project_entry_id', $project_id)->where('plot_no', $plot_no)
 
-        $initialEnquiry = InitialEnquiry::where('project_id', $project_id)->where('plot_no', $plot_no)->select('id')->first();
+            ->first();
+
+
+        $initialEnquiry = InitialEnquiry::where('project_id', $project_id)->where('plot_no', $plotNoFetch->id)->select('id')->first();
 
         if ($initialEnquiry) {
             $emiPayments = EmiPaymentCollection::where('initial_enquiry_id', $initialEnquiry->id)->get();
@@ -358,8 +409,6 @@ class PaymentCollectionController extends Controller
             // Return JSON error response for AJAX
             return response()->json(['error' => 'Installment payment not found.'], 404);
         }
-
-
     }
 
     public function update_installment(Request $request)
@@ -425,10 +474,9 @@ class PaymentCollectionController extends Controller
         }
     }
 
-
     public function getClientIdByPlot(Request $request)
     {
-        
+
         $project_id = $request->input('project_id');
         $plotNo = $request->input('plot_no'); // Get plot number from request
 
@@ -467,6 +515,4 @@ class PaymentCollectionController extends Controller
             return response()->json(['error' => 'Plot not found'], 404);
         }
     }
-
-
 }
