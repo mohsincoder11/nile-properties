@@ -271,7 +271,7 @@
                                 @elseif(!empty($inquiry->agent_id ?? ''))
                                 <div class="popover__wrapper">
                                     <a href="#">
-                                        <h2 class="popover__title">{{ $inquiry->agent->name }}</h2>
+                                        <h2 class="popover__title">{{ $inquiry->agent->name ?? '' }}</h2>
                                     </a>
                                     <div class="popover__content">
                                         <div class="modal-area">

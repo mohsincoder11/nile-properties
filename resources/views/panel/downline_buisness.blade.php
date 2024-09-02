@@ -90,8 +90,12 @@
                         </div>
                     </td>
                     <td style="padding: 2px;" width="2%">
-                        <select class="form-control select" data-live-search="true">
-                            <option>Assistant Sales Executive (Level 1)</option>
+                        <select class="form-control select" data-live-search="true" id="profile" name="profile">
+                            <option></option>
+                            @foreach ($level as $levels)
+                            <option>{{$levels->profile}}</option>
+                            @endforeach
+                            {{-- <option>Assistant Sales Executive (Level 1)</option>
                             <option>Sales Executive (Level 2)</option>
                             <option>Senior Sales Executive (Level 3)</option>
                             <option>Sale Representative (Level 4)</option>
@@ -101,14 +105,14 @@
                             <option>Manager (Level 8)</option>
                             <option>Senior Manager (Level 9)</option>
                             <option>Director (Level 10)</option>
-                            <option>King (Level 11)</option>
+                            <option>King (Level 11)</option> --}}
                         </select>
                     </td>
                     <td style="padding: 2px;" width="4%">
-                        <select class="form-control select" data-live-search="true">
-                            <option>Sharique</option>
+                        <select class="form-control select" data-live-search="true" id="agent">
+                            {{-- <option>Sharique</option>
                             <option>Shrikant</option>
-                            <option>Yash</option>
+                            <option>Yash</option> --}}
 
                         </select>
                     </td>
@@ -299,10 +303,31 @@
     </div>
 </div>
 
+@stop
 
+@section('js')
+<script>
+    $(document).ready(function() {
+console.log(1);
+        $(document).on("change", "#profile", function() {
+            console.log($(this).val());
+            $.ajax({
+                url: "{{ route('get_agent_by_profile') }}",
+                data: {
+                    id: $(this).val(),
+                },
+                success: function(result) {
+                    $("#agent").empty();
+                    $.each(result['agent'], function(a, b) {
+                        $("#agent").append('<option value="' + b.id + '">' + b
+                            .name + '</option>');
+                    })
+                    $("#agent").selectpicker('refresh');
 
+                }
+            });
+        })
 
-
-
-
+    })
+</script>
 @stop

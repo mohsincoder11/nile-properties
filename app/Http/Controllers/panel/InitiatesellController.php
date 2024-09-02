@@ -119,7 +119,7 @@ class InitiatesellController extends Controller
         // dd($projectId); // Uncomment for debugging
         //  $plots = ProjectEntryAppendData::where('project_entry_id', $projectId)->get();
         $usedPlotIds = InitialEnquiry::where('project_id', $projectId)
-        ->where('plot_transfer_status','1')
+        // ->where('plot_transfer_status','1')
         ->pluck('plot_no');
 
         // Step 2: Fetch plots from ProjectEntryAppendData that are not in the used plot IDs
@@ -168,6 +168,7 @@ class InitiatesellController extends Controller
         $existingEnquiry = InitialEnquiry::where('project_id', $request->project_id)
             ->where('firm_id', $request->firm_id)
             ->where('plot_no', $request->plot_no)
+            ->where('plot_transfer_status', '1')     
             ->first();
 
         if ($existingEnquiry) {
@@ -420,20 +421,41 @@ class InitiatesellController extends Controller
             }
         }
 
-        if(isset($request->agent_id))
-        {
+        // if(isset($request->agent_id))
+        // {
+        // $agent = AgentRegistrationMaster::find($request->agent_id);
+        // $parentAgent = $agent->parent_id;
+
+        // // Update the agent's total_sales
+        // $agent->total_sales += $request->total_cost;
+        // // echo json_encode($agent);
+        // // exit();
+        // $agent->save();
+
+        // // If the agent has a parent, update the parent's total_sales
+        // if ($parentAgent) {
+        //     $parentAgent->total_sales += $request->total_cost;
+        //     $parentAgent->save();
+        // }
+
         $agent = AgentRegistrationMaster::find($request->agent_id);
-        $parentAgent = $agent->parent_id;
 
-        // Update the agent's total_sales
-        $agent->total_sales += $request->total_cost;
-        $agent->save();
+if ($agent) {
+    // Update the agent's total_sales
+    $agent->total_sales += $request->total_cost;
+    $agent->save();
 
-        // If the agent has a parent, update the parent's total_sales
-        if ($parentAgent) {
-            $parentAgent->total_sales += $request->total_cost;
-            $parentAgent->save();
-        }
+    // Fetch the parent agent object using parent_id
+    $parentAgent = AgentRegistrationMaster::find($agent->parent_id);
+    // dump($parentAgent);
+
+    // If the parent agent exists, update its total_sales
+    if ($parentAgent) {
+        $parentAgent->total_sales += $request->total_cost;
+        $parentAgent->save();
+    }
+}
+
         //update agent profile after transaction
         $this->updateAgentProfile($agent);
         if ($parentAgent) {
@@ -449,6 +471,7 @@ class InitiatesellController extends Controller
             $parentCommissionRate = $parentAgent->commissionSlab->commission_rate;
             $parentCommission = $request->total_cost * (($parentCommissionRate - $commissionSlab->commission_rate) / 100);
         }
+
         PlotTransaction::create([
             'initial_enquiry_id' => $initialEnquiry->id,
             'agent_id' => $request->agent_id,
@@ -458,7 +481,7 @@ class InitiatesellController extends Controller
             'sale_date' => now(),
         ]);
 
-    }
+    // }
         //dd(1);
         return redirect()->route('newsale')->with('success', 'Data saved successfully.');
     }

@@ -125,7 +125,7 @@
                     <thead>
                         <tr>
                             <th>Sr. No.</th>
-                            <th>Level</th>
+                            <th>Name</th>
                             <th>Profile</th>
                             <th>No of People</th>
 
@@ -140,7 +140,10 @@
 
                             <td>{{$first_levels->name}}</td>
                             <td>{{$first_levels->profile}}</td>
-                            <td>{{$first_levels->name}}</td>
+                            @php
+                                $count = app\Models\AgentRegistrationMaster::where('parent_id',$first_levels->id)->count();
+                            @endphp
+                            <td>{{$count}}</td>
 
                             <td>
                                 <button data-toggle="modal" data-target="#popup3"

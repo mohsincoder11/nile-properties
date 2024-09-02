@@ -125,29 +125,32 @@
                             <th>Sr.No.</th>
                             <th>Name</th>
                             <th>Agent ID</th>
-                            <th>Level</th>
+                            {{-- <th>Level</th> --}}
                             <th>Profile</th>
                             <th>Target (Monthly)</th>
                             <th>Regular Percentages</th>
-                            <th>Percentages</th>
+                            {{-- <th>Percentages</th> --}}
                             <!-- <th>Action</th> -->
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($my_position as $my_positions)
                         <tr>
-                            <td>1</td>
-                            <td>Pratik</td>
-                            <td>1080</td>
-                            <td>L1</td>
-                            <td>Contractor</td>
-                            <td>05</td>
-                            <td>10%</td>
-                            <td>20%</td>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$my_positions->name}}</td>
+                            <td>{{$my_positions->agent_number}}</td>
+                            <td>{{$my_positions->profile}}</td>
+                            <td>{{$my_positions->commissionPlan->monthly_target_from ?? ''}} to {{$my_positions->commissionPlan->monthly_target_to ?? ''}}</td>
+                            <td>{{$my_positions->commissionPlan->regular_benefit ?? ''}}</td>
+                            {{-- <td>{{$my_positions->commissionPlan->monthly_target_from?? ''}}</td> --}}
+                          
                             <!-- <td>
                                             <button data-toggle="modal" data-target="#popup3" style="background-color:#1abc3d; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye" style="margin-left:5px;"></i></button>
 
                                         </td> -->
                         </tr>
+                        @endforeach
+                    
 
 
                     </tbody>

@@ -67,5 +67,9 @@ class AgentRegistrationMaster extends Model
         }
     }
 
+    public function commissionPlan()
+    {
+        return $this->hasOne(commissionPlan::class, 'profile_name', 'profile');
+    }
 
 }

@@ -24,7 +24,7 @@
 
 <!-- START DEFAULT DATATABLE -->
 <div class="row">
-    <div class="col-md-12" align="center" style="margin-top: 1px">
+    <div class="col-md-12" align="center" style="margin-top: 1px;margin-bottom: 4%;">
         <!-- START DEFAULT DATATABLE -->
 
         <div class="col-md-12">
@@ -34,7 +34,7 @@
                     <th width="3%">Monthly Target From (INR)</th>
                     <th width="3%">Monthly Target To (INR)</th>
                     <th width="3%">Regular Benefit (%)</th>
-                    <th width="3%">Referral (%)</th>
+                    {{-- <th width="3%">Referral (%)</th> --}}
                     <th></th>
                 </tr>
             
@@ -53,9 +53,9 @@
                         <td style="padding: 2px" width="1%">
                             <input type="text" class="form-control" name="regular_benefit" placeholder="Benefit" />
                         </td>
-                        <td style="padding: 2px" width="1%">
+                        {{-- <td style="padding: 2px" width="1%">
                             <input type="text" class="form-control" name="referral" placeholder="Referral" />
-                        </td>
+                        </td> --}}
                         <td style="padding: 2px" width="5%">
                             <button type="submit" class="btn mjks" style="color: #ffffff; height: 30px; width: auto; background-color: #006699;">
                                 <i class="fa fa-plus" aria-hidden="true"></i> Add
@@ -67,8 +67,8 @@
             
         </div>
     </div>
-
-    <div class="row">
+<br>
+    {{-- <div class="row">
         <div class="col-md-12" style="margin-top: 5px">
             <!-- START DEFAULT DATATABLE -->
             <div class="panel-body" style="margin-top:5px; margin-bottom:15px;">
@@ -127,7 +127,65 @@
 
             <!-- END DEFAULT DATATABLE -->
         </div>
+    </div> --}}
+
+    <div class="panel-body" >
+        <table class="table datatable" style="overflow:auto !important;">
+            <thead>
+                <tr>
+                    <th>Sr.No</th>
+                    <th>Profile</th>
+                    <th>
+                        Target (Monthly)
+                    </th>
+                    <th>
+                        Regular Percentages(%)
+                    </th>
+
+                    {{-- <th>
+                        Referral Percentages(%)
+                    </th> --}}
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($commissionPlans as $plan)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $plan->profile_name }}</td>
+                    <td>{{ $plan->monthly_target_from }} to {{ $plan->monthly_target_to }}</td>
+                    <td>{{ $plan->regular_benefit }}</td>
+                    {{-- <td >{{ $plan->referral }}</td> --}}
+                    <td>
+                        <a href="{{ route('commission-plans.edit', $plan->id) }}">
+                            <button
+                                style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+                                title="Edit">
+                                <i class="fa fa-edit" style="margin-left:5px;"></i>
+                            </button>
+                        </a>
+                        <form action="{{ route('commission-plans.destroy', $plan->id) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete this commission plan?');"
+                            style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button
+                                style="background-color:#ff0000; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+                                title="Delete">
+                                <i class="fa fa-trash-o" style="margin-left:5px;"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
     </div>
+
 </div>
 @stop
 @section('js')
