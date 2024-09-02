@@ -32,7 +32,7 @@ use Razorpay\Api\Errors\BadRequestError;
 use App\Models\CustomerRegistrationMaster;
 use App\Models\EmployeeRegistrationMaster;
 use App\Models\RazorpayPaymentOfUserModel;
-use App\Models\PlotRegistrationDocumentByClient;
+use App\Models\{PlotRegistrationDocumentByClient, UserModelPlotQuery};
 use Razorpay\Api\Errors\SignatureVerificationError;
 
 class UserModelController extends Controller

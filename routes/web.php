@@ -228,8 +228,11 @@ Route::middleware(['auth'])->group(function () {
     //my downline controller
 
     Route::get('downlineindex', [MyDownline::class, 'downlineindex'])->name('downlineindex');
+    Route::get('get_downline_list', [MyDownline::class, 'get_downline_list'])->name('get_downline_list');
     Route::get('positionindex', [MyDownline::class, 'positionindex'])->name('positionindex');
     Route::get('downlinebuisnessindex', [MyDownline::class, 'downlinebuisnessindex'])->name('downlinebuisnessindex');
+    Route::get('get_agent_by_profile', [MyDownline::class, 'get_agent_by_profile'])->name('get_agent_by_profile');
+    
 
     Route::get('/commission-plans', [CommissionPlanController::class, 'index'])->name('commission-plans.index');
     Route::post('/commission-plans', [CommissionPlanController::class, 'store'])->name('commission-plans.store');
@@ -443,7 +446,9 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/fetchqueries/{id}', [UserModelController::class, 'fetchQueries'])->name('fetchqueries');
-    Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse');     //adminresponse to queries
 
 
+    // Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse'); //adminresponse to queries
+    Route::post('/updateAdminResponse', [UserModelController::class, 'updateAdminResponse'])->name('updateAdminResponse');
+    Route::post('/submit-all-responses', [UserModelController::class, 'submitAllResponses'])->name('submitAllResponses');
 });
