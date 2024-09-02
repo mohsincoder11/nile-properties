@@ -58,6 +58,7 @@
 
                     </div>
                    
+
                     <h5 class="panel-title"
                     style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
                     align="center">
@@ -444,6 +445,7 @@
                                     </button>
                                 </td>
                             </tr>
+
                         </table>
                     </div>
                     <div class="col-md-12" style="margin-top: 1vh;">
@@ -497,13 +499,12 @@
                     </select>
                 </td>
                 <td style="padding: 2px;" width="2%">
-                    {{-- <select id="plot-select" name="plot_no" class="form-control select no_click_readonly" data-live-search="true"> --}}
-                        {{-- @foreach($enquiries as $enquiry)
+                    <select id="plot-select" name="plot_no" class="form-control select no_click_readonly" data-live-search="true">
+                        @foreach($enquiries as $enquiry)
                         <option value="{{ $enquiry->plot_no ?? '' }}" @if($inquiry->plot_no ?? '' == $enquiry->plot_no ?? '') selected @endif>
                             {{ $enquiry->plot_no ?? '' }}
                         </option>
-                        @endforeach --}}
-                        <input type="text" class="form-control" value="{{ $inquiry->plot_no ?? '' }}" name="plot_no" placeholder="" required readonly />
+                        @endforeach
                         <!-- Plot options will be appended dynamically -->
                     </select>
                 </td>
@@ -591,9 +592,9 @@
                     </div>
                 </td>
                 <td style="padding: 2px;" width="1%">
-                    <select class="form-control select no_click_readonly" name="status_token" data-live-search="true">
+                    <select class="form-control select no_click_readonly" name="staus_token" data-live-search="true">
                         @foreach($tokenStatuses as $tokenStatus)
-                        <option value="{{ $tokenStatus->id }}" @if($inquiry->status_token == $tokenStatus->id) selected @endif>
+                        <option value="{{ $tokenStatus->token }}" @if($inquiry->status_token == $tokenStatus->id) selected @endif>
                             {{ $tokenStatus->token }}
                         </option>
                         @endforeach

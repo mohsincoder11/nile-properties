@@ -35,7 +35,7 @@
 
             <a href="{{route('emp_reg')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #540338; "><i
-                        class="fa fa-user"></i>Team Registration</button>
+                        class="fa fa-user"></i>Employee Registration</button>
             </a>
             <a href="{{route('customerReg')}}"> <button id="on" type="button" class="btn mjks"
                     style="color:#FFFFFF; height:30px; width:auto;background-color: #8dd510; "><i

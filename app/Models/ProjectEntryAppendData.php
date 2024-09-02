@@ -44,4 +44,9 @@ class ProjectEntryAppendData extends Model
     {
         return $this->belongsTo(Enquiry::class, 'id', 'plot_no');
     }
+
+    public function enquiries()
+    {
+        return $this->hasOne(InitialEnquiry::class, 'plot_no', 'plot_no');
+    }
 }

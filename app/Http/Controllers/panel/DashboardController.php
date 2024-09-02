@@ -17,53 +17,33 @@ use App\Models\EmployeeRegistrationMaster;
 class DashboardController extends Controller
 {
 
-    // public function userCheck(Request $request)
-    // {
-    //     // dd($request->all());
-    //     $email = $request->input('email');
-    //     $password = $request->input('password');
-
-    //     // Check in each model
-    //     $models = [
-    //         AgentRegistrationMaster::class,
-    //         EmployeeRegistrationMaster::class,
-    //         FirmRegistrationMaster::class,
-    //         LandRegistrationMaster::class,
-    //         User::class
-    //     ];
-
-    //     foreach ($models as $model) {
-    //         $user = $model::where('email', $email)->first();
-    //         if ($user && Hash::check($password, $user->password)) {
-    //             // Authentication successful, redirect to dashboard
-    //             Auth::login($user);
-    //             return redirect()->route('dashboard');
-    //         }
-    //     }
-
-    //     // Authentication failed, redirect back with an error message
-    //     return redirect()->back()->with('error', 'Invalid credentials');
-    // }
-
     public function userCheck(Request $request)
-{
-    $email = $request->input('email');
-    $password = $request->input('password');
+    {
+        // dd($request->all());
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-    // Only check in the User model
-    $user = User::where('email', $email)->first();
+        // Check in each model
+        $models = [
+            AgentRegistrationMaster::class,
+            EmployeeRegistrationMaster::class,
+            FirmRegistrationMaster::class,
+            LandRegistrationMaster::class,
+            User::class
+        ];
 
-    if ($user && Hash::check($password, $user->password)) {
-        // Authentication successful, redirect to dashboard
-        Auth::login($user);
-        return redirect()->route('dashboard');
+        foreach ($models as $model) {
+            $user = $model::where('email', $email)->first();
+            if ($user && Hash::check($password, $user->password)) {
+                // Authentication successful, redirect to dashboard
+                Auth::login($user);
+                return redirect()->route('dashboard');
+            }
+        }
+
+        // Authentication failed, redirect back with an error message
+        return redirect()->back()->with('error', 'Invalid credentials');
     }
-
-    // Authentication failed, redirect back with an error message
-    return redirect()->back()->with('error', 'Invalid credentials');
-}
-
-
     public function logout()
     {
         Auth::logout();

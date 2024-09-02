@@ -33,6 +33,7 @@ class CustomeStagesController extends Controller
     {
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
+
         $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')
             ->orderByDesc('updated_at')
             ->get();

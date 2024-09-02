@@ -35,7 +35,6 @@ class InitiatesellController extends Controller
         $enquiries = Enquiry::with('client_name')
             ->where('client_status', 'initiate_sale')
             ->get(['client_id', 'broker_id']);
-            
         $projects = ProjectEntry::all();
         $statuses = PlotSaleStatus::all();
         $employees = EmployeeRegistrationMaster::all();
@@ -164,7 +163,7 @@ class InitiatesellController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request->all());
+
         $existingEnquiry = InitialEnquiry::where('project_id', $request->project_id)
             ->where('firm_id', $request->firm_id)
             ->where('plot_no', $request->plot_no)
@@ -284,7 +283,7 @@ class InitiatesellController extends Controller
             'plot_id' => null,
             'firm_id' => null,
             'project_id' => null,
-            'status' => 'pending',
+            'status' => null,
             'initial_enquiry_id' => $initialEnquiry->id,
         ]);
 
@@ -421,6 +420,7 @@ class InitiatesellController extends Controller
             }
         }
 
+
         // if(isset($request->agent_id))
         // {
         // $agent = AgentRegistrationMaster::find($request->agent_id);
@@ -480,6 +480,7 @@ if ($agent) {
             'parent_commission_amount' => $parentCommission,
             'sale_date' => now(),
         ]);
+
 
     // }
         //dd(1);
@@ -882,15 +883,13 @@ if ($agent) {
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
         $inquery = InitialEnquiry::with('clientsigle.agent', 'Clients', 'nominees', 'agent')->get();
-        // echo json_encode($inquery);
-        // exit();
         return view('panel.new_sale', compact('nominee', 'client', 'inquery'));
     }
 
     public function showDetails(Request $request)
     {
-        // echo json_encode($request->input('id'));
         $inquiryId = $request->input('id');
+
         $inquiry = InitialEnquiry::with('clientsigle.agent', 'plotname', 'clients', 'nominees', 'statustoken','plottrasferhistory')->where('id', $inquiryId)->first();
 // echo json_encode($inquiry);
 // exit();

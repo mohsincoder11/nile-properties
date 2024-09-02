@@ -523,12 +523,14 @@
 
             $('#plot-select').change(function() {
                 var plotNo = $(this).val(); // Get selected plot number
+
                 var projectId = $('#project-select').val(); // Get selected project ID
 
                 $.ajax({
                     type: "GET",
                     url: "{{ route('getClientIdByPlot') }}", // Route to be created
                     data: {
+
                         plot_no: plotNo,
                         project_id: projectId // Include project ID in the request
                     },
@@ -538,6 +540,7 @@
 
                         if (response.clients && response.clients.length > 0) {
                             // Append each client ID and name to the dropdown
+
                             clientSelect.append('<option value="">Select client</option>');
                             $.each(response.clients, function(index, client) {
                                 clientSelect.append('<option value="' + client

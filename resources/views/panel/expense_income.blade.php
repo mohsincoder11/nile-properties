@@ -119,7 +119,7 @@
                 </div>
                 <div class="col-md-2" style="margin-top: 2vh;">
                     <label class="control-label">Amount<font color="#FF0000">*</font></label>
-                    <input type="text" class="form-control" name="amount" id="amount" placeholder="" readonly />
+                    <input type="text" class="form-control" name="amount" id="amount" placeholder="" />
                 </div>
                 {{-- <div class="col-md-2" style="margin-top: 2vh;">
                     <label class="control-label">Client List<font color="#FF0000">*</font></label>

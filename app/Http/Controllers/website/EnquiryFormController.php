@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\website;
 
+
 use Mail;
 use App\Models\User;
 use App\Models\EnquiryForm;
@@ -51,7 +52,7 @@ class EnquiryFormController extends Controller
                 $newUser->save();
 
                 $customer = new CustomerRegistrationMaster;
-                $customer->user_id = $request->$newUser->id;
+                $customer->user_id = $newUser->id;
                 $customer->save();
 
                 // Now, you can send the password to the user's email
@@ -108,4 +109,5 @@ class EnquiryFormController extends Controller
 
         return redirect()->route('listing-details', ['id' => $id])->with('success', 'Form Submitted Successfully');
     }
+
 }

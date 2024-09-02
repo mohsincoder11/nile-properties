@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Models\{EmployeeBankDetailsMaster, User, UserRoles};
+use App\Models\EmployeeBankDetailsMaster;
 use Illuminate\Support\Facades\Validator;
 use App\Models\EmployeeRegistrationMaster;
 
@@ -22,9 +22,9 @@ class empRegMasterController extends Controller
 
         $emp = EmployeeRegistrationMaster::all();
         $bnk = EmployeeBankDetailsMaster::all();
-        $user_role = UserRoles::all();
 
-        return view('panel.employee_reg', compact('emp', 'bnk', 'user_role'));
+
+        return view('panel.employee_reg', compact('emp', 'bnk'));
     }
 
     //     public function emp_reg_store(Request $request){
@@ -217,7 +217,6 @@ class empRegMasterController extends Controller
 
     public function emp_reg_store(Request $request)
     {
-        // dd($request->all());
         // Initial request validation
         $request->validate([
             // 'name' => 'required|string|max:255',
@@ -240,24 +239,6 @@ class empRegMasterController extends Controller
         $pan = null;
 
         try {
-        // Retrieve permissions from UserRoles table based on the role
-        $rolePermissions = UserRoles::find($request->role);
-
-        if (!$rolePermissions) {
-            return back()->with('error', 'Invalid role selected. Please choose a valid role.');
-        }
-            $user = new User([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => Hash::make($request->input('password')),
-                'role' => $request->input('role'),
-                'permission' => $rolePermissions->permission,
-
-            ]);
-
-            $user->save();
-
-
             // Handle aadhar file upload
             if ($request->hasFile('aadhar')) {
                 $file = $request->file('aadhar');
@@ -274,9 +255,10 @@ class empRegMasterController extends Controller
 
             // Save agent registration details
             $agentRegistration = new EmployeeRegistrationMaster([
-                'user_id' => $user->id, // Store the user_id in the employee table
+                // 'agent_number' => $agentNumber,
                 'name' => $request->input('name'),
                 'role' => $request->input('role'),
+
                 'email' => $request->input('email'),
                 'contact_number' => $request->input('contact_number'),
                 'city' => $request->input('city'),
