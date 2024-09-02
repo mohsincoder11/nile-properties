@@ -24,7 +24,7 @@
 
 <!-- START DEFAULT DATATABLE -->
 <div class="row">
-    <div class="col-md-12" align="center" style="margin-top: 1px">
+    <div class="col-md-12" align="center" style="margin-top: 1px;margin-bottom: 4%;">
         <!-- START DEFAULT DATATABLE -->
 
         <div class="col-md-12">
@@ -36,7 +36,7 @@
                     <th width="3%">Monthly Target From (INR)</th>
                     <th width="3%">Monthly Target To (INR)</th>
                     <th width="3%">Regular Benefit (%)</th>
-                    <th width="3%">Referral (%)</th>
+                    {{-- <th width="3%">Referral (%)</th> --}}
                     <th></th>
                 </tr>
             
@@ -53,9 +53,9 @@
                     <td style="padding: 2px" width="1%">
                         <input type="text" class="form-control" name="regular_benefit" value="{{ old('regular_benefit', $commissionPlan->regular_benefit) }}" placeholder="Benefit" />
                     </td>
-                    <td style="padding: 2px" width="1%">
+                    {{-- <td style="padding: 2px" width="1%">
                         <input type="text" class="form-control" name="referral" value="{{ old('referral', $commissionPlan->referral) }}" placeholder="Referral" />
-                    </td>
+                    </td> --}}
                     <td style="padding: 2px" width="5%">
                         <button type="submit" class="btn mjks" style="color: #ffffff; height: 30px; width: auto; background-color: #006699;">
                             <i class="fa fa-save" aria-hidden="true"></i> Update Changes
@@ -68,34 +68,35 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12" style="margin-top: 5px">
-            <!-- START DEFAULT DATATABLE -->
-            <div class="panel-body" style="margin-top:5px; margin-bottom:15px;">
-                <table class="table datatable">                <tr style="background-color: #f0f0f0; height: 30px">
-                    <th width="3%" style="text-align: center">Sr.No</th>
-                    <th width="10%" style="text-align: center">Profile</th>
-                    <th width="5%" style="text-align: center">
+    <div class="panel-body" >
+        <table class="table datatable" style="overflow:auto !important;">
+            <thead>
+                <tr>
+                    <th>Sr.No</th>
+                    <th>Profile</th>
+                    <th>
                         Target (Monthly)
                     </th>
-                    <th width="10%" style="text-align: center">
+                    <th>
                         Regular Percentages(%)
                     </th>
 
-                    <th width="5%" style="text-align: center">
+                    {{-- <th>
                         Referral Percentages(%)
-                    </th>
+                    </th> --}}
                     <th>
                         Action
                     </th>
                 </tr>
+            </thead>
+            <tbody>
                 @foreach ($commissionPlans as $plan)
                 <tr>
                     <td >{{ $loop->iteration }}</td>
                     <td >{{ $plan->profile_name }}</td>
                     <td >{{ $plan->monthly_target_from }} to {{ $plan->monthly_target_to }}</td>
                     <td >{{ $plan->regular_benefit }}</td>
-                    <td >{{ $plan->referral }}</td>
+                    {{-- <td >{{ $plan->referral }}</td> --}}
                     <td style="padding: 5px" align="center">
                         <a href="{{ route('commission-plans.edit', $plan->id) }}">
                             <button
@@ -120,12 +121,8 @@
                     </td>
                 </tr>
             @endforeach
-               
-            </table>
-            </div>
-
-            <!-- END DEFAULT DATATABLE -->
-        </div>
+            </tbody>
+        </table>
     </div>
 </div>
 @stop

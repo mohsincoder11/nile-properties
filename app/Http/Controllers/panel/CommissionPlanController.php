@@ -16,20 +16,21 @@ class CommissionPlanController extends Controller
     // Store a newly created resource in storage.
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'profile_name' => 'required|string|max:255',
-            'monthly_target_from' => 'required|numeric',
-            'monthly_target_to' => 'required|numeric',
-            'regular_benefit' => 'required|numeric',
-            'referral' => 'required|numeric',
+            'monthly_target_from' => 'required',
+            'monthly_target_to' => 'required',
+            'regular_benefit' => 'required',
+            // 'referral' => 'required|numeric',
         ]);
 
         CommissionPlan::create([
-            'profile_name'=>$request->profile_name,
+        'profile_name'=>$request->profile_name,
         'monthly_target_from'=>$request->monthly_target_from,
         'monthly_target_to'=>$request->monthly_target_to,
         'regular_benefit'=>$request->regular_benefit,
-        'referral'=>$request->referral,
+        // 'referral'=>$request->referral,
         ]);
 
         return redirect()->route('commission-plans.index')->with('success', 'Commission Plan created successfully.');
@@ -53,10 +54,10 @@ class CommissionPlanController extends Controller
     {
         $request->validate([
             'profile_name' => 'required|string|max:255',
-            'monthly_target_from' => 'required|numeric',
-            'monthly_target_to' => 'required|numeric',
-            'regular_benefit' => 'required|numeric',
-            'referral' => 'required|numeric',
+            'monthly_target_from' => 'required',
+            'monthly_target_to' => 'required',
+            'regular_benefit' => 'required',
+            // 'referral' => 'required|numeric',
         ]);
 
         $commissionPlan->update($request->all());
