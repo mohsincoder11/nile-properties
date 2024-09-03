@@ -393,36 +393,44 @@
             </div>
             <div class="panel-body" style="margin-top:5px; margin-bottom:15px;">
 
-                <table class="table datatable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Firm</th>
-                            <th>Project</th>
-                            <th>Plot Number</th>
-                            <th>Client</th>
-                            <th>Query</th>
-                            <th>Admin Response</th>
-
-                            <th>Created At</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($queries as $query)
+                @if (!empty($queries) && $queries->count() > 0)
+                    <table class="table datatable">
+                        <thead>
                             <tr>
-                                <td>{{ $query->id }}</td>
-                                <td>{{ $query->firm->name ?? '' }}</td>
-                                <td>{{ $query->project->project_name ?? '' }}</td>
-                                <td>{{ $query->plot->plot_no ?? '' }}</td>
-                                <td>{{ $query->client->name ?? '' }}</td>
-                                <td>{{ $query->query }}</td>
-                                <td>{{ $query->admin_response ?? '' }}</td>
-
-                                <td>{{ $query->created_at->format('Y-m-d H:i:s') }}</td>
+                                <th>ID</th>
+                                <th>Firm</th>
+                                <th>Project</th>
+                                <th>Plot Number</th>
+                                <th>Client</th>
+                                <th>Query</th>
+                                <th>Admin Response</th>
+                                <th>Created At</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($queries as $query)
+                                <tr>
+                                    <td>{{ $query->id }}</td>
+                                    <td>{{ $query->firm->name ?? '' }}</td>
+                                    <td>{{ $query->project->project_name ?? '' }}</td>
+                                    <td>{{ $query->plot->plot_no ?? '' }}</td>
+                                    <td>{{ $query->client->name ?? '' }}</td>
+                                    <td>{{ $query->query }}</td>
+                                    <td>{{ $query->admin_response ?? '' }}</td>
+                                    <td>{{ $query->created_at->format('Y-m-d H:i:s') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <tr>
+                        <td>
+                            <p align="center">No queries found.</p>
+                        </td>
+
+                    </tr>
+                @endif
+
             </div>
 
             <!-- END DEFAULT DATATABLE -->

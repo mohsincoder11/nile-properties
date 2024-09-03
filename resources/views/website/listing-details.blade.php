@@ -32,7 +32,7 @@
         <a href="images/single-listing-03.jpg" data-background-image="{{('website/images/plotimg1.jpg')}}"
             class="item utf_gallery"></a> --}}
             <!-- <a href="images/single-listing-04.jpg" data-background-image="images/single-listing-04.jpg"
-              class="item utf_gallery"></a> -->
+                                                                                                          class="item utf_gallery"></a> -->
         </div>
     </div>
 
@@ -148,12 +148,28 @@
                                         data-id="{{ $plot->id }}">
                                         {{ $plot->area_sqrft }} <br> Sq. Ft. <br>
                                     </button>
-                                    <div class="text-center">
-                                        <a href="{{ route('user_model.dashboard') }}" class="btn btn-link"
-                                            style="color: blue;">
-                                            <u>Book Plot</u>
-                                        </a>
-                                    </div>
+
+                                    @if ($enquiry && $enquiry->is_handover_completed == 1)
+                                        <div class="text-center">
+                                            <a href="#." class="btn btn-link" style="color: red;">
+                                                <p style="color: red;">Sold Out</p>
+                                            </a>
+                                        </div>
+                                    @elseif ($enquiry && $enquiry->is_request_registration_completed == 1)
+                                        <div class="text-center">
+                                            <a href="#." class="btn btn-link" style="color: yellow;">
+                                                <p style="color: yellow;">Booked Plot</p>
+                                            </a>
+                                        </div>
+                                    @else
+                                        <div class="text-center">
+                                            <a href="{{ route('user_model.dashboard') }}" class="btn btn-link"
+                                                style="color: blue;">
+                                                <u>Book Plot</u>
+                                            </a>
+                                        </div>
+                                    @endif
+
                                 </div>
                             @endforeach
 
