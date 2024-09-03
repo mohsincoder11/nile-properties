@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\panel;
 
-use Log;
 use Razorpay\Api\Api;
 use App\Models\Enquiry;
 use App\Models\Occupation;
@@ -17,8 +16,9 @@ use Illuminate\Http\Request;
 use App\Models\InitialEnquiry;
 use App\Models\PlotSaleStatus;
 use Illuminate\Support\Carbon;
-// use App\Models\UserModelPlotQuery;
 use App\Models\ClientDetailInitial;
+// use App\Models\UserModelPlotQuery;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
 use App\Models\NomineeDetailInitial;
@@ -32,8 +32,8 @@ use Razorpay\Api\Errors\BadRequestError;
 use App\Models\CustomerRegistrationMaster;
 use App\Models\EmployeeRegistrationMaster;
 use App\Models\RazorpayPaymentOfUserModel;
-use App\Models\{PlotRegistrationDocumentByClient, UserModelPlotQuery};
 use Razorpay\Api\Errors\SignatureVerificationError;
+use App\Models\{PlotRegistrationDocumentByClient, UserModelPlotQuery};
 
 class UserModelController extends Controller
 {
@@ -79,13 +79,13 @@ class UserModelController extends Controller
     }
     public function userdashboard()
     {
-        $queries = UserModelPlotQuery::with('firm', 'project', 'client', 'plot')->get();
 
         $firm = FirmRegistrationMaster::all();
 
         $userId = auth()->id();
         $nominee = NomineeDetailInitial::all();
         $client = ClientDetailInitial::all();
+        $queries = UserModelPlotQuery::with('firm', 'project', 'client', 'plot')->where('client_id', $userId)->get();
 
 
         $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
@@ -358,7 +358,7 @@ class UserModelController extends Controller
 
                     return response()->json(['success' => 'Payment completed successfully.']);
                 } else {
-                    \Log::error('User associated with payment not found.', [
+                    Log::error('User associated with payment not found.', [
                         'payment_id' => $paymentId,
                         'order_id' => $orderId,
                         'user_id' => $payment->user_id,
@@ -366,14 +366,14 @@ class UserModelController extends Controller
                     return response()->json(['error' => 'User associated with payment not found.'], 404);
                 }
             } else {
-                \Log::error('Payment record not found.', [
+                Log::error('Payment record not found.', [
                     'order_id' => $orderId,
                     'payment_id' => $paymentId,
                 ]);
                 return response()->json(['error' => 'Payment record not found.'], 404);
             }
         } catch (\Exception $e) {
-            \Log::error('Razorpay Callback Error: ' . $e->getMessage(), [
+            Log::error('Razorpay Callback Error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
                 'request_data' => $request->all(),
             ]);
@@ -1140,13 +1140,14 @@ class UserModelController extends Controller
 
     public function uploadQueriesByClient(Request $request)
     {
+        // dd(1);
         // Validate the incoming request data
         $request->validate([
-            'firm_id' => 'required|integer',
-            'project_id' => 'required|integer',
-            'plot_no' => 'required|integer',
-            'client_id' => 'required|integer',
-            'query' => 'required|string',
+            'firm_id' => 'required|',
+            'project_id' => 'required|',
+            'plot_no' => 'required|',
+            'client_id' => 'required|',
+            'query' => 'required|',
         ]);
 
         // Check and handle missing fields
