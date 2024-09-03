@@ -87,7 +87,9 @@ class UserModelController extends Controller
         $client = ClientDetailInitial::all();
         $queries = UserModelPlotQuery::with('firm', 'project', 'client', 'plot')->where('client_id', $userId)->get();
 
-
+        if ($queries->isEmpty()) {
+            $queries = null;
+        }
         $customerRegistration = CustomerRegistrationMaster::where('user_id', $userId)->first();
 
         if ($customerRegistration) {
@@ -275,7 +277,7 @@ class UserModelController extends Controller
             $installment = $request->input('installment');
 
             // Log the request data for debugging purposes
-            \Log::info('Razorpay Callback Received', $request->all());
+            Log::info('Razorpay Callback Received', $request->all());
 
             // Find the installment record
             $installmentRecord = EmiPaymentCollection::where('initial_enquiry_id', $initialEnquiryId)
@@ -285,7 +287,7 @@ class UserModelController extends Controller
             if ($installmentRecord) {
                 $installmentRecord->update(['status' => 'Paid']);
             } else {
-                \Log::error('Installment not found.', [
+                Log::error('Installment not found.', [
                     'initial_enquiry_id' => $initialEnquiryId,
                     'installment' => $installment,
                 ]);
