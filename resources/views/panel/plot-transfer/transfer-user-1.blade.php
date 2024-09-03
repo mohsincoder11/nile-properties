@@ -50,13 +50,13 @@
                             </h5>
 
                         </div>
-{{-- 
+                        {{--
                         <div class="row">
                             <div class="col-md-12" style="margin-top: 2vh;">
                                 <table width="100%">
                                     <tr style="height:30px;">
                                         {{-- <th width="4%">User Type</th> --}}
-                                        {{-- <th width="1%">Title</th>
+                        {{-- <th width="1%">Title</th>
                                         <th width="3%">Name</th>
                                         <th width="2%">Occupation</th>
                                         <th width="3%">Email</th>
@@ -67,20 +67,20 @@
                                         <th width="1%">Age</th> --}}
 
 
-                                    {{-- </tr>
+                        {{-- </tr>
 
 
                                     <tr> --}}
-                                        {{-- <td style="padding: 2px;" width="2%">
+                        {{-- <td style="padding: 2px;" width="2%">
                                         <input type="radio" id="existing_user" name="user_type" value="agent"
                                             >
                                         <label for="existing_user">Existing User</label>
                                         <input type="radio" id="new_user" name="user_type" value="executive"
                                             >
                                         <label for="new_user">New User</label>
-                                        
+
                                     </td> --}}
-                                        {{-- <td style="padding: 2px;" width="1%">
+                        {{-- <td style="padding: 2px;" width="1%">
                                             <select class="form-control select" data-live-search="true" id="title"
                                                 name="title">
                                                 <option>Mr.</option>
@@ -99,8 +99,8 @@
                                         <td style="padding: 2px;" width="1%">
                                             <select class="form-control select" data-live-search="true" id="occupation_id">
                                                 {{-- <option>Govt</option> --}}
-                                            {{-- <option>Business</option>
-                                            <option>Other</option> 
+                        {{-- <option>Business</option>
+                                            <option>Other</option>
                                                 <option value="">--Select--</option>
                                                 @foreach ($occupation as $occupation_name)
                                                     <option value="{{ $occupation_name->occupation }}">
@@ -248,7 +248,7 @@
                                                 <td style="padding:5px;" align="center">
                                                     <label>{{ $customer->occupation_name->occupation ?? ($customer->occupation_id ?? 'N/A') }}</label>
                                                     <input type="hidden" name="occupation_id[]"
-                                                        value="{{ $customer->occupation_id}}">
+                                                        value="{{ $customer->occupation_id }}">
                                                 </td>
                                                 <td style="padding:5px;" align="center">
                                                     <label>{{ $customer->email ?? 'N/A' }}</label>
@@ -364,12 +364,12 @@
                                     <select id="client-select" class="form-control select" data-live-search="true">
                                         <option value="">Select a client</option>
                                         @foreach ($enquiries as $enquiry)
-                                            <option value="{{ $enquiry->client_name->id }}"
-                                                data-client-name="{{ $enquiry->client_name->name }}"
-                                                data-client-phone="{{ $enquiry->client_name->contact }}"
-                                                data-client-address="{{ $enquiry->client_name->address }}"
+                                            <option value="{{ $enquiry->client_name->id ?? '' }}"
+                                                data-client-name="{{ $enquiry->client_name->name ?? '' }}"
+                                                data-client-phone="{{ $enquiry->client_name->contact ?? '' }}"
+                                                data-client-address="{{ $enquiry->client_name->address ?? '' }}"
                                                 data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
-                                                {{ $enquiry->client_name->name }}
+                                                {{ $enquiry->client_name->name ?? '' }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -588,7 +588,7 @@
                                                 placeholder="" required />
                                         </td>
                                         <td style="padding: 2px;" width="1%">
-                                            <input type="text" class="form-control" value=""
+                                            <input type="text" class="form-control" value="" id="square_meter"
                                                 name="square_meter" placeholder="" required />
                                         </td>
                                         <td style="padding: 2px;" width="1%">
@@ -684,11 +684,11 @@
                                             </div>
                                         </td>
                                         <td style="padding: 2px;" width="1%">
-                                            <select class="form-control select" name="staus_token"
+                                            <select class="form-control select" name="status_token"
                                                 data-live-search="true">
                                                 <option value="" selected>Select Status</option>
                                                 @foreach ($tokenStatuses as $tokenStatus)
-                                                    <option value="{{ $tokenStatus->token }}">{{ $tokenStatus->token }}
+                                                    <option value="{{ $tokenStatus->id }}">{{ $tokenStatus->token }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -737,7 +737,7 @@
                                                 onclick="toggleEmployeeSelect()">
                                             <label for="agent_name">Agent Name</label>
                                             <input type="radio" id="executive_name" name="source_type"
-                                                value="executive" onclick="toggleEmployeeSelect()" checked>
+                                                value="executive" onclick="toggleEmployeeSelect()">
                                             <label for="executive_name">Executive Name</label>
                                             <input type="radio" id="direct_sourse" name="source_type" value="direct"
                                                 onclick="toggleEmployeeSelect()">
@@ -894,37 +894,39 @@
     </div>
 
     <div class="modal" id="popup3" tabindex="-1" role="dialog" aria-labelledby="largeModalHead"
-    aria-hidden="true">
-    <div class="modal-backdrop  in"></div>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title" id="H4">Initiated Sale</h4>
-            </div>
-            <div class="modal-body" id="appendbody">
+        aria-hidden="true">
+        <div class="modal-backdrop  in"></div>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="H4">Initiated Sale</h4>
+                </div>
+                <div class="modal-body" id="appendbody">
 
-            </div>
-            <div class="modal-footer" style="border: none !important; background-color: #fff !important">
-                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                </div>
+                <div class="modal-footer" style="border: none !important; background-color: #fff !important">
+                    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 @stop
 @section('js')
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script>
         $('#popup3 .close').on('click', function() {
-    $('#popup3').removeClass('show').css('display', 'none').attr('aria-hidden', 'true').removeAttr('aria-modal');
-  });
+            $('#popup3').removeClass('show').css('display', 'none').attr('aria-hidden', 'true').removeAttr(
+                'aria-modal');
+        });
         $(document).on('click', '.view-details-btn', function() {
-            $('#popup3').addClass('in').css('display', 'block').attr('aria-labelledby', 'largeModalHead').attr('aria-hidden',"false");
-           // $('#popup3').append('<div class="modal-backdrop  in"></div>');
+            $('#popup3').addClass('in').css('display', 'block').attr('aria-labelledby', 'largeModalHead').attr(
+                'aria-hidden', "false");
+            // $('#popup3').append('<div class="modal-backdrop  in"></div>');
             $('body').addClass('modal-open');;
             var inquiryId = $(this).data('id'); // Get the data-id value
             $("#appendbody").empty();
@@ -1203,14 +1205,14 @@
         <input type="hidden" name="aadhar[]" value="${aadharBase64}">
         ${aadharFile ? aadharFile.name : 'N/A'}
         ${aadharFile ? `<a href="${aadharFileURL}" target="_blank"><i style="background-color:red;" class="fa fa-file-pdf-o"
-                    aria-hidden="true"></i></a>` : ''}
+                        aria-hidden="true"></i></a>` : ''}
     </td>
     <td><input type="hidden" name="aadhar_no[]" value="${aadhar_no}">${aadhar_no}</td>
     <td>
         <input type="hidden" name="pan[]" value="${panBase64}">
         ${panFile ? panFile.name : 'N/A'}
         ${panFile ? `<a href="${panFileURL}" target="_blank"><i style="background-color:blue;" class="fa fa-file-pdf-o"
-                    aria-hidden="true"></i></a>` : ''}
+                        aria-hidden="true"></i></a>` : ''}
     </td>
     <td><input type="hidden" name="pan_no[]" value="${pan_no}">${pan_no}</td>
     `;
@@ -1308,6 +1310,55 @@
         };
     </script>
     <script>
+        // Conversion factor: 1 square meter = 10.7639 square feet
+        const conversionFactor = 10.7639;
+
+        function convertSquareUnits() {
+            const squareMeterInput = document.getElementById('square_meter');
+            const squareFeetInput = document.getElementById('square_ft');
+
+            // Check which input triggered the event
+            if (document.activeElement === squareMeterInput) {
+                let squareMeters = parseFloat(squareMeterInput.value) || 0;
+                let squareFeet = squareMeters * conversionFactor;
+                squareFeetInput.value = squareFeet.toFixed(2);
+            } else if (document.activeElement === squareFeetInput) {
+                let squareFeet = parseFloat(squareFeetInput.value) || 0;
+                let squareMeters = squareFeet / conversionFactor;
+                squareMeterInput.value = squareMeters.toFixed(2);
+            }
+        }
+    </script>
+    <script>
+        function toggleEmployeeSelect() {
+            const agentRadio = document.getElementById('agent_name');
+            const executiveRadio = document.getElementById('executive_name');
+            const directSourceRadio = document.getElementById('direct_sourse');
+            const agentSelect = document.getElementById('agent-select');
+            const employeeSelect = document.getElementById('employee-select');
+
+            if (agentRadio.checked) {
+                agentSelect.disabled = false;
+                employeeSelect.disabled = true;
+                employeeSelect.value = ""; // Clear executive dropdown value
+            } else if (executiveRadio.checked) {
+                agentSelect.disabled = true;
+                employeeSelect.disabled = false;
+                agentSelect.value = ""; // Clear agent dropdown value
+            } else if (directSourceRadio.checked) {
+                agentSelect.disabled = true;
+                employeeSelect.disabled = true;
+                agentSelect.value = ""; // Clear agent dropdown value
+                employeeSelect.value = ""; // Clear executive dropdown value
+            }
+        }
+
+        // Call toggleEmployeeSelect on page load to set the initial state
+        window.onload = function() {
+            toggleEmployeeSelect();
+        };
+    </script>
+    <script>
         function calculateAmounts() {
             // Get the values of square feet and rate inputs
             let squareFt = parseFloat(document.getElementsByName('square_ft')[0].value) || 0;
@@ -1350,9 +1401,14 @@
             document.getElementById('balence_amount_display').textContent = balanceAmount.toFixed(2);
             document.getElementById('balence_amount_input').value = balanceAmount.toFixed(2);
 
-            // Get the tenure in days and calculate EMI
-            let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
-            let tenureMonths = Math.ceil(tenureDays / 30); // Convert days to months
+            // // Get the tenure in days and calculate EMI
+            // let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
+            // let tenureMonths = Math.ceil(tenureDays / 30); // Convert days to months
+
+            // // Calculate EMI amount
+            // let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
+
+            let tenureMonths = parseInt(document.getElementsByName('tenure')[0].value) || 0;
 
             // Calculate EMI amount
             let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
@@ -1388,9 +1444,7 @@
                     $('#project-select').append('<option value="">Select Option</option>');
                 }
             });
-            setTimeout(() => {
-                $('#project-select').trigger('change');
-            }, 500);
+
 
             $('#project-select').change(function() {
                 var projectId = $(this).val();
@@ -1403,15 +1457,13 @@
                             projectId: projectId
                         },
                         success: function(response) {
-                            //console.log(response); // Log the response data
+                            console.log(response); // Log the response data
                             var plotSelect = $('#plot-select');
                             plotSelect.empty(); // Clear existing options
                             plotSelect.append('<option value="">Select Plot</option>');
                             $.each(response, function(index, plot) {
-                                var selected = (plot.plot_no ==
-                                    '{{ $inquiry->plot_no }}') ? 'selected' : '';
-                                plotSelect.append('<option value="' + plot.id + '" ' +
-                                    selected + '>' + plot.plot_no + '</option>');
+                                plotSelect.append('<option value="' + plot.id + '">' +
+                                    plot.plot_no + '</option>');
                             });
                             // Reinitialize Bootstrap Select if needed
                             plotSelect.selectpicker('refresh');
@@ -1435,12 +1487,14 @@
                             projectId: projectId
                         },
                         success: function(response) {
+                            console.log(response);
 
                             // Assuming the response contains project details
                             if (response) {
                                 var projectDetails = response;
 
                                 // Log the response to verify the values
+                                console.log('Project Details:', projectDetails);
 
                                 // Set values to input fields
                                 $('input[name="mauja"]').val(projectDetails.mauja);
@@ -1474,6 +1528,7 @@
                             plotId: plotId
                         },
                         success: function(response) {
+                            console.log(response);
 
                             // Assuming the response contains plot details as an array
                             if (response && response.length > 0) {
@@ -1481,7 +1536,9 @@
                                 0]; // Access the first element of the array
 
                                 // Log the values of plot_length and plot_width to check for issues
-
+                                console.log('Plot Length:', plotDetails.plot_length);
+                                console.log('Plot Width:', plotDetails.plot_width);
+                                console.log(plotDetails);
 
                                 // Ensure the values are correctly parsed as floats
                                 var plotLength = parseFloat(plotDetails.plot_length);

@@ -36,6 +36,4 @@ class EmployeeRegistrationMaster extends Model
     {
         return $this->hasOne(LeadassignToEmployee::class, 'id', 'employee_id');
     }
-
-
 }

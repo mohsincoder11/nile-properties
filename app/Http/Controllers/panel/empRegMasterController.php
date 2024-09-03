@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Models\EmployeeBankDetailsMaster;
+use App\Models\{EmployeeBankDetailsMaster, User, UserRoles};
 use Illuminate\Support\Facades\Validator;
 use App\Models\EmployeeRegistrationMaster;
 
@@ -22,9 +22,9 @@ class empRegMasterController extends Controller
 
         $emp = EmployeeRegistrationMaster::all();
         $bnk = EmployeeBankDetailsMaster::all();
+        $user_role = UserRoles::all();
 
-
-        return view('panel.employee_reg', compact('emp', 'bnk'));
+        return view('panel.employee_reg', compact('emp', 'bnk', 'user_role'));
     }
 
     //     public function emp_reg_store(Request $request){
@@ -32,50 +32,50 @@ class empRegMasterController extends Controller
     //         // dd($request->all());
 
     //         $request->validate([
-//             'role' => 'required|string|max:255',
-//             'name' => 'required|string|max:255',
-//             'email' => 'required|email|max:255',
-//             'contact_number' => 'required|string|max:20',
-//             'city' => 'required|string|max:255',
-//             'address' => 'required|string|max:255',
-//             'pincode' => 'required|string|max:20',
-//             'aadhar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//             'aadhar_number' => 'required|string|max:255',
-//             'pan' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//             'pan_number' => 'required|string|max:255',
-//             'username' => 'required|string|max:255',
-//             'password' => 'required|string|max:255',
-//             // Add more fields and their validation rules as needed
-//         ]);
+    //             'role' => 'required|string|max:255',
+    //             'name' => 'required|string|max:255',
+    //             'email' => 'required|email|max:255',
+    //             'contact_number' => 'required|string|max:20',
+    //             'city' => 'required|string|max:255',
+    //             'address' => 'required|string|max:255',
+    //             'pincode' => 'required|string|max:20',
+    //             'aadhar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //             'aadhar_number' => 'required|string|max:255',
+    //             'pan' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //             'pan_number' => 'required|string|max:255',
+    //             'username' => 'required|string|max:255',
+    //             'password' => 'required|string|max:255',
+    //             // Add more fields and their validation rules as needed
+    //         ]);
 
     //         $aadhar = null;
-//         if ($request->hasFile('aadhar')) {
-//             $file = $request->file('aadhar');
-//             $aadhar = time() . '.' . $file->getClientOriginalExtension();
-//             $file->move(public_path('emp/'), $aadhar);
-//         }
+    //         if ($request->hasFile('aadhar')) {
+    //             $file = $request->file('aadhar');
+    //             $aadhar = time() . '.' . $file->getClientOriginalExtension();
+    //             $file->move(public_path('emp/'), $aadhar);
+    //         }
 
     //         $pan = null;
-//         if ($request->hasFile('pan')) {
-//             $file = $request->file('pan');
-//             $pan = time() . '.' . $file->getClientOriginalExtension();
-//             $file->move(public_path('emp/'), $pan);
-//         }
+    //         if ($request->hasFile('pan')) {
+    //             $file = $request->file('pan');
+    //             $pan = time() . '.' . $file->getClientOriginalExtension();
+    //             $file->move(public_path('emp/'), $pan);
+    //         }
 
     //         $empRegistration = new EmployeeRegistrationMaster([
-//             'role' =>$request->input('role'),
-//             'name' => $request->input('name'),
-//             'email' => $request->input('email'),
-//             'contact_number' => $request->input('contact_number'),
-//             'city' => $request->input('city'),
-//             'address' => $request->input('address'),
-//             'pincode' => $request->input('pincode'),
-//             'aadhar' => $aadhar,
-//             'aadhar_number' => $request->input('aadhar_number'),
-//             'pan' => $pan,
-//             'pan_number' => $request->input('pan_number'),
-//             'username' => $request->input('username'),
-//             'password' => $request->input('password'),
+    //             'role' =>$request->input('role'),
+    //             'name' => $request->input('name'),
+    //             'email' => $request->input('email'),
+    //             'contact_number' => $request->input('contact_number'),
+    //             'city' => $request->input('city'),
+    //             'address' => $request->input('address'),
+    //             'pincode' => $request->input('pincode'),
+    //             'aadhar' => $aadhar,
+    //             'aadhar_number' => $request->input('aadhar_number'),
+    //             'pan' => $pan,
+    //             'pan_number' => $request->input('pan_number'),
+    //             'username' => $request->input('username'),
+    //             'password' => $request->input('password'),
 
     //         ]);
 
@@ -85,30 +85,30 @@ class empRegMasterController extends Controller
     //          // Save agent bank details
 
     //          $account_holder_name_array = $request->input('account_holder_name', []);
-//          if (!empty($account_holder_name_array)) {
-//             foreach ($account_holder_name_array as $key=>$account_holder_name) {
+    //          if (!empty($account_holder_name_array)) {
+    //             foreach ($account_holder_name_array as $key=>$account_holder_name) {
 
     //                 $request->validate([
-//                     "account_holder_name.{$key}" => 'required|string|max:255',
-//                     "bank_name.{$key}" => 'required|string|max:255',
-//                     "account_number.{$key}" => 'required|string|max:255',
-//                     "ifsc.{$key}" => 'required|string|max:255',
-//                 ]);
-//                 // $agentBankDetail = new AgentBankDetailsRegistrationMaster([
-//                     EmployeeBankDetailsMaster::create([
-//                     'employee_id' => $empRegistration->id,
-//                     'account_holder_name' =>$request->account_holder_name[$key],
-//                     'bank_name' =>$request->bank_name[$key],
-//                     'account_number' =>$request->account_number[$key],
-//                     'ifsc' =>$request->ifsc[$key],
-//                 ]);
+    //                     "account_holder_name.{$key}" => 'required|string|max:255',
+    //                     "bank_name.{$key}" => 'required|string|max:255',
+    //                     "account_number.{$key}" => 'required|string|max:255',
+    //                     "ifsc.{$key}" => 'required|string|max:255',
+    //                 ]);
+    //                 // $agentBankDetail = new AgentBankDetailsRegistrationMaster([
+    //                     EmployeeBankDetailsMaster::create([
+    //                     'employee_id' => $empRegistration->id,
+    //                     'account_holder_name' =>$request->account_holder_name[$key],
+    //                     'bank_name' =>$request->bank_name[$key],
+    //                     'account_number' =>$request->account_number[$key],
+    //                     'ifsc' =>$request->ifsc[$key],
+    //                 ]);
 
 
 
     //     }
 
     //     // Redirect or return a response as needed
-//     return redirect()->route('emp_reg');
+    //     return redirect()->route('emp_reg');
 
     //     }
 
@@ -119,104 +119,105 @@ class empRegMasterController extends Controller
     // public function emp_reg_store(Request $request){
 
     //     // Validate the incoming request data
-//     $request->validate([
-//         'role' => 'required|string|max:255',
-//         'name' => 'required|string|max:255',
-//         'email' => 'required|email|max:255',
-//         'contact_number' => 'required|string|max:20',
-//         'city' => 'required|string|max:255',
-//         'address' => 'required|string|max:255',
-//         'pincode' => 'required|string|max:20',
-//         'aadhar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//         'aadhar_number' => 'required|string|max:255',
-//         'pan' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//         'pan_number' => 'required|string|max:255',
-//         'username' => 'required|string|max:255',
-//         'password' => 'required|string|max:255',
-//     ]);
+    //     $request->validate([
+    //         'role' => 'required|string|max:255',
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|email|max:255',
+    //         'contact_number' => 'required|string|max:20',
+    //         'city' => 'required|string|max:255',
+    //         'address' => 'required|string|max:255',
+    //         'pincode' => 'required|string|max:20',
+    //         'aadhar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //         'aadhar_number' => 'required|string|max:255',
+    //         'pan' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //         'pan_number' => 'required|string|max:255',
+    //         'username' => 'required|string|max:255',
+    //         'password' => 'required|string|max:255',
+    //     ]);
 
     //     // Initialize a variable to track the success of the entire process
-//     $success = false;
+    //     $success = false;
 
     //     // Use a database transaction to ensure data consistency
-//     DB::beginTransaction();
+    //     DB::beginTransaction();
 
     //     try {
-//         // Process the employee registration data
-//         $aadhar = null;
-//         if ($request->hasFile('aadhar')) {
-//             $file = $request->file('aadhar');
-//             $aadhar = time() . '.' . $file->getClientOriginalExtension();
-//             $file->move(public_path('emp/'), $aadhar);
-//         }
+    //         // Process the employee registration data
+    //         $aadhar = null;
+    //         if ($request->hasFile('aadhar')) {
+    //             $file = $request->file('aadhar');
+    //             $aadhar = time() . '.' . $file->getClientOriginalExtension();
+    //             $file->move(public_path('emp/'), $aadhar);
+    //         }
 
     //         $pan = null;
-//         if ($request->hasFile('pan')) {
-//             $file = $request->file('pan');
-//             $pan = time() . '.' . $file->getClientOriginalExtension();
-//             $file->move(public_path('emp/'), $pan);
-//         }
+    //         if ($request->hasFile('pan')) {
+    //             $file = $request->file('pan');
+    //             $pan = time() . '.' . $file->getClientOriginalExtension();
+    //             $file->move(public_path('emp/'), $pan);
+    //         }
 
     //         $empRegistration = new EmployeeRegistrationMaster([
-//             'role' => $request->input('role'),
-//             'name' => $request->input('name'),
-//             'email' => $request->input('email'),
-//             'contact_number' => $request->input('contact_number'),
-//             'city' => $request->input('city'),
-//             'address' => $request->input('address'),
-//             'pincode' => $request->input('pincode'),
-//             'aadhar' => $aadhar,
-//             'aadhar_number' => $request->input('aadhar_number'),
-//             'pan' => $pan,
-//             'pan_number' => $request->input('pan_number'),
-//             'username' => $request->input('username'),
-//             'password' => $request->input('password'),
-//         ]);
+    //             'role' => $request->input('role'),
+    //             'name' => $request->input('name'),
+    //             'email' => $request->input('email'),
+    //             'contact_number' => $request->input('contact_number'),
+    //             'city' => $request->input('city'),
+    //             'address' => $request->input('address'),
+    //             'pincode' => $request->input('pincode'),
+    //             'aadhar' => $aadhar,
+    //             'aadhar_number' => $request->input('aadhar_number'),
+    //             'pan' => $pan,
+    //             'pan_number' => $request->input('pan_number'),
+    //             'username' => $request->input('username'),
+    //             'password' => $request->input('password'),
+    //         ]);
 
     //         $empRegistration->save();
 
     //         // Process the employee bank details
-//         $account_holder_name_array = $request->input('account_holder_name', []);
-//         if (!empty($account_holder_name_array)) {
-//             foreach ($account_holder_name_array as $key => $account_holder_name) {
-//                 $request->validate([
-//                     "account_holder_name.{$key}" => 'required|string|max:255',
-//                     "bank_name.{$key}" => 'required|string|max:255',
-//                     "account_number.{$key}" => 'required|string|max:255',
-//                     "ifsc.{$key}" => 'required|string|max:255',
-//                 ]);
+    //         $account_holder_name_array = $request->input('account_holder_name', []);
+    //         if (!empty($account_holder_name_array)) {
+    //             foreach ($account_holder_name_array as $key => $account_holder_name) {
+    //                 $request->validate([
+    //                     "account_holder_name.{$key}" => 'required|string|max:255',
+    //                     "bank_name.{$key}" => 'required|string|max:255',
+    //                     "account_number.{$key}" => 'required|string|max:255',
+    //                     "ifsc.{$key}" => 'required|string|max:255',
+    //                 ]);
 
     //                 EmployeeBankDetailsMaster::create([
-//                     'employee_id' => $empRegistration->id,
-//                     'account_holder_name' =>$request->account_holder_name[$key],
-//                     'bank_name' =>$request->bank_name[$key],
-//                     'account_number' =>$request->account_number[$key],
-//                     'ifsc' =>$request->ifsc[$key],
-//                 ]);
-//             }
-//         }
+    //                     'employee_id' => $empRegistration->id,
+    //                     'account_holder_name' =>$request->account_holder_name[$key],
+    //                     'bank_name' =>$request->bank_name[$key],
+    //                     'account_number' =>$request->account_number[$key],
+    //                     'ifsc' =>$request->ifsc[$key],
+    //                 ]);
+    //             }
+    //         }
 
     //         // If all steps are successful, commit the transaction
-//         DB::commit();
-//         $success = true;
+    //         DB::commit();
+    //         $success = true;
 
     //     } catch (\Exception $e) {
-//         // If an exception occurs, rollback the transaction
-//         DB::rollback();
-//         $success = false;
-//     }
+    //         // If an exception occurs, rollback the transaction
+    //         DB::rollback();
+    //         $success = false;
+    //     }
 
     //     // Check the success flag and redirect accordingly
-//     if ($success) {
-//         return redirect()->route('emp_reg')->with('success', 'Employee registration successful!');
-//     } else {
-//         return redirect()->route('emp_reg')->with('error', 'Error in the registration process.');
-//     }
-// }
+    //     if ($success) {
+    //         return redirect()->route('emp_reg')->with('success', 'Employee registration successful!');
+    //     } else {
+    //         return redirect()->route('emp_reg')->with('error', 'Error in the registration process.');
+    //     }
+    // }
 
 
     public function emp_reg_store(Request $request)
     {
+        // dd($request->all());
         // Initial request validation
         $request->validate([
             // 'name' => 'required|string|max:255',
@@ -239,6 +240,24 @@ class empRegMasterController extends Controller
         $pan = null;
 
         try {
+            // Retrieve permissions from UserRoles table based on the role
+            $rolePermissions = UserRoles::find($request->role);
+
+            if (!$rolePermissions) {
+                return back()->with('error', 'Invalid role selected. Please choose a valid role.');
+            }
+            $user = new User([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'role' => $request->input('role'),
+                'permission' => $rolePermissions->permission,
+
+            ]);
+
+            $user->save();
+
+
             // Handle aadhar file upload
             if ($request->hasFile('aadhar')) {
                 $file = $request->file('aadhar');
@@ -255,10 +274,9 @@ class empRegMasterController extends Controller
 
             // Save agent registration details
             $agentRegistration = new EmployeeRegistrationMaster([
-                // 'agent_number' => $agentNumber,
+                'user_id' => $user->id, // Store the user_id in the employee table
                 'name' => $request->input('name'),
                 'role' => $request->input('role'),
-
                 'email' => $request->input('email'),
                 'contact_number' => $request->input('contact_number'),
                 'city' => $request->input('city'),
@@ -547,6 +565,4 @@ class empRegMasterController extends Controller
             return redirect()->back()->withErrors(['error' => 'An error occurred: ' . $e->getMessage()])->withInput();
         }
     }
-
-
 }

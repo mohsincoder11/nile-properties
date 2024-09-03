@@ -230,119 +230,239 @@
                 <li>
                     <a href="dashboard" id="Dashboard"><span class="fa fa-desktop"> </span>Dashboard</a>
                 </li>
-                <li>
-                    <a href="{{ route('city_master') }}" id="Masters"><span class="fa fa-list"> </span>Masters</a>
-                </li>
-                <li>
-                    <a href="{{ route('project.index') }}" id="Project Entry"><span class="fa fa-edit"></span>Project
-                        Entry</a>
-
-                </li>
-                <li class="xn-openable">
-                    <a href="{{ route('newclientindex') }}" id="CRM"><span class="fa fa-navicon"></span>CRM</a>
-                    <ul>
-                        <li><a href="{{ route('crm_lead_management') }}"><span class="fa fa-plus"></span>Leads
-                                Mangement</a>
-                        </li>
-                        <li><a href="{{ route('allenquiry') }}"><span class="fa fa-plus"></span>All Enquiry</a>
-                        </li>
-
-                        <li><a href="{{ route('enquiry') }}"><span class="fa fa-plus"></span>New Enquiry</a>
-                        </li>
-                        <li><a href="{{ route('newclientindex') }}"><span class="fa fa-plus"></span>Added Client</a>
-                        </li>
-                        <li><a href="{{ route('visitindex') }}"><span class="fa fa-plus"></span>Visited</a>
-                        </li>
-                        <li><a href="{{ route('proposalindex') }}"><span class="fa fa-plus"></span>Proposal</a>
-                        </li>
 
 
+                @php
+                    $permission = Auth::user()->permission;
+                    // echo $permission;
+                @endphp
 
-                    </ul>
-                </li>
-                <li class="xn-openable">
-                    {{-- <a href="{{ route('initiatesale') }}" id="Registration Process"><span
+
+                @if (Auth::user()->role == 'admin' ||
+                        in_array('city_master', $permission) ||
+                        in_array('branch', $permission) ||
+                        in_array('firm_reg', $permission) ||
+                        in_array('agent_reg', $permission) ||
+                        in_array('emp_reg', $permission) ||
+                        in_array('customerReg', $permission) ||
+                        in_array('agrrementmaster', $permission))
+                    <li>
+                        <a href="{{ route('city_master') }}" id="Masters"><span class="fa fa-list"> </span>Masters</a>
+                    </li>
+                @endif
+
+
+                @if (Auth::user()->role == 'admin' || in_array('project.index', $permission))
+                    <li>
+                        <a href="{{ route('project.index') }}" id="Project Entry"><span
+                                class="fa fa-edit"></span>Project
+                            Entry</a>
+
+                    </li>
+                @endif
+
+                @if (Auth::user()->role == 'admin' ||
+                        in_array('crm_lead_management', $permission) ||
+                        in_array('allenquiry', $permission) ||
+                        in_array('enquiry', $permission) ||
+                        in_array('newclientindex', $permission) ||
+                        in_array('visitindex', $permission) ||
+                        in_array('proposalindex', $permission))
+                    <li class="xn-openable">
+                        <a href="{{ route('newclientindex') }}" id="CRM"><span
+                                class="fa fa-navicon"></span>CRM</a>
+                        <ul>
+                            @if (Auth::user()->role == 'admin' || in_array('crm_lead_management', $permission))
+                                <li><a href="{{ route('crm_lead_management') }}"><span class="fa fa-plus"></span>Leads
+                                        Mangement</a>
+                                </li>
+                            @endif
+
+
+                            @if (Auth::user()->role == 'admin' || in_array('allenquiry', $permission))
+                                <li><a href="{{ route('allenquiry') }}"><span class="fa fa-plus"></span>All Enquiry</a>
+                                </li>
+                            @endif
+
+                            @if (Auth::user()->role == 'admin' || in_array('enquiry', $permission))
+                                <li><a href="{{ route('enquiry') }}"><span class="fa fa-plus"></span>New Enquiry</a>
+                                </li>
+                            @endif
+                            @if (Auth::user()->role == 'admin' || in_array('newclientindex', $permission))
+                                <li><a href="{{ route('newclientindex') }}"><span class="fa fa-plus"></span>Added
+                                        Client</a>
+                                </li>
+                            @endif
+                            @if (Auth::user()->role == 'admin' || in_array('visitindex', $permission))
+                                <li><a href="{{ route('visitindex') }}"><span class="fa fa-plus"></span>Visited</a>
+                                </li>
+                            @endif
+                            @if (Auth::user()->role == 'admin' || in_array('proposalindex', $permission))
+                                <li><a href="{{ route('proposalindex') }}"><span class="fa fa-plus"></span>Proposal</a>
+                                </li>
+                            @endif
+                        </ul>
+                    </li>
+
+                @endif
+
+
+                @if (Auth::user()->role == 'admin' ||
+                        in_array('initiatesale', $permission) ||
+                        in_array('newsale', $permission) ||
+                        in_array('paymentcollection', $permission) ||
+                        in_array('registration', $permission) ||
+                        in_array('legalclearance', $permission) ||
+                        in_array('registrationcompleted', $permission) ||
+                        in_array('saledeedscan', $permission) ||
+                        in_array('handover', $permission))
+                    <li class="xn-openable">
+                        {{-- <a href="{{ route('initiatesale') }}" id="Registration Process"><span
                             class="fa fa-file-text"></span>Customer
                         Stages</a> --}}
-                    <a href="{{ route('initiatesale') }}" id="Registration Process"><span
-                            class="fa fa-file-text"></span>Sale
-                        Progress</a>
-                    <ul>
-                        {{-- <li><a href="{{ route('registrationChecklist')}}"><span class="fa fa-plus"></span>Registration
+                        <a href="{{ route('initiatesale') }}" id="Registration Process"><span
+                                class="fa fa-file-text"></span>Sale
+                            Progress</a>
+                        <ul>
+                            {{-- <li><a href="{{ route('registrationChecklist')}}"><span class="fa fa-plus"></span>Registration
                                 Checklist</a></li> --}}
-                        <li><a href="{{ route('initiatesale') }}"><span class="fa fa-plus"></span>Add New Sale</a></li>
-                        <li><a href="{{ route('newsale') }}"><span class="fa fa-plus"></span>New Sale Confirmed</a>
-                        </li>
-                        <li><a href="{{ route('paymentcollection') }}"><span class="fa fa-plus"></span>Payment
-                                Collection</a>
-                        </li>
-                        <li><a href="{{ route('registration') }}"><span class="fa fa-plus"></span>Request For
-                                Registration</a>
-                        </li>
-                        {{-- <li><a href="{{ route('account')}}"><span class="fa fa-plus"></span>Accounts Clearance</a>
-                        </li> --}}
-                        <li><a href="{{ route('legalclearance') }}"><span class="fa fa-plus"></span>Legal Clearance</a>
-                        </li>
-                        <li><a href="{{ route('registrationcompleted') }}"><span class="fa fa-plus"></span>Registration
-                                Completed</a></li>
-                        <li><a href="{{ route('saledeedscan') }}"><span class="fa fa-plus"></span>Saledeed Scan</a>
-                        </li>
-                        <li><a href="{{ route('handover') }}"><span class="fa fa-plus"></span>Handover Complete</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="xn-openable">
-                    <a href="{{ route('downlineindex') }}" id="CRM"><span
-                            class="fa fa-navicon"></span>Business</a>
-                    <ul>
-                        <li>
 
-                            <a href="{{ route('commission-plans.index') }}" id="commisionplan"><span
-                                    class="fa fa-navicon"></span>Commision Plan Master</a>
-                        </li>
-                        <li>
+                            @if (Auth::user()->role == 'admin' || in_array('initiatesale', $permission))
+                                <li><a href="{{ route('initiatesale') }}"><span class="fa fa-plus"></span>Add New
+                                        Sale</a></li>
+                            @endif
 
-                            <a href="{{ route('downlineindex') }}" id="downlineindex"><span
-                                    class="fa fa-navicon"></span>Business
-                            </a>
-                        </li>
-                    </ul>
+                            @if (Auth::user()->role == 'admin' || in_array('newsale', $permission))
+                                <li><a href="{{ route('newsale') }}"><span class="fa fa-plus"></span>New Sale
+                                        Confirmed</a>
+                                </li>
+                            @endif
 
-                </li>
+                            @if (Auth::user()->role == 'admin' || in_array('paymentcollection', $permission))
+                                <li><a href="{{ route('paymentcollection') }}"><span class="fa fa-plus"></span>Payment
+                                        Collection</a>
+                                </li>
+                            @endif
 
-                <li>
-                    <a href="{{ route('reports') }}" id="Reports"><span class="fa fa-file"> </span>Reports</a>
-                </li>
+                            @if (Auth::user()->role == 'admin' || in_array('registration', $permission))
+                                <li><a href="{{ route('registration') }}"><span class="fa fa-plus"></span>Request For
+                                        Registration</a>
+                                </li>
+                            @endif
+
+
+                            @if (Auth::user()->role == 'admin' || in_array('legalclearance', $permission))
+                                <li><a href="{{ route('legalclearance') }}"><span class="fa fa-plus"></span>Legal
+                                        Clearance</a>
+                                </li>
+                            @endif
+
+                            @if (Auth::user()->role == 'admin' || in_array('registrationcompleted', $permission))
+                                <li><a href="{{ route('registrationcompleted') }}"><span
+                                            class="fa fa-plus"></span>Registration
+                                        Completed</a></li>
+                            @endif
+
+                            @if (Auth::user()->role == 'admin' || in_array('saledeedscan', $permission))
+                                <li><a href="{{ route('saledeedscan') }}"><span class="fa fa-plus"></span>Saledeed
+                                        Scan</a>
+                                </li>
+                            @endif
+
+                            @if (Auth::user()->role == 'admin' || in_array('handover', $permission))
+                                <li><a href="{{ route('handover') }}"><span class="fa fa-plus"></span>Handover
+                                        Complete</a>
+                                </li>
+                            @endif
+
+                        </ul>
+                    </li>
+
+                @endif
+
+
+                @if (Auth::user()->role == 'admin' ||
+                        in_array('commission-plans.index', $permission) ||
+                        in_array('downlineindex', $permission))
+
+                    <li class="xn-openable">
+                        <a href="{{ route('downlineindex') }}" id="CRM"><span
+                                class="fa fa-navicon"></span>Business</a>
+                        <ul>
+
+                            @if (Auth::user()->role == 'admin' || in_array('commission-plans.index', $permission))
+                                <li>
+
+                                    <a href="{{ route('commission-plans.index') }}" id="commisionplan"><span
+                                            class="fa fa-navicon"></span>Commission Plan Master</a>
+                                </li>
+                            @endif
+
+                            @if (Auth::user()->role == 'admin' || in_array('downlineindex', $permission))
+                                <li>
+
+                                    <a href="{{ route('downlineindex') }}" id="downlineindex"><span
+                                            class="fa fa-navicon"></span>Business
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
+
+                    </li>
+                @endif
+
+                @if (Auth::user()->role == 'admin' || in_array('reports', $permission))
+                    <li>
+                        <a href="{{ route('reports') }}" id="Reports"><span class="fa fa-file"> </span>Reports</a>
+                    </li>
+                @endif
                 {{-- <li>
                     <a href="{{ route('role') }}" id="User Roles"><span class="fa fa-users"> </span>User Roles</a>
                 </li> --}}
                 <!-- <li>
                     <a href="setting" id="Setting"><span class="fa fa-gear"> </span>Settings</a>
                 </li> -->
-                <li class="xn-openable">
-                    <a href="{{ route('landowner_index') }}" title="User Roles"><span class="fa fa-users">
-                        </span>More</a>
-                    <ul>
-                        <li><a href="{{ route('landowner_index') }}"><span class="fa fa-plus"></span>Land Owners</a>
-                        </li>
-                        <li><a href="{{ route('expense.master') }}"><span class="fa fa-plus"></span>Account</a></li>
-                        {{-- <li><a href="{{ route('plot.transfer') }}"><span class="fa fa-plus"></span>Plot
-                                Transfer</a> --}}
-                </li>
-                <li><a href="{{ route('role') }}"><span class="fa fa-plus"></span>User Permission</a></li>
-                <li><a href="#"><span class="fa fa-plus"></span>User Logs</a></li>
-                <li><a href="{{ route('logout') }}"><span class="fa fa-sign-out"></span>Logout</a></li>
-            </ul>
-            </li>
 
-            {{-- <li class="xn-icon-button pull-right">
+                @if (Auth::user()->role == 'admin' ||
+                        in_array('landowner_index', $permission) ||
+                        in_array('expense.master', $permission) ||
+                        in_array('user-roles', $permission))
+                    <li class="xn-openable">
+                        <a href="{{ route('landowner_index') }}" title="User Roles"><span class="fa fa-users">
+                            </span>More</a>
+                        <ul>
+
+                            @if (Auth::user()->role == 'admin' || in_array('landowner_index', $permission))
+                                <li><a href="{{ route('landowner_index') }}"><span class="fa fa-plus"></span>Land
+                                        Owners</a>
+                                </li>
+                            @endif
+                            @if (Auth::user()->role == 'admin' || in_array('expense.master', $permission))
+                                <li><a href="{{ route('expense.master') }}"><span
+                                            class="fa fa-plus"></span>Account</a></li>
+                            @endif
+                            {{-- <li><a href="{{ route('plot.transfer') }}"><span class="fa fa-plus"></span>Plot
+                                Transfer</a>
+                </li> --}}
+                            {{-- <li><a href="{{ route('role') }}"><span class="fa fa-plus"></span>User Permission</a></li> --}}
+                            <li><a href="#"><span class="fa fa-plus"></span>User Logs</a></li>
+
+                            @if (Auth::user()->role == 'admin' || in_array('user-roles', $permission))
+                                <li><a href="user-roles"><span class="fa fa-plus"></span>User Roles</a></li>
+                            @endif
+                            <li><a href="{{ route('logout') }}"><span class="fa fa-sign-out"></span>Logout</a></li>
+                        </ul>
+                    </li>
+                @endif
+
+                {{-- <li class="xn-icon-button pull-right">
                     <a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
                 </li> --}}
-            <!-- MESSAGES -->
-            <li class="xn-icon-button pull-right"
-                style="margin-right:25px; min-width:100px; color:#FFFFFF; padding-top:20px;">
-                Welcome, {{ Auth::user()->name ?? '' }}
-            </li>
+                <!-- MESSAGES -->
+                <li class="xn-icon-button pull-right"
+                    style="margin-right:25px; min-width:100px; color:#FFFFFF; padding-top:20px;">
+                    Welcome, {{ Auth::user()->name ?? '' }}
+                </li>
 
             </ul>
             <!-- END X-NAVIGATION -->
