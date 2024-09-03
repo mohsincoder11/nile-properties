@@ -50,70 +50,70 @@ class RegistrationController extends Controller
 
 
     // public function login(Request $request)
-// {
-//     // dd($request->all());
-//     $name = $request->input('name');
-//     $password = $request->input('password');
-//     $user = User::where('name', $name)->first();
+    // {
+    //     // dd($request->all());
+    //     $name = $request->input('name');
+    //     $password = $request->input('password');
+    //     $user = User::where('name', $name)->first();
 
     //     if ($user && password_verify($password, $user->password)) {
-//         // Credentials are correct, you can redirect to a different view or perform some actions here.
-//         // $Home = Home::all();
-//         return redirect()->back()->with('success', 'Registration Successfull.');
+    //         // Credentials are correct, you can redirect to a different view or perform some actions here.
+    //         // $Home = Home::all();
+    //         return redirect()->back()->with('success', 'Registration Successfull.');
 
     //         // return view('website.index');
-//     } else {
-//         // Incorrect username or password, show an error message.
-//         // return view('website.index')->with('error', 'Incorrect username or password');
-//         return redirect()->back()->with('error', 'Incorrect username or password');
+    //     } else {
+    //         // Incorrect username or password, show an error message.
+    //         // return view('website.index')->with('error', 'Incorrect username or password');
+    //         return redirect()->back()->with('error', 'Incorrect username or password');
 
     //     }
-// }
+    // }
 
     // public function login(Request $request)
-// {
-//     $name = $request->input('name');
-//     $password = $request->input('password');
-//     $user = User::where('name', $name)->first();
+    // {
+    //     $name = $request->input('name');
+    //     $password = $request->input('password');
+    //     $user = User::where('name', $name)->first();
 
     //     if ($user && password_verify($password, $user->password)) {
-//         return response()->json(['success' => true, 'username' => $user->name]);
-//     } else {
-//         return response()->json(['Error' => false, 'message' => 'Incorrect username or password']);
-//     }
-// }
+    //         return response()->json(['success' => true, 'username' => $user->name]);
+    //     } else {
+    //         return response()->json(['Error' => false, 'message' => 'Incorrect username or password']);
+    //     }
+    // }
 
     // public function login(Request $request)
-// {
-//     $email = $request->input('email');
-//     $password = $request->input('password');
-//     $user = User::where('email', $email)->first();
+    // {
+    //     $email = $request->input('email');
+    //     $password = $request->input('password');
+    //     $user = User::where('email', $email)->first();
 
     //     if ($user && password_verify($password, $user->password)) {
-//         return redirect()->back()->with('username', $user->email);
-//     } else {
-//         return redirect()->back()->with('error', 'Incorrect username or password');
-//     }
-// }
+    //         return redirect()->back()->with('username', $user->email);
+    //     } else {
+    //         return redirect()->back()->with('error', 'Incorrect username or password');
+    //     }
+    // }
 
     // public function login(Request $request)
-// {
-//     $credentials = $request->only('email', 'password');
+    // {
+    //     $credentials = $request->only('email', 'password');
 
     //     // dd($request->all());
 
     //     if (Auth::attempt($credentials)) {
-//         // Authentication passed...
+    //         // Authentication passed...
 
     //         $user = Auth::user();
 
     //      return redirect()->back()->with('username', $user->email);
 
     //     } else {
-//         // Incorrect username or password, show an error message.
-//         return redirect()->back()->with(['error' => 'Incorrect username or password']);
-//     }
-// }
+    //         // Incorrect username or password, show an error message.
+    //         return redirect()->back()->with(['error' => 'Incorrect username or password']);
+    //     }
+    // }
 
     public function login(Request $request)
     {
@@ -169,7 +169,7 @@ class RegistrationController extends Controller
             // return response()->json($otp);
 
             // Store the OTP in the session for later verification
-//  session(['otp' => $otp]);
+            //  session(['otp' => $otp]);
 
             //  return response()->json(['otp' => $otp]);
             session(['otp' => $otp, 'userId' => $user->id]);
@@ -180,7 +180,6 @@ class RegistrationController extends Controller
             // Mobile number does not exist
             return response()->json(['error' => 'Mobile number not found']);
         }
-
     }
 
     // to check mobile number is exist in database or not
@@ -228,7 +227,6 @@ class RegistrationController extends Controller
 
                 // return response()->json(['success' => true]);
                 return redirect()->back()->with('success', 'Password Updated Successfully...');
-
             } else {
                 return redirect()->back()->with('error', 'Passwords do not match');
             }
@@ -248,5 +246,4 @@ class RegistrationController extends Controller
 
         return redirect()->back();
     }
-
 }

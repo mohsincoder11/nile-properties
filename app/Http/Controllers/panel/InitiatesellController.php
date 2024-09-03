@@ -118,15 +118,17 @@ class InitiatesellController extends Controller
         // dd($projectId); // Uncomment for debugging
         //  $plots = ProjectEntryAppendData::where('project_entry_id', $projectId)->get();
         $usedPlotIds = InitialEnquiry::where('project_id', $projectId)
-        // ->where('plot_transfer_status','1')
-        ->pluck('plot_no');
+            ->Orwhere('plot_transfer_status', 1)
+            // ->where('project_id', '!=', null)
 
+            ->pluck('plot_no');
+        // dump($usedPlotIds);
         // Step 2: Fetch plots from ProjectEntryAppendData that are not in the used plot IDs
         $plots = ProjectEntryAppendData::where('project_entry_id', $projectId)
             ->whereNotIn('id', $usedPlotIds)
             ->get();
-// echo json_encode($plots);
-// exit();
+        // echo json_encode($plots);
+        // exit();
         return response()->json($plots);
     }
 
@@ -167,7 +169,7 @@ class InitiatesellController extends Controller
         $existingEnquiry = InitialEnquiry::where('project_id', $request->project_id)
             ->where('firm_id', $request->firm_id)
             ->where('plot_no', $request->plot_no)
-            ->where('plot_transfer_status', '1')     
+            ->where('plot_transfer_status', '1')
             ->first();
 
         if ($existingEnquiry) {
@@ -269,7 +271,7 @@ class InitiatesellController extends Controller
             'firm_id' => null,
             'project_id' => null,
             'client_id' => null,
-            'status' => null,
+            'status' => 'Approved',
             'initial_enquiry_id' => $initialEnquiry->id,
         ]);
 
@@ -283,7 +285,7 @@ class InitiatesellController extends Controller
             'plot_id' => null,
             'firm_id' => null,
             'project_id' => null,
-            'status' => null,
+            'status' => 'Pending',
             'initial_enquiry_id' => $initialEnquiry->id,
         ]);
 
@@ -440,21 +442,21 @@ class InitiatesellController extends Controller
 
         $agent = AgentRegistrationMaster::find($request->agent_id);
 
-if ($agent) {
-    // Update the agent's total_sales
-    $agent->total_sales += $request->total_cost;
-    $agent->save();
+        if ($agent) {
+            // Update the agent's total_sales
+            $agent->total_sales += $request->total_cost;
+            $agent->save();
 
-    // Fetch the parent agent object using parent_id
-    $parentAgent = AgentRegistrationMaster::find($agent->parent_id);
-    // dump($parentAgent);
+            // Fetch the parent agent object using parent_id
+            $parentAgent = AgentRegistrationMaster::find($agent->parent_id);
+            // dump($parentAgent);
 
-    // If the parent agent exists, update its total_sales
-    if ($parentAgent) {
-        $parentAgent->total_sales += $request->total_cost;
-        $parentAgent->save();
-    }
-}
+            // If the parent agent exists, update its total_sales
+            if ($parentAgent) {
+                $parentAgent->total_sales += $request->total_cost;
+                $parentAgent->save();
+            }
+        }
 
         //update agent profile after transaction
         $this->updateAgentProfile($agent);
@@ -482,7 +484,7 @@ if ($agent) {
         ]);
 
 
-    // }
+        // }
         //dd(1);
         return redirect()->route('newsale')->with('success', 'Data saved successfully.');
     }
@@ -890,9 +892,9 @@ if ($agent) {
     {
         $inquiryId = $request->input('id');
 
-        $inquiry = InitialEnquiry::with('clientsigle.agent', 'plotname', 'clients', 'nominees', 'statustoken','plottrasferhistory')->where('id', $inquiryId)->first();
-// echo json_encode($inquiry);
-// exit();
+        $inquiry = InitialEnquiry::with('clientsigle.agent', 'plotname', 'clients', 'nominees', 'statustoken')->where('id', $inquiryId)->first();
+        // echo json_encode($inquiry);
+        // exit();
         if (!$inquiry) {
             return response()->json(['error' => 'Inquiry not found'], 404);
         }
