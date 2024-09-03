@@ -232,7 +232,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('positionindex', [MyDownline::class, 'positionindex'])->name('positionindex');
     Route::get('downlinebuisnessindex', [MyDownline::class, 'downlinebuisnessindex'])->name('downlinebuisnessindex');
     Route::get('get_agent_by_profile', [MyDownline::class, 'get_agent_by_profile'])->name('get_agent_by_profile');
-    
+
 
     Route::get('/commission-plans', [CommissionPlanController::class, 'index'])->name('commission-plans.index');
     Route::post('/commission-plans', [CommissionPlanController::class, 'store'])->name('commission-plans.store');

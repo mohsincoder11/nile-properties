@@ -423,7 +423,7 @@
                     const queryId = event.target.getAttribute('data-id');
                     const adminResponse = event.target.previousElementSibling.value;
 
-                    fetch('{{ route('updateadminresponse') }}', {
+                    fetch('{{ route('updateAdminResponse') }}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -464,7 +464,7 @@
                         }
                     });
 
-                    fetch('{{ route('updateadminresponse') }}', {
+                    fetch('{{ route('submitAllResponses') }}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

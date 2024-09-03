@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 use App\Models\InitialEnquiry;
 use App\Models\PlotSaleStatus;
 use Illuminate\Support\Carbon;
-use App\Models\UserModelPlotQuery;
+// use App\Models\UserModelPlotQuery;
 use App\Models\ClientDetailInitial;
 use App\Http\Controllers\Controller;
 use App\Models\EmiPaymentCollection;
