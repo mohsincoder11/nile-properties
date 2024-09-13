@@ -113,4 +113,9 @@ class InitialEnquiry extends Model
     {
         return $this->hasOne(ProjectEntryAppendData::class, 'id', 'plot_no');
     }
+
+    public function plottrasferhistory()
+    {
+        return $this->hasOne(PlotTransferHistory::class, 'previous_enquiry_id', 'id');
+    }
 }

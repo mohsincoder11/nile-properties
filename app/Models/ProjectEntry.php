@@ -13,7 +13,6 @@ class ProjectEntry extends Model
     protected $table = 'projectentry';
 
     protected $fillable = [
-
         'firm_id',
         'city_id',
         'project_code',
@@ -96,9 +95,9 @@ class ProjectEntry extends Model
         return $this->hasOne(PlotSaleStatus::class, 'id', 'sale_status_id');
     }
     // public function saleStatus()
-    // {
-    //     return $this->belongsTo(PlotSaleStatus::class, 'sale_status_id');
-    // }
+// {
+//     return $this->belongsTo(PlotSaleStatus::class, 'sale_status_id');
+// }
 
 
     // for Business Hours / Time Slot
@@ -114,4 +113,5 @@ class ProjectEntry extends Model
     {
         return $this->hasMany(TimeSlot::class, 'project_entry_id', 'id');
     }
+
 }

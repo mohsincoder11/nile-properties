@@ -32,7 +32,7 @@
 <div class="page-content-wrap">
     <div class="row">
         @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger ">
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -58,7 +58,6 @@
 
                     </div>
                    
-
                     <h5 class="panel-title"
                     style="color:#FFFFFF; background-color:#006699; width:100%; font-size:14px;margin-top: 2vh; margin-bottom:5px;"
                     align="center">
@@ -445,7 +444,6 @@
                                     </button>
                                 </td>
                             </tr>
-
                         </table>
                     </div>
                     <div class="col-md-12" style="margin-top: 1vh;">
@@ -499,12 +497,13 @@
                     </select>
                 </td>
                 <td style="padding: 2px;" width="2%">
-                    <select id="plot-select" name="plot_no" class="form-control select no_click_readonly" data-live-search="true">
-                        @foreach($enquiries as $enquiry)
+                    {{-- <select id="plot-select" name="plot_no" class="form-control select no_click_readonly" data-live-search="true"> --}}
+                        {{-- @foreach($enquiries as $enquiry)
                         <option value="{{ $enquiry->plot_no ?? '' }}" @if($inquiry->plot_no ?? '' == $enquiry->plot_no ?? '') selected @endif>
                             {{ $enquiry->plot_no ?? '' }}
                         </option>
-                        @endforeach
+                        @endforeach --}}
+                        <input type="text" class="form-control" value="{{ $inquiry->plot_no ?? '' }}" name="plot_no" placeholder="" required readonly />
                         <!-- Plot options will be appended dynamically -->
                     </select>
                 </td>
@@ -561,7 +560,7 @@
                     <input type="text" class="form-control" name="down_payment" placeholder="" value="{{ $inquiry->down_payment ?? '' }}" readonly />
                 </td>
                 <td id="balence_amount" style="padding: 2px;" width="1%">
-                    <input type="hidden" value="{{ $inquiry->balence_amount ?? '' }}" name="balence_amount" id="balence_amount_input">
+                    <input type="hidden" value="{{ $inquiry->balance_amount ?? '' }}" name="balence_amount" id="balence_amount_input">
                     <label id="balence_amount_label" class="control-label">
                         <font id="balence_amount_display" color="#ff0000">{{ $inquiry->balance_amount ?? '' }}</font>
                     </label>
@@ -570,7 +569,7 @@
                     <input type="text" class="form-control" value="{{ $inquiry->tenure ?? '' }}" name="tenure" placeholder="" readonly />
                 </td>
                 <td id="emi_ammount" style="padding: 2px;" width="1%">
-                    <input type="hidden" name="emi_ammount" value="{{ $inquiry->emi_ammount ?? '' }}" id="emi_ammount_input">
+                    <input type="hidden" name="emi_ammount" value="{{ $inquiry->emi_amount ?? '' }}" id="emi_ammount_input">
                     <label id="emi_ammount_label" class="control-label">
                         <font id="emi_ammount_display" color="#ff0000">{{ $inquiry->emi_amount ?? '' }}</font>
                     </label>
@@ -592,9 +591,9 @@
                     </div>
                 </td>
                 <td style="padding: 2px;" width="1%">
-                    <select class="form-control select no_click_readonly" name="staus_token" data-live-search="true">
+                    <select class="form-control select no_click_readonly" name="status_token" data-live-search="true">
                         @foreach($tokenStatuses as $tokenStatus)
-                        <option value="{{ $tokenStatus->token }}" @if($inquiry->status_token == $tokenStatus->id) selected @endif>
+                        <option value="{{ $tokenStatus->id }}" @if($inquiry->status_token == $tokenStatus->id) selected @endif>
                             {{ $tokenStatus->token }}
                         </option>
                         @endforeach
@@ -640,23 +639,59 @@
                     <input type="radio" id="executive_name" name="source_type" value="executive" onclick="toggleEmployeeSelect()" checked disabled>
                     <label for="executive_name">Executive Name</label>
                     <input type="radio" id="direct_sourse" name="source_type" value="direct" onclick="toggleEmployeeSelect()" disabled>
-                    <label for="direct_sourse">Direct Source</label>
+                    <label for="direct_sourse">Direct Source{{$inquiry->employee_id}}</label>
                 </td>
-                <td id="agent-select-container" style="padding: 2px; width: 1%;">
+                {{-- <td id="agent-select-container" style="padding: 2px; width: 1%;">
                     <select class="form-control select no_click_readonly" data-live-search="true" id="agent-select" name="agent_id" >
                         @foreach($agent as $agent)
-                        <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+                        <option value="{{ $agent->id }}" @if ($inquiry->agent_id == $agent->id)
+                            selected
+                        @endif>{{ $agent->name }}</option>
                         @endforeach
                     </select>
-                </td>
-                <td id="employee-select-container" style="padding: 2px; width: 1%;">
-                    <select class="form-control select no_click_readonly" data-live-search="true" id="employee-select" name="employee" >
-                        @foreach($employees as $employee)
-                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                </td> --}}
+
+                <td id="agent-select-container" style="padding: 2px; width: 1%;">
+                    <select class="form-control select no_click_readonly" data-live-search="true" id="agent-select" name="agent_id">
+                        <!-- Display an empty option if $inquiry->agent_id is null -->
+                        <option value="" @if (is_null($inquiry->agent_id)) selected @endif>Select Agent</option>
+                        @foreach($agent as $agent)
+                            <option value="{{ $agent->id }}" 
+                                @if ($inquiry->agent_id == $agent->id) 
+                                    selected 
+                                @endif>
+                                {{ $agent->name }}
+                            </option>
                         @endforeach
                     </select>
                 </td>
 
+
+                {{-- <td id="employee-select-container" style="padding: 2px; width: 1%;">
+                    <select class="form-control select no_click_readonly" data-live-search="true" id="employee-select" name="employee" >
+                        @foreach($employees as $employee)
+                        <option value="{{ $employee->id }}" @if ($inquiry->employee_id == $employee->id)
+                            selected
+                        @endif>{{ $employee->name }}</option>
+                        @endforeach
+                    </select>
+                </td> --}}
+
+                <td id="employee-select-container" style="padding: 2px; width: 1%;">
+                    <select class="form-control select no_click_readonly" data-live-search="true" id="employee-select" name="employee">
+                        <!-- Display an empty option if $inquiry->employee_id is null -->
+                        <option value="" @if (is_null($inquiry->employee_id)) selected @endif>Select Employee</option>
+                        @foreach($employees as $employee)
+                            <option value="{{ $employee->id }}" 
+                                @if ($inquiry->employee_id == $employee->id) 
+                                    selected 
+                                @endif>
+                                {{ $employee->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </td>
+                
                 <td style="padding: 2px;" width="1%">
                     <textarea type="text" class="form-control" name="remark" placeholder="" rows="2" cols="5" readonly>{{ $inquiry->remark ?? '' }}</textarea>
                 </td>
@@ -1071,6 +1106,14 @@
     alert('An error occurred while processing the files. Please try again.');
     });
     });
+    document.getElementById('customerTableBody').addEventListener('click', function (event) {
+    if (event.target.classList.contains('remove-row-btn') || event.target.closest('.remove-row-btn')) {
+        const row = event.target.closest('tr');
+        if (row) {
+            row.remove();
+        }
+    }
+});
 </script>
 <script>
     function toggleMarriageDate() {

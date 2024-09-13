@@ -67,7 +67,7 @@
             <div class="col-md-12" style="margin-top: 2vh;">
                 <div class="col-md-2">
                     <label class="control-label">Bill No.<font color="#FF0000">*</font></label>
-                    <input type="text" class="form-control" name="bill_no" placeholder="" />
+                    <input type="text" class="form-control" name="bill_no" value="{{$receiptNumber}}" readonly  style="font-weight: bold;" placeholder="" />
                 </div>
 
                 <div class="col-md-2">
@@ -119,7 +119,7 @@
                 </div>
                 <div class="col-md-2" style="margin-top: 2vh;">
                     <label class="control-label">Amount<font color="#FF0000">*</font></label>
-                    <input type="text" class="form-control" name="amount" id="amount" placeholder="" />
+                    <input type="text" class="form-control" name="amount" id="amount" placeholder="" readonly />
                 </div>
                 {{-- <div class="col-md-2" style="margin-top: 2vh;">
                     <label class="control-label">Client List<font color="#FF0000">*</font></label>
@@ -498,3 +498,22 @@
         })
 </script>
 @stop
+
+
+{{-- <script>
+    $('#openReceipt').on('click', function(event) {                //this is for open the receipt in the new tab
+        // Prevent default behavior (e.g., form submission)
+        event.preventDefault();
+        
+        // Get the selected option's value from the #emi_no dropdown
+        var selectedOption = $('#emi_no').val();
+
+        // Ensure an option is selected
+        if (selectedOption) {
+            // Open the route with the selected ID in a new tab
+            window.open('{{ url('emi_receipt') }}/' + selectedOption, '_blank');
+        } else {
+            alert('Please select an EMI first.');
+        }
+    });
+</script> --}}

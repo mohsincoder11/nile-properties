@@ -78,170 +78,15 @@ class PlotTransferController extends Controller
 
     public function plot_transfer_store(Request $request, $inquiry_id)
     {
+        // dd($inquiry_id);
+
+        // dd($request->all());
         DB::beginTransaction();
         
         try {
             // Step 1: Store initial enquiry details
             $initialEnquiry = InitialEnquiry::create([
                 'project_id' => $request->project_id,
-                'measurement' => $request->Measurement,
-                'square_meter' => $request->square_meter,
-                'square_ft' => $request->square_ft,
-                'rate' => $request->rate,
-                'plot_no' => $request->plot_no,
-                'total_cost' => $request->total_cost,
-                'discount_amount' => $request->discount_amount,
-                'discount_type' => $request->discount_type,
-                'final_amount' => $request->final_amount,
-                'down_payment' => $request->down_payment,
-                'balance_amount' => $request->balence_amount,
-                'tenure' => $request->tenure,
-                'emi_amount' => $request->emi_ammount,
-                'booking_date' => Carbon::createFromFormat('d/m/Y', $request->booking_date)->toDateString(),
-                'agreement_date' => Carbon::createFromFormat('d/m/Y', $request->aggriment_date)->toDateString(),
-                'status_token' => $request->staus_token,
-                'emi_start_date' => Carbon::createFromFormat('d/m/Y', $request->emi_start_date)->toDateString(),
-                'plot_sale_status' => $request->plot_sale_status,
-                'a_rate' => $request->a_rate,
-                'source_type' => $request->source_type,
-                'employee_id' => $request->employee ?? null,
-                'agent_id' => $request->agent_id ?? null,
-                'direct_source' => $request->direct_sourse ?? 'no',
-                'remark' => $request->remark,
-                'mauja' => $request->mauja,
-                'kh_no' => $request->kh_no,
-                'phn' => $request->phn,
-                'taluka' => $request->taluka,
-                'district' => $request->district,
-                'east' => $request->east,
-                'west' => $request->west,
-                'north' => $request->north,
-                'south' => $request->south,
-            ]);
-    
-            // Step 2: Store client details
-            $newOwnerIds = [];
-            foreach ($request->title as $index => $title) {
-                // Validate required fields
-                if (
-                    !isset($title) ||
-                    !isset($request->name[$index]) ||
-                    !isset($request->occupation_id[$index]) ||
-                    !isset($request->email[$index]) ||
-                    !isset($request->contact[$index]) ||
-                    !isset($request->city[$index]) ||
-                    !isset($request->pin_code[$index]) ||
-                    !isset($request->address[$index]) ||
-                    !isset($request->age[$index]) ||
-                    !isset($request->dob[$index]) ||
-                    !isset($request->branch_id[$index]) ||
-                    !isset($request->aadhar_no[$index]) ||
-                    !isset($request->pan_no[$index])
-                ) {
-                    continue; // Skip this iteration if any required fields are missing
-                }
-    
-                $image_name_array = [];
-                foreach ($request->aadhar as $key => $image) {
-                    $extension = explode('/', mime_content_type($image))[1];
-                    $data = base64_decode(substr($image, strpos($image, ',') + 1));
-                    $imgname1 = 'e' . rand(000, 999) . $key . time() . '.' . $extension;
-                    file_put_contents(public_path('customer_reg/') . '/' . $imgname1, $data);
-                    $image_name_array[] = $imgname1;
-                }
-                $aadharImages = implode(',', $image_name_array);
-    
-                $answerKey = [];
-                foreach ($request->pan as $key => $image) {
-                    $extension = explode('/', mime_content_type($image))[1];
-                    $data = base64_decode(substr($image, strpos($image, ',') + 1));
-                    $imgname = 'e' . rand(000, 999) . $key . time() . '.' . $extension;
-                    file_put_contents(public_path('customer_reg/') . '/' . $imgname, $data);
-                    $answerKey[] = $imgname;
-                }
-                $panImages = implode(',', $answerKey);
-                    
-                    // Create customer registration
-                    $reg = CustomerRegistrationMaster::create([
-                        'title' => $title,
-                        'name' => $request->name[$index],
-                        'occupation_id' => $request->occupation_id[$index],
-                        'email' => $request->email[$index],
-                        'contact' => $request->contact[$index],
-                        'city' => $request->city[$index],
-                        'pin_code' => $request->pin_code[$index],
-                        'address' => $request->address[$index],
-                        'age' => $request->age[$index],
-                        'dob' => $request->dob[$index],
-                        'marital_status' => $request->marital_status[$index] ?? null,
-                        'marriage_date' => $request->marriage_date[$index] ?? null,
-                        'branch_id' => $request->branch_id[$index],
-                        'aadhar' => $aadharImages,
-                        'aadhar_no' => $request->aadhar_no[$index],
-                        'pan' => $panImages,
-                        'pan_no' => $request->pan_no[$index],
-                    ]);
-    
-                    // Associate customer with initial enquiry
-                    ClientDetailInitial::create([
-                        'initial_enquiry_id' => $initialEnquiry->id,
-                        'name' => $request->name[$index],
-                        'phone' => $request->contact[$index],
-                        'address' => $request->address[$index],
-                        'client_id' => $reg->id,
-                    ]);
-    
-                    $newOwnerIds[] = $reg->id;
-                }
-    
-          // Update previous owners
-          $previousOwners = ClientDetailInitial::where([
-            ['initial_enquiry_id', '=', $inquiry_id],
-            ['is_transfer', '=', '0']
-        ])->pluck('client_id')->toArray();
-
-        if (!empty($previousOwners)) {
-            ClientDetailInitial::where([
-                ['initial_enquiry_id', '=', $inquiry_id],
-                ['is_transfer', '=', '0']
-            ])->whereIn('client_id', $previousOwners)->update(['is_transfer' => '1']);
-        }
-
-        // Record the transfer history
-        foreach ($previousOwners as $previousOwner) {
-            foreach ($newOwnerIds as $newOwnerId) {
-                PlotTransferHistory::create([
-                    'initial_enquiry_id' => $initialEnquiry->id,
-                    'previous_owner_id' => $previousOwner,
-                    'new_owner_id' => $newOwnerId,
-                    'transfer_date' => now(),
-                    'transfer_type' => 'user', // or 'user_transfer'
-                ]);
-            }
-        }
-    
-            DB::commit();
-    
-            return redirect()->route('newsale')->with('success', 'Plot transferred successfully.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Plot transfer failed: ' . $e->getMessage());
-            return redirect()->route('newsale')->with('error', 'Plot transfer failed: ' . $e->getMessage());
-        }
-    }
-    
-
-    public function user_transfer_plot_store(Request $request, $inquiry_id)
-    {
-        DB::beginTransaction();
-        try {
-            // Step 1: Mark the old record as transferred
-            InitialEnquiry::where('id', $inquiry_id)->where('is_transfer_plot', '0')->update(['is_transfer_plot' => 1]);
-    
-            // Step 2: Create a new InitialEnquiry record with new plot details
-            $newInitialEnquiry = InitialEnquiry::create([
-                'project_id' => $request->project_id,
-
                 'previous_initial_id' => $inquiry_id,
                 'firm_id' => $request->firm_id,
                 'measurement' => $request->Measurement,
@@ -259,7 +104,7 @@ class PlotTransferController extends Controller
                 'emi_amount' => $request->emi_ammount,
                 'booking_date' => Carbon::createFromFormat('d/m/Y', $request->booking_date)->toDateString(),
                 'agreement_date' => Carbon::createFromFormat('d/m/Y', $request->aggriment_date)->toDateString(),
-                'status_token' => $request->staus_token,
+                'status_token' => $request->status_token,
                 'emi_start_date' => Carbon::createFromFormat('d/m/Y', $request->emi_start_date)->toDateString(),
                 'plot_sale_status' => $request->plot_sale_status,
                 'a_rate' => $request->a_rate,
@@ -279,6 +124,296 @@ class PlotTransferController extends Controller
                 'south' => $request->south,
             ]);
     
+            $update_plot_transfer_status = InitialEnquiry::where('id',$inquiry_id)->first();
+
+            if ($update_plot_transfer_status) {
+                $update_plot_transfer_status->plot_transfer_status = '1'; // Use = for assignment
+                // echo json_encode($update_plot_transfer_status);
+                // exit();
+                $update_plot_transfer_status->save(); // Save the changes to the database
+            }
+
+            if (!empty($request->nominee_name)) {
+                $nomineesCount = count($request->nominee_name);
+                for ($i = 0; $i < $nomineesCount; $i++) {
+                    if (!empty($request->nominee_name[$i]) && !empty($request->nominee_age[$i]) && !empty($request->nominee_relation[$i]) && !empty($request->nominee_dob[$i]) && !empty($request->nominee_aadhar[$i]) && !empty($request->nominee_pan[$i])) {
+                        $nominee = new NomineeDetailInitial();
+                        $nominee->initial_enquiry_id = $initialEnquiry->id;
+                        $nominee->name = $request->nominee_name[$i];
+                        $nominee->age = $request->nominee_age[$i];
+                        $nominee->relation = $request->nominee_relation[$i];
+                        $nominee->dob = Carbon::createFromFormat('d/m/Y', $request->nominee_dob[$i])->toDateString();
+                        $nominee->aadhar = $request->nominee_aadhar[$i];
+                        $nominee->pan = $request->nominee_pan[$i];
+                        $nominee->save();
+                    }
+                }
+            }
+           
+            // Step 3: Store client details for the new plot
+            $newOwnerIds = [];
+            // foreach ($request->title as $index => $title) {
+            //     // Validate required fields
+            //     if (
+            //         !isset($title) ||
+            //         !isset($request->name[$index]) ||
+            //         !isset($request->occupation_id[$index]) ||
+            //         !isset($request->email[$index]) ||
+            //         !isset($request->contact[$index]) ||
+            //         !isset($request->city[$index]) ||
+            //         !isset($request->pin_code[$index]) ||
+            //         !isset($request->address[$index]) ||
+            //         !isset($request->age[$index]) ||
+            //         !isset($request->dob[$index]) ||
+            //         !isset($request->branch_id[$index]) ||
+            //          !isset($request->aadhar_no[$index]) ||
+            //         !isset($request->pan_no[$index])
+            //     ) {
+            //         continue; // Skip this iteration if any required fields are missing
+            //     }
+
+            //         if(!isset($request->existing_customer_id[$index])){
+            //     $image_name_array = [];
+            //     foreach ($request->aadhar as $key => $image) {
+            //         $extension = explode('/', mime_content_type($image))[1];
+            //         $data = base64_decode(substr($image, strpos($image, ',') + 1));
+            //         $imgname1 = 'e' . rand(000, 999) . $key . time() . '.' . $extension;
+            //         file_put_contents(public_path('customer_reg/') . '/' . $imgname1, $data);
+            //         $image_name_array[] = $imgname1;
+            //     }
+            //     $aadharImages = implode(',', $image_name_array);
+    
+            //     $answerKey = [];
+            //     foreach ($request->pan as $key => $image) {
+            //         $extension = explode('/', mime_content_type($image))[1];
+            //         $data = base64_decode(substr($image, strpos($image, ',') + 1));
+            //         $imgname = 'e' . rand(000, 999) . $key . time() . '.' . $extension;
+            //         file_put_contents(public_path('customer_reg/') . '/' . $imgname, $data);
+            //         $answerKey[] = $imgname;
+            //     }
+            //     $panImages = implode(',', $answerKey);
+    
+            //     // Create customer registration
+            //     $reg = CustomerRegistrationMaster::create([
+            //         'title' => $title,
+            //         'name' => $request->name[$index],
+            //         'occupation_id' => $request->occupation_id[$index],
+            //         'email' => $request->email[$index],
+            //         'contact' => $request->contact[$index],
+            //         'city' => $request->city[$index],
+            //         'pin_code' => $request->pin_code[$index],
+            //         'address' => $request->address[$index],
+            //         'age' => $request->age[$index],
+            //         'dob' => $request->dob[$index],
+            //         'marital_status' => $request->marital_status[$index] ?? null,
+            //         'marriage_date' => $request->marriage_date[$index] ?? null,
+            //         'branch_id' => $request->branch_id[$index],
+            //         'aadhar' => $aadharImages,
+            //         'aadhar_no' => $request->aadhar_no[$index],
+            //         'pan' => $panImages,
+            //         'pan_no' => $request->pan_no[$index],
+            //     ]);
+            //     $client_id = $reg->id;
+
+            // } else {
+            //     // Use existing customer ID
+            //     $client_id = $request->existing_client_id[$index];
+            // }
+    
+            //     // Associate customer with new initial enquiry
+            //     ClientDetailInitial::create([
+            //         'initial_enquiry_id' => $initialEnquiry->id,
+            //         'name' => $request->name[$index],
+            //         'phone' => $request->contact[$index],
+            //         'address' => $request->address[$index],
+            //         'client_id' => $client_id,
+            //     ]);
+    
+            //     $newOwnerIds[] = $client_id;
+           
+
+
+            // }
+        // }
+
+        if (!empty($request->title)) {
+            foreach ($request->title as $index => $title) {
+                if (!isset($title) || !isset($request->name[$index]) || !isset($request->occupation_id[$index]) || !isset($request->email[$index]) || !isset($request->contact[$index]) || !isset($request->city[$index]) || !isset($request->pin_code[$index]) || !isset($request->address[$index]) || !isset($request->age[$index]) || !isset($request->dob[$index]) || !isset($request->branch_id[$index]) || !isset($request->aadhar_no[$index]) || !isset($request->pan_no[$index])) {
+                    continue;
+                }
+
+                $aadharImages = $this->handleFileUploads($request->aadhar, 'customer_reg');
+                $panImages = $this->handleFileUploads($request->pan, 'customer_reg');
+
+                // Create a new customer registration record
+                $reg = CustomerRegistrationMaster::create([
+                    'title' => $title,
+                    'name' => $request->name[$index],
+                    'occupation_id' => $request->occupation_id[$index],
+                    'email' => $request->email[$index],
+                    'contact' => $request->contact[$index],
+                    'city' => $request->city[$index],
+                    'pin_code' => $request->pin_code[$index],
+                    'address' => $request->address[$index],
+                    'age' => $request->age[$index],
+                    'dob' => $request->dob[$index] ?  $request->dob[$index] : null,
+                    'marital_status' => $request->marital_status[$index],
+                    'marriage_date' => $request->marriage_date[$index] ?  $request->marriage_date[$index] : null,
+                    'branch_id' => $request->branch_id[$index],
+                    'aadhar' => $aadharImages,
+                    'aadhar_no' => $request->aadhar_no[$index],
+                    'pan' => $panImages,
+                    'pan_no' => $request->pan_no[$index],
+                ]);
+               
+                ClientDetailInitial::create([
+                    'initial_enquiry_id' => $initialEnquiry->id,
+                    'name' => $request->name[$index],
+                    'phone' => $request->contact[$index],
+                    'address' => $request->address[$index],
+                    'client_id' => $reg->id,
+                ]);
+            }
+        }
+
+        // Step 6: Handle existing clients
+        if (!empty($request->existing_client_id)) {
+            foreach ($request->existing_client_id as $index => $existingClientId) {
+                if (!empty($existingClientId)) {
+                    ClientDetailInitial::create([
+                        'initial_enquiry_id' => $initialEnquiry->id,
+                        'name' => $request->name_existing[$index],
+                        'phone' => $request->contact_existing[$index],
+                        'address' => $request->address_existing[$index],
+                        'client_id' => $existingClientId,
+                    ]);
+                }
+            }
+        }
+        // dd(1);
+             // Update previous owners
+          $previousOwners = ClientDetailInitial::where([
+            ['initial_enquiry_id', '=', $inquiry_id],
+            ['is_transfer', '=', '0']
+        ])->pluck('client_id')->toArray();
+
+        if (!empty($previousOwners)) {
+            ClientDetailInitial::where([
+                ['initial_enquiry_id', '=', $inquiry_id],
+                ['is_transfer', '=', '0']
+            ])->whereIn('client_id', $previousOwners)->update(['is_transfer' => '1']);
+        }
+
+        foreach ($previousOwners as $previousOwner) {
+            foreach ($newOwnerIds as $newOwnerId) {
+                PlotTransferHistory::create([
+                    'initial_enquiry_id' => $initialEnquiry->id,
+                    'previous_enquiry_id' => $inquiry_id,
+                    'previous_owner_id' => $previousOwner,
+                    'new_owner_id' => $newOwnerId,
+                    'transfer_date' => now(),
+                    'transfer_type' => 'user', // or 'user_transfer'
+                ]);
+            }
+        }
+    
+            DB::commit();
+    
+            return redirect()->route('newsale')->with('success', 'Plot transferred successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Plot transfer failed: ' . $e->getMessage());
+            return redirect()->route('newsale')->with('error', 'Plot transfer failed: ' . $e->getMessage());
+        }
+    }
+    private function handleFileUploads($files, $directory)
+    {
+        $image_name_array = [];
+        foreach ($files as $key => $image) {
+            $extension = explode('/', mime_content_type($image))[1];
+            $data = base64_decode(substr($image, strpos($image, ',') + 1));
+            $imgname = 'e' . rand(000, 999) . $key . time() . '.' . $extension;
+            file_put_contents(public_path($directory) . '/' . $imgname, $data);
+            $image_name_array[] = $imgname;
+        }
+        return implode(',', $image_name_array);
+    }
+
+
+    public function user_transfer_plot_store(Request $request, $inquiry_id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            // Step 1: Mark the old record as transferred
+            InitialEnquiry::where('id', $inquiry_id)->where('is_transfer_plot', '0')->update(['is_transfer_plot' => 1]);
+    
+            // Step 2: Create a new InitialEnquiry record with new plot details
+            $newInitialEnquiry = InitialEnquiry::create([
+                'project_id' => $request->project_id,
+                'previous_initial_id' => $inquiry_id,
+                'firm_id' => $request->firm_id,
+                'measurement' => $request->Measurement,
+                'square_meter' => $request->square_meter,
+                'square_ft' => $request->square_ft,
+                'rate' => $request->rate,
+                'plot_no' => $request->plot_no,
+                'total_cost' => $request->total_cost,
+                'discount_amount' => $request->discount_amount,
+                'discount_type' => $request->discount_type,
+                'final_amount' => $request->final_amount,
+                'down_payment' => $request->down_payment,
+                'balance_amount' => $request->balence_amount,
+                'tenure' => $request->tenure,
+                'emi_amount' => $request->emi_ammount,
+                'booking_date' => Carbon::createFromFormat('d/m/Y', $request->booking_date)->toDateString(),
+                'agreement_date' => Carbon::createFromFormat('d/m/Y', $request->aggriment_date)->toDateString(),
+                'status_token' => $request->status_token,
+                'emi_start_date' => Carbon::createFromFormat('d/m/Y', $request->emi_start_date)->toDateString(),
+                'plot_sale_status' => $request->plot_sale_status,
+                'a_rate' => $request->a_rate,
+                'source_type' => $request->source_type,
+                'employee_id' => $request->employee ?? null,
+                'agent_id' => $request->agent_id ?? null,
+                'direct_source' => $request->direct_sourse ?? 'no',
+                'remark' => $request->remark,
+                'mauja' => $request->mauja,
+                'kh_no' => $request->kh_no,
+                'phn' => $request->phn,
+                'taluka' => $request->taluka,
+                'district' => $request->district,
+                'east' => $request->east,
+                'west' => $request->west,
+                'north' => $request->north,
+                'south' => $request->south,
+            ]);
+    
+            $update_plot_transfer_status = InitialEnquiry::where('id',$inquiry_id)->first();
+
+            if ($update_plot_transfer_status) {
+                $update_plot_transfer_status->plot_transfer_status = '1'; // Use = for assignment
+                // echo json_encode($update_plot_transfer_status);
+                // exit();
+                $update_plot_transfer_status->save(); // Save the changes to the database
+            }
+
+             if (!empty($request->nominee_name)) {
+                $nomineesCount = count($request->nominee_name);
+                for ($i = 0; $i < $nomineesCount; $i++) {
+                    if (!empty($request->nominee_name[$i]) && !empty($request->nominee_age[$i]) && !empty($request->nominee_relation[$i]) && !empty($request->nominee_dob[$i]) && !empty($request->nominee_aadhar[$i]) && !empty($request->nominee_pan[$i])) {
+                        $nominee = new NomineeDetailInitial();
+                        $nominee->initial_enquiry_id = $newInitialEnquiry->id;
+                        $nominee->name = $request->nominee_name[$i];
+                        $nominee->age = $request->nominee_age[$i];
+                        $nominee->relation = $request->nominee_relation[$i];
+                        $nominee->dob = Carbon::createFromFormat('d/m/Y', $request->nominee_dob[$i])->toDateString();
+                        $nominee->aadhar = $request->nominee_aadhar[$i];
+                        $nominee->pan = $request->nominee_pan[$i];
+                        $nominee->save();
+                    }
+                }
+            }
+
             // Step 3: Store client details for the new plot
             $newOwnerIds = [];
             foreach ($request->title as $index => $title) {

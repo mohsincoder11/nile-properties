@@ -9,7 +9,7 @@ class PlotTransaction extends Model
 {
     use HasFactory;
     // Specify the table name if it's not the plural form of the model name
-
+    protected $table = "plot_transactions";
     // The attributes that are mass assignable
     protected $fillable = [
         'agent_id',

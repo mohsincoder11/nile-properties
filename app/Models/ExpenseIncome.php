@@ -25,5 +25,6 @@ class ExpenseIncome extends Model
         'mode_of_payment',
         'attach_proof',
         'narration',
+        'receipt_pdf'
     ];
 }

@@ -320,7 +320,7 @@
                                                         data-id="{{ $inquiry->id }}">
                                                         <i class="fa fa-eye" style="margin-left:5px;"></i>
                                                     </button>
-                                                    {{-- <a href="{{ route('user_model.initiatesaleedit', $inquiry->id) }}">
+                                                    <a href="{{ route('user_model.initiatesaleedit', $inquiry->id) }}">
                                                         <button
                                                             style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
                                                             type="button" class="btn btn-info" data-toggle="tooltip"
@@ -358,7 +358,7 @@
                                                                 href="{{ route('plot.transfer', [$inquiry->id, 2]) }}">Transfer
                                                                 Plot From User X to Y</a>
                                                         </div>
-                                                    </div> --}}
+                                                    </div>
                                                 </h2>
                                             </a>
                                             <div class="popover__content1"></div> <!-- No additional content -->

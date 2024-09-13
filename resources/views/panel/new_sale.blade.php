@@ -217,6 +217,8 @@
                     </thead>
                     <tbody>
                         @foreach ($inquery as $key => $inquiry)
+                        @if ($inquiry->plot_transfer_status == 0)
+                      
                         <tr>
                             <td>{{ $loop->index + 1 }}</td>
                             <td>
@@ -295,12 +297,23 @@
 
                             </td>
                             <td>
+                                {{-- @if(isset($inquiry->previous_initial_id)) --}}
+                                {{-- {{$inquiry->previous_initial_id}}
                                 <button
                                     style="background-color:#1abc3d; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
                                     type="button" class="btn btn-info view-details-btn" data-toggle="tooltip"
-                                    data-placement="top" title="View" data-id="{{ $inquiry->id }}">
+                                    data-placement="top" title="View" data-id="{{ $inquiry->previous_initial_id }}">
                                     <i class="fa fa-eye" style="margin-left:5px;"></i>
-                                </button>
+                                </button> --}}
+                                {{-- @else --}}
+                                {{-- {{$inquiry->previous_initial_id}} --}}
+                                <button
+                                style="background-color:#1abc3d; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
+                                type="button" class="btn btn-info view-details-btn" data-toggle="tooltip"
+                                data-placement="top" title="View" data-id="{{ $inquiry->id }}">
+                                <i class="fa fa-eye" style="margin-left:5px;"></i>
+                            </button>
+                            {{-- @endif --}}
                                 <a href="{{ route('newsale_edit', $inquiry->id) }}">
                                     <button
                                         style="background-color:#3399ff; border:none; max-height:25px; margin-top:-5px; margin-bottom:-5px;"
@@ -347,6 +360,8 @@
                                @endif
                             </td>
                         </tr>
+                              
+                        @endif
                         @endforeach
                     </tbody>
                 </table>

@@ -364,12 +364,12 @@
                                     <select id="client-select" class="form-control select" data-live-search="true">
                                         <option value="">Select a client</option>
                                         @foreach ($enquiries as $enquiry)
-                                            <option value="{{ $enquiry->client_name->id }}"
-                                                data-client-name="{{ $enquiry->client_name->name }}"
-                                                data-client-phone="{{ $enquiry->client_name->contact }}"
-                                                data-client-address="{{ $enquiry->client_name->address }}"
+                                            <option value="{{ $enquiry->client_name->id ?? '' }}"
+                                                data-client-name="{{ $enquiry->client_name->name ?? '' }}"
+                                                data-client-phone="{{ $enquiry->client_name->contact ?? '' }}"
+                                                data-client-address="{{ $enquiry->client_name->address ?? ''}}"
                                                 data-client-sponsor="{{ $enquiry->broker_id ?? '' }}">
-                                                {{ $enquiry->client_name->name }}
+                                                {{ $enquiry->client_name->name ?? ''}}
                                             </option>
                                         @endforeach
                                     </select>
@@ -589,7 +589,7 @@
                                         </td>
                                         <td style="padding: 2px;" width="1%">
                                             <input type="text" class="form-control" value=""
-                                                name="square_meter" placeholder="" required />
+                                            id="square_meter" name="square_meter" placeholder="" required />
                                         </td>
                                         <td style="padding: 2px;" width="1%">
                                             <input type="text" id="square_ft" class="form-control" value=""
@@ -684,11 +684,11 @@
                                             </div>
                                         </td>
                                         <td style="padding: 2px;" width="1%">
-                                            <select class="form-control select" name="staus_token"
+                                            <select class="form-control select" name="status_token"
                                                 data-live-search="true">
                                                 <option value="" selected>Select Status</option>
                                                 @foreach ($tokenStatuses as $tokenStatus)
-                                                    <option value="{{ $tokenStatus->token }}">{{ $tokenStatus->token }}
+                                                    <option value="{{ $tokenStatus->id }}">{{ $tokenStatus->token }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -736,8 +736,8 @@
                                             <input type="radio" id="agent_name" name="source_type" value="agent"
                                                 onclick="toggleEmployeeSelect()">
                                             <label for="agent_name">Agent Name</label>
-                                            <input type="radio" id="executive_name" name="source_type"
-                                                value="executive" onclick="toggleEmployeeSelect()" checked>
+                                            <input type="radio" id="executive_name" name="source_type" value="executive"
+                                                onclick="toggleEmployeeSelect()">
                                             <label for="executive_name">Executive Name</label>
                                             <input type="radio" id="direct_sourse" name="source_type" value="direct"
                                                 onclick="toggleEmployeeSelect()">
@@ -1307,228 +1307,278 @@
             toggleEmployeeSelect();
         };
     </script>
-    <script>
-        function calculateAmounts() {
-            // Get the values of square feet and rate inputs
-            let squareFt = parseFloat(document.getElementsByName('square_ft')[0].value) || 0;
-            let rate = parseFloat(document.getElementsByName('rate')[0].value) || 0;
+   <script>
+    // Conversion factor: 1 square meter = 10.7639 square feet
+        const conversionFactor = 10.7639;
 
-            // Calculate the total cost
-            let totalCost = squareFt * rate;
+        function convertSquareUnits() {
+            const squareMeterInput = document.getElementById('square_meter');
+            const squareFeetInput = document.getElementById('square_ft');
 
-            // Update the total cost display
-            document.getElementById('total_cost_display').textContent = totalCost.toFixed(2);
-            document.getElementById('total_cost_input').value = totalCost.toFixed(2);
-
-            // Get the discount amount and type
-            let discountAmount = parseFloat(document.getElementsByName('discount_amount')[0].value) || 0;
-            let discountType = document.getElementById('discount_type').value;
-
-            // Calculate the final amount after applying the discount
-            let finalAmount = totalCost;
-
-            if (discountType === '%') {
-                finalAmount -= totalCost * (discountAmount / 100);
-            } else if (discountType === '₹') {
-                finalAmount -= discountAmount;
+            // Check which input triggered the event
+            if (document.activeElement === squareMeterInput) {
+                let squareMeters = parseFloat(squareMeterInput.value) || 0;
+                let squareFeet = squareMeters * conversionFactor;
+                squareFeetInput.value = squareFeet.toFixed(2);
+            } else if (document.activeElement === squareFeetInput) {
+                let squareFeet = parseFloat(squareFeetInput.value) || 0;
+                let squareMeters = squareFeet / conversionFactor;
+                squareMeterInput.value = squareMeters.toFixed(2);
             }
-
-            // Ensure the final amount doesn't go negative
-            finalAmount = Math.max(finalAmount, 0);
-
-            // Update the final amount input box
-            document.getElementById('final_amount').value = finalAmount.toFixed(2);
-
-            // Get the down payment
-            let downPayment = parseFloat(document.getElementsByName('down_payment')[0].value) || 0;
-
-            // Calculate the balance amount
-            let balanceAmount = finalAmount - downPayment;
-            balanceAmount = Math.max(balanceAmount, 0);
-
-            // Update the balance amount display and hidden input
-            document.getElementById('balence_amount_display').textContent = balanceAmount.toFixed(2);
-            document.getElementById('balence_amount_input').value = balanceAmount.toFixed(2);
-
-            // Get the tenure in days and calculate EMI
-            let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
-            let tenureMonths = Math.ceil(tenureDays / 30); // Convert days to months
-
-            // Calculate EMI amount
-            let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
-
-            // Update the EMI amount display and hidden input
-            document.getElementById('emi_ammount_display').textContent = emiAmount.toFixed(2);
-            document.getElementById('emi_ammount_input').value = emiAmount.toFixed(2);
         }
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#firm-select').on('change', function() {
+</script>
+<script>
+    function toggleEmployeeSelect() {
+    const agentRadio = document.getElementById('agent_name');
+    const executiveRadio = document.getElementById('executive_name');
+    const directSourceRadio = document.getElementById('direct_sourse');
+    const agentSelect = document.getElementById('agent-select');
+    const employeeSelect = document.getElementById('employee-select');
 
-                var firmId = $(this).val();
-                if (firmId) {
-                    $.ajax({
-                        url: '{{ route('projects.by.firm', ['firm_id' => 'FIRM_ID']) }}'.replace(
-                            'FIRM_ID', firmId),
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            $('#project-select').empty(); // Clear the dropdown
-                            $('#project-select').append(
-                                '<option value="">Select Option</option>');
-                            $.each(data, function(key, project) {
-                                $('#project-select').append('<option value="' + project
-                                    .id + '">' + project.project_name + '</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#project-select').empty(); // Clear the dropdown
-                    $('#project-select').append('<option value="">Select Option</option>');
-                }
-            });
-            setTimeout(() => {
-                $('#project-select').trigger('change');
-            }, 500);
+    if (agentRadio.checked) {
+    agentSelect.disabled = false;
+    employeeSelect.disabled = true;
+    employeeSelect.value = ""; // Clear executive dropdown value
+    } else if (executiveRadio.checked) {
+    agentSelect.disabled = true;
+    employeeSelect.disabled = false;
+    agentSelect.value = ""; // Clear agent dropdown value
+    } else if (directSourceRadio.checked) {
+    agentSelect.disabled = true;
+    employeeSelect.disabled = true;
+    agentSelect.value = ""; // Clear agent dropdown value
+    employeeSelect.value = ""; // Clear executive dropdown value
+    }
+    }
 
-            $('#project-select').change(function() {
-                var projectId = $(this).val();
+    // Call toggleEmployeeSelect on page load to set the initial state
+    window.onload = function() {
+    toggleEmployeeSelect();
+    };
+</script>
+<script>
+    function calculateAmounts() {
+// Get the values of square feet and rate inputs
+let squareFt = parseFloat(document.getElementsByName('square_ft')[0].value) || 0;
+let rate = parseFloat(document.getElementsByName('rate')[0].value) || 0;
 
-                if (projectId) {
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ route('fetchPlots') }}", // Using the route name
-                        data: {
-                            projectId: projectId
-                        },
-                        success: function(response) {
-                            //console.log(response); // Log the response data
-                            var plotSelect = $('#plot-select');
-                            plotSelect.empty(); // Clear existing options
-                            plotSelect.append('<option value="">Select Plot</option>');
-                            $.each(response, function(index, plot) {
-                                var selected = (plot.plot_no ==
-                                    '{{ $inquiry->plot_no }}') ? 'selected' : '';
-                                plotSelect.append('<option value="' + plot.id + '" ' +
-                                    selected + '>' + plot.plot_no + '</option>');
-                            });
-                            // Reinitialize Bootstrap Select if needed
-                            plotSelect.selectpicker('refresh');
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
-                        }
-                    });
-                } else {
-                    var plotSelect = $('#plot-select');
-                    plotSelect.empty(); // Clear existing options
-                    plotSelect.append('<option value="">Select Plot</option>');
-                    // Reinitialize Bootstrap Select if needed
-                    plotSelect.selectpicker('refresh');
-                }
-                if (projectId) {
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ route('fetchProjectDetailsextra') }}", // Assuming this route is correctly defined in Laravel
-                        data: {
-                            projectId: projectId
-                        },
-                        success: function(response) {
+// Calculate the total cost
+let totalCost = squareFt * rate;
 
-                            // Assuming the response contains project details
-                            if (response) {
-                                var projectDetails = response;
+// Update the total cost display
+document.getElementById('total_cost_display').textContent = totalCost.toFixed(2);
+document.getElementById('total_cost_input').value = totalCost.toFixed(2);
 
-                                // Log the response to verify the values
+// Get the discount amount and type
+let discountAmount = parseFloat(document.getElementsByName('discount_amount')[0].value) || 0;
+let discountType = document.getElementById('discount_type').value;
 
-                                // Set values to input fields
-                                $('input[name="mauja"]').val(projectDetails.mauja);
-                                $('input[name="kh_no"]').val(projectDetails.kh_no);
-                                $('input[name="phn"]').val(projectDetails.phn);
-                                $('input[name="taluka"]').val(projectDetails.taluka);
-                                $('input[name="district"]').val(projectDetails.district);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
-                        }
-                    });
-                } else {
-                    // Clear the fields if no project is selected
-                    $('input[name="mauja"]').val('');
-                    $('input[name="kh_no"]').val('');
-                    $('input[name="phn"]').val('');
-                    $('input[name="taluka"]').val('');
-                    $('input[name="district"]').val('');
-                }
-            });
-            $('#plot-select').change(function() {
-                var plotId = $(this).val();
+// Calculate the final amount after applying the discount
+let finalAmount = totalCost;
 
-                if (plotId) {
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ route('fetchPlotDetails') }}", // Assuming this route is correctly defined in Laravel
-                        data: {
-                            plotId: plotId
-                        },
-                        success: function(response) {
+if (discountType === '%') {
+finalAmount -= totalCost * (discountAmount / 100);
+} else if (discountType === '₹') {
+finalAmount -= discountAmount;
+}
 
-                            // Assuming the response contains plot details as an array
-                            if (response && response.length > 0) {
-                                var plotDetails = response[
-                                0]; // Access the first element of the array
+// Ensure the final amount doesn't go negative
+finalAmount = Math.max(finalAmount, 0);
 
-                                // Log the values of plot_length and plot_width to check for issues
+// Update the final amount input box
+document.getElementById('final_amount').value = finalAmount.toFixed(2);
+
+// Get the down payment
+let downPayment = parseFloat(document.getElementsByName('down_payment')[0].value) || 0;
+
+// Calculate the balance amount
+let balanceAmount = finalAmount - downPayment;
+balanceAmount = Math.max(balanceAmount, 0);
+
+// Update the balance amount display and hidden input
+document.getElementById('balence_amount_display').textContent = balanceAmount.toFixed(2);
+document.getElementById('balence_amount_input').value = balanceAmount.toFixed(2);
+
+// // Get the tenure in days and calculate EMI
+// let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
+// let tenureMonths = Math.ceil(tenureDays / 30); // Convert days to months
+
+// // Calculate EMI amount
+// let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
+
+let tenureMonths = parseInt(document.getElementsByName('tenure')[0].value) || 0;
+
+// Calculate EMI amount
+let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
+
+// Update the EMI amount display and hidden input
+document.getElementById('emi_ammount_display').textContent = emiAmount.toFixed(2);
+document.getElementById('emi_ammount_input').value = emiAmount.toFixed(2);
+}
+</script>
+<script>
+    $(document).ready(function() {$('#firm-select').on('change', function() {
+
+    var firmId = $(this).val();
+    if (firmId) {
+    $.ajax({
+    url: '{{ route("projects.by.firm", ["firm_id" => "FIRM_ID"]) }}'.replace('FIRM_ID', firmId),
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+    $('#project-select').empty(); // Clear the dropdown
+    $('#project-select').append('<option value="">Select Option</option>');
+    $.each(data, function(key, project) {
+    $('#project-select').append('<option value="' + project.id + '">' + project.project_name + '</option>');
+    });
+    }
+    });
+    } else {
+    $('#project-select').empty(); // Clear the dropdown
+    $('#project-select').append('<option value="">Select Option</option>');
+    }
+    });
 
 
-                                // Ensure the values are correctly parsed as floats
-                                var plotLength = parseFloat(plotDetails.plot_length);
-                                var plotWidth = parseFloat(plotDetails.plot_width);
+$('#project-select').change(function() {
+var projectId = $(this).val();
 
-                                // Check if the parsed values are valid numbers
-                                if (!isNaN(plotLength) && !isNaN(plotWidth)) {
-                                    var measurement = plotLength * plotWidth;
-                                    $('input[name="Measurement"]').val(measurement);
-                                } else {
-                                    $('input[name="Measurement"]').val(''); // Clear if invalid
-                                }
+if (projectId) {
+$.ajax({
+type: "GET",
+url: "{{ route('fetchPlots') }}", // Using the route name
+data: {
+projectId: projectId
+},
+success: function(response) {
+console.log(response); // Log the response data
+var plotSelect = $('#plot-select');
+plotSelect.empty(); // Clear existing options
+plotSelect.append('<option value="">Select Plot</option>');
+$.each(response, function(index, plot) {
+plotSelect.append('<option value="' + plot.id + '">' + plot.plot_no + '</option>');
+});
+// Reinitialize Bootstrap Select if needed
+plotSelect.selectpicker('refresh');
+},
+error: function(xhr, status, error) {
+console.error(error);
+}
+});
+} else {
+var plotSelect = $('#plot-select');
+plotSelect.empty(); // Clear existing options
+plotSelect.append('<option value="">Select Plot</option>');
+// Reinitialize Bootstrap Select if needed
+plotSelect.selectpicker('refresh');
+}
+if (projectId) {
+$.ajax({
+type: "GET",
+url: "{{ route('fetchProjectDetailsextra') }}", // Assuming this route is correctly defined in Laravel
+data: {
+projectId: projectId
+},
+success: function(response) {
+console.log(response);
 
-                                $('#square_meter').val(plotDetails.area_sqrmt);
-                                $('#square_ft').val(plotDetails.area_sqrft);
-                                $('input[name="rate"]').val(plotDetails.rate);
-                                $('#total_cost_input').val(plotDetails.amount);
-                                $('#total_cost_display').text(plotDetails.amount);
+// Assuming the response contains project details
+if (response) {
+var projectDetails = response;
 
-                                $('input[name="east"]').val(plotDetails.east);
-                                $('input[name="west"]').val(plotDetails.west);
-                                $('input[name="north"]').val(plotDetails.north);
-                                $('input[name="south"]').val(plotDetails.south);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
-                        }
-                    });
-                } else {
-                    // Clear the fields if no plot is selected
-                    $('input[name="Measurement"]').val('');
-                    $('#square_meter').val('');
-                    $('#square_ft').val('');
-                    $('input[name="rate"]').val('');
-                    $('#total_cost_input').val('');
-                    $('#total_cost_display').text('');
+// Log the response to verify the values
+console.log('Project Details:', projectDetails);
 
-                    $('input[name="east"]').val('');
-                    $('input[name="west"]').val('');
-                    $('input[name="north"]').val('');
-                    $('input[name="south"]').val('');
-                }
-            });
+// Set values to input fields
+$('input[name="mauja"]').val(projectDetails.mauja);
+$('input[name="kh_no"]').val(projectDetails.kh_no);
+$('input[name="phn"]').val(projectDetails.phn);
+$('input[name="taluka"]').val(projectDetails.taluka);
+$('input[name="district"]').val(projectDetails.district);
+}
+},
+error: function(xhr, status, error) {
+console.error(error);
+}
+});
+} else {
+// Clear the fields if no project is selected
+$('input[name="mauja"]').val('');
+$('input[name="kh_no"]').val('');
+$('input[name="phn"]').val('');
+$('input[name="taluka"]').val('');
+$('input[name="district"]').val('');
+}
+});
+$('#plot-select').change(function() {
+var plotId = $(this).val();
 
-        });
-    </script>
+if (plotId) {
+$.ajax({
+type: "GET",
+url: "{{ route('fetchPlotDetails') }}", // Assuming this route is correctly defined in Laravel
+data: {
+plotId: plotId
+},
+success: function(response) {
+console.log(response);
+
+// Assuming the response contains plot details as an array
+if (response && response.length > 0) {
+var plotDetails = response[0]; // Access the first element of the array
+
+// Log the values of plot_length and plot_width to check for issues
+console.log('Plot Length:', plotDetails.plot_length);
+console.log('Plot Width:', plotDetails.plot_width);
+console.log(plotDetails);
+
+// Ensure the values are correctly parsed as floats
+var plotLength = parseFloat(plotDetails.plot_length);
+var plotWidth = parseFloat(plotDetails.plot_width);
+
+// Check if the parsed values are valid numbers
+if (!isNaN(plotLength) && !isNaN(plotWidth)) {
+var measurement = plotLength * plotWidth;
+$('input[name="Measurement"]').val(measurement);
+} else {
+$('input[name="Measurement"]').val(''); // Clear if invalid
+}
+
+$('#square_meter').val(plotDetails.area_sqrmt);
+$('#square_ft').val(plotDetails.area_sqrft);
+$('input[name="rate"]').val(plotDetails.rate);
+$('#total_cost_input').val(plotDetails.amount);
+$('#total_cost_display').text(plotDetails.amount);
+
+$('input[name="east"]').val(plotDetails.east);
+$('input[name="west"]').val(plotDetails.west);
+$('input[name="north"]').val(plotDetails.north);
+$('input[name="south"]').val(plotDetails.south);
+}
+},
+error: function(xhr, status, error) {
+console.error(error);
+}
+});
+} else {
+// Clear the fields if no plot is selected
+$('input[name="Measurement"]').val('');
+$('#square_meter').val('');
+$('#square_ft').val('');
+$('input[name="rate"]').val('');
+$('#total_cost_input').val('');
+$('#total_cost_display').text('');
+
+$('input[name="east"]').val('');
+$('input[name="west"]').val('');
+$('input[name="north"]').val('');
+$('input[name="south"]').val('');
+}
+});
+
+});
+
+</script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('add-client-btn').addEventListener('click', function() {

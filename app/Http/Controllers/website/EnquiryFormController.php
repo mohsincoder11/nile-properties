@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\website;
 
-
-use Mail;
-use App\Models\User;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\EnquiryForm;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-// use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use App\Models\CustomerRegistrationMaster;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Mail;
+use Mail;
+use Illuminate\Support\Facades\Log;
 
 
 class EnquiryFormController extends Controller
@@ -52,7 +50,7 @@ class EnquiryFormController extends Controller
                 $newUser->save();
 
                 $customer = new CustomerRegistrationMaster;
-                $customer->user_id = $newUser->id;
+                $customer->user_id = $request->$newUser->id;
                 $customer->save();
 
                 // Now, you can send the password to the user's email
@@ -65,6 +63,10 @@ class EnquiryFormController extends Controller
                     $message->to($validateData['email'], 'user')->subject('Welcome to Nile Properties');
                     $message->from('yashdhokane890@gmail.com', 'Nile Properties');
                 });
+
+
+
+
             }
         }
 

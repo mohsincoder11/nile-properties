@@ -195,3 +195,6 @@ ALTER TABLE `initial_enquiries_clients` ADD `plot_transfer_status` ENUM('0','1')
 //29-08
 
 ALTER TABLE `expense_income` CHANGE `amount` `amount` DOUBLE NULL DEFAULT NULL;
+
+//03-09
+ALTER TABLE `initial_enquiries_clients` CHANGE `plot_transfer_status` `plot_transfer_status` ENUM('0','1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '0 - not transfer\r\n1 - transfer\r\n2 - user transfer';

@@ -12,8 +12,6 @@ class EmiPaymentCollection extends Model
     protected $table = 'emi_payments_collections';
 
     protected $fillable = [
-        'plot_id',
-        'project_id',
         'initial_enquiry_id',
         'inst_no',
         'inst_amt',

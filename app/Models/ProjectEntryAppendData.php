@@ -22,8 +22,6 @@ class ProjectEntryAppendData extends Model
         'north',
         'rate',
         'amount',
-        'tenure',
-        'minimum_down_payment',
 
     ];
 
@@ -35,18 +33,13 @@ class ProjectEntryAppendData extends Model
 
 
     // public function status()
-    // {
-    //     return $this->belongsTo(plotSaleStatus::class, 'sale_status_id', 'id');
-    // }
+// {
+//     return $this->belongsTo(plotSaleStatus::class, 'sale_status_id', 'id');
+// }
 
     // Relationship for Enquiry model
     public function enquiry()
     {
         return $this->belongsTo(Enquiry::class, 'id', 'plot_no');
-    }
-
-    public function enquiries()
-    {
-        return $this->hasOne(InitialEnquiry::class, 'plot_no', 'plot_no');
     }
 }

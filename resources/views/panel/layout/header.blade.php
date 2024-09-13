@@ -535,6 +535,11 @@
                         }, 200);
                     });
                 });
+
+                setTimeout(() => {
+                    $('.alert_close_btn').trigger('click');
+                }, 1000);
+
             </script>
 
 
@@ -606,6 +611,11 @@
                     }
                 });
             </script>
+            <script>
+                 setTimeout(() => {
+                    $('.alert_close_btn').trigger('click');
+                }, 3000);
+                </script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 
             @yield('js')

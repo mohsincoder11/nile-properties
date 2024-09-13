@@ -261,7 +261,6 @@
                                     <th>PAN No.</th>
                                     <th>Action</th>
                                 </tr>
-
                             </thead>
                             @if ($inquiry->clients->isNotEmpty())
                                 <tbody id="customerTableBody">
@@ -978,11 +977,11 @@
                                                 value="{{ $inquiry->east ?? '' }}" />
                                         </td>
                                         <td style="padding: 2px;" width="2%">
-                                            <input type="number" class="form-control" name="west" placeholder=""
+                                            <input type="text" class="form-control" name="west" placeholder=""
                                                 value="{{ $inquiry->west ?? '' }}" />
                                         </td>
                                         <td style="padding: 2px;" width="2%">
-                                            <input type="number" class="form-control" name="north" placeholder=""
+                                            <input type="text" class="form-control" name="north" placeholder=""
                                                 value="{{ $inquiry->north ?? '' }}" />
                                         </td>
 
@@ -1271,7 +1270,6 @@
             }
         }
 
-
         // Call toggleEmployeeSelect on page load to set the initial state
         window.onload = function() {
             toggleEmployeeSelect();
@@ -1320,7 +1318,6 @@
             // Update the balance amount display and hidden input
             document.getElementById('balence_amount_display').textContent = balanceAmount.toFixed(2);
             document.getElementById('balence_amount_input').value = balanceAmount.toFixed(2);
-
 
             // // Get the tenure in days and calculate EMI
             // let tenureDays = parseInt(document.getElementsByName('tenure')[0].value) || 0;
@@ -1394,7 +1391,6 @@ let emiAmount = tenureMonths > 0 ? balanceAmount / tenureMonths : 0;
 document.getElementById('emi_ammount_display').textContent = emiAmount.toFixed(2);
 document.getElementById('emi_ammount_input').value = emiAmount.toFixed(2);
 }
-
 </script> --}}
     <script>
         $(document).ready(function() {

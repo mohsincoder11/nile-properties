@@ -232,8 +232,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('positionindex', [MyDownline::class, 'positionindex'])->name('positionindex');
     Route::get('downlinebuisnessindex', [MyDownline::class, 'downlinebuisnessindex'])->name('downlinebuisnessindex');
     Route::get('get_agent_by_profile', [MyDownline::class, 'get_agent_by_profile'])->name('get_agent_by_profile');
+    Route::get('get_business_by_agents', [MyDownline::class, 'get_business_by_agents'])->name('get_business_by_agents');
+    Route::get('get_business', [MyDownline::class, 'get_business'])->name('get_business');
     
-
+    
     Route::get('/commission-plans', [CommissionPlanController::class, 'index'])->name('commission-plans.index');
     Route::post('/commission-plans', [CommissionPlanController::class, 'store'])->name('commission-plans.store');
     Route::get('/commission-plans/{commissionPlan}/edit', [CommissionPlanController::class, 'edit'])->name('commission-plans.edit');
@@ -264,8 +266,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-sold-plot-details', [AccountController::class, 'get_sold_plot_details'])->name('get-sold-plot-details');
     Route::get('/get-sold-plot-other_charges', [AccountController::class, 'get_sold_plot_other_charges'])->name('get-sold-plot-other_charges');
 
-    // CRMF
+        // Account Department Expense
+    // Route::get('expense-master', [AccountController::class, 'exepence_master'])->name('expence-master');
+    Route::post('expence_category_create', [AccountController::class, 'expence_category_create'])->name('expence_category_create');
+    Route::get('edit_expence_category/{id}', [AccountController::class, 'edit_expence_category'])->name('edit_expence_category');
+    Route::post('update_expence_category', [AccountController::class, 'update_expence_category'])->name('update_expence_category');
+    Route::get('expence_category_delete/{id}', [AccountController::class, 'expence_category_delete'])->name('expence_category_delete');
 
+    Route::post('expence_category_head', [AccountController::class, 'expence_category_head'])->name('expence_category_head');
+    Route::get('edit_expence_head/{id}', [AccountController::class, 'edit_expence_head'])->name('edit_expence_head');
+    Route::post('update_expence_head', [AccountController::class, 'update_expence_head'])->name('update_expence_head');
+    Route::get('expence_head_delete/{id}', [AccountController::class, 'expence_head_delete'])->name('expence_head_delete');
+      
+    Route::get('emi_receipt/{id}', [AccountController::class, 'receipt'])->name('emi_receipt');
+    
     //Enquiry
 
     Route::get('/enquiry', [EnquiryController::class, 'index'])->name('enquiry');
@@ -412,7 +426,6 @@ Route::middleware(['auth'])->group(function () {
     //usermodel controller
 
     Route::get('/fetchPlotspaymentsectionbyuser', [UserModelController::class, 'fetchPlotspaymentsectionbyuser'])->name('fetchPlotspaymentsectionbyuser');
-    Route::get('/user-fetch-plots-details', [UserModelController::class, 'userfetchPlotDetails'])->name('userfetchPlotDetails');
 
     Route::get('/getProjectsByFirmbyuser/{firm_id}', [UserModelController::class, 'getProjectsByFirmbyuser'])->name('getProjectsByFirmbyuser.firm');
     Route::get('/user-model-dashboard', [UserModelController::class, 'userdashboard'])->name('user_model.dashboard');
@@ -441,14 +454,4 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/user-create-razorpay-order', [UserModelController::class, 'usercreateRazorpayOrder'])->name('user.create.razorpay.order');
     Route::post('/user-razorpay-callback', [UserModelController::class, 'userhandleRazorpayCallback'])->name('user.razorpay.callback');
-
-    Route::post('/uplodqueriesbyclient', [UserModelController::class, 'uploadQueriesByClient'])->name('uplodqueriesbyclient');
-
-
-    Route::get('/fetchqueries/{id}', [UserModelController::class, 'fetchQueries'])->name('fetchqueries');
-
-
-    // Route::post('/updateadminresponse', [UserModelController::class, 'updateAdminResponse'])->name('updateadminresponse'); //adminresponse to queries
-    Route::post('/updateAdminResponse', [UserModelController::class, 'updateAdminResponse'])->name('updateAdminResponse');
-    Route::post('/submit-all-responses', [UserModelController::class, 'submitAllResponses'])->name('submitAllResponses');
 });
